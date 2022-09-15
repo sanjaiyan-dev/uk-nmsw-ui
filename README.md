@@ -1,2 +1,2 @@
 # nmsw-ui
-National Maritime Single Window
+National Maritime Single Window - NMSW
