@@ -1,6 +1,5 @@
 const Dotenv = require('dotenv-webpack');
 const path = require('path');
-const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
@@ -32,7 +31,7 @@ module.exports = {
   plugins: [
     new Dotenv({systemvars: true}),
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'public', 'index.html')
+      template: path.join(__dirname, 'public', 'index.html'),
     }),
   ],
   devServer: {

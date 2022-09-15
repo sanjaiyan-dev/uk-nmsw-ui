@@ -1,13 +1,13 @@
-import React from "react";
-import ReactDOM, { createRoot } from "react-dom/client";
+import React from 'react';
+import { createRoot } from 'react-dom/client';
 import {
   BrowserRouter,
   Routes,
   Route,
-} from "react-router-dom";
-import App from "./App";
+} from 'react-router-dom';
+import App from './App';
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
       <BrowserRouter>
@@ -15,5 +15,5 @@ root.render(
           <Route path="/" element={<App />} />
         </Routes>
       </BrowserRouter>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
