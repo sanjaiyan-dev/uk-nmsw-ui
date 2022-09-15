@@ -26,7 +26,8 @@
       "quotes": [ "error",  "single"],
       "semi": ["error", "always"],
       "no-console": ["warn"],
-      "comma-dangle": ["error", "always-multiline"]
+      "comma-dangle": ["error", "always-multiline"],
+      "eol-last": ["error", "always"]
   },
   "overrides": [
     {
