@@ -1,12 +1,20 @@
+const CopyPlugin = require('copy-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
-const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
 
 module.exports = {
-  entry: './src/index.js',
+  entry: ['./src/index.js', './src/assets/css/main.scss'],
   output: {
-    filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.[contenthash].js',
+    publicPath: '/',
+  },
+  resolve: {
+    alias: {
+      '/assets': path.resolve(__dirname, 'node_modules/govuk-frontend/govuk/assets'),
+      config: path.resolve(__dirname, 'src/Config/config.js'),
+    },
   },
   module: {
     rules: [
@@ -20,7 +28,18 @@ module.exports = {
       },
       {
         test: /\.(sa|sc|c)ss$/, // styles files
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        use: [
+          { loader: 'style-loader' },
+          { loader: 'css-loader' },
+          {
+            loader: 'sass-loader',
+            options: {
+              sassOptions: {
+                quietDeps: true, // https://frontend.design-system.service.gov.uk/importing-css-assets-and-javascript/#silence-deprecation-warnings-from-dependencies-in-dart-sass
+              },
+            },
+          },
+        ],
       },
       {
         test: /\.(png|woff|woff2|eot|ttf|svg)$/, // to import images and fonts
@@ -33,6 +52,14 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'public', 'index.html'),
     }),
+    new CopyPlugin(
+      {
+        patterns: [
+          { from: 'node_modules/govuk-frontend/govuk/all.js', to: 'javascript/all.js' },
+          { from: 'node_modules/govuk-frontend/govuk/assets', to: 'assets/css' },
+        ],
+      },
+    ), 
   ],
   devServer: {
     historyApiFallback: true,
