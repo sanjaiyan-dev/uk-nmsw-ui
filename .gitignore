@@ -1,4 +1,18 @@
-node_modules
+# OS, ENV variables, IDE
 .env
+.env.test
 .vscode
-dist
+# Directories
+coverage/
+dist/
+node_modules/
+.cache
+.eslintcache
+.npm
+# Files
+*.log*
+cypress/screenshots
+cypress/videos
+cypress/report
+mochawesome-report/
+axe.csv
