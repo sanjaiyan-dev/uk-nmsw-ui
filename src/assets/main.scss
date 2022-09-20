@@ -1,0 +1,7 @@
+@import '~govuk-frontend/govuk/all';
+
+/* Set to default to GDS font when no class is applied to ensure we always use this font */
+body {
+  font-family: "GDS Transport",arial,sans-serif;
+  font-weight: 400;
+}
