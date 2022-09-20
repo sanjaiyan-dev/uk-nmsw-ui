@@ -4,4 +4,10 @@
 body {
   font-family: "GDS Transport",arial,sans-serif;
   font-weight: 400;
+  margin: 0px; // reset margin to 0 as it was setting to the browser user-agent px size
+}
+
+/* Add small space between crown and text in logo in header */
+.govuk-header__logotype-text {
+  margin-left: 2px;
 }
