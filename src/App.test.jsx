@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import App from '../App.jsx';
+import App from './App.jsx';
 
 describe('App tests', () => {
 

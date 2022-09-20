@@ -1,6 +1,9 @@
+import Header from './pages/layout/Header';
+
 const App = () => {
   return (
     <>
+      <Header />
       <h1 className="govuk-heading-l">Basic setup</h1>
       <p className="govuk-body">With a test paragraph so we can prove GovUK frontend style are working</p>
       <button className="govuk-button" data-module="govuk-button">
