@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
 module.exports = {
-  entry: ['./src/index.js', './src/assets/css/main.scss'],
+  entry: ['./src/index.js', './src/assets/main.scss'],
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.[contenthash].js',
@@ -51,12 +51,14 @@ module.exports = {
     new Dotenv({systemvars: true}),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'public', 'index.html'),
+      favicon: './src/assets/images/favicon.ico', 
     }),
     new CopyPlugin(
       {
         patterns: [
           { from: 'node_modules/govuk-frontend/govuk/all.js', to: 'javascript/all.js' },
-          { from: 'node_modules/govuk-frontend/govuk/assets', to: 'assets/css' },
+          { from: 'node_modules/govuk-frontend/govuk/assets', to: 'assets' },
+          { from: 'src/assets/images', to: 'assets/images' }, 
         ],
       },
     ), 
