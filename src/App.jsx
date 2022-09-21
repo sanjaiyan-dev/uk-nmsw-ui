@@ -1,8 +1,10 @@
+import CookieBanner from './layout/CookieBanner';
 import Header from './layout/Header';
 
 const App = () => {
   return (
     <>
+      <CookieBanner />
       <Header />
       <div className="govuk-width-container">
         <main className="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="content" role="main">
