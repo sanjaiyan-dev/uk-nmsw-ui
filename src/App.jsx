@@ -1,4 +1,5 @@
 import CookieBanner from './layout/CookieBanner';
+import Footer from './layout/Footer';
 import Header from './layout/Header';
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
           <span>and a span where we forget to add the class, but should default to GDS font</span>
         </main>
       </div>
+      <Footer />
     </>
   );
 };

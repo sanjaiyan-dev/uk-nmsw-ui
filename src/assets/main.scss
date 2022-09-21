@@ -5,6 +5,11 @@ body {
   font-family: "GDS Transport",arial,sans-serif;
   font-weight: 400;
   margin: 0px; // reset margin to 0 as it was setting to the browser user-agent px size
+  background-color: govuk-colour("light-grey"); // set body to footer colour (light grey) so that if a page is very short we don't get white background under the footer
+}
+
+#root {
+  background: govuk-colour("white"); // set root div to content colour (white) as a default
 }
 
 /* Add small space between crown and text in logo in header */
