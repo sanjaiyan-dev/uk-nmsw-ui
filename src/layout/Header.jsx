@@ -18,7 +18,7 @@ const Header = () => {
           </a>
         </div>
         <div className="govuk-header__content">
-          <a href="/" className="govuk-header__link govuk-header__service-name">
+          <a href="/" className="govuk-header__link govuk-header__service-name" data-testid="serviceName">
             {SERVICE_NAME}
           </a>
         </div>

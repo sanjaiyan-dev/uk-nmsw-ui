@@ -9,7 +9,7 @@ describe('App tests', () => {
   it('should render the heading on the page', async () => {
     await waitFor(() => { render(<App />); });
     expect(screen.getByText('GOV.UK')).toBeInTheDocument();
-    expect(screen.getByText(SERVICE_NAME)).toBeInTheDocument();
+    expect(screen.getByTestId('serviceName').textContent).toEqual(SERVICE_NAME);
   });
 
   it('should render the phase banner on the page', async () => {
@@ -19,13 +19,6 @@ describe('App tests', () => {
     expect(checkPhaseBannerText).toHaveTextContent('This is a new service - your ');
     expect(checkPhaseBannerLink).toBeInTheDocument();
     expect(checkPhaseBannerText).toHaveTextContent(' will help us to improve it.');
-  });
-
-  it('should render the page with a h1', async () => {
-    await waitFor(() => { render(<App />); });
-    const checkHeading = screen.getByText('Basic setup');
-    expect(checkHeading).toBeInTheDocument();
-    expect(checkHeading.outerHTML).toEqual('<h1 class="govuk-heading-l">Basic setup</h1>');
   });
 
   it('should render the footer on the page', async () => {
