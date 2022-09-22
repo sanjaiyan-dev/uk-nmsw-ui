@@ -6,10 +6,10 @@ import {
 import {
   LANDING_URL,
   SIGN_IN_URL,
-} from '../constants/AppUrlConstants';
+} from './constants/AppUrlConstants';
 // Pages
-import Landing from '../pages/Landing/Landing';
-import SignIn from '../pages/SignIn/SignIn';
+import Landing from './pages/Landing/Landing';
+import SignIn from './pages/SignIn/SignIn';
 
 const AppRouter = () => {
   return (
