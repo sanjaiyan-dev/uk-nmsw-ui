@@ -9,7 +9,7 @@ describe('App tests', () => {
   it('should render the heading on the page', async () => {
     await waitFor(() => { render(<App />); });
     expect(screen.getByText('GOV.UK')).toBeInTheDocument();
-    expect(screen.getByText(SERVICE_NAME)).toBeInTheDocument();
+    expect(screen.getByTestId('serviceName').textContent).toEqual(SERVICE_NAME);
   });
 
   it('should render the phase banner on the page', async () => {
