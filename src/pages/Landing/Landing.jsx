@@ -1,12 +1,14 @@
+import { Link } from 'react-router-dom';
 import { SERVICE_NAME } from '../../constants/AppConstants';
+import { SIGN_IN_URL } from '../../constants/AppUrlConstants';
 
 const Landing = () => {
   return (
     <>
       <h1 className="govuk-heading-l">{SERVICE_NAME}</h1>
       <p className="govuk-body">Use this service to:</p>
-      <a 
-        href="/sign-in"
+      <Link 
+        to={SIGN_IN_URL}
         role="button"
         draggable="false"
         className="govuk-button govuk-button--start"
@@ -24,7 +26,7 @@ const Landing = () => {
         >
           <path fill="currentColor" d="M0 0h13l20 20-20 20H0l20-20z" />
         </svg>
-      </a>
+      </Link>
     </>
   );
 };
