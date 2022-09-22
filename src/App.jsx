@@ -1,6 +1,7 @@
 import CookieBanner from './layout/CookieBanner';
 import Footer from './layout/Footer';
 import Header from './layout/Header';
+import PhaseBanner from './layout/PhaseBanner';
 
 const App = () => {
   return (
@@ -8,6 +9,7 @@ const App = () => {
       <CookieBanner />
       <Header />
       <div className="govuk-width-container">
+        <PhaseBanner />
         <main className="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="content" role="main">
           <h1 className="govuk-heading-l">Basic setup</h1>
           <p className="govuk-body">With a test paragraph so we can prove GovUK frontend style are working</p>
