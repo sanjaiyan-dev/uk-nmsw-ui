@@ -1,5 +1,4 @@
 import {
-  BrowserRouter,
   Routes,
   Route,
 } from 'react-router-dom';
@@ -14,13 +13,11 @@ import SignIn from '../pages/SignIn/SignIn';
 
 const AppRouter = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<Landing />} />
-        <Route path={LANDING_URL} element={<Landing />} />
-        <Route path={SIGN_IN_URL} element={<SignIn />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path='/' element={<Landing />} />
+      <Route path={LANDING_URL} element={<Landing />} />
+      <Route path={SIGN_IN_URL} element={<SignIn />} />
+    </Routes>
   );
 };
 
