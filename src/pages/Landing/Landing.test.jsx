@@ -7,9 +7,7 @@ describe('Landing page tests', () => {
 
   it('should render the page with the service name as a H1', async () => {
     render(<MemoryRouter><Landing /></MemoryRouter>);
-    // await waitFor(() => {
       expect(screen.getByText('National Maritime Single Window')).toBeInTheDocument();
-    // });
   });
 
   it('should render the service name text from the constants file', async () => {
