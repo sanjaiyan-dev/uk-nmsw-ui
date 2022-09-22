@@ -4,7 +4,7 @@ import Footer from './layout/Footer';
 import Header from './layout/Header';
 import PhaseBanner from './layout/PhaseBanner';
 // Pages
-import Landing from './pages/LandingPage/Landing';
+import Landing from './pages/Landing/Landing';
 
 const App = () => {
   return (
