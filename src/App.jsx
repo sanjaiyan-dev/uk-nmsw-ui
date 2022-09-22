@@ -1,3 +1,8 @@
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from 'react-router-dom';
 // Page Layout Components
 import CookieBanner from './layout/CookieBanner';
 import Footer from './layout/Footer';
@@ -5,6 +10,7 @@ import Header from './layout/Header';
 import PhaseBanner from './layout/PhaseBanner';
 // Pages
 import Landing from './pages/Landing/Landing';
+import SignIn from './pages/SignIn/SignIn';
 
 const App = () => {
   return (
@@ -17,8 +23,12 @@ const App = () => {
         If we don't want that we will add logic on the back link component as to when 
         it should not show; */}
         <main className="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="content" role="main">
-          {/* routing goes here, once in place replace Landing with route to landing */}
-          <Landing />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Landing />} />
+              <Route path="/sign-in" element={<SignIn />} />
+            </Routes>
+          </BrowserRouter>
         </main>
       </div>
       <Footer />
