@@ -5,23 +5,15 @@ import Header from './layout/Header';
 import PhaseBanner from './layout/PhaseBanner';
 // utils
 import findCookiePreference from './utils/findCookiePreference';
+import setAnalyticCookie from './utils/setAnalyticCookie';
 
 const App = () => {
 
   const cookiePreference = findCookiePreference('cookiePreference');
-
-  // Pull this logic out into own function and call in useEffect here
-
+  
   useEffect(() => {
-    if (cookiePreference !== null && cookiePreference !== undefined) {
-      // setShowCookieBanner(false)
-      if (cookiePreference === true) {
-        console.log('APP', 'GA ON');
-      } else {
-        console.log('APP','GA OFF');
-      }
-    }
-  }, [cookiePreference]);
+    setAnalyticCookie(cookiePreference);
+  }, []);
 
   return (
     <>
