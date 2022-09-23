@@ -1,16 +1,7 @@
 import { SERVICE_NAME } from '../constants/AppConstants';
+import setAnalyticCookie from '../utils/setAnalyticCookie';
 
 const CookieBanner = () => {
-
-  const setAnalyticCookie = (type) => {
-    if (type === 'accept') {
-      document.cookie = 'cookiePreference=true';
-      console.log('GA ON');
-    } else {
-      document.cookie = 'cookiePreference=false';
-      console.log('GA OFF');
-    }
-  };
 
   return (
     <div className="govuk-cookie-banner " data-nosnippet role="region" aria-label={`Cookies on ${SERVICE_NAME}`}>
@@ -28,10 +19,10 @@ const CookieBanner = () => {
         </div>
 
         <div className="govuk-button-group">
-          <button type="button" className="govuk-button" data-module="govuk-button" onClick={() => setAnalyticCookie('accept')}>
+          <button type="button" className="govuk-button" data-module="govuk-button" onClick={() => setAnalyticCookie(undefined, 'accept')}>
             Accept analytics cookies
           </button>
-          <button type="button" className="govuk-button" data-module="govuk-button" onClick={() => setAnalyticCookie('reject')}>
+          <button type="button" className="govuk-button" data-module="govuk-button" onClick={() => setAnalyticCookie(undefined, 'reject')}>
             Reject analytics cookies
           </button>
           {/* <a className="govuk-link" href="#">View cookies</a> */}
