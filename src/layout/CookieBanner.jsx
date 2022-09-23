@@ -5,10 +5,10 @@ const CookieBanner = () => {
   const setAnalyticCookie = (type) => {
     if (type === 'accept') {
       document.cookie = 'cookiePreference=true';
-      //set GA cookie
+      console.log('GA ON');
     } else {
       document.cookie = 'cookiePreference=false';
-      // set GA cookie
+      console.log('GA OFF');
     }
   };
 
