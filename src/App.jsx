@@ -1,4 +1,4 @@
-import AppRouter from './components/AppRouter';
+import AppRouter from './AppRouter';
 import CookieBanner from './layout/CookieBanner';
 import Footer from './layout/Footer';
 import Header from './layout/Header';

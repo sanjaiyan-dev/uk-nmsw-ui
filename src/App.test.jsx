@@ -4,9 +4,6 @@ import { SERVICE_NAME } from './constants/AppConstants.js';
 import App from './App.jsx';
 
 describe('App tests', () => {
-
-  // adding this test here on the assumption we form the page container in App, 
-  // if we move that to another file then should move this render heading, phase banner and footer tests too
   it('should render the heading on the page', async () => {
     await waitFor(() => { render(<BrowserRouter><App /></BrowserRouter>); });
     expect(screen.getByText('GOV.UK')).toBeInTheDocument();
