@@ -12,7 +12,6 @@ const UserContext = createContext({
 
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState({ name: '', auth: false });
-  console.log('user', user)
 
   // Login updates the user data with a name & roles
   // will replace this with the authentication  components later

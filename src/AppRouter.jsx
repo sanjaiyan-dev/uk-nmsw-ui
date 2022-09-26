@@ -14,8 +14,6 @@ import SignIn from './pages/SignIn/SignIn';
 import SecondPage from './pages/TempPages/SecondPage';
 
 const AppRouter = () => {
-  const user = null;
-
   return (
     <Routes>
       <Route path='/' element={<Landing />} />
