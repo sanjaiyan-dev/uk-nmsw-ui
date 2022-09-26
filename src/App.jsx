@@ -5,12 +5,12 @@ import Footer from './layout/Footer';
 import Header from './layout/Header';
 import PhaseBanner from './layout/PhaseBanner';
 // utils
-import findCookiePreference from './utils/findCookiePreference';
+import cookieToFind from './utils/cookieToFind';
 import setAnalyticCookie from './utils/setAnalyticCookie';
 
 const App = () => {
 
-  const cookiePreference = findCookiePreference('cookiePreference');
+  const cookiePreference = cookieToFind('cookiePreference');
 
   useEffect(() => {
     setAnalyticCookie(cookiePreference);
