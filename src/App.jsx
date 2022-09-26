@@ -14,7 +14,7 @@ const App = () => {
 
   useEffect(() => {
     setAnalyticCookie(cookiePreference);
-  }, []);
+  }, [cookiePreference]);
 
   return (
     <>
