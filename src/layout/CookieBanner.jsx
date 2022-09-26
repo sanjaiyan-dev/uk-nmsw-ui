@@ -1,4 +1,5 @@
 import { SERVICE_NAME } from '../constants/AppConstants';
+import setAnalyticCookie from '../utils/setAnalyticCookie';
 
 const CookieBanner = () => {
 
@@ -15,6 +16,16 @@ const CookieBanner = () => {
               <p className="govuk-body">We&apos;d also like to use analytics cookies so we can understand how you use the service and make improvements.</p>
             </div>
           </div>
+        </div>
+
+        <div className="govuk-button-group">
+          <button type="button" className="govuk-button" data-module="govuk-button" onClick={() => setAnalyticCookie(true)}>
+            Accept analytics cookies
+          </button>
+          <button type="button" className="govuk-button" data-module="govuk-button" onClick={() => setAnalyticCookie(false)}>
+            Reject analytics cookies
+          </button>
+          {/* <a className="govuk-link" href="#">View cookies</a> */}
         </div>
       </div>
     </div>
