@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import CookieBanner from '../CookieBanner';
@@ -18,14 +18,14 @@ const extractPreferenceCookie = (cookieName) => {
 describe('CookieBanner tests', () => {
 
   it('should render the CookieBanner with cookie text', async () => {
-    await waitFor(() => { render(<CookieBanner />); });
+    render(<CookieBanner />);
     expect(screen.getByText('Cookies on National Maritime Single Window')).toBeInTheDocument();
     expect(screen.getByText('We use some essential cookies to make this service work.')).toBeInTheDocument();
     expect(screen.getByText('We\'d also like to use analytics cookies so we can understand how you use the service and make improvements.')).toBeInTheDocument();
   });
 
   it('should render an accept and a reject button', async () => {
-    await waitFor(() => { render(<CookieBanner />); });
+    render(<CookieBanner />);
     const acceptButton = screen.getByRole('button', { name: 'Accept analytics cookies' });
     const rejectButton = screen.getByRole('button', { name: 'Reject analytics cookies' });
 
@@ -35,19 +35,19 @@ describe('CookieBanner tests', () => {
 
   it('should set cookiePreference to true when Accept analytics cookies is clicked', async () => {
     const user = userEvent.setup();
-    await waitFor(() => { render(<CookieBanner />); });
+    render(<CookieBanner />);
 
     const acceptButton = screen.getByRole('button', { name: 'Accept analytics cookies' });
-    user.click(acceptButton);
-    await waitFor(() => { expect(extractPreferenceCookie('cookiePreference')).toEqual('cookiePreference=true'); });
+    await user.click(acceptButton);
+    expect(extractPreferenceCookie('cookiePreference')).toEqual('cookiePreference=true');
   });
 
   it('should set cookiePreference to false when Reject analytics cookies is clicked', async () => {
     const user = userEvent.setup();
-    await waitFor(() => { render(<CookieBanner />); });
+    render(<CookieBanner />);
 
     const rejectButton = screen.getByRole('button', { name: 'Reject analytics cookies' });
-    user.click(rejectButton);
-    await waitFor(() => { expect(extractPreferenceCookie('cookiePreference')).toEqual('cookiePreference=false'); });
+    await user.click(rejectButton);
+    expect(extractPreferenceCookie('cookiePreference')).toEqual('cookiePreference=false');
   });
 });
