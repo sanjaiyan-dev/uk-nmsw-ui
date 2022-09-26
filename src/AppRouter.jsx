@@ -1,5 +1,7 @@
+import { useContext } from 'react';
 import { Routes, Route} from 'react-router-dom';
 import ProtectedRoute from './utils/ProtectedRoute';
+import { UserContext } from './context/userContext';
 // URLs
 import {
   DASHBOARD_URL,
@@ -14,6 +16,8 @@ import SignIn from './pages/SignIn/SignIn';
 import SecondPage from './pages/TempPages/SecondPage';
 
 const AppRouter = () => {
+  const { user } = useContext(UserContext);
+
   return (
     <Routes>
       <Route path='/' element={<Landing />} />

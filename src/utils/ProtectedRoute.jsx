@@ -13,7 +13,9 @@ const ProtectedRoute = ({ children, user }) => {
 export default ProtectedRoute;
 
 ProtectedRoute.propTypes = {
-  user: PropTypes.string,
+  user: PropTypes.objectOf({
+    name: PropTypes.string,
+  }),
   children: PropTypes.element // element indicates a React element should be rendered
   // children: PropTypes.node // node means anything can be rendered
 };
