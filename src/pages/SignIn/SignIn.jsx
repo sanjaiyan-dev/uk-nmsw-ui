@@ -13,7 +13,10 @@ const SignIn = () => {
       <h1 className="govuk-heading-l">Sign in</h1>
       <button
         className="govuk-button" data-module="govuk-button"
-        onClick={async () => { await login({ ...tempHardCodedUser }); navigate({DASHBOARD_URL}); }}
+        onClick={async () => {
+          await login({ ...tempHardCodedUser });
+          navigate(DASHBOARD_URL);
+        }}
       >
         Sign in
       </button>
