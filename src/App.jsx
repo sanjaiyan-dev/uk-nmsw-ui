@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import AppRouter from './AppRouter';
 import CookieBanner from './layout/CookieBanner';
 import Footer from './layout/Footer';
@@ -10,7 +11,7 @@ import setAnalyticCookie from './utils/setAnalyticCookie';
 const App = () => {
 
   const cookiePreference = findCookiePreference('cookiePreference');
-  
+
   useEffect(() => {
     setAnalyticCookie(cookiePreference);
   }, []);
