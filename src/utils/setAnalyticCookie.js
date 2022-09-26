@@ -1,8 +1,8 @@
-const setAnalyticCookie = (cookiePreference, type) => {
-  if (cookiePreference === true || type === 'accept') {
+const setAnalyticCookie = (cookiePreference) => {
+  if (cookiePreference === true ) {
     document.cookie = 'cookiePreference=true';
     console.log('GA ON');
-  } else if (cookiePreference === false || type === 'reject') {
+  } else if (cookiePreference === false) {
     document.cookie = 'cookiePreference=false';
     console.log('GA OFF');
   } else {

@@ -19,10 +19,10 @@ const CookieBanner = () => {
         </div>
 
         <div className="govuk-button-group">
-          <button type="button" className="govuk-button" data-module="govuk-button" onClick={() => setAnalyticCookie(undefined, 'accept')}>
+          <button type="button" className="govuk-button" data-module="govuk-button" onClick={() => setAnalyticCookie(true)}>
             Accept analytics cookies
           </button>
-          <button type="button" className="govuk-button" data-module="govuk-button" onClick={() => setAnalyticCookie(undefined, 'reject')}>
+          <button type="button" className="govuk-button" data-module="govuk-button" onClick={() => setAnalyticCookie(false)}>
             Reject analytics cookies
           </button>
           {/* <a className="govuk-link" href="#">View cookies</a> */}
