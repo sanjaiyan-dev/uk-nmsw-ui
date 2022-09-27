@@ -2,7 +2,9 @@ import { Navigate, Outlet } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { LANDING_URL } from '../constants/AppUrlConstants';
 
-const ProtectedRoute = ({ children, user }) => {
+const ProtectedRoute = ({ component, user }) => {
+  console.log(user);
+
   /* States to redirect to login (regardless of the state of other key/values in user)
      - no user.auth state
      - no user.name state
@@ -12,12 +14,12 @@ const ProtectedRoute = ({ children, user }) => {
     return <Navigate to={LANDING_URL} replace />; // replace replaces the current entry in the history stack, so back button will not go back to previous page
   }
 
-  return children ? children : <Outlet />;
+  return component ? component : <Outlet />;
 };
 
 export default ProtectedRoute;
 
 ProtectedRoute.propTypes = {
   user: PropTypes.object, // there may or may not be a user prop, if there is it must be an object
-  children: PropTypes.element // there may or may not be a children prop, if there is it must be a React renderable element (if this breaks can change node - any renderable element)
+  component: PropTypes.element // there may or may not be a children prop, if there is it must be a React renderable element (if this breaks can change node - any renderable element)
 };

@@ -5,7 +5,7 @@ import { SIGN_IN_URL } from '../../constants/AppUrlConstants';
 const Landing = () => {
   return (
     <>
-      <h1 className="govuk-heading-l">{SERVICE_NAME}</h1>
+      <h1 className="govuk-heading-l" data-testid="landing-h1">{SERVICE_NAME}</h1>
       <p className="govuk-body">Use this service to:</p>
       <Link 
         to={SIGN_IN_URL}

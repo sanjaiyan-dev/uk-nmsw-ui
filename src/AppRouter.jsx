@@ -24,9 +24,9 @@ const AppRouter = () => {
       <Route path={LANDING_URL} element={<Landing />} />
       <Route path={SIGN_IN_URL} element={<SignIn />} />
       <Route element={<ProtectedRoute user={user} />}>
-          <Route path={DASHBOARD_URL} element={<Dashboard />} />
-          <Route path={SECOND_PAGE_URL} element={<SecondPage />} />
-        </Route>
+        <Route path={DASHBOARD_URL} element={<Dashboard />} />
+        <Route path={SECOND_PAGE_URL} element={<SecondPage />} />
+      </Route>
     </Routes>
   );
 };
