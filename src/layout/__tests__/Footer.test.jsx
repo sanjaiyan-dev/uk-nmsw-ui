@@ -25,7 +25,7 @@ describe('Footer tests', () => {
   
   it('should render the AccessibilityStatement link', async () => {
     await waitFor(() => { render(<MemoryRouter><Footer /></MemoryRouter>); });
-    const AccessibilityStatementLink = screen.getByText('Accessibility statement');
+    const AccessibilityStatementLink = screen.getByText('Accessibility');
     expect(AccessibilityStatementLink).toBeInTheDocument();
   });
 

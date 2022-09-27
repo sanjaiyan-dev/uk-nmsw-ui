@@ -17,7 +17,7 @@ const Footer = () => {
               </li>
               <li className="govuk-footer__inline-list-item">
                 <Link className="govuk-footer__link" to={ACCESSIBILITY_URL}>
-                  Accessibility statement
+                  Accessibility
                 </Link>
               </li>
               {/* <li className="govuk-footer__inline-list-item">
