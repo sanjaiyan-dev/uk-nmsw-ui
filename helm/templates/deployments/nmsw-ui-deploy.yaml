@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "helm.fullname" . }}
+  namespace: {{ .Values.nameSpace }}
+  labels:
+    {{- include "helm.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "helm.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "helm.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: https
+              containerPort: 8080
+              protocol: TCP
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          env:
+            - name: EXAMPLE
+              value: {{ .Values.env.EXAMPLE }}
+        - name: proxy
+          image: "quay.io/ukhomeofficedigital/nginx-proxy:latest"
+          imagePullPolicy: Always
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+          env:
+            - name: PROXY_SERVICE_HOST
+              value: 'http://127.0.0.1'
+            - name: PROXY_SERVICE_PORT
+              value: "8080"
+            - name: SERVER_CERT
+              value: "/certs/tls.crt"
+            - name: SERVER_KEY
+              value: "/certs/tls.key"
+            - name: LOG_FORMAT_NAME
+              value: 'json'
+            - name: NAXSI_USE_DEFAULT_RULES
+              value: 'FALSE'
+            - name: ENABLE_UUID_PARAM
+              value: 'FALSE'
+            - name: STATSD_METRICS
+              value: "FALSE"
+          ports:
+            - name: https
+              containerPort: 10443
+          volumeMounts:
+            - name: certs
+              mountPath: /certs
+              readOnly: true
+      volumes:
+        - name: certs
+          secret:
+            secretName: nmsw-ui-pod-cmio
