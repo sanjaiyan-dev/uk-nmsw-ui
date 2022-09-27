@@ -22,4 +22,11 @@ describe('Footer tests', () => {
     expect(cookieLink).toBeInTheDocument();
     expect(cookieLink.outerHTML).toEqual('<a class="govuk-footer__link" href="/cookies">Cookies</a>');
   });
+  
+  it('should render the AccessibilityStatement link', async () => {
+    await waitFor(() => { render(<MemoryRouter><Footer /></MemoryRouter>); });
+    const AccessibilityStatementLink = screen.getByText('Accessibility statement');
+    expect(AccessibilityStatementLink).toBeInTheDocument();
+  });
+
 });
