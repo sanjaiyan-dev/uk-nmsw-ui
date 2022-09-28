@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
-import Dashboard from '../../pages/Dashboard/Dashboard';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import ProtectedRoute from '../ProtectedRoutes';
 
 /* Testing the 'not authorised' scenarios e.g. <ProtectedRoute user={{ name: 'bob', auth: false }}>
@@ -14,18 +13,23 @@ import ProtectedRoute from '../ProtectedRoutes';
  * Therefore we will test the negative routes with the Cypress E2E tests
  */
 
+
 describe('Routing tests', () => {
-  it('should render a protected page if user is authorised', () => {
+  const TestComponent = () => <div>test text</div>;
+  const isPermittedToView = true;
+
+  it('should fail', () => {
     render(
-      <MemoryRouter>
-        <ProtectedRoute user={{ name: 'bob', auth: true }}>
-          <Dashboard />
-        </ProtectedRoute>
+      <MemoryRouter initialEntries={['/']}>
+        <Routes>
+          <Route element={<ProtectedRoute isPermittedToView={isPermittedToView} />}>
+            <Route path="/" element={<TestComponent />} />
+          </Route>
+        </Routes>
       </MemoryRouter>
     );
 
-    expect(screen.getByText('Dashboard')).toBeInTheDocument();
+    expect(screen.queryByText('test text')).toBeInTheDocument();
   });
 
 });
-
