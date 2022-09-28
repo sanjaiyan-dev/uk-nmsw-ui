@@ -1,10 +1,21 @@
+import { useEffect } from 'react';
 import AppRouter from './AppRouter';
 import CookieBanner from './layout/CookieBanner';
 import Footer from './layout/Footer';
 import Header from './layout/Header';
 import PhaseBanner from './layout/PhaseBanner';
+// utils
+import cookieToFind from './utils/cookieToFind';
+import setAnalyticCookie from './utils/setAnalyticCookie';
 
 const App = () => {
+
+  const cookiePreference = cookieToFind('cookiePreference');
+
+  useEffect(() => {
+    setAnalyticCookie(cookiePreference);
+  }, [cookiePreference]);
+
   return (
     <>
       <CookieBanner />
