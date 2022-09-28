@@ -8,6 +8,7 @@ import {
   COOKIE_URL,
   DASHBOARD_URL,
   LANDING_URL,
+  PRIVACY_URL,
   SIGN_IN_URL,
   SECOND_PAGE_URL,
 } from './constants/AppUrlConstants';
@@ -17,6 +18,7 @@ import AccessibilityStatement from './pages/Footer/AccessibilityStatement';
 import CookiePolicy from './pages/Footer/CookiePolicy';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Landing from './pages/Landing/Landing';
+import PrivacyNotice from './pages/Footer/PrivacyNotice';
 import SignIn from './pages/SignIn/SignIn';
 import SecondPage from './pages/TempPages/SecondPage';
 
@@ -30,6 +32,7 @@ const AppRouter = () => {
       <Route path={SIGN_IN_URL} element={<SignIn />} />
       <Route path={ACCESSIBILITY_URL} element={<AccessibilityStatement />} />
       <Route path={COOKIE_URL} element={<CookiePolicy />} />
+      <Route path={PRIVACY_URL} element={<PrivacyNotice />} />
       <Route element={<ProtectedRoutes isPermittedToView={isPermittedToView} />}>
         <Route path={DASHBOARD_URL} element={<Dashboard />} />
         <Route path={SECOND_PAGE_URL} element={<SecondPage />} />
