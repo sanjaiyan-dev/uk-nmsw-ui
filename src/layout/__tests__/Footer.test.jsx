@@ -16,4 +16,10 @@ describe('Footer tests', () => {
     expect(checkCrownCopyrightLogo.outerHTML).toEqual('<a class="govuk-footer__link govuk-footer__copyright-logo" href="/">© Crown copyright</a>');
   });
 
+  it('should render the Cookie link', async () => {
+    await waitFor(() => { render(<MemoryRouter><Footer /></MemoryRouter>); });
+    const cookieLink = screen.getByText('Cookies');
+    expect(cookieLink).toBeInTheDocument();
+    expect(cookieLink.outerHTML).toEqual('<a class="govuk-footer__link" href="/cookies">Cookies</a>');
+  });
 });
