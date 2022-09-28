@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { SERVICE_NAME } from '../constants/AppConstants';
 import { LANDING_URL } from '../constants/AppUrlConstants';
+import Nav from './Nav';
 
 const Header = () => {
   return (
@@ -23,6 +24,7 @@ const Header = () => {
           <Link to={LANDING_URL} className="govuk-header__link govuk-header__service-name" data-testid="serviceName">
             {SERVICE_NAME}
           </Link>
+          <Nav />
         </div>
       </div>
     </header>
