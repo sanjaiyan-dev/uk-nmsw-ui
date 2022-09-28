@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { Routes, Route} from 'react-router-dom';
-import ProtectedRoute from './utils/ProtectedRoute';
+import ProtectedRoutes from './utils/ProtectedRoutes';
 import { UserContext } from './context/userContext';
 // URLs
 import {
@@ -23,7 +23,7 @@ const AppRouter = () => {
       <Route path='/' element={<Landing />} />
       <Route path={LANDING_URL} element={<Landing />} />
       <Route path={SIGN_IN_URL} element={<SignIn />} />
-      <Route element={<ProtectedRoute user={user} />}>
+      <Route element={<ProtectedRoutes user={user} />}>
         <Route path={DASHBOARD_URL} element={<Dashboard />} />
         <Route path={SECOND_PAGE_URL} element={<SecondPage />} />
       </Route>
