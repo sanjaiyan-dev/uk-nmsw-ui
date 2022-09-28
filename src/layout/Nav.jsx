@@ -18,7 +18,7 @@ const Nav = () => {
       active: true, // Dashboard is the logged in landing therefore defaults to active true
     },
     {
-      id: 'Second page',
+      id: 'SecondPage',
       urlStem: SECOND_PAGE_URL,
       text: 'Second page',
       active: false,
@@ -106,6 +106,7 @@ const Nav = () => {
                   <li
                     key={item.id}
                     className={item.active ? 'govuk-header__navigation-item govuk-header__navigation-item--active' : 'govuk-header__navigation-item'}
+                    data-testid={`listitem-${item.id}`}
                   >
                     <Link
                       to={item.urlStem}
