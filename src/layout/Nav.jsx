@@ -99,7 +99,7 @@ const Nav = () => {
                   : 'govuk-header__navigation-list govuk-header__navigation-list--open'
               }
               aria-label="Top Level Navigation"
-              aria-hidden={menuState === false ? true : false}
+              hidden={menuState === false ? true : false}
             >
               {navItems.map((item) => {
                 return (
