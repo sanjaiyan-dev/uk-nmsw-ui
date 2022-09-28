@@ -8,7 +8,7 @@ import ProtectedRoute from '../ProtectedRoutes';
  * However, when wrapping ProtectedRoute inside MemoryRouter or BrowserRouter
  * in the negative scenario the test times out
  * It seems to be something to do with <Navigate to=> being triggered and not completing
- * the navigation function
+ * the navigation function in the test environment
  * 
  * Therefore we will test the negative routes with the Cypress E2E tests
  */

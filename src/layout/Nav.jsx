@@ -24,7 +24,13 @@ const Nav = () => {
       active: false,
     }
   ];
+  const [menuState, setMenuState] = useState(false);
   const [navItems, setNavItems] = useState(navData);
+
+  const menuToggle = (e) => {
+    e.preventDefault();
+    setMenuState(!menuState);
+  };
 
   const setActivePage = (url) => {
     const tempArr = [...navData];
@@ -70,9 +76,31 @@ const Nav = () => {
 
         {showNav && (
           <nav aria-label="Menu" className="govuk-header__navigation ">
-            <button type="button" className="govuk-header__menu-button govuk-js-header-toggle" aria-controls="navigation" aria-label="Show or hide menu" hidden>Menu</button>
+            <button
+              type="button"
+              onClick={(e) => menuToggle(e)}
+              className={
+                menuState === false
+                  ? 'govuk-header__menu-button govuk-js-header-toggle'
+                  : 'govuk-header__menu-button govuk-js-header-toggle govuk-header__menu-button--open'
+              }
+              aria-controls="navigation"
+              aria-label="Show or hide navigation menu"
+              aria-expanded={menuState === false ? false : true}
+            >
+              Menu
+            </button>
 
-            <ul id="navigation" className="govuk-header__navigation-list">
+            <ul
+              id="navigation"
+              className={
+                menuState === false
+                  ? 'govuk-header__navigation-list'
+                  : 'govuk-header__navigation-list govuk-header__navigation-list--open'
+              }
+              aria-label="Top Level Navigation"
+              aria-hidden={menuState === false ? true : false}
+            >
               {navItems.map((item) => {
                 return (
                   <li
