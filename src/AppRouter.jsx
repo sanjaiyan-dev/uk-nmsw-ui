@@ -14,11 +14,11 @@ import {
 } from './constants/AppUrlConstants';
 
 // Pages
-import AccessibilityStatement from './pages/Footer/AccessibilityStatement';
-import CookiePolicy from './pages/Footer/CookiePolicy';
+import AccessibilityStatement from './pages/Regulatory/AccessibilityStatement';
+import CookiePolicy from './pages/Regulatory/CookiePolicy';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Landing from './pages/Landing/Landing';
-import PrivacyNotice from './pages/Footer/PrivacyNotice';
+import PrivacyNotice from './pages/Regulatory/PrivacyNotice';
 import SignIn from './pages/SignIn/SignIn';
 import SecondPage from './pages/TempPages/SecondPage';
 
