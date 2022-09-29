@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { ACCESSIBILITY_URL } from '../constants/AppUrlConstants';
 import { COOKIE_URL } from '../constants/AppUrlConstants';
 
 const Footer = () => {
@@ -14,12 +15,12 @@ const Footer = () => {
                   Cookies
                 </Link>
               </li>
-              {/* <li className="govuk-footer__inline-list-item">
-                <a className="govuk-footer__link" href="#2">
-                  Item 2
-                </a>
-              </li>
               <li className="govuk-footer__inline-list-item">
+                <Link className="govuk-footer__link" to={ACCESSIBILITY_URL}>
+                  Accessibility
+                </Link>
+              </li>
+              {/* <li className="govuk-footer__inline-list-item">
                 <a className="govuk-footer__link" href="#3">
                   Item 3
                 </a>
