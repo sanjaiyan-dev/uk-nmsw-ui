@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import { FEEDBACK_URL } from '../../constants/AppConstants';
+import { FEEDBACK_URL } from '../../constants/AppUrlConstants';
 import PhaseBanner from '../PhaseBanner';
 
 describe('Phase Banner tests', () => {
