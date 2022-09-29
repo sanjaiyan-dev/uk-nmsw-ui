@@ -59,7 +59,7 @@ describe('CookieBanner tests', () => {
     const acceptButton = screen.getByRole('button', { name: 'Accept analytics cookies' });
     await user.click(acceptButton);
 
-    expect(screen.getByTestId('cookieMessage')).toHaveTextContent('You\'ve accepted additional cookies. You can change your cookie settings at any time.');
+    expect(screen.getByTestId('cookieMessage')).toHaveTextContent('You\'ve accepted analytics cookies. You can change your cookie settings at any time.');
     expect(screen.queryByText('We use some essential cookies to make this service work.')).not.toBeInTheDocument();
     expect(acceptButton).not.toBeInTheDocument();
   });
@@ -71,7 +71,7 @@ describe('CookieBanner tests', () => {
     const rejectButton = screen.getByRole('button', { name: 'Reject analytics cookies' });
     await user.click(rejectButton);
 
-    expect(screen.getByTestId('cookieMessage')).toHaveTextContent('You\'ve rejected additional cookies. You can change your cookie settings at any time.');
+    expect(screen.getByTestId('cookieMessage')).toHaveTextContent('You\'ve rejected analytics cookies. You can change your cookie settings at any time.');
     expect(screen.queryByText('We use some essential cookies to make this service work.')).not.toBeInTheDocument();
     expect(rejectButton).not.toBeInTheDocument();
   });

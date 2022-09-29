@@ -48,7 +48,7 @@ const CookieBanner = () => {
             <div className="govuk-grid-column-two-thirds">
 
               <div className="govuk-cookie-banner__content">
-                <p className="govuk-body" data-testid="cookieMessage">{`You've ${isAnalyticsAcceptedOrRejected} additional cookies. You can `}
+                <p className="govuk-body" data-testid="cookieMessage">{`You've ${isAnalyticsAcceptedOrRejected} analytics cookies. You can `}
                   {/* No option to change cookies currently, this will be built later*/}
                   <Link className="govuk-link" to={COOKIE_URL}>change your cookie settings </Link>
                   at any time.
