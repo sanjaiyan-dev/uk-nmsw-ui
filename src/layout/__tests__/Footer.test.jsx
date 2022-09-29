@@ -27,5 +27,14 @@ describe('Footer tests', () => {
     const AccessibilityStatementLink = screen.getByText('Accessibility');
     expect(AccessibilityStatementLink).toBeInTheDocument();
     expect(AccessibilityStatementLink.outerHTML).toEqual('<a class="govuk-footer__link" href="/accessibility-statement">Accessibility</a>');
+
+
+  });
+
+  it('should render the Privacy link', async () => {
+    await waitFor(() => { render(<MemoryRouter><Footer /></MemoryRouter>); });
+    const privacyNoticeLink = screen.getByText('Privacy');
+    expect(privacyNoticeLink).toBeInTheDocument();
+    expect(privacyNoticeLink.outerHTML).toEqual('<a class="govuk-footer__link" href="/privacy-notice">Privacy</a>');
   });
 });

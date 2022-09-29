@@ -2,7 +2,8 @@ import { Link } from 'react-router-dom';
 import {
   ACCESSIBILITY_URL,
   COOKIE_URL,
-  CROWN_COPYRIGHT_URL
+  CROWN_COPYRIGHT_URL,
+  PRIVACY_URL
 } from '../constants/AppUrlConstants';
 
 const Footer = () => {
@@ -14,6 +15,11 @@ const Footer = () => {
             <h2 className="govuk-visually-hidden">Support links</h2>
             <ul className="govuk-footer__inline-list">
               <li className="govuk-footer__inline-list-item">
+                <Link className="govuk-footer__link" to={PRIVACY_URL}>
+                  Privacy
+                </Link>
+              </li>
+              <li className="govuk-footer__inline-list-item">
                 <Link className="govuk-footer__link" to={COOKIE_URL}>
                   Cookies
                 </Link>
@@ -23,11 +29,6 @@ const Footer = () => {
                   Accessibility
                 </Link>
               </li>
-              {/* <li className="govuk-footer__inline-list-item">
-                <a className="govuk-footer__link" href="#3">
-                  Item 3
-                </a>
-              </li> */}
             </ul>
           </div>
           <div className="govuk-footer__meta-item">
