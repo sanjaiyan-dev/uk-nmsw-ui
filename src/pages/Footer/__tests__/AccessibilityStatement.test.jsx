@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import AccessibilityStatement from '../AccessibilityStatement';
 
-describe('Cookie policy tests', () => {
+describe('Accessibility statement tests', () => {
 
-  it('should render a title of Cookies', async () => {
+  it('should render accessibility statement title', async () => {
     render(<AccessibilityStatement />);
     expect(screen.getByText('Accessibility statement for National Maritime Single Window')).toBeInTheDocument();
   });
