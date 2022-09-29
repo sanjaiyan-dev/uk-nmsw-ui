@@ -1,7 +1,8 @@
-import { Routes, Route} from 'react-router-dom';
-import ProtectedRoutes from './utils/ProtectedRoutes';
-
+import { Routes, Route } from 'react-router-dom';
 import useUserIsPermitted from './hooks/useUserIsPermitted';
+import ProtectedRoutes from './utils/ProtectedRoutes';
+import ScrollToTop from './utils/scrollToTop';
+
 // URLs
 import {
   ACCESSIBILITY_URL,
@@ -22,22 +23,25 @@ import PrivacyNotice from './pages/Regulatory/PrivacyNotice';
 import SignIn from './pages/SignIn/SignIn';
 import SecondPage from './pages/TempPages/SecondPage';
 
+
 const AppRouter = () => {
   const isPermittedToView = useUserIsPermitted();
 
   return (
-    <Routes>
-      <Route path='/' element={<Landing />} />
-      <Route path={LANDING_URL} element={<Landing />} />
-      <Route path={SIGN_IN_URL} element={<SignIn />} />
-      <Route path={ACCESSIBILITY_URL} element={<AccessibilityStatement />} />
-      <Route path={COOKIE_URL} element={<CookiePolicy />} />
-      <Route path={PRIVACY_URL} element={<PrivacyNotice />} />
-      <Route element={<ProtectedRoutes isPermittedToView={isPermittedToView} />}>
-        <Route path={DASHBOARD_URL} element={<Dashboard />} />
-        <Route path={SECOND_PAGE_URL} element={<SecondPage />} />
-      </Route> 
-    </Routes>
+    <ScrollToTop>
+      <Routes>
+        <Route path='/' element={<Landing />} />
+        <Route path={LANDING_URL} element={<Landing />} />
+        <Route path={SIGN_IN_URL} element={<SignIn />} />
+        <Route path={ACCESSIBILITY_URL} element={<AccessibilityStatement />} />
+        <Route path={COOKIE_URL} element={<CookiePolicy />} />
+        <Route path={PRIVACY_URL} element={<PrivacyNotice />} />
+        <Route element={<ProtectedRoutes isPermittedToView={isPermittedToView} />}>
+          <Route path={DASHBOARD_URL} element={<Dashboard />} />
+          <Route path={SECOND_PAGE_URL} element={<SecondPage />} />
+        </Route>
+      </Routes>
+    </ScrollToTop>
   );
 };
 
