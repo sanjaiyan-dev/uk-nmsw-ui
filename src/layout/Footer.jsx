@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
-
-import { ACCESSIBILITY_URL } from '../constants/AppUrlConstants';
-import { COOKIE_URL } from '../constants/AppUrlConstants';
-import { PRIVACY_URL } from '../constants/AppUrlConstants';
+import {
+  ACCESSIBILITY_URL,
+  COOKIE_URL,
+  CROWN_COPYRIGHT_URL,
+  PRIVACY_URL
+} from '../constants/AppUrlConstants';
 
 const Footer = () => {
   return (
@@ -30,7 +32,7 @@ const Footer = () => {
             </ul>
           </div>
           <div className="govuk-footer__meta-item">
-            <a className="govuk-footer__link govuk-footer__copyright-logo" href="/">© Crown copyright</a>
+            <a className="govuk-footer__link govuk-footer__copyright-logo" target="_blank" rel="noreferrer noopener" href={CROWN_COPYRIGHT_URL}>© Crown copyright</a>
           </div>
         </div>
       </div>

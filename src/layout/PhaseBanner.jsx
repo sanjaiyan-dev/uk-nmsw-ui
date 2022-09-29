@@ -1,4 +1,4 @@
-import { FEEDBACK_URL } from '../constants/AppConstants';
+import { FEEDBACK_URL } from '../constants/AppUrlConstants';
 
 const PhaseBanner = () => {
   return (

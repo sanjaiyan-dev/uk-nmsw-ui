@@ -9,11 +9,10 @@ describe('Footer tests', () => {
     expect(screen.getByText('© Crown copyright')).toBeInTheDocument();
   });
 
-  it('should render the Crown Copyright element with the class that contains the image', async () => {
+  it('should render the Crown Copyright element with the class that contains the image & link to external page in new tab', async () => {
     await waitFor(() => { render(<MemoryRouter><Footer /></MemoryRouter>); });
-    const checkCrownCopyrightLogo = screen.getByText('© Crown copyright');
-    expect(checkCrownCopyrightLogo).toBeInTheDocument();
-    expect(checkCrownCopyrightLogo.outerHTML).toEqual('<a class="govuk-footer__link govuk-footer__copyright-logo" href="/">© Crown copyright</a>');
+    expect(screen.getByText('© Crown copyright')).toBeInTheDocument();
+    expect(screen.getByText('© Crown copyright').outerHTML).toEqual('<a class="govuk-footer__link govuk-footer__copyright-logo" target="_blank" rel="noreferrer noopener" href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/">© Crown copyright</a>');
   });
 
   it('should render the Cookie link', async () => {
@@ -38,5 +37,4 @@ describe('Footer tests', () => {
     expect(privacyNoticeLink).toBeInTheDocument();
     expect(privacyNoticeLink.outerHTML).toEqual('<a class="govuk-footer__link" href="/privacy-notice">Privacy</a>');
   });
-
 });
