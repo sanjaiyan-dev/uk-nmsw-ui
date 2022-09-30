@@ -41,7 +41,11 @@ describe('App tests', () => {
   it('should not render cookie banner when cookiePreference is true', async () => {
     document.cookie = 'cookiePreference=true';
     render(<BrowserRouter><App /></BrowserRouter>);
+    const acceptButton = screen.queryByRole('button', { name: 'Accept analytics cookies' });
+    const rejectButton = screen.queryByRole('button', { name: 'Reject analytics cookies' });
 
+    expect(acceptButton).not.toBeInTheDocument();
+    expect(rejectButton).not.toBeInTheDocument();
     expect(screen.queryByText('We use some essential cookies to make this service work.')).not.toBeInTheDocument();
     expect(screen.queryByText('We\'d also like to use analytics cookies so we can understand how you use the service and make improvements.')).not.toBeInTheDocument();
   });
@@ -49,7 +53,11 @@ describe('App tests', () => {
   it('should not render cookie banner when cookiePreference is false', async () => {
     document.cookie = 'cookiePreference=false';
     render(<BrowserRouter><App /></BrowserRouter>);
+    const acceptButton = screen.queryByRole('button', { name: 'Accept analytics cookies' });
+    const rejectButton = screen.queryByRole('button', { name: 'Reject analytics cookies' });
 
+    expect(acceptButton).not.toBeInTheDocument();
+    expect(rejectButton).not.toBeInTheDocument();
     expect(screen.queryByText('We use some essential cookies to make this service work.')).not.toBeInTheDocument();
     expect(screen.queryByText('We\'d also like to use analytics cookies so we can understand how you use the service and make improvements.')).not.toBeInTheDocument();
   });
