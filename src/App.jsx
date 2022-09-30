@@ -18,7 +18,7 @@ const App = () => {
 
   return (
     <>
-      <CookieBanner />
+      {cookiePreference === null && <CookieBanner />}
       <Header />
       <div className="govuk-width-container">
         <PhaseBanner />
