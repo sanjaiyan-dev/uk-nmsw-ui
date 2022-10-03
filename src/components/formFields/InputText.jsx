@@ -17,7 +17,6 @@ const InputText = ({ autoComplete, fieldDetails, handleChange, type }) => {
 InputText.propTypes = {
   autoComplete: PropTypes.string,
   fieldDetails: PropTypes.shape({
-    disabled: PropTypes.bool,
     fieldName: PropTypes.string.isRequired,
     value: PropTypes.string,
   }),

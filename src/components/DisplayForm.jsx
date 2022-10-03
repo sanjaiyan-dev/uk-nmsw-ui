@@ -34,7 +34,6 @@ export default DisplayForm;
 DisplayForm.propTypes = {
   fields: PropTypes.arrayOf(
     PropTypes.shape({
-      disabled: PropTypes.bool,
       fieldName: PropTypes.string.isRequired,
       hint: PropTypes.string,
       label: PropTypes.string.isRequired,

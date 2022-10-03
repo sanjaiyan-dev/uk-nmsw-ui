@@ -51,7 +51,6 @@ determineFieldType.propTypes = {
   error: PropTypes.string,
   fieldDetails: PropTypes.objectOf(
     PropTypes.shape({
-      disabled: PropTypes.bool,
       fieldName: PropTypes.string.isRequired,
       hint: PropTypes.string,
       label: PropTypes.string.isRequired,
