@@ -32,27 +32,29 @@ const SignIn = (userDetails) => {
   };
 
   return (
-    <>
-      <h1 className="govuk-heading-l" data-testid="signin-h1">Sign in</h1>
-      <DisplayForm
-        fields={formFields}
-        handleSubmit={handleSubmit}
-      />
+    <div className="govuk-grid-row">
+      <div className="govuk-grid-column-two-thirds">
+        <h1 className="govuk-heading-l" data-testid="signin-h1">Sign in</h1>
+        <DisplayForm
+          fields={formFields}
+          handleSubmit={handleSubmit}
+        />
 
-      <hr />
-      <button
-        className="govuk-button"
-        data-module="govuk-button"
-        data-testid="signin-button"
-        type="button"
-        onClick={async () => {
-          await login({ ...tempHardCodedUser });
-          navigate(DASHBOARD_URL);
-        }}
-      >
-        Button to mock sign in to test nav
-      </button>
-    </>
+        <hr />
+        <button
+          className="govuk-button"
+          data-module="govuk-button"
+          data-testid="signin-button"
+          type="button"
+          onClick={async () => {
+            await login({ ...tempHardCodedUser });
+            navigate(DASHBOARD_URL);
+          }}
+        >
+          Button to mock sign in to test nav
+        </button>
+      </div>
+    </div>
   );
 };
 
