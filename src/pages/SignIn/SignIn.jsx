@@ -11,6 +11,14 @@ const SignIn = (userDetails) => {
   const navigate = useNavigate();
 
   // Form fields
+  const formActions = {
+    submit: {
+      className: 'govuk-button',
+      dataModule: 'govuk-button',
+      dataTestid: 'signin-button',
+      type: 'button',
+    }
+  };
   const formFields = [
     {
       type: FIELD_EMAIL,
@@ -29,6 +37,8 @@ const SignIn = (userDetails) => {
   const handleSubmit = (e, formData) => {
     e.preventDefault();
     console.log(formData);
+    login({ ...tempHardCodedUser });
+    navigate(DASHBOARD_URL);
   };
 
   return (
@@ -37,22 +47,9 @@ const SignIn = (userDetails) => {
         <h1 className="govuk-heading-l" data-testid="signin-h1">Sign in</h1>
         <DisplayForm
           fields={formFields}
+          formActions={formActions}
           handleSubmit={handleSubmit}
         />
-
-        <hr />
-        <button
-          className="govuk-button"
-          data-module="govuk-button"
-          data-testid="signin-button"
-          type="button"
-          onClick={async () => {
-            await login({ ...tempHardCodedUser });
-            navigate(DASHBOARD_URL);
-          }}
-        >
-          Button to mock sign in to test nav
-        </button>
       </div>
     </div>
   );
