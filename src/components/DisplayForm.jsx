@@ -27,7 +27,7 @@ const DisplayForm = ({ fields, formActions, handleSubmit }) => {
         data-testid={formActions.submit.dataTestid}
         onClick={(e) => handleSubmit(e, { formData })}
       >
-        Submit
+        {formActions.submit.label}
       </button>
     </form>
   );
@@ -50,6 +50,7 @@ DisplayForm.propTypes = {
       className: PropTypes.string.isRequired,
       dataModule: PropTypes.string,
       dataTestid: PropTypes.string,
+      label: PropTypes.string.isRequired,
       type: PropTypes.string.isRequired,
     })
   ),

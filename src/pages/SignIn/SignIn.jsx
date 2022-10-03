@@ -16,6 +16,7 @@ const SignIn = (userDetails) => {
       className: 'govuk-button',
       dataModule: 'govuk-button',
       dataTestid: 'signin-button',
+      label: 'Sign in',
       type: 'button',
     }
   };
