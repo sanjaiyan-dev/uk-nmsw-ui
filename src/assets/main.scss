@@ -4,4 +4,35 @@
 body {
   font-family: "GDS Transport",arial,sans-serif;
   font-weight: 400;
+  margin: 0px; // reset margin to 0 as it was setting to the browser user-agent px size
+  background-color: govuk-colour("light-grey"); // set body to footer colour (light grey) so that if a page is very short we don't get white background under the footer
 }
+
+#root {
+  background: govuk-colour("white"); // set root div to content colour (white) as a default
+}
+
+/* Add small space between crown and text in logo in header */
+.govuk-header__logotype-text {
+  margin-left: 2px;
+}
+
+/* Apply 'hidden' state to elements for nav menu */
+@media screen and (min-width: 770px) {
+  .govuk-header__menu-button {
+    display: none !important;
+  }
+  .govuk-header__navigation-list {
+    display: block !important;
+  }
+}
+
+@media screen and (max-width: 770px) {
+  .govuk-header__navigation-list {
+    display: none !important;
+  }
+  .govuk-header__navigation-list--open {
+    display: block !important;
+  }
+}
+
