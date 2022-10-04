@@ -34,7 +34,7 @@ const determineFieldType = ({ error, fieldDetails, parentHandleChange }) => {
       <label className="govuk-label" htmlFor={`${fieldDetails.fieldName}-input`}>
         {fieldDetails.label}
       </label>
-      <div id="email-hint" className="govuk-hint">
+      <div id={`${fieldDetails.fieldName}-hint`} className="govuk-hint">
         {fieldDetails.hint}
       </div>
       <p id={`${fieldDetails.fieldName}-error`} className="govuk-error-message">
