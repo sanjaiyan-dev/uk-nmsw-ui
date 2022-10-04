@@ -19,7 +19,7 @@ InputText.propTypes = {
   fieldDetails: PropTypes.shape({
     fieldName: PropTypes.string.isRequired,
     value: PropTypes.string,
-  }),
+  }).isRequired,
   handleChange: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,
 };
