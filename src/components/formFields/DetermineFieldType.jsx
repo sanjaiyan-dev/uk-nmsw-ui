@@ -14,7 +14,7 @@ const determineFieldType = ({ error, fieldDetails, parentHandleChange }) => {
         autoComplete='email'
         fieldDetails={fieldDetails}
         handleChange={parentHandleChange}
-        type={FIELD_EMAIL}
+        type='email'
       />;
       break;
 
@@ -22,7 +22,7 @@ const determineFieldType = ({ error, fieldDetails, parentHandleChange }) => {
       <InputText
         fieldDetails={fieldDetails}
         handleChange={parentHandleChange}
-        type={FIELD_PASSWORD}
+        type='password'
       />;
       break;
 
