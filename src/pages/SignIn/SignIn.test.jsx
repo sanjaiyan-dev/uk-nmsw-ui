@@ -23,7 +23,7 @@ describe('Sign in tests', () => {
   it('should render the sign in page', async () => {
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     expect(screen.getByTestId('signin-h1')).toHaveTextContent('Sign in');
-    expect(screen.getByTestId('signin-button')).toHaveTextContent('Sign in');
+    expect(screen.getByTestId('submit-button')).toHaveTextContent('Sign in');
   });
 
   it('should display an input field for email', async () => {
@@ -41,7 +41,7 @@ describe('Sign in tests', () => {
 
   it('should display a primary styled sign in button', async () => {
     render(<MemoryRouter><SignIn /></MemoryRouter>);
-    expect((screen.getByTestId('signin-button')).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="signin-button">Sign in</button>');
+    expect((screen.getByTestId('submit-button')).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Sign in</button>');
     
   });
 
@@ -50,7 +50,7 @@ describe('Sign in tests', () => {
     const userDetails = { name: 'MockedUser', auth: true };
 
     renderWithUserContext(userDetails);
-    await user.click(screen.getByTestId('signin-button'));
+    await user.click(screen.getByTestId('submit-button'));
     expect(mockedLogin).toHaveBeenCalled();
   });
 

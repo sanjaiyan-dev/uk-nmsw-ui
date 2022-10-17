@@ -15,7 +15,7 @@ const SignIn = (userDetails) => {
     submit: {
       className: 'govuk-button',
       dataModule: 'govuk-button',
-      dataTestid: 'signin-button',
+      dataTestid: 'submit-button',
       label: 'Sign in',
       type: 'button',
     }
