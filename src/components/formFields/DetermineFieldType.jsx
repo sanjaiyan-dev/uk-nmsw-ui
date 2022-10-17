@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import {
   FIELD_EMAIL,
-  FIELD_PASSWORD
+  FIELD_PASSWORD,
+  FIELD_TEXT,
 } from '../../constants/AppConstants';
 import InputText from './InputText';
 
@@ -24,6 +25,14 @@ const determineFieldType = ({ error, fieldDetails, parentHandleChange }) => {
         handleChange={parentHandleChange}
         type='password'
         dataTestid='passwordField'
+      />;
+      break;
+
+    case FIELD_TEXT: fieldToReturn =
+      <InputText
+        fieldDetails={fieldDetails}
+        handleChange={parentHandleChange}
+        type='text'
       />;
       break;
 
