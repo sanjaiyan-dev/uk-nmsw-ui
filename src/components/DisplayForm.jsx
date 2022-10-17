@@ -29,6 +29,14 @@ const DisplayForm = ({ fields, formActions, handleSubmit }) => {
       >
         {formActions.submit.label}
       </button>
+      {formActions.cancel && <button
+        type={formActions.cancel.type}
+        className={formActions.cancel.className}
+        data-module={formActions.cancel.dataModule}
+        data-testid={formActions.cancel.dataTestid}
+      >
+        {formActions.cancel.label}
+      </button>}
     </form>
   );
 };
