@@ -15,6 +15,7 @@ describe('Text input field generation', () => {
   const fieldDetailsAllProps = {
     fieldName: 'fullFieldName',
     value: 'The full field value',
+    hint: 'The hint text',
   };
 
   it('should render the text input field with only the required props', () => {
@@ -40,6 +41,6 @@ describe('Text input field generation', () => {
       />
     );
     expect(screen.getByRole('textbox', { name: '' })).toBeInTheDocument();
-    expect(screen.getByRole('textbox', { name: '' }).outerHTML).toEqual('<input class="govuk-input" id="fullFieldName-input" data-testid="test-id" name="fullFieldName" type="text" autocomplete="email">');
+    expect(screen.getByRole('textbox', { name: '' }).outerHTML).toEqual('<input class="govuk-input" id="fullFieldName-input" data-testid="test-id" name="fullFieldName" type="text" autocomplete="email" aria-describedby="The hint text">');
   });
 });

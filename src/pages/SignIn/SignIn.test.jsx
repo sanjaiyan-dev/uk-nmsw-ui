@@ -30,13 +30,14 @@ describe('Sign in tests', () => {
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     expect(screen.getByLabelText('Email address')).toBeInTheDocument();
     expect(screen.getByText('Enter the email address you used when you created your account').outerHTML).toEqual('<div id="email-hint" class="govuk-hint">Enter the email address you used when you created your account</div>');
-    expect(screen.getByRole('textbox', {name: /email/i})).toBeInTheDocument();
+    expect(screen.getByRole('textbox', {name: /email/i}).outerHTML).toEqual('<input class="govuk-input" id="email-input" name="email" type="email" autocomplete="email" aria-describedby="Enter the email address you used when you created your account">');
   });
 
   it('should display an input field for password', async () => {
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     expect(screen.getByLabelText('Password')).toBeInTheDocument();
     expect(screen.getByTestId('passwordField')).toHaveAttribute('type', 'password');
+    expect(screen.getByTestId('passwordField').outerHTML).toEqual('<input class="govuk-input" id="password-input" data-testid="passwordField" name="password" type="password">');
   });
 
   it('should display a primary styled sign in button', async () => {

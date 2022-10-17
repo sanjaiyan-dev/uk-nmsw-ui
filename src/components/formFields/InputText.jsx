@@ -11,6 +11,7 @@ const InputText = ({ autoComplete, dataTestid, fieldDetails, handleChange, type 
       type={type}
       autoComplete={autoComplete}
       onChange={handleChange}
+      aria-describedby={fieldDetails.hint}
     />
   );
 };
@@ -20,6 +21,7 @@ InputText.propTypes = {
   dataTestid: PropTypes.string,
   fieldDetails: PropTypes.shape({
     fieldName: PropTypes.string.isRequired,
+    hint: PropTypes.string,
     value: PropTypes.string,
   }).isRequired,
   handleChange: PropTypes.func.isRequired,
