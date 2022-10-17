@@ -39,6 +39,12 @@ describe('Sign in tests', () => {
     expect(screen.getByTestId('passwordField')).toHaveAttribute('type', 'password');
   });
 
+  it('should display a primary styled sign in button', async () => {
+    render(<MemoryRouter><SignIn /></MemoryRouter>);
+    expect((screen.getByTestId('signin-button')).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="signin-button">Sign in</button>');
+    
+  });
+
   it('should call the login function on sign in button click', async () => {
     const user = userEvent.setup();
     const userDetails = { name: 'MockedUser', auth: true };
