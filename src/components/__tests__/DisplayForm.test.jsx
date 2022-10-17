@@ -1,6 +1,17 @@
 import { render, screen } from '@testing-library/react';
 import DisplayForm from '../DisplayForm';
 
+/*
+ * These tests check that we can pass a variety of
+ * form field objects, and form action objects
+ * to the display component
+ * and it will return HTML that will display a full form
+ * including labels, hints, inputs, buttons based on what we
+ * pass in
+ * It does NOT test a specific form structure or wording
+ * (that is done on the page that hold the specific form)
+ */
+
 describe('Sign in tests', () => {
 
   const handleSubmit = jest.fn();
