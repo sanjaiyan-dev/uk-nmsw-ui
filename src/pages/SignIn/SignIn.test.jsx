@@ -26,6 +26,19 @@ describe('Sign in tests', () => {
     expect(screen.getByTestId('signin-button')).toHaveTextContent('Sign in');
   });
 
+  it('should display an input field for email', async () => {
+    render(<MemoryRouter><SignIn /></MemoryRouter>);
+    expect(screen.getByLabelText('Email address')).toBeInTheDocument();
+    expect(screen.getByText('Enter the email address you used when you created your account').outerHTML).toEqual('<div id="email-hint" class="govuk-hint">Enter the email address you used when you created your account</div>');
+    expect(screen.getByRole('textbox', {name: /email/i})).toBeInTheDocument();
+  });
+
+  it('should display an input field for password', async () => {
+    render(<MemoryRouter><SignIn /></MemoryRouter>);
+    expect(screen.getByLabelText('Password')).toBeInTheDocument();
+    expect(screen.getByTestId('passwordField')).toHaveAttribute('type', 'password');
+  });
+
   it('should call the login function on sign in button click', async () => {
     const user = userEvent.setup();
     const userDetails = { name: 'MockedUser', auth: true };
