@@ -23,6 +23,7 @@ const determineFieldType = ({ error, fieldDetails, parentHandleChange }) => {
         fieldDetails={fieldDetails}
         handleChange={parentHandleChange}
         type='password'
+        dataTestid='passwordField'
       />;
       break;
 

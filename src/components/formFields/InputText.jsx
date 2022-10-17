@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types';
 
-const InputText = ({ autoComplete, fieldDetails, handleChange, type }) => {
+const InputText = ({ autoComplete, dataTestid, fieldDetails, handleChange, type }) => {
 
   return (
     <input
       className="govuk-input"
       id={`${fieldDetails.fieldName}-input`}
+      data-testid={dataTestid}
       name={fieldDetails.fieldName}
       type={type}
       autoComplete={autoComplete}
@@ -16,6 +17,7 @@ const InputText = ({ autoComplete, fieldDetails, handleChange, type }) => {
 
 InputText.propTypes = {
   autoComplete: PropTypes.string,
+  dataTestid: PropTypes.string,
   fieldDetails: PropTypes.shape({
     fieldName: PropTypes.string.isRequired,
     value: PropTypes.string,
