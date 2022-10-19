@@ -22,11 +22,50 @@ steps:
       from_secret: DRONE_V1_PUBLIC_TOKEN
     DRONE_VERSION: ${DRONE_SYSTEM_VERSION}
   when:
+    branch:
+    - version-*
+    event:
+    - push
+
+- name: synch_sit_secrets
+  pull: if-not-exists
+  image: quay.io/ukhomeofficedigital/cop-secrets
+  environment:
+    AWS_ACCESS_KEY_ID:
+      from_secret: SIT_DRONE_AWS_ACCESS_KEY_ID
+    AWS_SECRET_ACCESS_KEY:
+      from_secret: SIT_DRONE_AWS_SECRET_ACCESS_KEY
+    DEPLOY_ENV: sit
+    DRONE_SERVER: https://drone-gh.acp.homeoffice.gov.uk
+    DRONE_TOKEN:
+      from_secret: DRONE_V1_PUBLIC_TOKEN
+    DRONE_VERSION: ${DRONE_SYSTEM_VERSION}
+  when:
     event:
     - promote
     target:
     - secrets
 
+- name: synch_staging_secrets
+  pull: if-not-exists
+  image: quay.io/ukhomeofficedigital/cop-secrets
+  environment:
+    AWS_ACCESS_KEY_ID:
+      from_secret: STAGING_DRONE_AWS_ACCESS_KEY_ID
+    AWS_SECRET_ACCESS_KEY:
+      from_secret: STAGING_DRONE_AWS_SECRET_ACCESS_KEY
+    DEPLOY_ENV: staging
+    DRONE_SERVER: https://drone-gh.acp.homeoffice.gov.uk
+    DRONE_TOKEN:
+      from_secret: DRONE_V1_PUBLIC_TOKEN
+    DRONE_VERSION: ${DRONE_SYSTEM_VERSION}
+  when:
+    event:
+    - promote
+    target:
+    - secrets
+
+# Test the UI build
 - name: unit_test
   pull: always
   image: quay.io/ukhomeofficedigital/cop-node:16
@@ -37,6 +76,7 @@ steps:
     event:
     - push
 
+# Run a SonarQube scan of the codebase
 - name: sonarqube_scan
   pull: if-not-exists
   image: quay.io/ukhomeofficedigital/sonar-scanner-node:latest
@@ -44,6 +84,7 @@ steps:
     event:
     - push
 
+# Build the image
 - name: build_container_image
   pull: always
   image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
@@ -57,6 +98,7 @@ steps:
     event:
     - push
 
+# Scan & image for vulnerabilities
 - name: vulnerability-scan
   pull: always
   image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/anchore-submission:latest
@@ -72,6 +114,7 @@ steps:
     event:
     - push
 
+# Push to Quay
 - name: dev_image_to_quay
   image: plugins/docker
   settings:
@@ -90,7 +133,7 @@ steps:
     event:
     - push
 
-- name: tag_push_image_to_quay
+- name: image_to_quay
   image: plugins/docker
   settings:
     registry: quay.io
@@ -106,6 +149,7 @@ steps:
     event:
     - tag
 
+### Deploy to Dev
 - name: deploy_to_dev
   pull: if-not-exists
   image: quay.io/ukhomeofficedigital/helm:latest
@@ -115,19 +159,68 @@ steps:
   - helm upgrade --install nmsw-ui ./helm -f ./helm/DEV_VALUES.yaml -n nmsw-dev
   environment:
     KUBE_CERTIFICATE_AUTHORITY_DATA:
-      from_secret: DEV_KUBE_CA_DATA
+      from_secret: DEV_NMSW_KUBE_CA_DATA
     KUBE_CLUSTER_NAME:
-      from_secret: DEV_KUBE_CLUSTER_NAME
+      from_secret: DEV_NMSW_KUBE_CLUSTER_NAME
     KUBE_SERVER:
-      from_secret: DEV_KUBE_SERVER
+      from_secret: DEV_NMSW_KUBE_SERVER
     KUBE_TOKEN:
-      from_secret: DEV_KUBE_TOKEN
+      from_secret: DEV_NMSW_KUBE_TOKEN
   when:
     branch:
     - version-*
     event:
     - push
 
+- name: deploy_to_sit
+  pull: if-not-exists
+  image: quay.io/ukhomeofficedigital/helm:latest
+  commands:
+  - /run-helm.sh list -n nmsw-sit
+  - helm upgrade --install nmsw-ui ./helm -f ./helm/SIT_VALUES.yaml -n nmsw-sit --dry-run
+  - helm upgrade --install nmsw-ui ./helm -f ./helm/SIT_VALUES.yaml -n nmsw-sit
+  environment:
+    KUBE_CERTIFICATE_AUTHORITY_DATA:
+      from_secret: SIT_KUBE_CA_DATA
+    KUBE_CLUSTER_NAME:
+      from_secret: SIT_KUBE_CLUSTER_NAME
+    KUBE_SERVER:
+      from_secret: SIT_KUBE_SERVER
+    KUBE_TOKEN:
+      from_secret: SIT_KUBE_TOKEN
+  when:
+    branch:
+    - main
+    event:
+    - promote
+    target:
+    - sit
+
+- name: deploy_to_staging
+  pull: if-not-exists
+  image: quay.io/ukhomeofficedigital/helm:latest
+  commands:
+  - /run-helm.sh list -n nmsw-staging
+  - helm upgrade --install nmsw-ui ./helm -f ./helm/STAGING_VALUES.yaml -n nmsw-staging --dry-run
+  - helm upgrade --install nmsw-ui ./helm -f ./helm/STAGING_VALUES.yaml -n nmsw-staging
+  environment:
+    KUBE_CERTIFICATE_AUTHORITY_DATA:
+      from_secret: STAGING_KUBE_CA_DATA
+    KUBE_CLUSTER_NAME:
+      from_secret: STAGING_KUBE_CLUSTER_NAME
+    KUBE_SERVER:
+      from_secret: STAGING_KUBE_SERVER
+    KUBE_TOKEN:
+      from_secret: STAGING_KUBE_TOKEN
+  when:
+    branch:
+    - main
+    event:
+    - promote
+    target:
+    - staging
+
+# Notify in Slack
 - name: notify
   pull: if-not-exists
   image: plugins/slack

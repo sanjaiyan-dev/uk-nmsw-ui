@@ -42,7 +42,7 @@ service:
 
 
 ingress:
-  host: ipm-ui.dev.ipm-notprod.homeoffice.gov.uk
+  host: www.dev.nmsw.homeoffice.gov.uk
   path: /
   pathType: ImplementationSpecific
   tls: []
