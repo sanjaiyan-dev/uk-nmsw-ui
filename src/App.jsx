@@ -1,13 +1,35 @@
+import { useEffect } from 'react';
+import AppRouter from './AppRouter';
+import CookieBanner from './layout/CookieBanner';
+import Footer from './layout/Footer';
+import Header from './layout/Header';
+import PhaseBanner from './layout/PhaseBanner';
+// utils
+import cookieToFind from './utils/cookieToFind';
+import setAnalyticCookie from './utils/setAnalyticCookie';
+
 const App = () => {
+
+  const cookiePreference = cookieToFind('cookiePreference');
+
+  useEffect(() => {
+    setAnalyticCookie(cookiePreference);
+  }, [cookiePreference]);
+
   return (
     <>
-      <h1 className="govuk-heading-l">Basic setup</h1>
-      <p className="govuk-body">With a test paragraph so we can prove GovUK frontend style are working</p>
-      <button className="govuk-button" data-module="govuk-button">
-        And a test button
-      </button>
-      <br />
-      <span>and a span where we forget to add the class, but should default to GDS font</span>
+      <CookieBanner />
+      <Header />
+      <div className="govuk-width-container">
+        <PhaseBanner />
+        {/* Back links will go in here and be visible on every page by default
+        If we don't want that we will add logic on the back link component as to when 
+        it should not show; */}
+        <main className="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="content" role="main">
+          <AppRouter />
+        </main>
+      </div>
+      <Footer />
     </>
   );
 };
