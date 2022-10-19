@@ -41,6 +41,6 @@ describe('Text input field generation', () => {
       />
     );
     expect(screen.getByRole('textbox', { name: '' })).toBeInTheDocument();
-    expect(screen.getByRole('textbox', { name: '' }).outerHTML).toEqual('<input class="govuk-input" id="fullFieldName-input" data-testid="test-id" name="fullFieldName" type="text" autocomplete="email" aria-describedby="The hint text">');
+    expect(screen.getByRole('textbox', { name: '' }).outerHTML).toEqual('<input class="govuk-input" id="fullFieldName-input" data-testid="test-id" name="fullFieldName" type="text" autocomplete="email" aria-describedby="fullFieldName-hint">');
   });
 });

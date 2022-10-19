@@ -11,7 +11,7 @@ const InputText = ({ autoComplete, dataTestid, fieldDetails, handleChange, type 
       type={type}
       autoComplete={autoComplete}
       onChange={handleChange}
-      aria-describedby={fieldDetails.hint}
+      aria-describedby={fieldDetails.hint ? `${fieldDetails.fieldName}-hint` : null}
     />
   );
 };
