@@ -3,7 +3,9 @@ import {
   FIELD_EMAIL,
   FIELD_PASSWORD,
   FIELD_TEXT,
+  FIELD_RADIO
 } from '../../constants/AppConstants';
+import InputRadio from './InputRadio';
 import InputText from './InputText';
 
 const determineFieldType = ({ error, fieldDetails, parentHandleChange }) => {
@@ -36,22 +38,49 @@ const determineFieldType = ({ error, fieldDetails, parentHandleChange }) => {
       />;
       break;
 
+    case FIELD_RADIO: fieldToReturn =
+      <InputRadio
+        fieldDetails={fieldDetails}
+        handleChange={parentHandleChange}
+        type='radio'
+      />;
+      break;
+
     default: fieldToReturn = null;
   }
 
   return (
-    <div className="govuk-form-group">
-      <label className="govuk-label" htmlFor={`${fieldDetails.fieldName}-input`}>
-        {fieldDetails.label}
-      </label>
-      <div id={`${fieldDetails.fieldName}-hint`} className="govuk-hint">
-        {fieldDetails.hint}
-      </div>
-      <p id={`${fieldDetails.fieldName}-error`} className="govuk-error-message">
-        <span className="govuk-visually-hidden">Error:</span> {error}
-      </p>
-      {fieldToReturn}
-    </div>
+    <>
+      {fieldDetails.grouped ?
+        <div className="govuk-form-group">
+          <fieldset className="govuk-fieldset">
+            <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
+              {fieldDetails.label}
+            </legend>
+            <div id={`${fieldDetails.fieldName}-hint`} className="govuk-hint">
+              {fieldDetails.hint}
+            </div>
+            <p id={`${fieldDetails.fieldName}-error`} className="govuk-error-message">
+              <span className="govuk-visually-hidden">Error:</span> {error}
+            </p>
+            {fieldToReturn}
+          </fieldset>
+        </div>
+        :
+        <div className="govuk-form-group">
+          <label className="govuk-label" htmlFor={`${fieldDetails.fieldName}-input`}>
+            {fieldDetails.label}
+          </label>
+          <div id={`${fieldDetails.fieldName}-hint`} className="govuk-hint">
+            {fieldDetails.hint}
+          </div>
+          <p id={`${fieldDetails.fieldName}-error`} className="govuk-error-message">
+            <span className="govuk-visually-hidden">Error:</span> {error}
+          </p>
+          {fieldToReturn}
+        </div>
+      }
+    </>
   );
 };
 
