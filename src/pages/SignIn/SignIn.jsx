@@ -10,6 +10,7 @@ import {
   } from '../../constants/AppConstants';
 import { DASHBOARD_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
+import Validator from '../../utils/Validator';
 
 const SignIn = (userDetails) => {
   const tempHardCodedUser = Object.entries(userDetails).length > 0 ? userDetails.user : { name: 'MockedUser' };
@@ -75,7 +76,8 @@ const SignIn = (userDetails) => {
 
   const handleSubmit = (e, formData) => {
     e.preventDefault();
-    console.log(formData);
+    const errorCheck = Validator({ formData: formData.formData, formFields: formFields });
+    console.log(errorCheck);
     login({ ...tempHardCodedUser });
     navigate(DASHBOARD_URL);
   };
