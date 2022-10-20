@@ -58,6 +58,7 @@ body {
   text-decoration-thickness: max(3px, 0.1875rem, 0.12em);
   background-color: transparent;
   box-shadow: none;
+  cursor: pointer;
 }
 .govuk-button--text:active {
   color: $govuk-link-active-colour;
@@ -81,7 +82,6 @@ body {
 .govuk-error-summary__list .govuk-button--text:hover {
   font-weight: 700;
   color: #942514;
-  cursor: pointer;
 }
 .govuk-error-summary__list .govuk-button--text:focus {
   font-weight: 700;
