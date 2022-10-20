@@ -1,12 +1,15 @@
 // Site
 export const SERVICE_NAME = 'National Maritime Single Window';
 
-// Forms
+// Forms: input types
 export const FIELD_EMAIL = 'email';
 export const FIELD_PASSWORD = 'password';
 export const FIELD_TEXT = 'text';
 export const FIELD_RADIO = 'radio';
-
-// Radios
+// Forms: states
 export const RADIO_TRUE = 'true';
 export const RADIO_FALSE = 'false';
+// Forms: validation types
+export const VALIDATE_REQUIRED = 'required';
+export const VALIDATE_MIN_LENGTH = 'minLength';
+export const VALIDATE_EMAIL_ADDRESS = 'emailAddress';
