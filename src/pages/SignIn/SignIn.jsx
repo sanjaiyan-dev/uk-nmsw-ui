@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../context/userContext';
 import {
@@ -16,6 +16,7 @@ const SignIn = (userDetails) => {
   const tempHardCodedUser = Object.entries(userDetails).length > 0 ? userDetails.user : { name: 'MockedUser' };
   const { login } = useContext(UserContext);
   const navigate = useNavigate();
+  const [errors, setErrors] = useState();
 
   // Form fields
   const formActions = {
@@ -74,9 +75,10 @@ const SignIn = (userDetails) => {
     }
   ];
 
-  const handleSubmit = (e, formData) => {
+  const handleSubmit = async (e, formData) => {
     e.preventDefault();
-    const formErrors = Validator({ formData: formData.formData, formFields: formFields });
+    const formErrors = await Validator({ formData: formData.formData, formFields: formFields });
+    setErrors(formErrors);
 
     if (formErrors.length < 1) {
       login({ ...tempHardCodedUser });
@@ -89,6 +91,7 @@ const SignIn = (userDetails) => {
       <div className="govuk-grid-column-two-thirds">
         <h1 className="govuk-heading-l" data-testid="signin-h1">Sign in</h1>
         <DisplayForm
+          errors={errors}
           fields={formFields}
           formActions={formActions}
           handleSubmit={handleSubmit}

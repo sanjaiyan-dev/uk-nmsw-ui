@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { UserContext } from '../context/userContext';
 import determineFieldType from './formFields/determineFieldType';
 
-const DisplayForm = ({ fields, formActions, handleSubmit }) => {
+const DisplayForm = ({ errors, fields, formActions, handleSubmit }) => {
   const { user } = useContext(UserContext);
   const [formData, setFormData] = useState({});
 
@@ -31,6 +31,26 @@ const DisplayForm = ({ fields, formActions, handleSubmit }) => {
   if (!formActions || !fields) { return null; }
   return (
     <form autoComplete="off">
+      {errors?.length > 0 && (
+        <div className="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary">
+          <h2 className="govuk-error-summary__title" id="error-summary-title">
+            There is a problem
+          </h2>
+          <div className="govuk-error-summary__body">
+            <ul className="govuk-list govuk-error-summary__list">
+              {errors.map((error) => {
+                return (
+                  <li key={error.name}>
+                    <a href={`#${error.name}`}>{error.message}</a>
+                  </li>
+                );
+              })}
+
+            </ul>
+          </div>
+        </div>
+      )}
+
       {fields.map((field) => {
         return <div key={field.fieldName} id={field.fieldName}>{
           determineFieldType({
@@ -63,6 +83,11 @@ const DisplayForm = ({ fields, formActions, handleSubmit }) => {
 export default DisplayForm;
 
 DisplayForm.propTypes = {
+  errors: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+    }),
+  ),
   fields: PropTypes.arrayOf(
     PropTypes.shape({
       fieldName: PropTypes.string.isRequired,
