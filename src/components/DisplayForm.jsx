@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { UserContext } from '../context/userContext';
 import determineFieldType from './formFields/determineFieldType';
@@ -41,24 +41,32 @@ const DisplayForm = ({ errors, fields, formActions, handleSubmit }) => {
               {errors.map((error) => {
                 return (
                   <li key={error.name}>
-                    <a href={`#${error.name}`}>{error.message}</a>
+                    <a
+                      href={`#${error.name}`}
+                    >
+                      {error.message}
+                    </a>
                   </li>
                 );
               })}
-
             </ul>
           </div>
         </div>
       )}
-
-      {fields.map((field) => {
-        return <div key={field.fieldName} id={field.fieldName}>{
-          determineFieldType({
-            fieldDetails: field,
-            parentHandleChange: handleChange,
-          })
-        }</div>;
-      })}
+      {
+        fields.map((field) => {
+          return (
+            <div key={field.fieldName} id={field.fieldName}>
+              {
+                determineFieldType({
+                  fieldDetails: field,
+                  parentHandleChange: handleChange,
+                })
+              }
+            </div>
+          );
+        })
+      }
       <button
         type={formActions.submit.type}
         className={formActions.submit.className}
@@ -68,14 +76,16 @@ const DisplayForm = ({ errors, fields, formActions, handleSubmit }) => {
       >
         {formActions.submit.label}
       </button>
-      {formActions.cancel && <button
-        type={formActions.cancel.type}
-        className={formActions.cancel.className}
-        data-module={formActions.cancel.dataModule}
-        data-testid={formActions.cancel.dataTestid}
-      >
-        {formActions.cancel.label}
-      </button>}
+      {
+        formActions.cancel && <button
+          type={formActions.cancel.type}
+          className={formActions.cancel.className}
+          data-module={formActions.cancel.dataModule}
+          data-testid={formActions.cancel.dataTestid}
+        >
+          {formActions.cancel.label}
+        </button>
+      }
     </form>
   );
 };
