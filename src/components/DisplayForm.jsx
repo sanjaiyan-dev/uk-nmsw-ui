@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { UserContext } from '../context/userContext';
 import determineFieldType from './formFields/DetermineFieldType';
 
-const DisplayForm = ({ errors, fields, formActions, handleSubmit }) => {
+const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit }) => {
   const { user } = useContext(UserContext);
   const [formData, setFormData] = useState({});
 
@@ -36,7 +36,7 @@ const DisplayForm = ({ errors, fields, formActions, handleSubmit }) => {
 
   if (!formActions || !fields) { return null; }
   return (
-    <form autoComplete="off">
+    <form id={formId} autoComplete="off">
       {errors?.length > 0 && (
         <div className="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary">
           <h2 className="govuk-error-summary__title" id="error-summary-title">
@@ -113,6 +113,7 @@ DisplayForm.propTypes = {
       value: PropTypes.string,
     }),
   ).isRequired,
+  formId: PropTypes.string.isRequired,
   formActions: PropTypes.objectOf(
     PropTypes.shape({
       className: PropTypes.string.isRequired,

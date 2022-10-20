@@ -10,6 +10,7 @@ import {
   } from '../../constants/AppConstants';
 import { DASHBOARD_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
+import { scrollToElementId } from '../../utils/ScrollToElementId';
 import Validator from '../../utils/Validator';
 
 const SignIn = (userDetails) => {
@@ -83,6 +84,8 @@ const SignIn = (userDetails) => {
     if (formErrors.length < 1) {
       login({ ...tempHardCodedUser });
       navigate(DASHBOARD_URL);
+    } else {
+      scrollToElementId('formSignIn');
     }
   };
 
@@ -91,6 +94,7 @@ const SignIn = (userDetails) => {
       <div className="govuk-grid-column-two-thirds">
         <h1 className="govuk-heading-l" data-testid="signin-h1">Sign in</h1>
         <DisplayForm
+          formId='formSignIn'
           errors={errors}
           fields={formFields}
           formActions={formActions}
