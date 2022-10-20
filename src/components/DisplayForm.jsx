@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { UserContext } from '../context/userContext';
-import determineFieldType from './formFields/determineFieldType';
+import determineFieldType from './formFields/DetermineFieldType';
 
 const DisplayForm = ({ errors, fields, formActions, handleSubmit }) => {
   const { user } = useContext(UserContext);
@@ -9,6 +9,12 @@ const DisplayForm = ({ errors, fields, formActions, handleSubmit }) => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const scrollToErrorField = (e, error) => {
+    e.preventDefault();
+    document.getElementById(`${error.name}-input`).focus();
+    document.getElementById(error.name).scrollIntoView();
   };
 
   /* When we introduce RBAC we expect to have fields that are
@@ -41,11 +47,11 @@ const DisplayForm = ({ errors, fields, formActions, handleSubmit }) => {
               {errors.map((error) => {
                 return (
                   <li key={error.name}>
-                    <a
-                      href={`#${error.name}`}
+                    <button className="govuk-button--text"
+                      onClick={(e) => { scrollToErrorField(e, error); }}
                     >
                       {error.message}
-                    </a>
+                    </button>
                   </li>
                 );
               })}
