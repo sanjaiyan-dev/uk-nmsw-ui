@@ -76,10 +76,12 @@ const SignIn = (userDetails) => {
 
   const handleSubmit = (e, formData) => {
     e.preventDefault();
-    const errorCheck = Validator({ formData: formData.formData, formFields: formFields });
-    console.log(errorCheck);
-    login({ ...tempHardCodedUser });
-    navigate(DASHBOARD_URL);
+    const formErrors = Validator({ formData: formData.formData, formFields: formFields });
+
+    if (formErrors.length < 1) {
+      login({ ...tempHardCodedUser });
+      navigate(DASHBOARD_URL);
+    }
   };
 
   return (
