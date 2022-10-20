@@ -1,13 +1,32 @@
-import { useState } from 'react';
+import { useEffect, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
-import determineFieldType from './formFields/DetermineFieldType';
+import { UserContext } from '../context/userContext';
+import determineFieldType from './formFields/determineFieldType';
 
 const DisplayForm = ({ fields, formActions, handleSubmit }) => {
+  const { user } = useContext(UserContext);
   const [formData, setFormData] = useState({});
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  /* When we introduce RBAC we expect to have fields that are
+   * editable, disabled, or hidden based on user permissions.
+   * This useEffect can be refactored to include a permission test
+   * (or to call a permission test hook) that determines if a field should be 
+   * editable, viewable disabled, or hidden
+   * 
+   * For now as we have no RBAC it just returns all fields as fields to include
+   */
+  useEffect(() => {
+    const mappedFields = fields.map((field) => {
+      return { fieldName: field.fieldName, value: field.value };
+    });
+    // convert the array of objects into a single object
+    const objectOfMappedFields = Object.assign({}, ...mappedFields.map(field => ({ [field.fieldName]: field.value })));
+    setFormData(objectOfMappedFields);
+  }, [user, setFormData]);
 
   if (!formActions || !fields) { return null; }
   return (
