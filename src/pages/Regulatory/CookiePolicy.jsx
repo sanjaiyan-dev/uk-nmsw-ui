@@ -46,6 +46,11 @@ const CookiePolicy = () => {
 
   const handleSubmit = (e, formData) => {
     e.preventDefault();
+    // Triggers reload if user has no cookiePreference when submitting the form to remove cookieBanner.
+    if (!cookiePreference) {
+      window.location.reload();
+    }
+
     if (formData.formData.cookieSettings === RADIO_TRUE) {
       setAnalyticCookie(true);
     } else {
