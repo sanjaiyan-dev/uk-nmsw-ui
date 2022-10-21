@@ -19,14 +19,14 @@ const extractPreferenceCookie = (cookieName) => {
 describe('CookieBanner tests', () => {
 
   it('should render the CookieBanner with cookie text', async () => {
-    render(<CookieBanner />);
+    render(<MemoryRouter><CookieBanner /></MemoryRouter>);
     expect(screen.getByText('Cookies on National Maritime Single Window')).toBeInTheDocument();
     expect(screen.getByText('We use some essential cookies to make this service work.')).toBeInTheDocument();
     expect(screen.getByText('We\'d also like to use analytics cookies so we can understand how you use the service and make improvements.')).toBeInTheDocument();
   });
 
   it('should render an accept and a reject button', async () => {
-    render(<CookieBanner />);
+    render(<MemoryRouter><CookieBanner /></MemoryRouter>);
     const acceptButton = screen.getByRole('button', { name: 'Accept analytics cookies' });
     const rejectButton = screen.getByRole('button', { name: 'Reject analytics cookies' });
 
