@@ -1,7 +1,12 @@
 import DisplayForm from '../../components/DisplayForm';
-import { FIELD_RADIO } from '../../constants/AppConstants';
+import { FIELD_RADIO, RADIO_TRUE, RADIO_FALSE } from '../../constants/AppConstants';
+import cookieToFind from '../../utils/cookieToFind';
 
 const CookiePolicy = () => {
+
+  const cookiePreference = cookieToFind('cookiePreference');
+
+  let selected = cookiePreference === true ? RADIO_TRUE : RADIO_FALSE;
 
   const formActions = {
     submit: {
@@ -24,13 +29,15 @@ const CookiePolicy = () => {
           label: 'Yes',
           name: 'cookieSettings',
           id: 'yes',
-          value: 'yes'
+          value: RADIO_TRUE,
+          checked: selected === RADIO_TRUE
         },
         {
           label: 'No',
           name: 'cookieSettings',
           id: 'no',
-          value: 'no'
+          value: RADIO_FALSE,
+          checked: selected === RADIO_FALSE
         },
       ]
     },
