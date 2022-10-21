@@ -2,8 +2,6 @@ import PropTypes from 'prop-types';
 
 const InputRadio = ({ autoComplete, fieldDetails, handleChange, type }) => {
 
-  console.log(fieldDetails);
-
   return (
     <div className={fieldDetails.className} data-module="govuk-radios">
       {(fieldDetails.radioOptions).map((option) => {
@@ -17,6 +15,7 @@ const InputRadio = ({ autoComplete, fieldDetails, handleChange, type }) => {
               value={option.value}
               type={type}
               onChange={handleChange}
+              defaultChecked={option.checked}
               aria-describedby={option.hint ? `${fieldDetails.fieldName}${option.id}-hint` : null}
             />
             <label className="govuk-label govuk-radios__label" htmlFor={`${option.id}-input`}>
@@ -43,7 +42,8 @@ InputRadio.propTypes = {
         id: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
         label: PropTypes.string.isRequired,
-        value: PropTypes.string.isRequired
+        value: PropTypes.string.isRequired,
+        checked: PropTypes.bool
       }))
   }).isRequired,
   handleChange: PropTypes.func.isRequired,
