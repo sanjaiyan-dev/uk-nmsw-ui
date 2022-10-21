@@ -8,7 +8,7 @@ platform:
   arch: amd64
 
 steps:
-- name: synch_dev_secrets
+- name: sync_dev_secrets
   pull: if-not-exists
   image: quay.io/ukhomeofficedigital/cop-secrets
   environment:
@@ -27,45 +27,6 @@ steps:
     event:
     - push
 
-- name: synch_sit_secrets
-  pull: if-not-exists
-  image: quay.io/ukhomeofficedigital/cop-secrets
-  environment:
-    AWS_ACCESS_KEY_ID:
-      from_secret: SIT_DRONE_AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY:
-      from_secret: SIT_DRONE_AWS_SECRET_ACCESS_KEY
-    DEPLOY_ENV: sit
-    DRONE_SERVER: https://drone-gh.acp.homeoffice.gov.uk
-    DRONE_TOKEN:
-      from_secret: DRONE_V1_PUBLIC_TOKEN
-    DRONE_VERSION: ${DRONE_SYSTEM_VERSION}
-  when:
-    event:
-    - promote
-    target:
-    - secrets
-
-- name: synch_staging_secrets
-  pull: if-not-exists
-  image: quay.io/ukhomeofficedigital/cop-secrets
-  environment:
-    AWS_ACCESS_KEY_ID:
-      from_secret: STAGING_DRONE_AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY:
-      from_secret: STAGING_DRONE_AWS_SECRET_ACCESS_KEY
-    DEPLOY_ENV: staging
-    DRONE_SERVER: https://drone-gh.acp.homeoffice.gov.uk
-    DRONE_TOKEN:
-      from_secret: DRONE_V1_PUBLIC_TOKEN
-    DRONE_VERSION: ${DRONE_SYSTEM_VERSION}
-  when:
-    event:
-    - promote
-    target:
-    - secrets
-
-# Test the UI build
 - name: unit_test
   pull: always
   image: quay.io/ukhomeofficedigital/cop-node:16
@@ -76,7 +37,6 @@ steps:
     event:
     - push
 
-# Run a SonarQube scan of the codebase
 - name: sonarqube_scan
   pull: if-not-exists
   image: quay.io/ukhomeofficedigital/sonar-scanner-node:latest
@@ -84,12 +44,11 @@ steps:
     event:
     - push
 
-# Build the image
 - name: build_container_image
   pull: always
   image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
   commands:
-    - n=0; while [ "$n" -lt 60 ] && [ ! docker stats --no-stream ]; do n=$(( n + 1 )); sleep 1; done
+    - /usr/local/bin/wait
     - docker build -t nmsw-ui:$${DRONE_COMMIT_SHA} .
   when:
     branch:
@@ -98,7 +57,6 @@ steps:
     event:
     - push
 
-# Scan & image for vulnerabilities
 - name: vulnerability-scan
   pull: always
   image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/anchore-submission:latest
@@ -114,7 +72,6 @@ steps:
     event:
     - push
 
-# Push to Quay
 - name: dev_image_to_quay
   image: plugins/docker
   settings:
@@ -149,14 +106,13 @@ steps:
     event:
     - tag
 
-### Deploy to Dev
 - name: deploy_to_dev
   pull: if-not-exists
   image: quay.io/ukhomeofficedigital/helm:latest
   commands:
   - /run-helm.sh list -n nmsw-dev
-  - helm upgrade --install nmsw-ui ./helm -f ./helm/DEV_VALUES.yaml -n nmsw-dev --dry-run
-  - helm upgrade --install nmsw-ui ./helm -f ./helm/DEV_VALUES.yaml -n nmsw-dev
+  - helm upgrade --install nmsw-ui ./helm -f ./helm/dev.yaml -n nmsw-dev --dry-run
+  - helm upgrade --install nmsw-ui ./helm -f ./helm/dev.yaml -n nmsw-dev
   environment:
     KUBE_CERTIFICATE_AUTHORITY_DATA:
       from_secret: DEV_NMSW_KUBE_CA_DATA
@@ -172,55 +128,6 @@ steps:
     event:
     - push
 
-- name: deploy_to_sit
-  pull: if-not-exists
-  image: quay.io/ukhomeofficedigital/helm:latest
-  commands:
-  - /run-helm.sh list -n nmsw-sit
-  - helm upgrade --install nmsw-ui ./helm -f ./helm/SIT_VALUES.yaml -n nmsw-sit --dry-run
-  - helm upgrade --install nmsw-ui ./helm -f ./helm/SIT_VALUES.yaml -n nmsw-sit
-  environment:
-    KUBE_CERTIFICATE_AUTHORITY_DATA:
-      from_secret: SIT_KUBE_CA_DATA
-    KUBE_CLUSTER_NAME:
-      from_secret: SIT_KUBE_CLUSTER_NAME
-    KUBE_SERVER:
-      from_secret: SIT_KUBE_SERVER
-    KUBE_TOKEN:
-      from_secret: SIT_KUBE_TOKEN
-  when:
-    branch:
-    - main
-    event:
-    - promote
-    target:
-    - sit
-
-- name: deploy_to_staging
-  pull: if-not-exists
-  image: quay.io/ukhomeofficedigital/helm:latest
-  commands:
-  - /run-helm.sh list -n nmsw-staging
-  - helm upgrade --install nmsw-ui ./helm -f ./helm/STAGING_VALUES.yaml -n nmsw-staging --dry-run
-  - helm upgrade --install nmsw-ui ./helm -f ./helm/STAGING_VALUES.yaml -n nmsw-staging
-  environment:
-    KUBE_CERTIFICATE_AUTHORITY_DATA:
-      from_secret: STAGING_KUBE_CA_DATA
-    KUBE_CLUSTER_NAME:
-      from_secret: STAGING_KUBE_CLUSTER_NAME
-    KUBE_SERVER:
-      from_secret: STAGING_KUBE_SERVER
-    KUBE_TOKEN:
-      from_secret: STAGING_KUBE_TOKEN
-  when:
-    branch:
-    - main
-    event:
-    - promote
-    target:
-    - staging
-
-# Notify in Slack
 - name: notify
   pull: if-not-exists
   image: plugins/slack
@@ -252,29 +159,32 @@ services:
   image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/anchore-submission:latest
   commands:
   - /run.sh server
----
-kind: pipeline
-type: kubernetes
-name: cypress-test
-
-platform:
-  os: linux
-  arch: amd64
-
-steps:
-- name: dev_cypress_test
-  pull: if-not-exists
-  image: quay.io/ukhomeofficedigital/cop-cypress:10.3.0-node16
-  commands:
-  - ./cypress-extract-env.sh ./helm/DEV_VALUES.yaml
-  - cat ./cypress-env.sh
-  - export $(cat ./cypress-env.sh | xargs)
-  - apt-get update && apt-get upgrade -y
-  - ./drone-cypress-test-script.sh dev
-  when:
-    branch:
-    - version-*
-    - cypress-drone
-    event: push
-  failure: ignore
+# The cypress environment variable script needs to be adapted for the changes in "dev.yaml".
+# JAS - 21/10/2022
+#---
+#kind: pipeline
+#type: kubernetes
+#name: cypress-test
+#
+#platform:
+#  os: linux
+#  arch: amd64
+#
+#steps:
+#- name: dev_cypress_test
+#  pull: if-not-exists
+#  image: quay.io/ukhomeofficedigital/cop-cypress:10.3.0-node16
+#  commands:
+#  - ./cypress-extract-env.sh ./helm/dev.yaml
+#  - cat ./cypress-env.sh
+#  - export $(cat ./cypress-env.sh | xargs)
+#  - apt-get update && apt-get upgrade -y
+#  - ./drone-cypress-test-script.sh dev
+#  when:
+#    branch:
+#    - version-*
+#    - cypress-drone
+#    event:
+#    - push
+#  failure: ignore
 ...
