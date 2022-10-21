@@ -1,6 +1,7 @@
 import DisplayForm from '../../components/DisplayForm';
 import { FIELD_RADIO, RADIO_TRUE, RADIO_FALSE } from '../../constants/AppConstants';
 import cookieToFind from '../../utils/cookieToFind';
+import setAnalyticCookie from '../../utils/setAnalyticCookie';
 
 const CookiePolicy = () => {
 
@@ -43,9 +44,13 @@ const CookiePolicy = () => {
     },
   ];
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e, formData) => {
     e.preventDefault();
-    console.log('Submit');
+    if (formData.formData.cookieSettings === RADIO_TRUE) {
+      setAnalyticCookie(true);
+    } else {
+      setAnalyticCookie(false);
+    }
   };
 
   return (
