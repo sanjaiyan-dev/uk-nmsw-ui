@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { UserContext } from '../context/userContext';
 import determineFieldType from './formFields/DetermineFieldType';
@@ -6,6 +6,7 @@ import determineFieldType from './formFields/DetermineFieldType';
 const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit }) => {
   const { user } = useContext(UserContext);
   const [formData, setFormData] = useState({});
+  const fieldsRef = useRef(null);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -13,15 +14,34 @@ const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit }) => {
 
   const scrollToErrorField = (e, error) => {
     e.preventDefault();
-    document.getElementById(`${error.name}-input`).focus();
-    document.getElementById(error.name).scrollIntoView();
+    const fieldMap = getFieldMap();
+    const fieldLabelNode = fieldMap.get(error.name);
+    fieldLabelNode.scrollIntoView();
+    // inputRef.current = document.getElementById(`${error.name}-input`);
+    // labelRef.current = document.getElementById(error.name);
+    // console.log(inputRef)
+    // console.log(labelRef)
+    // inputRef.current.focus();
+    // labelRef.current.scrollIntoView();
+    // /* TODO: replace with useRef/forwardRef */
+    // // document.getElementById(`${error.name}-input`).focus();
+    // // document.getElementById(error.name).scrollIntoView();
   };
+
+  function getFieldMap() {
+    if (!fieldsRef.current) {
+      // Initialize the Map on first usage.
+      fieldsRef.current = new Map();
+    }
+    return fieldsRef.current;
+  }
 
   /* When we introduce RBAC we expect to have fields that are
    * editable, disabled, or hidden based on user permissions.
    * This useEffect can be refactored to include a permission test
    * (or to call a permission test hook) that determines if a field should be 
-   * editable, viewable disabled, or hidden
+   * editable, viewable disabled, or hidden and return only editable/visible fields
+   * to the form render
    * 
    * For now as we have no RBAC it just returns all fields as fields to include
    */
@@ -62,7 +82,18 @@ const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit }) => {
       {
         fields.map((field) => {
           return (
-            <div key={field.fieldName} id={field.fieldName}>
+            <div 
+              key={field.fieldName}
+              id={field.fieldName}
+              ref={(node) => {
+                const map = getFieldMap();
+                if (node) {
+                  map.set(field.fieldName, node);
+                } else {
+                  map.delete(field.fieldName);
+                }
+              }}
+            >
               {
                 determineFieldType({
                   fieldDetails: field,
