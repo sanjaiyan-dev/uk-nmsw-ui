@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import AppRouter from './AppRouter';
 import CookieBanner from './layout/CookieBanner';
 import Footer from './layout/Footer';
@@ -11,14 +11,18 @@ import setAnalyticCookie from './utils/setAnalyticCookie';
 const App = () => {
 
   const cookiePreference = cookieToFind('cookiePreference');
+  const [isBannerShown, setIsBannerShown] = useState(true);
 
   useEffect(() => {
     setAnalyticCookie(cookiePreference);
+    if (cookiePreference !== null) {
+      setIsBannerShown(false);
+    }
   }, [cookiePreference]);
 
   return (
     <>
-      {cookiePreference === null && <CookieBanner />}
+      {isBannerShown === true && <CookieBanner isBannerShown={isBannerShown} setIsBannerShown={setIsBannerShown} /> }
       <Header />
       <div className="govuk-width-container">
         <PhaseBanner />
@@ -26,7 +30,7 @@ const App = () => {
         If we don't want that we will add logic on the back link component as to when 
         it should not show; */}
         <main className="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="content" role="main">
-          <AppRouter />
+          <AppRouter setIsBannerShown={setIsBannerShown} />
         </main>
       </div>
       <Footer />

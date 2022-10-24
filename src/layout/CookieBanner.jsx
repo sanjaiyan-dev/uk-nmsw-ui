@@ -5,21 +5,23 @@ import { SERVICE_NAME } from '../constants/AppConstants';
 import { COOKIE_URL } from '../constants/AppUrlConstants';
 import setAnalyticCookie from '../utils/setAnalyticCookie';
 
-const CookieBanner = () => {
+const CookieBanner = ({ isBannerShown, setIsBannerShown }) => {
 
   const [isAnalyticsButtonClicked, setIsAnalyticsButtonClicked] = useState(false);
-  const [hideCookieBanner, setHideCookieBanner] = useState(false);
+  // const [hideCookieBanner, setHideCookieBanner] = useState(false);
   const [isAnalyticsAcceptedOrRejected, setIsAnalyticsAcceptedOrRejected] = useState('');
-  const location = useLocation();
 
-  const reloadPage = () => {
-    if (location.pathname === COOKIE_URL) {
-      window.location.reload();
-    }
-    return;
-  };
+  console.log('setIsBannerShown', isBannerShown)
+  // const location = useLocation();
 
-  if (hideCookieBanner) { return null; }
+  // const reloadPage = () => {
+  //   if (location.pathname === COOKIE_URL) {
+  //     window.location.reload();
+  //   }
+  //   return;
+  // };
+
+  // if (hideCookieBanner) { return null; }
 
   return (
     <>
@@ -66,7 +68,7 @@ const CookieBanner = () => {
           </div>
 
           <div className="govuk-button-group">
-            <button className="govuk-button" data-module="govuk-button" type="button" onClick={() => { setHideCookieBanner(true); reloadPage();}}>
+            <button className="govuk-button" data-module="govuk-button" type="button" onClick={() => { setIsBannerShown(false); }}>
               Hide cookie message
             </button>
           </div>

@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import useUserIsPermitted from './hooks/useUserIsPermitted';
 import ProtectedRoutes from './utils/ProtectedRoutes';
 import ScrollToTop from './utils/scrollToTop';
@@ -24,7 +25,7 @@ import SignIn from './pages/SignIn/SignIn';
 import SecondPage from './pages/TempPages/SecondPage';
 
 
-const AppRouter = () => {
+const AppRouter = ({ setIsBannerShown }) => {
   const isPermittedToView = useUserIsPermitted();
 
   return (
@@ -34,7 +35,7 @@ const AppRouter = () => {
         <Route path={LANDING_URL} element={<Landing />} />
         <Route path={SIGN_IN_URL} element={<SignIn />} />
         <Route path={ACCESSIBILITY_URL} element={<AccessibilityStatement />} />
-        <Route path={COOKIE_URL} element={<CookiePolicy />} />
+        <Route path={COOKIE_URL} element={<CookiePolicy  setIsBannerShown={setIsBannerShown} />} />
         <Route path={PRIVACY_URL} element={<PrivacyNotice />} />
         <Route element={<ProtectedRoutes isPermittedToView={isPermittedToView} />}>
           <Route path={DASHBOARD_URL} element={<Dashboard />} />
@@ -46,3 +47,7 @@ const AppRouter = () => {
 };
 
 export default AppRouter;
+
+AppRouter.propTypes = {
+  setIsBannerShown: PropTypes.func,
+};

@@ -3,7 +3,7 @@ import { FIELD_RADIO, RADIO_TRUE, RADIO_FALSE } from '../../constants/AppConstan
 import cookieToFind from '../../utils/cookieToFind';
 import setAnalyticCookie from '../../utils/setAnalyticCookie';
 
-const CookiePolicy = () => {
+const CookiePolicy = ({ setIsBannerShown }) => {
 
   const cookiePreference = cookieToFind('cookiePreference');
 
@@ -47,14 +47,17 @@ const CookiePolicy = () => {
   const handleSubmit = (e, formData) => {
     e.preventDefault();
     // Triggers reload if user has no cookiePreference when submitting the form to remove cookieBanner.
-    if (!cookiePreference) {
-      window.location.reload();
-    }
+    // if (!cookiePreference) {
+    //   window.location.reload();
+    // }
+
 
     if (formData.formData.cookieSettings === RADIO_TRUE) {
       setAnalyticCookie(true);
+      setIsBannerShown(false);
     } else {
       setAnalyticCookie(false);
+      setIsBannerShown(false);
     }
   };
 
