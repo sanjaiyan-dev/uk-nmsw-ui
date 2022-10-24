@@ -36,8 +36,8 @@ describe('Sign in tests', () => {
   it('should display an input field for password', async () => {
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     expect(screen.getByLabelText('Password')).toBeInTheDocument();
-    expect(screen.getByTestId('passwordField')).toHaveAttribute('type', 'password');
-    expect(screen.getByTestId('passwordField').outerHTML).toEqual('<input class="govuk-input" id="password-input" data-testid="passwordField" name="password" type="password">');
+    expect(screen.getByTestId('password-passwordField')).toHaveAttribute('type', 'password');
+    expect(screen.getByTestId('password-passwordField').outerHTML).toEqual('<input class="govuk-input" id="password-input" data-testid="password-passwordField" name="password" type="password">');
   });
 
   it('should display a primary styled sign in button', async () => {
@@ -46,11 +46,14 @@ describe('Sign in tests', () => {
     
   });
 
-  it('should call the login function on sign in button click', async () => {
+  it('should call the login function on sign in button click if there are no errors', async () => {
     const user = userEvent.setup();
     const userDetails = { name: 'MockedUser', auth: true };
 
     renderWithUserContext(userDetails);
+    await user.type(screen.getByRole('textbox', {name: /email/i}), 'testemail@email.com');
+    await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
+    await user.type(screen.getByTestId('sampleMinLengthTest-passwordField'), 'testminlengthpassword');
     await user.click(screen.getByTestId('submit-button'));
     expect(mockedLogin).toHaveBeenCalled();
   });
