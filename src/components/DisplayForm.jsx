@@ -17,24 +17,17 @@ const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit }) => {
     const fieldMap = getFieldMap();
     const fieldLabelNode = fieldMap.get(error.name);
     fieldLabelNode.scrollIntoView();
-    // inputRef.current = document.getElementById(`${error.name}-input`);
-    // labelRef.current = document.getElementById(error.name);
-    // console.log(inputRef)
-    // console.log(labelRef)
-    // inputRef.current.focus();
-    // labelRef.current.scrollIntoView();
     // /* TODO: replace with useRef/forwardRef */
-    // // document.getElementById(`${error.name}-input`).focus();
-    // // document.getElementById(error.name).scrollIntoView();
+    document.getElementById(`${error.name}-input`).focus();
   };
 
-  function getFieldMap() {
+  const getFieldMap = () => {
     if (!fieldsRef.current) {
       // Initialize the Map on first usage.
       fieldsRef.current = new Map();
     }
     return fieldsRef.current;
-  }
+  };
 
   /* When we introduce RBAC we expect to have fields that are
    * editable, disabled, or hidden based on user permissions.
@@ -82,7 +75,7 @@ const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit }) => {
       {
         fields.map((field) => {
           return (
-            <div 
+            <div
               key={field.fieldName}
               id={field.fieldName}
               ref={(node) => {
