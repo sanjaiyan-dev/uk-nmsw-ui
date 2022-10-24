@@ -5,8 +5,8 @@ import determineFieldType from './formFields/DetermineFieldType';
 
 const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit }) => {
   const { user } = useContext(UserContext);
-  const [formData, setFormData] = useState({});
   const fieldsRef = useRef(null);
+  const [formData, setFormData] = useState({});
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -90,9 +90,9 @@ const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit }) => {
               ref={(node) => {
                 const map = getFieldMap();
                 if (node) {
-                  map.set(field.fieldName, node);
+                  map.set(field.fieldName, node); // on mount adds the refs
                 } else {
-                  map.delete(field.fieldName);
+                  map.delete(field.fieldName); // on unmount removes the refs
                 }
               }}
             >
