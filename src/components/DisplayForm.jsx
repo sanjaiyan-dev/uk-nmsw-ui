@@ -21,6 +21,15 @@ const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit }) => {
     document.getElementById(`${error.name}-input`).focus();
   };
 
+  /* 
+   * For field level ref we use a ref callback, which passes a function to the ref attribute
+   * React calls the ref callback with the DOM node when it’s time to set the ref, & with null when it’s time to clear it. 
+   * We can then access any ref within it by fieldMap.get(error.name) which relates to our field id.
+   * 
+   * This works here as the DOM node is within this component, however we can't use this method in the same
+   * way to pass a ref down to the input as the input is in a different component and we need to forward the ref down
+   * TODO: work out how to set, forward, and access ref in input component on error click so we can set focus on input
+   */
   const getFieldMap = () => {
     if (!fieldsRef.current) {
       // Initialize the Map on first usage.
