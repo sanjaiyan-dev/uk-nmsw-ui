@@ -8,6 +8,42 @@ import {
 import InputRadio from './InputRadio';
 import InputText from './InputText';
 
+const GroupedInputs = ({ error, fieldDetails, fieldToReturn }) => {
+  return (
+    <div className="govuk-form-group">
+      <fieldset className="govuk-fieldset">
+        <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
+          {fieldDetails.label}
+        </legend>
+        <div id={`${fieldDetails.fieldName}-hint`} className="govuk-hint">
+          {fieldDetails.hint}
+        </div>
+        <p id={`${fieldDetails.fieldName}-error`} className="govuk-error-message">
+          <span className="govuk-visually-hidden">Error:</span> {error}
+        </p>
+        {fieldToReturn}
+      </fieldset>
+    </div>
+  );
+};
+
+const SingleInput = ({ error, fieldDetails, fieldToReturn }) => {
+  return (
+    <div className="govuk-form-group">
+      <label className="govuk-label" htmlFor={`${fieldDetails.fieldName}-input`}>
+        {fieldDetails.label}
+      </label>
+      <div id={`${fieldDetails.fieldName}-hint`} className="govuk-hint">
+        {fieldDetails.hint}
+      </div>
+      <p id={`${fieldDetails.fieldName}-error`} className="govuk-error-message">
+        <span className="govuk-visually-hidden">Error:</span> {error}
+      </p>
+      {fieldToReturn}
+    </div>
+  );
+};
+
 const determineFieldType = ({ error, fieldDetails, parentHandleChange }) => {
   let fieldToReturn;
   switch (fieldDetails.type) {
@@ -51,34 +87,17 @@ const determineFieldType = ({ error, fieldDetails, parentHandleChange }) => {
 
   return (
     <>
-      {fieldDetails.grouped ?
-        <div className="govuk-form-group">
-          <fieldset className="govuk-fieldset">
-            <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
-              {fieldDetails.label}
-            </legend>
-            <div id={`${fieldDetails.fieldName}-hint`} className="govuk-hint">
-              {fieldDetails.hint}
-            </div>
-            <p id={`${fieldDetails.fieldName}-error`} className="govuk-error-message">
-              <span className="govuk-visually-hidden">Error:</span> {error}
-            </p>
-            {fieldToReturn}
-          </fieldset>
-        </div>
+      {fieldDetails.grouped ? <GroupedInputs
+        error={error}
+        fieldDetails={fieldDetails}
+        fieldToReturn={fieldToReturn}
+      />
         :
-        <div className="govuk-form-group">
-          <label className="govuk-label" htmlFor={`${fieldDetails.fieldName}-input`}>
-            {fieldDetails.label}
-          </label>
-          <div id={`${fieldDetails.fieldName}-hint`} className="govuk-hint">
-            {fieldDetails.hint}
-          </div>
-          <p id={`${fieldDetails.fieldName}-error`} className="govuk-error-message">
-            <span className="govuk-visually-hidden">Error:</span> {error}
-          </p>
-          {fieldToReturn}
-        </div>
+        <SingleInput
+          error={error}
+          fieldDetails={fieldDetails}
+          fieldToReturn={fieldToReturn}
+        />
       }
     </>
   );
@@ -98,4 +117,32 @@ determineFieldType.propTypes = {
     }),
   ),
   parentHandleChange: PropTypes.func.isRequired,
+};
+
+GroupedInputs.propTypes = {
+  error: PropTypes.string,
+  fieldDetails: PropTypes.objectOf(
+    PropTypes.shape({
+      fieldName: PropTypes.string.isRequired,
+      hint: PropTypes.string,
+      label: PropTypes.string.isRequired,
+      type: PropTypes.string.isRequired,
+      value: PropTypes.string,
+    }),
+  ),
+  fieldToReturn: PropTypes.func.isRequired,
+};
+
+SingleInput.propTypes = {
+  error: PropTypes.string,
+  fieldDetails: PropTypes.objectOf(
+    PropTypes.shape({
+      fieldName: PropTypes.string.isRequired,
+      hint: PropTypes.string,
+      label: PropTypes.string.isRequired,
+      type: PropTypes.string.isRequired,
+      value: PropTypes.string,
+    }),
+  ),
+  fieldToReturn: PropTypes.func.isRequired,
 };
