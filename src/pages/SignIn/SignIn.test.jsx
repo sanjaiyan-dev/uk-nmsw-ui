@@ -46,6 +46,24 @@ describe('Sign in tests', () => {
     
   });
 
+  it('should NOT call the login function on sign in button click if there ARE errors', async () => {
+    const user = userEvent.setup();
+    const userDetails = { name: 'MockedUser', auth: true };
+
+    renderWithUserContext(userDetails);
+    await user.click(screen.getByTestId('submit-button'));
+    expect(mockedLogin).not.toHaveBeenCalled();
+  });
+
+  //it('should display Error summary if there are errors',
+  //it('should display email missingif there is no email address,
+  //it('should display email missingif the email address has no @
+  //it('should display email missing if the email address has no .xx
+  //it('should display password missing if there is no password
+  //it('should display min length missing if there is no min length value
+  //it('should display min length length if the min length field is too short
+
+
   it('should call the login function on sign in button click if there are no errors', async () => {
     const user = userEvent.setup();
     const userDetails = { name: 'MockedUser', auth: true };
