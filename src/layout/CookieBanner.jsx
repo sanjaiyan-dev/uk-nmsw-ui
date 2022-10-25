@@ -42,7 +42,7 @@ const CookieBanner = ({ setIsCookieBannerShown }) => {
             }}>
               Reject analytics cookies
             </button>
-            {/* <a className="govuk-link" href="#">View cookies</a> */}
+            <Link className="govuk-link" to={COOKIE_URL}>View cookies</Link>
           </div>
         </div>
       </div>}
