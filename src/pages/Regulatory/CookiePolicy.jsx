@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import PropTypes from 'prop-types';
+import CookieConfirmation from '../../components/CookieConfirmation';
 import DisplayForm from '../../components/DisplayForm';
 import { FIELD_RADIO, RADIO_TRUE, RADIO_FALSE } from '../../constants/AppConstants';
 import cookieToFind from '../../utils/cookieToFind';
@@ -6,6 +8,7 @@ import setAnalyticCookie from '../../utils/setAnalyticCookie';
 
 const CookiePolicy = ({ setIsCookieBannerShown }) => {
 
+  const [isConfirmationShown, setIsConfirmationShown] = useState(false);
   const cookiePreference = cookieToFind('cookiePreference');
 
   let selected = cookiePreference === true ? RADIO_TRUE : RADIO_FALSE;
@@ -50,14 +53,17 @@ const CookiePolicy = ({ setIsCookieBannerShown }) => {
     if (formData.formData.cookieSettings === RADIO_TRUE) {
       setAnalyticCookie(true);
       setIsCookieBannerShown(false);
+      setIsConfirmationShown(true);
     } else {
       setAnalyticCookie(false);
       setIsCookieBannerShown(false);
+      setIsConfirmationShown(true);
     }
   };
 
   return (
     <>
+      {isConfirmationShown && <CookieConfirmation />}
       <h1 className="govuk-heading-l">Cookies</h1>
       <h2 className="govuk-heading-l">Change your cookie settings</h2>
       <DisplayForm
