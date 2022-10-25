@@ -65,7 +65,8 @@ module.exports = {
   ],
   devServer: {
     historyApiFallback: true,
-    hot: true,
+    hot: false,
+    liveReload: true,
     static: {
       directory: path.join(__dirname, 'dist'),
     },

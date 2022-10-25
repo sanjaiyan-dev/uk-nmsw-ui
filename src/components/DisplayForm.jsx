@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import determineFieldType from './formFields/determineFieldType';
+import determineFieldType from './formFields/DetermineFieldType';
 
 const DisplayForm = ({ fields, formActions, handleSubmit }) => {
   const [formData, setFormData] = useState({});
