@@ -25,7 +25,7 @@ import SignIn from './pages/SignIn/SignIn';
 import SecondPage from './pages/TempPages/SecondPage';
 
 
-const AppRouter = ({ setIsBannerShown }) => {
+const AppRouter = ({ setIsCookieBannerShown }) => {
   const isPermittedToView = useUserIsPermitted();
 
   return (
@@ -35,7 +35,7 @@ const AppRouter = ({ setIsBannerShown }) => {
         <Route path={LANDING_URL} element={<Landing />} />
         <Route path={SIGN_IN_URL} element={<SignIn />} />
         <Route path={ACCESSIBILITY_URL} element={<AccessibilityStatement />} />
-        <Route path={COOKIE_URL} element={<CookiePolicy  setIsBannerShown={setIsBannerShown} />} />
+        <Route path={COOKIE_URL} element={<CookiePolicy  setIsCookieBannerShown={setIsCookieBannerShown} />} />
         <Route path={PRIVACY_URL} element={<PrivacyNotice />} />
         <Route element={<ProtectedRoutes isPermittedToView={isPermittedToView} />}>
           <Route path={DASHBOARD_URL} element={<Dashboard />} />
@@ -49,5 +49,5 @@ const AppRouter = ({ setIsBannerShown }) => {
 export default AppRouter;
 
 AppRouter.propTypes = {
-  setIsBannerShown: PropTypes.func,
+  setIsCookieBannerShown: PropTypes.func,
 };

@@ -1,9 +1,10 @@
+import PropTypes from 'prop-types';
 import DisplayForm from '../../components/DisplayForm';
 import { FIELD_RADIO, RADIO_TRUE, RADIO_FALSE } from '../../constants/AppConstants';
 import cookieToFind from '../../utils/cookieToFind';
 import setAnalyticCookie from '../../utils/setAnalyticCookie';
 
-const CookiePolicy = ({ setIsBannerShown }) => {
+const CookiePolicy = ({ setIsCookieBannerShown }) => {
 
   const cookiePreference = cookieToFind('cookiePreference');
 
@@ -46,18 +47,12 @@ const CookiePolicy = ({ setIsBannerShown }) => {
 
   const handleSubmit = (e, formData) => {
     e.preventDefault();
-    // Triggers reload if user has no cookiePreference when submitting the form to remove cookieBanner.
-    // if (!cookiePreference) {
-    //   window.location.reload();
-    // }
-
-
     if (formData.formData.cookieSettings === RADIO_TRUE) {
       setAnalyticCookie(true);
-      setIsBannerShown(false);
+      setIsCookieBannerShown(false);
     } else {
       setAnalyticCookie(false);
-      setIsBannerShown(false);
+      setIsCookieBannerShown(false);
     }
   };
 
@@ -75,3 +70,7 @@ const CookiePolicy = ({ setIsBannerShown }) => {
 };
 
 export default CookiePolicy;
+
+CookiePolicy.propTypes = {
+  setIsCookieBannerShown: PropTypes.func.isRequired,
+};

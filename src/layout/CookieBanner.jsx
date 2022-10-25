@@ -1,27 +1,15 @@
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import { SERVICE_NAME } from '../constants/AppConstants';
 import { COOKIE_URL } from '../constants/AppUrlConstants';
 import setAnalyticCookie from '../utils/setAnalyticCookie';
 
-const CookieBanner = ({ isBannerShown, setIsBannerShown }) => {
+const CookieBanner = ({ setIsCookieBannerShown }) => {
 
   const [isAnalyticsButtonClicked, setIsAnalyticsButtonClicked] = useState(false);
-  // const [hideCookieBanner, setHideCookieBanner] = useState(false);
   const [isAnalyticsAcceptedOrRejected, setIsAnalyticsAcceptedOrRejected] = useState('');
-
-  console.log('setIsBannerShown', isBannerShown)
-  // const location = useLocation();
-
-  // const reloadPage = () => {
-  //   if (location.pathname === COOKIE_URL) {
-  //     window.location.reload();
-  //   }
-  //   return;
-  // };
-
-  // if (hideCookieBanner) { return null; }
 
   return (
     <>
@@ -40,10 +28,18 @@ const CookieBanner = ({ isBannerShown, setIsBannerShown }) => {
           </div>
 
           <div className="govuk-button-group">
-            <button type="button" className="govuk-button" data-module="govuk-button" onClick={() => { setAnalyticCookie(true); setIsAnalyticsButtonClicked(true); setIsAnalyticsAcceptedOrRejected('accepted'); }}>
+            <button type="button" className="govuk-button" data-module="govuk-button" onClick={() => {
+              setAnalyticCookie(true);
+              setIsAnalyticsButtonClicked(true);
+              setIsAnalyticsAcceptedOrRejected('accepted');
+            }}>
               Accept analytics cookies
             </button>
-            <button type="button" className="govuk-button" data-module="govuk-button" onClick={() => { setAnalyticCookie(false); setIsAnalyticsButtonClicked(true); setIsAnalyticsAcceptedOrRejected('rejected'); }}>
+            <button type="button" className="govuk-button" data-module="govuk-button" onClick={() => {
+              setAnalyticCookie(false);
+              setIsAnalyticsButtonClicked(true);
+              setIsAnalyticsAcceptedOrRejected('rejected');
+            }}>
               Reject analytics cookies
             </button>
             {/* <a className="govuk-link" href="#">View cookies</a> */}
@@ -68,7 +64,7 @@ const CookieBanner = ({ isBannerShown, setIsBannerShown }) => {
           </div>
 
           <div className="govuk-button-group">
-            <button className="govuk-button" data-module="govuk-button" type="button" onClick={() => { setIsBannerShown(false); }}>
+            <button className="govuk-button" data-module="govuk-button" type="button" onClick={() => { setIsCookieBannerShown(false); }}>
               Hide cookie message
             </button>
           </div>
@@ -79,3 +75,7 @@ const CookieBanner = ({ isBannerShown, setIsBannerShown }) => {
 };
 
 export default CookieBanner;
+
+CookieBanner.propTypes = {
+  setIsCookieBannerShown: PropTypes.func.isRequired,
+};
