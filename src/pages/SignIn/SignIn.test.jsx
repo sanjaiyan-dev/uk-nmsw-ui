@@ -55,14 +55,102 @@ describe('Sign in tests', () => {
     expect(mockedLogin).not.toHaveBeenCalled();
   });
 
-  //it('should display Error summary if there are errors',
-  //it('should display email missingif there is no email address,
-  //it('should display email missingif the email address has no @
-  //it('should display email missing if the email address has no .xx
-  //it('should display password missing if there is no password
-  //it('should display min length missing if there is no min length value
-  //it('should display min length length if the min length field is too short
+  it('should display the Error Summary if there are errors', async () => {
+    const user = userEvent.setup();
+    const userDetails = { name: 'MockedUser', auth: true };
 
+    renderWithUserContext(userDetails);
+    await user.click(screen.getByTestId('submit-button'));
+    expect(screen.getByText('There is a problem')).toBeInTheDocument();
+  });
+
+  it('should display the email required error if there is no email address', async () => {
+    const user = userEvent.setup();
+    const userDetails = { name: 'MockedUser', auth: true };
+
+    renderWithUserContext(userDetails);
+    await user.click(screen.getByTestId('submit-button'));
+    expect(screen.getByText('Enter your email address')).toBeInTheDocument();
+  });
+
+  it('should display the email invalid error if the email address has no @', async () => {
+    const user = userEvent.setup();
+    const userDetails = { name: 'MockedUser', auth: true };
+
+    renderWithUserContext(userDetails);
+    await user.type(screen.getByRole('textbox', {name: /email/i}), 'testemail');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(screen.getByText('Enter your email address in the correct format, like name@example.com')).toBeInTheDocument();
+  });
+
+  it('should display the email invalid error if the email address has no .xx', async () => {
+    const user = userEvent.setup();
+    const userDetails = { name: 'MockedUser', auth: true };
+
+    renderWithUserContext(userDetails);
+    await user.type(screen.getByRole('textbox', {name: /email/i}), 'testemail@boo');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(screen.getByText('Enter your email address in the correct format, like name@example.com')).toBeInTheDocument();
+  });
+
+  it('should NOT display the email errors if the email address is a valid format', async () => {
+    const user = userEvent.setup();
+    const userDetails = { name: 'MockedUser', auth: true };
+
+    renderWithUserContext(userDetails);
+    await user.type(screen.getByRole('textbox', {name: /email/i}), 'testemail@email.com');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(screen.queryByText('Enter your email address')).not.toBeInTheDocument();
+    expect(screen.queryByText('Enter your email address in the correct format, like name@example.com')).not.toBeInTheDocument();
+  });
+
+  it('should display the password required error if there is no password', async () => {
+    const user = userEvent.setup();
+    const userDetails = { name: 'MockedUser', auth: true };
+
+    renderWithUserContext(userDetails);
+    await user.click(screen.getByTestId('submit-button'));
+    expect(screen.getByText('Enter your password')).toBeInTheDocument();
+  });
+
+  it('should NOT display the password required error if a password is entered', async () => {
+    const user = userEvent.setup();
+    const userDetails = { name: 'MockedUser', auth: true };
+
+    renderWithUserContext(userDetails);
+    await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(screen.queryByText('Enter your password')).not.toBeInTheDocument();
+  });
+
+  it('should display the sample field required error if there is no sample field text', async () => {
+    const user = userEvent.setup();
+    const userDetails = { name: 'MockedUser', auth: true };
+
+    renderWithUserContext(userDetails);
+    await user.click(screen.getByTestId('submit-button'));
+    expect(screen.getByText('Enter your sample field password')).toBeInTheDocument();
+  });
+
+  it('should display the sample field min length error if the text in the field is < 8 characters', async () => {
+    const user = userEvent.setup();
+    const userDetails = { name: 'MockedUser', auth: true };
+
+    renderWithUserContext(userDetails);
+    await user.type(screen.getByTestId('sampleMinLengthTest-passwordField'), 'one');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(screen.getByText('Sample field must be a minimum of 8 characters')).toBeInTheDocument();
+  });
+
+  it('should NOT display any sample field errors if the text in the field is >= 8 characters', async () => {
+    const user = userEvent.setup();
+    const userDetails = { name: 'MockedUser', auth: true };
+
+    renderWithUserContext(userDetails);
+    await user.type(screen.getByTestId('sampleMinLengthTest-passwordField'), '12345678');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(screen.queryByText('Sample field must be a minimum of 8 characters')).not.toBeInTheDocument();
+  });
 
   it('should call the login function on sign in button click if there are no errors', async () => {
     const user = userEvent.setup();
