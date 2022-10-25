@@ -119,30 +119,16 @@ determineFieldType.propTypes = {
   parentHandleChange: PropTypes.func.isRequired,
 };
 
+// TODO: Work out why the fieldDetails shape (looking like above) is erroring for Grouped and Single input and put it back in correctly
+
 GroupedInputs.propTypes = {
   error: PropTypes.string,
-  fieldDetails: PropTypes.objectOf(
-    PropTypes.shape({
-      fieldName: PropTypes.string.isRequired,
-      hint: PropTypes.string,
-      label: PropTypes.string.isRequired,
-      type: PropTypes.string.isRequired,
-      value: PropTypes.string,
-    }),
-  ),
-  fieldToReturn: PropTypes.func.isRequired,
+  fieldDetails: PropTypes.object.isRequired,
+  fieldToReturn: PropTypes.object.isRequired,
 };
 
 SingleInput.propTypes = {
   error: PropTypes.string,
-  fieldDetails: PropTypes.objectOf(
-    PropTypes.shape({
-      fieldName: PropTypes.string.isRequired,
-      hint: PropTypes.string,
-      label: PropTypes.string.isRequired,
-      type: PropTypes.string.isRequired,
-      value: PropTypes.string,
-    }),
-  ),
-  fieldToReturn: PropTypes.func.isRequired,
+  fieldDetails: PropTypes.object.isRequired,
+  fieldToReturn: PropTypes.object.isRequired,
 };
