@@ -82,8 +82,8 @@ steps:
     - dev
   environment:
     DOCKER_PASSWORD:
-      from_secret: QUAY_PASSWORD
-    DOCKER_USERNAME: ukhomeofficedigital+nmsw_quay_token
+      from_secret: NMSW_QUAY_PASSWORD
+    DOCKER_USERNAME: ukhomeofficedigital+nmsw_ui
   when:
     branch:
     - version-*
@@ -100,8 +100,8 @@ steps:
     - ${DRONE_TAG}
   environment:
     DOCKER_PASSWORD:
-      from_secret: QUAY_PASSWORD
-    DOCKER_USERNAME: ukhomeofficedigital+nmsw_quay_token
+      from_secret: NMSW_QUAY_PASSWORD
+    DOCKER_USERNAME: ukhomeofficedigital+nmsw_ui
   when:
     event:
     - tag
