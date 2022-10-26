@@ -95,7 +95,7 @@ env:
     - name: NMSW_DATA_API_BASE_URL
       value: "https://nmsw-api.dev.nmsw.homeoffice.gov.uk"
     - name: NMSW_MAINTENANCE
-      value: false
+      value: "false"
     - name: GOV_NOTIFY_SUPPORT_EMAIL
       value: "nmsw@homeoffice.gov.uk"
   proxy:
