@@ -9,7 +9,7 @@ platform:
 
 steps:
 - name: sync_dev_secrets
-  pull: if-not-exists
+  pull: always
   image: quay.io/ukhomeofficedigital/cop-secrets
   environment:
     AWS_ACCESS_KEY_ID:
