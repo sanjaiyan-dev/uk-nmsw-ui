@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import DisplayForm from '../DisplayForm';
 import {
   FIELD_EMAIL,
@@ -19,8 +20,9 @@ import {
  */
 
 describe('Display Form', () => {
-
   const handleSubmit = jest.fn();
+  let scrollIntoViewMock = jest.fn();
+  window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
   const formActions = {
     submit: {
       className: 'govuk-button',
@@ -107,6 +109,12 @@ describe('Display Form', () => {
       fieldName: 'password',
     }
   ];
+  const formTextInputWithErrors = [
+    {
+      name: 'testField',
+      message: 'testField is erroring'
+    }
+  ];
 
   it('should render a submit and cancel button if both exist', () => {
     render(
@@ -188,5 +196,39 @@ describe('Display Form', () => {
     expect(screen.getByLabelText('Password input')).toBeInTheDocument();
     expect(screen.getByText('This is a hint for a password input').outerHTML).toEqual('<div id="password-hint" class="govuk-hint">This is a hint for a password input</div>');
     expect(screen.getByTestId('password-passwordField')).toBeInTheDocument();
+  });
+
+  it('should render error summary if there are field errors', async () => {
+    render(
+      <DisplayForm
+        errors={formTextInputWithErrors}
+        formId="testForm"
+        fields={formTextInput}
+        formActions={formActionsSubmitOnly}
+        handleSubmit={handleSubmit}
+      />
+    );
+
+    expect(screen.getByText('There is a problem').outerHTML).toEqual('<h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>');
+    expect(screen.getByText('testField is erroring').outerHTML).toEqual('<button class="govuk-button--text">testField is erroring</button>');
+  });
+
+  it('should scroll to erroring field if user clicks an error summary link', async () => {
+    const user = userEvent.setup();
+    render(
+      <DisplayForm
+        errors={formTextInputWithErrors}
+        formId="testForm"
+        fields={formTextInput}
+        formActions={formActionsSubmitOnly}
+        handleSubmit={handleSubmit}
+      />
+    );
+
+    expect(screen.getByText('There is a problem').outerHTML).toEqual('<h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>');
+    expect(screen.getByText('testField is erroring').outerHTML).toEqual('<button class="govuk-button--text">testField is erroring</button>');
+    await user.click(screen.getByText('testField is erroring'));
+    expect(scrollIntoViewMock).toHaveBeenCalled();
+    expect(screen.getByRole('textbox', {name: /Text input/i})).toHaveFocus();
   });
 });
