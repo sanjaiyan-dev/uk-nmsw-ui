@@ -12,7 +12,7 @@ import DisplayForm from '../DisplayForm';
  * (that is done on the page that hold the specific form)
  */
 
-describe('Sign in tests', () => {
+describe('Display Form', () => {
 
   const handleSubmit = jest.fn();
   const formActions = {
@@ -72,6 +72,7 @@ describe('Sign in tests', () => {
   it('should render a submit and cancel button if both exist', async () => {
     render(
       <DisplayForm
+        formId="testForm"
         fields={formTextInput}
         formActions={formActions}
         handleSubmit={handleSubmit}
@@ -84,6 +85,7 @@ describe('Sign in tests', () => {
   it('should render only a submit button if there is no cancel button', async () => {
     render(
       <DisplayForm
+        formId="testForm"
         fields={formTextInput}
         formActions={formActionsSubmitOnly}
         handleSubmit={handleSubmit}
@@ -96,6 +98,7 @@ describe('Sign in tests', () => {
   it('should render a text input', async () => {
     render(
       <DisplayForm
+        formId="testForm"
         fields={formTextInput}
         formActions={formActionsSubmitOnly}
         handleSubmit={handleSubmit}
@@ -109,6 +112,7 @@ describe('Sign in tests', () => {
   it('should render the special input types', async () => {
     render(
       <DisplayForm
+        formId="testForm"
         fields={formSpecialInputs}
         formActions={formActionsSubmitOnly}
         handleSubmit={handleSubmit}
@@ -125,6 +129,6 @@ describe('Sign in tests', () => {
     /* password field: password inputs do not have a true textbox role so must be found via test id */
     expect(screen.getByLabelText('Password input')).toBeInTheDocument();
     expect(screen.getByText('This is a hint for a password input').outerHTML).toEqual('<div id="password-hint" class="govuk-hint">This is a hint for a password input</div>');
-    expect(screen.getByTestId('passwordField')).toBeInTheDocument();
+    expect(screen.getByTestId('password-passwordField')).toBeInTheDocument();
   });
 });
