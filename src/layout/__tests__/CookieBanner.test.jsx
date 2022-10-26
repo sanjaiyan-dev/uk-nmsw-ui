@@ -31,9 +31,11 @@ describe('CookieBanner tests', () => {
     render(<MemoryRouter><CookieBanner setIsCookieBannerShown={setIsCookieBannerShown} /></MemoryRouter>);
     const acceptButton = screen.getByRole('button', { name: 'Accept analytics cookies' });
     const rejectButton = screen.getByRole('button', { name: 'Reject analytics cookies' });
+    const viewCookieLink = screen.getByRole('link', { name: 'View cookies'});
 
     expect(acceptButton).toBeInTheDocument();
     expect(rejectButton).toBeInTheDocument();
+    expect(viewCookieLink).toBeInTheDocument();
   });
 
   it('should set cookiePreference to true when Accept analytics cookies is clicked', async () => {
