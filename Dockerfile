@@ -14,7 +14,7 @@ RUN npm run build
 
 # Now build the final image based on Nginx
 
-FROM alpine:3.7 as proxy
+FROM alpine:3 as proxy
 
 ENV NGINX_CONFIG_FILE=/etc/nginx/nginx.conf
 
