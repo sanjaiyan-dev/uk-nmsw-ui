@@ -8,7 +8,7 @@ import setAnalyticCookie from '../../utils/setAnalyticCookie';
 
 const CookiePolicy = ({ setIsCookieBannerShown }) => {
 
-  const [isConfirmationShown, setIsConfirmationShown] = useState(false);
+  const [isCookieConfirmationShown, setIsCookieConfirmationShown] = useState(false);
   const cookiePreference = cookieToFind('cookiePreference');
 
   let selected = cookiePreference === true ? RADIO_TRUE : RADIO_FALSE;
@@ -53,18 +53,36 @@ const CookiePolicy = ({ setIsCookieBannerShown }) => {
     if (formData.formData.cookieSettings === RADIO_TRUE) {
       setAnalyticCookie(true);
       setIsCookieBannerShown(false);
-      setIsConfirmationShown(true);
+      setIsCookieConfirmationShown(true);
     } else {
       setAnalyticCookie(false);
       setIsCookieBannerShown(false);
-      setIsConfirmationShown(true);
+      setIsCookieConfirmationShown(true);
     }
   };
 
   return (
     <>
-      {isConfirmationShown && <CookieConfirmation />}
+      {isCookieConfirmationShown && <CookieConfirmation />}
       <h1 className="govuk-heading-l">Cookies</h1>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <h2 className="govuk-heading-l">Change your cookie settings</h2>
       <DisplayForm
         formId='changeYourCookieSettings'
@@ -72,6 +90,24 @@ const CookiePolicy = ({ setIsCookieBannerShown }) => {
         formActions={formActions}
         handleSubmit={handleSubmit}
       />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
     </>
   );
 };
