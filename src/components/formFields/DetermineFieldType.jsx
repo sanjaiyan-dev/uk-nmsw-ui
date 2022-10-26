@@ -10,7 +10,7 @@ import InputText from './InputText';
 
 const GroupedInputs = ({ error, fieldDetails, fieldToReturn }) => {
   return (
-    <div className="govuk-form-group">
+    <div className={error ? 'govuk-form-group govuk-form-group--error' : 'govuk-form-group'}>
       <fieldset className="govuk-fieldset">
         <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
           {fieldDetails.label}
@@ -29,7 +29,7 @@ const GroupedInputs = ({ error, fieldDetails, fieldToReturn }) => {
 
 const SingleInput = ({ error, fieldDetails, fieldToReturn }) => {
   return (
-    <div className="govuk-form-group">
+    <div className={error ? 'govuk-form-group govuk-form-group--error' : 'govuk-form-group'}>
       <label className="govuk-label" htmlFor={`${fieldDetails.fieldName}-input`}>
         {fieldDetails.label}
       </label>
