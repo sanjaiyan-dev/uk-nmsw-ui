@@ -1,4 +1,4 @@
-FROM quay.io/ukhomeofficedigital/cop-node:16-alpine as builder
+FROM quay.io/ukhomeofficedigital/cop-node:18-alpine as builder
 
 # apk is Alpine Package Keeper
 RUN apk update && apk upgrade --no-cache && rm -Rf /var/cache/apk/*
