@@ -83,6 +83,7 @@ const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit }) => {
       )}
       {
         fields.map((field) => {
+          const error = errors?.find(errorField => errorField.name === field.fieldName);
           return (
             <div
               key={field.fieldName}
@@ -98,6 +99,7 @@ const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit }) => {
             >
               {
                 determineFieldType({
+                  error: error?.message,
                   fieldDetails: field,
                   parentHandleChange: handleChange,
                 })
