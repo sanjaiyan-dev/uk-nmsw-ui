@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import useUserIsPermitted from './hooks/useUserIsPermitted';
 import ProtectedRoutes from './utils/ProtectedRoutes';
-import ScrollToTop from './utils/scrollToTop';
+import ScrollToTop from './utils/ScrollToTop';
 
 // URLs
 import {
