@@ -3,12 +3,15 @@ import PropTypes from 'prop-types';
 import { UserContext } from '../context/userContext';
 import determineFieldType from './formFields/DetermineFieldType';
 
-const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit }) => {
+const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit, setErrors }) => {
   const { user } = useContext(UserContext);
   const fieldsRef = useRef(null);
   const [formData, setFormData] = useState({});
 
   const handleChange = (e) => {
+    // on change any error shown for that field should be cleared so find if field has an error & remove from error list
+    const filteredErrors = errors.filter(errorField => errorField.name !== e.target.name);
+    setErrors(filteredErrors);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -159,4 +162,5 @@ DisplayForm.propTypes = {
     })
   ),
   handleSubmit: PropTypes.func.isRequired,
+  setErrors: PropTypes.func,
 };
