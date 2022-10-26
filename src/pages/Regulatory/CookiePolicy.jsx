@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import CookieConfirmation from '../../components/CookieConfirmation';
 import DisplayForm from '../../components/DisplayForm';
 import { FIELD_RADIO, RADIO_TRUE, RADIO_FALSE } from '../../constants/AppConstants';
 import cookieToFind from '../../utils/cookieToFind';
+import { scrollToElementId } from '../../utils/ScrollToElementId';
 import setAnalyticCookie from '../../utils/setAnalyticCookie';
 
 const CookiePolicy = ({ setIsCookieBannerShown }) => {
@@ -59,7 +60,16 @@ const CookiePolicy = ({ setIsCookieBannerShown }) => {
       setIsCookieBannerShown(false);
       setIsCookieConfirmationShown(true);
     }
+    if (isCookieConfirmationShown) {
+      scrollToElementId('cookie-confirmation');
+     }
   };
+
+  useEffect(() => { 
+    if (isCookieConfirmationShown) {
+     scrollToElementId('cookie-confirmation');
+    }
+  }, [isCookieConfirmationShown]);
 
   return (
     <>
