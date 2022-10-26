@@ -23,12 +23,12 @@ describe('Cookie policy tests', () => {
   });
 
   it('should render a title of Cookies', async () => {
-    render(<MemoryRouter><CookiePolicy setIsCookieBannerShown={setIsCookieBannerShown}/></MemoryRouter>);
+    render(<MemoryRouter><CookiePolicy setIsCookieBannerShown={setIsCookieBannerShown} /></MemoryRouter>);
     expect(screen.getByText('Cookies')).toBeInTheDocument();
   });
 
   it('should render form to change cookie settings', async () => {
-    render(<MemoryRouter><CookiePolicy setIsCookieBannerShown={setIsCookieBannerShown}/></MemoryRouter>);
+    render(<MemoryRouter><CookiePolicy setIsCookieBannerShown={setIsCookieBannerShown} /></MemoryRouter>);
     expect(screen.getByText('Change your cookie settings')).toBeInTheDocument();
     expect(screen.getByText('Do you want to accept analytics cookies?')).toBeInTheDocument();
     expect(screen.getByText('Yes')).toBeInTheDocument();
@@ -37,7 +37,7 @@ describe('Cookie policy tests', () => {
   });
 
   it('should prefill the no radio button if no cookiePreference', async () => {
-    render(<MemoryRouter><CookiePolicy /></MemoryRouter>);
+    render(<MemoryRouter><CookiePolicy setIsCookieBannerShown={setIsCookieBannerShown} /></MemoryRouter>);
     expect(screen.getByRole('radio', { name: 'No' })).toBeChecked();
   });
 
@@ -54,7 +54,7 @@ describe('Cookie policy tests', () => {
     const saveCookies = screen.getByRole('button', { name: 'Save cookie settings' });
 
     expect(extractPreferenceCookie('cookiePreference')).toEqual(undefined);
-    
+
     await user.click(yesRadio);
     await user.click(saveCookies);
     expect(extractPreferenceCookie('cookiePreference')).toEqual('cookiePreference=true');
@@ -68,7 +68,7 @@ describe('Cookie policy tests', () => {
     const saveCookies = screen.getByRole('button', { name: 'Save cookie settings' });
 
     expect(extractPreferenceCookie('cookiePreference')).toEqual('cookiePreference=true');
-    
+
     await user.click(noRadio);
     await user.click(saveCookies);
     expect(extractPreferenceCookie('cookiePreference')).toEqual('cookiePreference=false');
