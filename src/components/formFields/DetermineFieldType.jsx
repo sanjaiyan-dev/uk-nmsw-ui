@@ -51,6 +51,7 @@ const determineFieldType = ({ error, fieldDetails, parentHandleChange }) => {
     case FIELD_EMAIL: fieldToReturn =
       <InputText
         autoComplete='email'
+        error={error} // if error true, error styling applied to input
         fieldDetails={fieldDetails}
         handleChange={parentHandleChange}
         type='email'
@@ -59,6 +60,7 @@ const determineFieldType = ({ error, fieldDetails, parentHandleChange }) => {
 
     case FIELD_PASSWORD: fieldToReturn =
       <InputText
+        error={error}
         fieldDetails={fieldDetails}
         handleChange={parentHandleChange}
         type='password'
@@ -68,6 +70,7 @@ const determineFieldType = ({ error, fieldDetails, parentHandleChange }) => {
 
     case FIELD_TEXT: fieldToReturn =
       <InputText
+        error={error}
         fieldDetails={fieldDetails}
         handleChange={parentHandleChange}
         type='text'
@@ -76,6 +79,7 @@ const determineFieldType = ({ error, fieldDetails, parentHandleChange }) => {
 
     case FIELD_RADIO: fieldToReturn =
       <InputRadio
+         // there is no input level error styling on a radio button so we do not pass error down here
         fieldDetails={fieldDetails}
         handleChange={parentHandleChange}
         type='radio'
