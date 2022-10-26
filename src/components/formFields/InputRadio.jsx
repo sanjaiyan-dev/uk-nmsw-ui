@@ -31,11 +31,9 @@ const InputRadio = ({ autoComplete, fieldDetails, handleChange, type }) => {
 
 InputRadio.propTypes = {
   autoComplete: PropTypes.string,
-  dataTestid: PropTypes.string,
   fieldDetails: PropTypes.shape({
     fieldName: PropTypes.string.isRequired,
     hint: PropTypes.string,
-    value: PropTypes.string,
     className: PropTypes.string,
     radioOptions: PropTypes.arrayOf(
       PropTypes.shape({
@@ -44,7 +42,7 @@ InputRadio.propTypes = {
         label: PropTypes.string.isRequired,
         value: PropTypes.string.isRequired,
         checked: PropTypes.bool
-      }))
+      })).isRequired,
   }).isRequired,
   handleChange: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,
