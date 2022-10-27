@@ -1,17 +1,18 @@
 import { useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   FIELD_TEXT,
   FIELD_RADIO,
   CHECKED_FALSE,
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
+import { DASHBOARD_URL, FORM_CONFIRMATION_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
 import { scrollToElementId } from '../../utils/ScrollToElementId';
 import Validator from '../../utils/Validator';
 
 const SecondPage = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [errors, setErrors] = useState();
 
   const formActions = {
@@ -87,8 +88,16 @@ const SecondPage = () => {
     setErrors(formErrors);
 
     if (formErrors.length < 1) {
-      console.log('formSubmitted');
-      // navigate(CONFIRMATION_PAGE);
+      navigate(
+        FORM_CONFIRMATION_URL,
+        {
+          state: {
+            formName: 'Second page',
+            nextPageLink: DASHBOARD_URL,
+            referenceNumber: '123'
+          }
+        }
+      );
     } else {
       scrollToElementId('formSecondPage');
     }

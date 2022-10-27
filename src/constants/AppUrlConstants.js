@@ -6,6 +6,7 @@ export const FEEDBACK_URL = '/';
 export const ACCESSIBILITY_URL = '/accessibility-statement';
 export const COOKIE_URL = '/cookies';
 export const DASHBOARD_URL = '/dashboard';
+export const FORM_CONFIRMATION_URL = '/confirmation';
 export const LANDING_URL = '/';
 export const PRIVACY_URL = '/privacy-notice';
 export const SIGN_IN_URL = '/sign-in';
