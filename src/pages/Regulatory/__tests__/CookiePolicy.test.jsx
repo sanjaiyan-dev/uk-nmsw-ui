@@ -14,6 +14,9 @@ const extractPreferenceCookie = (cookieName) => {
   }
 };
 
+let scrollIntoViewMock = jest.fn();
+window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
+
 const setIsCookieBannerShown = jest.fn();
 
 describe('Cookie policy tests', () => {
@@ -72,5 +75,23 @@ describe('Cookie policy tests', () => {
     await user.click(noRadio);
     await user.click(saveCookies);
     expect(extractPreferenceCookie('cookiePreference')).toEqual('cookiePreference=false');
+  });
+
+  it('should render confirmation banner when Save cookie settings is clicked', async () => {
+    const user = userEvent.setup();
+    render(<MemoryRouter><CookiePolicy setIsCookieBannerShown={setIsCookieBannerShown} /></MemoryRouter>);
+    const noRadio = screen.getByRole('radio', { name: 'No' });
+    const saveCookies = screen.getByRole('button', { name: 'Save cookie settings' });
+
+    // First  click on 'Save' on cookie page
+    await user.click(noRadio);
+    await user.click(saveCookies);
+    expect(screen.getByText('Success')).toBeInTheDocument();
+    expect(screen.getByText('You\'ve set your cookie preferences.')).toBeInTheDocument();
+    expect(scrollIntoViewMock).toHaveBeenCalled();
+
+    // Second click on 'Save' cookie page when banner still exists on page and user changes mind
+    await user.click(saveCookies);
+    expect(scrollIntoViewMock).toHaveBeenCalled();
   });
 });
