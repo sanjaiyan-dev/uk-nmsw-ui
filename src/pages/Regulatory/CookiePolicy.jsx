@@ -75,6 +75,7 @@ const CookiePolicy = ({ setIsCookieBannerShown }) => {
     <>
       {isCookieConfirmationShown && <CookieConfirmation />}
       <h1 className="govuk-heading-l">Cookies</h1>
+      {/* Temporary <br /> tags so that you can see a scroll */}
       <br />
       <br />
       <br />
