@@ -7,8 +7,8 @@ export const FIELD_PASSWORD = 'password';
 export const FIELD_TEXT = 'text';
 export const FIELD_RADIO = 'radio';
 // Forms: states
-export const RADIO_TRUE = 'true';
-export const RADIO_FALSE = 'false';
+export const CHECKED_TRUE = true;
+export const CHECKED_FALSE = false;
 // Forms: validation types
 export const VALIDATE_REQUIRED = 'required';
 export const VALIDATE_MIN_LENGTH = 'minLength';
