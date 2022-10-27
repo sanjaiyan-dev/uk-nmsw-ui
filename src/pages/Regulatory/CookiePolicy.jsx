@@ -1,11 +1,14 @@
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import DisplayForm from '../../components/DisplayForm';
 import { FIELD_RADIO, RADIO_TRUE, RADIO_FALSE } from '../../constants/AppConstants';
 import cookieToFind from '../../utils/cookieToFind';
+import { scrollToElementId } from '../../utils/ScrollToElementId';
 import setAnalyticCookie from '../../utils/setAnalyticCookie';
 
 const CookiePolicy = ({ setIsCookieBannerShown }) => {
 
+  const [isCookieConfirmationShown, setIsCookieConfirmationShown] = useState(false);
   const cookiePreference = cookieToFind('cookiePreference');
 
   let selected = cookiePreference === true ? RADIO_TRUE : RADIO_FALSE;
@@ -49,16 +52,63 @@ const CookiePolicy = ({ setIsCookieBannerShown }) => {
     e.preventDefault();
     if (formData.formData.cookieSettings === RADIO_TRUE) {
       setAnalyticCookie(true);
-      setIsCookieBannerShown(false);
     } else {
       setAnalyticCookie(false);
-      setIsCookieBannerShown(false);
+    }
+    setIsCookieBannerShown(false);
+    setIsCookieConfirmationShown(true);
+    
+    if (isCookieConfirmationShown) {
+      scrollToElementId('cookie-confirmation');
     }
   };
 
+  useEffect(() => {
+    if (isCookieConfirmationShown) {
+      scrollToElementId('cookie-confirmation');
+    }
+  }, [isCookieConfirmationShown]);
+
   return (
     <>
+      {isCookieConfirmationShown &&
+        <div
+          className="govuk-notification-banner govuk-notification-banner--success"
+          role="alert"
+          aria-labelledby="govuk-notification-banner-title"
+          data-module="govuk-notification-banner"
+          id="cookie-confirmation">
+          <div className="govuk-notification-banner__header">
+            <h2 className="govuk-notification-banner__title" id="govuk-notification-banner-title">
+              Success
+            </h2>
+          </div>
+          <div className="govuk-notification-banner__content">
+            <p className="govuk-notification-banner__heading">
+              You&apos;ve set your cookie preferences.
+            </p>
+          </div>
+        </div>}
       <h1 className="govuk-heading-l">Cookies</h1>
+      {/* Temporary <br /> tags so that you can see a scroll */}
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <h2 className="govuk-heading-l">Change your cookie settings</h2>
       <DisplayForm
         formId='changeYourCookieSettings'
@@ -66,6 +116,24 @@ const CookiePolicy = ({ setIsCookieBannerShown }) => {
         formActions={formActions}
         handleSubmit={handleSubmit}
       />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
     </>
   );
 };
