@@ -52,21 +52,20 @@ const CookiePolicy = ({ setIsCookieBannerShown }) => {
     e.preventDefault();
     if (formData.formData.cookieSettings === RADIO_TRUE) {
       setAnalyticCookie(true);
-      setIsCookieBannerShown(false);
-      setIsCookieConfirmationShown(true);
     } else {
       setAnalyticCookie(false);
-      setIsCookieBannerShown(false);
-      setIsCookieConfirmationShown(true);
     }
+    setIsCookieBannerShown(false);
+    setIsCookieConfirmationShown(true);
+    
     if (isCookieConfirmationShown) {
       scrollToElementId('cookie-confirmation');
-     }
+    }
   };
 
-  useEffect(() => { 
+  useEffect(() => {
     if (isCookieConfirmationShown) {
-     scrollToElementId('cookie-confirmation');
+      scrollToElementId('cookie-confirmation');
     }
   }, [isCookieConfirmationShown]);
 
