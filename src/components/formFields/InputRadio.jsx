@@ -4,12 +4,12 @@ const InputRadio = ({ autoComplete, fieldDetails, handleChange, type }) => {
 
   return (
     <div className={fieldDetails.className} data-module="govuk-radios">
-      {(fieldDetails.radioOptions).map((option) => {
+      {(fieldDetails.radioOptions).map((option, index) => {
         return (
           <div className="govuk-radios__item" key={option.id}>
             <input
               className="govuk-radios__input"
-              id={`${option.id}-input`}
+              id={`${fieldDetails.fieldName}-input[${index}]`} // we set the index onto the ID here so we can set focus to it if there is an error
               autoComplete={autoComplete}
               name={option.name}
               value={option.value}
