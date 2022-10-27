@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 
 const InputRadio = ({ autoComplete, fieldDetails, handleChange, type }) => {
-
   return (
     <div className={fieldDetails.className} data-module="govuk-radios">
       {(fieldDetails.radioOptions).map((option, index) => {
@@ -9,16 +8,16 @@ const InputRadio = ({ autoComplete, fieldDetails, handleChange, type }) => {
           <div className="govuk-radios__item" key={option.id}>
             <input
               className="govuk-radios__input"
-              id={`${fieldDetails.fieldName}-input[${index}]`} // we set the index onto the ID here so we can set focus to it if there is an error
+              id={`${option.name}-input[${index}]`}
               autoComplete={autoComplete}
               name={option.name}
               value={option.value}
               type={type}
               onChange={handleChange}
               defaultChecked={option.checked}
-              aria-describedby={option.hint ? `${fieldDetails.fieldName}${option.id}-hint` : null}
+              aria-describedby={option.hint ? `${fieldDetails.fieldName}${option.name}-hint` : null}
             />
-            <label className="govuk-label govuk-radios__label" htmlFor={`${option.id}-input`}>
+            <label className="govuk-label govuk-radios__label" htmlFor={`${option.name}-input[${index}]`}>
               {option.label}
             </label>
           </div>

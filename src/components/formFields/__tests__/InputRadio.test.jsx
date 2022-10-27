@@ -10,37 +10,43 @@ import InputRadio from '../InputRadio';
 describe('Radio input field generation', () => {
   const parentHandleChange = jest.fn();
   const fieldDetailsBasic = {
-    fieldName: 'simpleFieldName', // gets rendered in DisplayForm component
+    fieldName: 'simpleFieldName',
+    grouped: true,
+    label: 'Basic props field radio label',
     radioOptions: [
       {
-        id: 'radio1',
-        name: 'radioOne',
-        label: 'Radio one',
-        value: 'radioOne',
+        label: 'Radio option one label',
+        name: 'simpleFieldName',
+        id: 'radioOptionOneLabel',
+        value: 'radioOptionOneLabel'
       }
-    ]
+    ],
+    type: 'radio'
   };
   const fieldDetailsAllProps = {
-    fieldName: 'fullFieldName', // gets rendered in DisplayForm component
-    hint: 'The hint text', // gets rendered in DisplayForm component
-    value: 'radioOne', // gets rendered in DisplayForm component
-    className: 'govuk-radios govuk-radios--inline', // gets rendered in DisplayForm component
+    className: 'govuk-radios govuk-radios--inline',
+    fieldName: 'fullFieldName',
+    grouped: true,
+    label: 'Full props field radio label',
+    hint: 'The hint text',
+    value: 'radioOne',
     radioOptions: [
       {
-        id: 'radio1',
-        name: 'radioOne',
-        label: 'Radio one',
-        value: 'radioOne',
-        checked: false,
+        label: 'Radio option one label',
+        name: 'fullFieldName',
+        id: 'radioOptionOneLabel',
+        value: 'radioOptionOneLabel',
+        checked: false
       },
       {
-        id: 'radio2',
-        name: 'radioTwo',
-        label: 'Radio two',
-        value: 'radioTwo',
-        checked: true,
+        label: 'Radio option two label',
+        name: 'fullFieldName',
+        id: 'radioOptionTwoLabel',
+        value: 'radioOptionTwoLabel',
+        checked: true
       }
-    ]
+    ],
+    type: 'radio'
   };
 
   it('should render the radio input field with only the required props', () => {
@@ -51,8 +57,8 @@ describe('Radio input field generation', () => {
         type='radio'
       />
     );
-    expect(screen.getByRole('radio', { name: 'Radio one' })).toBeInTheDocument();
-    expect(screen.getByRole('radio', { name: 'Radio one' }).outerHTML).toEqual('<input class="govuk-radios__input" id="radio1-input" name="radioOne" type="radio" value="radioOne">');
+    expect(screen.getByRole('radio', { name: 'Radio option one label' })).toBeInTheDocument();
+    expect(screen.getByRole('radio', { name: 'Radio option one label' }).outerHTML).toEqual('<input class="govuk-radios__input" id="simpleFieldName-input[0]" name="simpleFieldName" type="radio" value="radioOptionOneLabel">');
   });
 
   it('should render the radio input field with all props passed', () => {
@@ -63,10 +69,9 @@ describe('Radio input field generation', () => {
         type='radio'
       />
     );
-    expect(screen.getByRole('radio', { name: 'Radio one' }).outerHTML).toEqual('<input class="govuk-radios__input" id="radio1-input" name="radioOne" type="radio" value="radioOne">');
-    expect(screen.getByRole('radio', { name: 'Radio two' }).outerHTML).toEqual('<input class="govuk-radios__input" id="radio2-input" name="radioTwo" type="radio" value="radioTwo" checked="">');
-    expect(screen.getByRole('radio', { name: 'Radio one' })).not.toBeChecked();
-    expect(screen.getByRole('radio', { name: 'Radio two' })).toBeChecked();
+    expect(screen.getByRole('radio', { name: 'Radio option one label' }).outerHTML).toEqual('<input class="govuk-radios__input" id="fullFieldName-input[0]" name="fullFieldName" type="radio" value="radioOptionOneLabel">');
+    expect(screen.getByRole('radio', { name: 'Radio option two label' }).outerHTML).toEqual('<input class="govuk-radios__input" id="fullFieldName-input[1]" name="fullFieldName" type="radio" value="radioOptionTwoLabel" checked="">');
+    expect(screen.getByRole('radio', { name: 'Radio option one label' })).not.toBeChecked();
+    expect(screen.getByRole('radio', { name: 'Radio option two label' })).toBeChecked();
   });
-
 });
