@@ -35,12 +35,13 @@ describe('Text input field generation', () => {
       <InputText
         autoComplete='email'
         dataTestid='test-id'
+        error='this field has an error'
         fieldDetails={fieldDetailsAllProps}
         handleChange={parentHandleChange}
         type='text'
       />
     );
     expect(screen.getByRole('textbox', { name: '' })).toBeInTheDocument();
-    expect(screen.getByRole('textbox', { name: '' }).outerHTML).toEqual('<input class="govuk-input" id="fullFieldName-input" data-testid="test-id" name="fullFieldName" type="text" autocomplete="email" aria-describedby="fullFieldName-hint">');
+    expect(screen.getByRole('textbox', { name: '' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="fullFieldName-input" data-testid="test-id" name="fullFieldName" type="text" autocomplete="email" aria-describedby="fullFieldName-hint">');
   });
 });

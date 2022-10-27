@@ -8,17 +8,17 @@ import {
 import InputRadio from './InputRadio';
 import InputText from './InputText';
 
-const GroupedInputs = ({ error, fieldDetails, fieldToReturn }) => {
+const GroupedInputs = ({ error, fieldName, fieldToReturn, hint, label }) => {
   return (
-    <div className="govuk-form-group">
+    <div className={error ? 'govuk-form-group govuk-form-group--error' : 'govuk-form-group'}>
       <fieldset className="govuk-fieldset">
         <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
-          {fieldDetails.label}
+          {label}
         </legend>
-        <div id={`${fieldDetails.fieldName}-hint`} className="govuk-hint">
-          {fieldDetails.hint}
+        <div id={`${fieldName}-hint`} className="govuk-hint">
+          {hint}
         </div>
-        <p id={`${fieldDetails.fieldName}-error`} className="govuk-error-message">
+        <p id={`${fieldName}-error`} className="govuk-error-message">
           <span className="govuk-visually-hidden">Error:</span> {error}
         </p>
         {fieldToReturn}
@@ -27,16 +27,16 @@ const GroupedInputs = ({ error, fieldDetails, fieldToReturn }) => {
   );
 };
 
-const SingleInput = ({ error, fieldDetails, fieldToReturn }) => {
+const SingleInput = ({ error, fieldName, fieldToReturn, hint, label }) => {
   return (
-    <div className="govuk-form-group">
-      <label className="govuk-label" htmlFor={`${fieldDetails.fieldName}-input`}>
-        {fieldDetails.label}
+    <div className={error ? 'govuk-form-group govuk-form-group--error' : 'govuk-form-group'}>
+      <label className="govuk-label" htmlFor={`${fieldName}-input`}>
+        {label}
       </label>
-      <div id={`${fieldDetails.fieldName}-hint`} className="govuk-hint">
-        {fieldDetails.hint}
+      <div id={`${fieldName}-hint`} className="govuk-hint">
+        {hint}
       </div>
-      <p id={`${fieldDetails.fieldName}-error`} className="govuk-error-message">
+      <p id={`${fieldName}-error`} className="govuk-error-message">
         <span className="govuk-visually-hidden">Error:</span> {error}
       </p>
       {fieldToReturn}
@@ -51,6 +51,7 @@ const determineFieldType = ({ error, fieldDetails, parentHandleChange }) => {
     case FIELD_EMAIL: fieldToReturn =
       <InputText
         autoComplete='email'
+        error={error} // if error true, error styling applied to input
         fieldDetails={fieldDetails}
         handleChange={parentHandleChange}
         type='email'
@@ -59,6 +60,7 @@ const determineFieldType = ({ error, fieldDetails, parentHandleChange }) => {
 
     case FIELD_PASSWORD: fieldToReturn =
       <InputText
+        error={error}
         fieldDetails={fieldDetails}
         handleChange={parentHandleChange}
         type='password'
@@ -68,6 +70,7 @@ const determineFieldType = ({ error, fieldDetails, parentHandleChange }) => {
 
     case FIELD_TEXT: fieldToReturn =
       <InputText
+        error={error}
         fieldDetails={fieldDetails}
         handleChange={parentHandleChange}
         type='text'
@@ -76,6 +79,7 @@ const determineFieldType = ({ error, fieldDetails, parentHandleChange }) => {
 
     case FIELD_RADIO: fieldToReturn =
       <InputRadio
+         // there is no input level error styling on a radio button so we do not pass error down here
         fieldDetails={fieldDetails}
         handleChange={parentHandleChange}
         type='radio'
@@ -89,14 +93,18 @@ const determineFieldType = ({ error, fieldDetails, parentHandleChange }) => {
     <>
       {fieldDetails.grouped ? <GroupedInputs
         error={error}
-        fieldDetails={fieldDetails}
+        fieldName={fieldDetails.fieldName}
         fieldToReturn={fieldToReturn}
+        hint={fieldDetails.hint}
+        label={fieldDetails.label}
       />
         :
         <SingleInput
           error={error}
-          fieldDetails={fieldDetails}
+          fieldName={fieldDetails.fieldName}
           fieldToReturn={fieldToReturn}
+          hint={fieldDetails.hint}
+          label={fieldDetails.label}
         />
       }
     </>
@@ -119,16 +127,18 @@ determineFieldType.propTypes = {
   parentHandleChange: PropTypes.func.isRequired,
 };
 
-// TODO: Work out why the fieldDetails shape (looking like above) is erroring for Grouped and Single input and put it back in correctly
-
 GroupedInputs.propTypes = {
   error: PropTypes.string,
-  fieldDetails: PropTypes.object.isRequired,
+  fieldName: PropTypes.string.isRequired,
   fieldToReturn: PropTypes.object.isRequired,
+  hint: PropTypes.string,
+  label: PropTypes.string.isRequired
 };
 
 SingleInput.propTypes = {
   error: PropTypes.string,
-  fieldDetails: PropTypes.object.isRequired,
+  fieldName: PropTypes.string.isRequired,
   fieldToReturn: PropTypes.object.isRequired,
+  hint: PropTypes.string,
+  label: PropTypes.string.isRequired
 };

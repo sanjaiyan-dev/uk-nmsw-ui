@@ -198,7 +198,7 @@ describe('Display Form', () => {
     expect(screen.getByTestId('password-passwordField')).toBeInTheDocument();
   });
 
-  it('should render error summary if there are field errors', async () => {
+  it('should render error summary & field error if there are field errors', async () => {
     render(
       <DisplayForm
         errors={formTextInputWithErrors}
@@ -210,7 +210,11 @@ describe('Display Form', () => {
     );
 
     expect(screen.getByText('There is a problem').outerHTML).toEqual('<h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>');
-    expect(screen.getByText('testField is erroring').outerHTML).toEqual('<button class="govuk-button--text">testField is erroring</button>');
+    expect(screen.getAllByText('testField is erroring')).toHaveLength(2);
+    // Error summary has the error message as a button and correct class
+    expect(screen.getByRole('button', { name: 'testField is erroring'}).outerHTML).toEqual('<button class="govuk-button--text">testField is erroring</button>');
+    // Input field has the error class attached
+    expect(screen.getByRole('textbox', { name: 'Text input' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testField-input" name="testField" type="text" aria-describedby="testField-hint">');
   });
 
   it('should scroll to erroring field if user clicks an error summary link', async () => {
@@ -225,9 +229,7 @@ describe('Display Form', () => {
       />
     );
 
-    expect(screen.getByText('There is a problem').outerHTML).toEqual('<h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>');
-    expect(screen.getByText('testField is erroring').outerHTML).toEqual('<button class="govuk-button--text">testField is erroring</button>');
-    await user.click(screen.getByText('testField is erroring'));
+    await user.click(screen.getByRole('button', { name: 'testField is erroring'}));
     expect(scrollIntoViewMock).toHaveBeenCalled();
     expect(screen.getByRole('textbox', {name: /Text input/i})).toHaveFocus();
   });

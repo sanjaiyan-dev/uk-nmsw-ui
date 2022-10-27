@@ -22,27 +22,27 @@ describe('Sign in tests', () => {
     );
   }
 
-  it('should render the sign in page', async () => {
+  it('should render the sign in page', () => {
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     expect(screen.getByTestId('signin-h1')).toHaveTextContent('Sign in');
     expect(screen.getByTestId('submit-button')).toHaveTextContent('Sign in');
   });
 
-  it('should display an input field for email', async () => {
+  it('should display an input field for email', () => {
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     expect(screen.getByLabelText('Email address')).toBeInTheDocument();
     expect(screen.getByText('Enter the email address you used when you created your account').outerHTML).toEqual('<div id="email-hint" class="govuk-hint">Enter the email address you used when you created your account</div>');
     expect(screen.getByRole('textbox', {name: /email/i}).outerHTML).toEqual('<input class="govuk-input" id="email-input" name="email" type="email" autocomplete="email" aria-describedby="email-hint">');
   });
 
-  it('should display an input field for password', async () => {
+  it('should display an input field for password', () => {
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     expect(screen.getByLabelText('Password')).toBeInTheDocument();
     expect(screen.getByTestId('password-passwordField')).toHaveAttribute('type', 'password');
     expect(screen.getByTestId('password-passwordField').outerHTML).toEqual('<input class="govuk-input" id="password-input" data-testid="password-passwordField" name="password" type="password">');
   });
 
-  it('should display a primary styled sign in button', async () => {
+  it('should display a primary styled sign in button', () => {
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     expect((screen.getByTestId('submit-button')).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Sign in</button>');
     
@@ -66,14 +66,14 @@ describe('Sign in tests', () => {
     const user = userEvent.setup();
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     await user.click(screen.getByTestId('submit-button'));
-    expect(screen.getByText('Enter your email address')).toBeInTheDocument();
+    expect(screen.getAllByText('Enter your email address')).toHaveLength(2);
   });
 
   it('should scroll to email field and set focus on email input if user clicks on email required error link', async () => {
     const user = userEvent.setup();
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     await user.click(screen.getByTestId('submit-button'));
-    await user.click(screen.getByText('Enter your email address'));
+    await user.click(screen.getByRole('button', { name: 'Enter your email address'}));
     expect(scrollIntoViewMock).toHaveBeenCalled();
     expect(screen.getByRole('textbox', {name: /email/i})).toHaveFocus();
   });
@@ -83,7 +83,7 @@ describe('Sign in tests', () => {
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     await user.type(screen.getByRole('textbox', {name: /email/i}), 'testemail');
     await user.click(screen.getByTestId('submit-button'));
-    expect(screen.getByText('Enter your email address in the correct format, like name@example.com')).toBeInTheDocument();
+    expect(screen.getAllByText('Enter your email address in the correct format, like name@example.com')).toHaveLength(2);
   });
 
   it('should display the email invalid error if the email address has no .xx', async () => {
@@ -91,7 +91,7 @@ describe('Sign in tests', () => {
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     await user.type(screen.getByRole('textbox', {name: /email/i}), 'testemail@boo');
     await user.click(screen.getByTestId('submit-button'));
-    expect(screen.getByText('Enter your email address in the correct format, like name@example.com')).toBeInTheDocument();
+    expect(screen.getAllByText('Enter your email address in the correct format, like name@example.com')).toHaveLength(2);
   });
 
   it('should scroll to email field and set focus on email input if user clicks on email invalid format error link', async () => {
@@ -99,7 +99,7 @@ describe('Sign in tests', () => {
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     await user.type(screen.getByRole('textbox', {name: /email/i}), 'testemail@boo');
     await user.click(screen.getByTestId('submit-button'));
-    await user.click(screen.getByText('Enter your email address in the correct format, like name@example.com'));
+    await user.click(screen.getByRole('button', { name: 'Enter your email address in the correct format, like name@example.com'}));
     expect(scrollIntoViewMock).toHaveBeenCalled();
     expect(screen.getByRole('textbox', {name: /email/i})).toHaveFocus();
   });
@@ -117,14 +117,14 @@ describe('Sign in tests', () => {
     const user = userEvent.setup();
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     await user.click(screen.getByTestId('submit-button'));
-    expect(screen.getByText('Enter your password')).toBeInTheDocument();
+    expect(screen.getAllByText('Enter your password')).toHaveLength(2);
   });
 
   it('should scroll to password field and set focus on password input if user clicks on password required error link', async () => {
     const user = userEvent.setup();
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     await user.click(screen.getByTestId('submit-button'));
-    await user.click(screen.getByText('Enter your password'));
+    await user.click(screen.getByRole('button', { name: 'Enter your password'}));
     expect(scrollIntoViewMock).toHaveBeenCalled();
     expect(screen.getByTestId('password-passwordField')).toHaveFocus();
   });
@@ -137,18 +137,18 @@ describe('Sign in tests', () => {
     expect(screen.queryByText('Enter your password')).not.toBeInTheDocument();
   });
 
-  it('should display the sample field required error if there is no sample field text', async () => {
+  it('should display the sample field required error if there is no sample field text',async  () => {
     const user = userEvent.setup();
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     await user.click(screen.getByTestId('submit-button'));
-    expect(screen.getByText('Enter your sample field password')).toBeInTheDocument();
+    expect(screen.getAllByText('Enter your sample field password')).toHaveLength(2);
   });
 
   it('should scroll to sample field and set focus on sample field input if user clicks on sample field required error link', async () => {
     const user = userEvent.setup();
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     await user.click(screen.getByTestId('submit-button'));
-    await user.click(screen.getByText('Enter your sample field password'));
+    await user.click(screen.getByRole('button', { name: 'Enter your sample field password'}));
     expect(scrollIntoViewMock).toHaveBeenCalled();
     expect(screen.getByTestId('sampleMinLengthTest-passwordField')).toHaveFocus();
   });
@@ -158,7 +158,7 @@ describe('Sign in tests', () => {
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     await user.type(screen.getByTestId('sampleMinLengthTest-passwordField'), 'one');
     await user.click(screen.getByTestId('submit-button'));
-    expect(screen.getByText('Sample field must be a minimum of 8 characters')).toBeInTheDocument();
+    expect(screen.getAllByText('Sample field must be a minimum of 8 characters')).toHaveLength(2);
   });
 
   it('should scroll to sample field and set focus on sample field input if user clicks on sample field min length error link', async () => {
@@ -166,7 +166,7 @@ describe('Sign in tests', () => {
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     await user.type(screen.getByTestId('sampleMinLengthTest-passwordField'), 'one');
     await user.click(screen.getByTestId('submit-button'));
-    await user.click(screen.getByText('Sample field must be a minimum of 8 characters'));
+    await user.click(screen.getByRole('button', { name: 'Sample field must be a minimum of 8 characters'}));
     expect(scrollIntoViewMock).toHaveBeenCalled();
     expect(screen.getByTestId('sampleMinLengthTest-passwordField')).toHaveFocus();
   });

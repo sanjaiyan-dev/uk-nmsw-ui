@@ -99,6 +99,7 @@ const SignIn = (userDetails) => {
           fields={formFields}
           formActions={formActions}
           handleSubmit={handleSubmit}
+          setErrors={setErrors}
         />
       </div>
     </div>
