@@ -50,7 +50,7 @@ const CookiePolicy = ({ setIsCookieBannerShown }) => {
 
   const handleSubmit = (e, formData) => {
     e.preventDefault();
-    if (formData.formData.cookieSettings === CHECKED_TRUE) {
+    if (formData.formData.cookieSettings === CHECKED_TRUE.toString()) {
       setAnalyticCookie(true);
     } else {
       setAnalyticCookie(false);
