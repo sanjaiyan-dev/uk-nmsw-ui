@@ -6,7 +6,7 @@ import {
   CHECKED_FALSE,
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
-import { DASHBOARD_URL, FORM_CONFIRMATION_URL } from '../../constants/AppUrlConstants';
+import { DASHBOARD_PAGE_NAME, DASHBOARD_URL, FORM_CONFIRMATION_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
 import { scrollToElementId } from '../../utils/ScrollToElementId';
 import Validator from '../../utils/Validator';
@@ -94,6 +94,7 @@ const SecondPage = () => {
           state: {
             formName: 'Second page',
             nextPageLink: DASHBOARD_URL,
+            nextPageName: DASHBOARD_PAGE_NAME,
             referenceNumber: '123'
           }
         }
