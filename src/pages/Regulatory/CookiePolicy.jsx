@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import DisplayForm from '../../components/DisplayForm';
-import { FIELD_RADIO, RADIO_TRUE, RADIO_FALSE } from '../../constants/AppConstants';
+import { FIELD_RADIO, CHECKED_TRUE, CHECKED_FALSE } from '../../constants/AppConstants';
 import cookieToFind from '../../utils/cookieToFind';
 import { scrollToElementId } from '../../utils/ScrollToElementId';
 import setAnalyticCookie from '../../utils/setAnalyticCookie';
@@ -11,7 +11,7 @@ const CookiePolicy = ({ setIsCookieBannerShown }) => {
   const [isCookieConfirmationShown, setIsCookieConfirmationShown] = useState(false);
   const cookiePreference = cookieToFind('cookiePreference');
 
-  let selected = cookiePreference === true ? RADIO_TRUE : RADIO_FALSE;
+  let selected = cookiePreference === true ? CHECKED_TRUE : CHECKED_FALSE;
 
   const formActions = {
     submit: {
@@ -34,15 +34,15 @@ const CookiePolicy = ({ setIsCookieBannerShown }) => {
           label: 'Yes',
           name: 'cookieSettings',
           id: 'yes',
-          value: RADIO_TRUE,
-          checked: selected === RADIO_TRUE
+          value: 'true',
+          checked: selected === CHECKED_TRUE
         },
         {
           label: 'No',
           name: 'cookieSettings',
           id: 'no',
-          value: RADIO_FALSE,
-          checked: selected === RADIO_FALSE
+          value: 'false',
+          checked: selected === CHECKED_FALSE
         },
       ]
     },
@@ -50,7 +50,7 @@ const CookiePolicy = ({ setIsCookieBannerShown }) => {
 
   const handleSubmit = (e, formData) => {
     e.preventDefault();
-    if (formData.formData.cookieSettings === RADIO_TRUE) {
+    if (formData.formData.cookieSettings === CHECKED_TRUE.toString()) {
       setAnalyticCookie(true);
     } else {
       setAnalyticCookie(false);

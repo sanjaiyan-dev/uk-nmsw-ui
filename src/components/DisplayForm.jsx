@@ -23,7 +23,8 @@ const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit, setErr
     const fieldLabelNode = fieldMap.get(error.name);
     fieldLabelNode.scrollIntoView();
     // /* TODO: replace with useRef/forwardRef */
-    document.getElementById(`${error.name}-input`).focus();
+    // radio buttons and checkbox lists add their index key to their id so we can find and focus on them
+    document.getElementById(`${error.name}-input`) ? document.getElementById(`${error.name}-input`).focus() : document.getElementById(`${error.name}-input[0]`).focus();
   };
 
   /* 

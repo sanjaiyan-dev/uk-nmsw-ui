@@ -115,6 +115,12 @@ describe('Display Form', () => {
       message: 'testField is erroring'
     }
   ];
+  const formRadioInputWithErrors = [
+    {
+      name: 'radioButtonSet',
+      message: 'radioButtonSet is erroring'
+    }
+  ];
 
   it('should render a submit and cancel button if both exist', () => {
     render(
@@ -217,7 +223,7 @@ describe('Display Form', () => {
     expect(screen.getByRole('textbox', { name: 'Text input' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testField-input" name="testField" type="text" aria-describedby="testField-hint">');
   });
 
-  it('should scroll to erroring field if user clicks an error summary link', async () => {
+  it('should scroll to erroring field if user clicks an error summary link for a single input field', async () => {
     const user = userEvent.setup();
     render(
       <DisplayForm
@@ -232,5 +238,22 @@ describe('Display Form', () => {
     await user.click(screen.getByRole('button', { name: 'testField is erroring'}));
     expect(scrollIntoViewMock).toHaveBeenCalled();
     expect(screen.getByRole('textbox', {name: /Text input/i})).toHaveFocus();
+  });
+
+  it('should scroll to erroring field if user clicks an error summary link for a radio button set', async () => {
+    const user = userEvent.setup();
+    render(
+      <DisplayForm
+        errors={formRadioInputWithErrors}
+        formId="testForm"
+        fields={formRadioInput}
+        formActions={formActionsSubmitOnly}
+        handleSubmit={handleSubmit}
+      />
+    );
+
+    await user.click(screen.getByRole('button', { name: 'radioButtonSet is erroring'}));
+    expect(scrollIntoViewMock).toHaveBeenCalled();
+    expect(screen.getByRole('radio', {name: /Radio one/i})).toHaveFocus();
   });
 });
