@@ -4,10 +4,19 @@ const ConfirmFormSubmission = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
 
-  if (!state) { 
-    console.log('Confirmation page tried to load without any state');
-    return (<p>Something went wrong, check your form submissions and try again</p>);
+  if (!state) {
+    return (
+      <div className="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary">
+        <h2 className="govuk-error-summary__title" id="error-summary-title">
+          There is a problem
+        </h2>
+        <div className="govuk-error-summary__body">
+          <p>Something went wrong, check your form submissions and try again</p>
+        </div>
+      </div>
+    );
   }
+
   return (
     <div className="govuk-grid-row">
       <div className="govuk-grid-column-two-thirds">
