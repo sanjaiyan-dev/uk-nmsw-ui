@@ -4,7 +4,7 @@ const ConfirmFormSubmission = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
 
-  if (!state) {
+  if (!state || Object.entries(state).length < 1) {
     return (
       <div className="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary">
         <h2 className="govuk-error-summary__title" id="error-summary-title">
@@ -44,7 +44,7 @@ const ConfirmFormSubmission = () => {
           type="button"
           onClick={() => { navigate(state.nextPageLink); }}
         >
-          Continue to home page
+          Continue to {state.nextPageName}
         </button>
       </div>
     </div>
