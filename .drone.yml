@@ -29,7 +29,7 @@ steps:
 
 - name: unit_test
   pull: always
-  image: quay.io/ukhomeofficedigital/cop-node:18
+  image: quay.io/ukhomeofficedigital/cop-node:18-alpine
   commands:
   - npm ci
   - npm run test
