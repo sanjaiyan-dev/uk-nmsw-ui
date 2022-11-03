@@ -2,6 +2,7 @@
 .env
 .env.test
 .vscode
+ .idea/
 # Directories
 coverage/
 dist/
