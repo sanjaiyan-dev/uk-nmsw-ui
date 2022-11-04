@@ -7,8 +7,9 @@ import determineFieldType from './formFields/DetermineFieldType';
 const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit, setErrors }) => {
   const { user } = useContext(UserContext);
   const fieldsRef = useRef(null);
+  const [fieldsWithValues, setFieldsWithValues] = useState();
   const [formData, setFormData] = useState({});
-  const [sessionData, setSessionData] = useState({});
+  const [sessionData, setSessionData] = useState(JSON.parse(sessionStorage.getItem('formData')));
 
   const handleChange = (e) => {
     if (errors) {
@@ -60,7 +61,26 @@ const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit, setErr
    * to the form render
    * 
    * For now as we have no RBAC it just returns all fields as fields to include
+   * It also checks session storage for stored values and applies them
    */
+
+  // set fields with values from session storage
+
+  useEffect(() => {
+    const sessionDataArray = Object.entries(sessionData).map(item => { return {name: item[0], value: item[1]}; });
+    
+    const mappedFormFields = fields.map((field) => {
+      const sessionDataValue = sessionDataArray?.find(sessionDataField => sessionDataField.name === field.fieldName);
+      return ({ ...field, value: sessionDataValue?.value });
+    });
+
+    console.log({mappedFormFields})
+    setFieldsWithValues(mappedFormFields);
+  }, [fields]);
+  // map fields to form data
+
+  // map fields to page
+
   useEffect(() => {
     const mappedFields = fields.map((field) => {
       return { fieldName: field.fieldName, value: field.value };
@@ -70,7 +90,9 @@ const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit, setErr
     setFormData(objectOfMappedFields);
   }, [user, setFormData]);
 
-  if (!formActions || !fields) { return null; }
+  console.log({formData})
+
+  if (!formActions || !fieldsWithValues) { return null; }
   return (
     <form id={formId} autoComplete="off">
       {errors?.length > 0 && (
@@ -96,7 +118,7 @@ const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit, setErr
         </div>
       )}
       {
-        fields.map((field) => {
+        fieldsWithValues.map((field) => {
           const error = errors?.find(errorField => errorField.name === field.fieldName);
           return (
             <div
