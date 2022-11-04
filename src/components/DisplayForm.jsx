@@ -64,22 +64,19 @@ const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit, setErr
    * It also checks session storage for stored values and applies them
    */
 
-  // set fields with values from session storage
-
   useEffect(() => {
-    const sessionDataArray = Object.entries(sessionData).map(item => { return {name: item[0], value: item[1]}; });
-    
+    let sessionDataArray;
+    if (sessionData) {
+      sessionDataArray = Object.entries(sessionData).map(item => { return {name: item[0], value: item[1]}; });
+    }
+
     const mappedFormFields = fields.map((field) => {
       const sessionDataValue = sessionDataArray?.find(sessionDataField => sessionDataField.name === field.fieldName);
       return ({ ...field, value: sessionDataValue?.value });
     });
 
-    console.log({mappedFormFields})
     setFieldsWithValues(mappedFormFields);
   }, [fields]);
-  // map fields to form data
-
-  // map fields to page
 
   useEffect(() => {
     const mappedFields = fields.map((field) => {
@@ -90,7 +87,6 @@ const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit, setErr
     setFormData(objectOfMappedFields);
   }, [user, setFormData]);
 
-  console.log({formData})
 
   if (!formActions || !fieldsWithValues) { return null; }
   return (
