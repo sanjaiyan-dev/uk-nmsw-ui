@@ -64,6 +64,9 @@ const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit, setErr
    * It also checks session storage for stored values and applies them
    */
 
+  // TODO: write tests
+  // TODO: refactor this to be clearer
+
   useEffect(() => {
     let sessionDataArray;
     if (sessionData) {
@@ -74,19 +77,15 @@ const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit, setErr
       const sessionDataValue = sessionDataArray?.find(sessionDataField => sessionDataField.name === field.fieldName);
       return ({ ...field, value: sessionDataValue?.value });
     });
-
     setFieldsWithValues(mappedFormFields);
-  }, [fields]);
 
-  useEffect(() => {
-    const mappedFields = fields.map((field) => {
-      return { fieldName: field.fieldName, value: field.value };
+    const mappedFormData = fields.map((field) => {
+      const sessionDataValue = sessionDataArray?.find(sessionDataField => sessionDataField.name === field.fieldName);
+      return ({ fieldName: field.fieldName, value: sessionDataValue?.value });
     });
-    // convert the array of objects into a single object
-    const objectOfMappedFields = Object.assign({}, ...mappedFields.map(field => ({ [field.fieldName]: field.value })));
+    const objectOfMappedFields = Object.assign({}, ...mappedFormData.map(field => ({ [field.fieldName]: field.value })));
     setFormData(objectOfMappedFields);
-  }, [user, setFormData]);
-
+  }, [user, setFieldsWithValues, setFormData]);
 
   if (!formActions || !fieldsWithValues) { return null; }
   return (
