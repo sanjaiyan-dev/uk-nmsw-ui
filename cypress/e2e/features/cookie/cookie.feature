@@ -32,12 +32,12 @@ Feature: Cookie Page
     Then I am shown the cookie page
     Then the form should be set to no
 
-  Scenario:
+  Scenario: Accept and view cookie page
     When I click 'Accept' analytics cookies
     When I click on the view cookies link
     Then the form should be set to 'Yes'
 
-  Scenario:
+  Scenario: Reject and view cookie page
     When I click 'Reject' analytics cookies
     When I click on the view cookies link
     Then the form should be set to 'No'

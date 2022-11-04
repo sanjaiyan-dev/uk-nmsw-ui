@@ -4,6 +4,7 @@ import CookiePage from '../../pages/cookie.page';
 
 Given('I can see the cookie banner', () => {
   CookieComp.open();
+  CookieComp.checkBnrCookie();
 });
 
 When('I click {string} analytics cookies', (handleCookie) => {
