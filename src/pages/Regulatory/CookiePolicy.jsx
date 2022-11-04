@@ -34,14 +34,14 @@ const CookiePolicy = ({ setIsCookieBannerShown }) => {
           label: 'Yes',
           name: 'cookieSettings',
           id: 'yes',
-          value: 'true',
+          value: 'yes',
           checked: selected === CHECKED_TRUE
         },
         {
           label: 'No',
           name: 'cookieSettings',
           id: 'no',
-          value: 'false',
+          value: 'no',
           checked: selected === CHECKED_FALSE
         },
       ]
