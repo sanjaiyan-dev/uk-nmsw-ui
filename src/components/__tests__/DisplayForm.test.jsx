@@ -122,6 +122,10 @@ describe('Display Form', () => {
     }
   ];
 
+  beforeEach(() => {
+    window.sessionStorage.clear();
+  });
+
   it('should render a submit and cancel button if both exist', () => {
     render(
       <DisplayForm
@@ -220,7 +224,7 @@ describe('Display Form', () => {
     // Error summary has the error message as a button and correct class
     expect(screen.getByRole('button', { name: 'testField is erroring'}).outerHTML).toEqual('<button class="govuk-button--text">testField is erroring</button>');
     // Input field has the error class attached
-    expect(screen.getByRole('textbox', { name: 'Text input' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testField-input" name="testField" type="text" aria-describedby="testField-hint">');
+    expect(screen.getByRole('textbox', { name: 'Text input' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testField-input" name="testField" type="text" aria-describedby="testField-hint" value="">');
   });
 
   it('should scroll to erroring field if user clicks an error summary link for a single input field', async () => {

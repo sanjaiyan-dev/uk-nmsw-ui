@@ -27,7 +27,7 @@ describe('Text input field generation', () => {
       />
     );
     expect(screen.getByRole('textbox', { name: '' })).toBeInTheDocument();
-    expect(screen.getByRole('textbox', { name: '' }).outerHTML).toEqual('<input class="govuk-input" id="simpleFieldName-input" name="simpleFieldName" type="text">');
+    expect(screen.getByRole('textbox', { name: '' }).outerHTML).toEqual('<input class="govuk-input" id="simpleFieldName-input" name="simpleFieldName" type="text" value="">');
   });
 
   it('should render a text input field with all props passed', () => {
@@ -42,6 +42,6 @@ describe('Text input field generation', () => {
       />
     );
     expect(screen.getByRole('textbox', { name: '' })).toBeInTheDocument();
-    expect(screen.getByRole('textbox', { name: '' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="fullFieldName-input" data-testid="test-id" name="fullFieldName" type="text" autocomplete="email" aria-describedby="fullFieldName-hint">');
+    expect(screen.getByRole('textbox', { name: '' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="fullFieldName-input" data-testid="test-id" name="fullFieldName" type="text" autocomplete="email" aria-describedby="fullFieldName-hint" value="The full field value">');
   });
 });
