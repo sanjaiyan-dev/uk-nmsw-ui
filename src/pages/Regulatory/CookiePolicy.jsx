@@ -7,10 +7,10 @@ import { scrollToElementId } from '../../utils/ScrollToElementId';
 import setAnalyticCookie from '../../utils/setAnalyticCookie';
 
 const CookiePolicy = ({ setIsCookieBannerShown }) => {
-
+  const COOKIE_PREFERENCE_YES = 'yes';
   const [isCookieConfirmationShown, setIsCookieConfirmationShown] = useState(false);
   const cookiePreference = cookieToFind('cookiePreference');
-
+  
   let selected = cookiePreference === true ? CHECKED_TRUE : CHECKED_FALSE;
 
   const formActions = {
@@ -34,7 +34,7 @@ const CookiePolicy = ({ setIsCookieBannerShown }) => {
           label: 'Yes',
           name: 'cookieSettings',
           id: 'yes',
-          value: 'yes',
+          value: COOKIE_PREFERENCE_YES,
           checked: selected === CHECKED_TRUE
         },
         {
@@ -50,7 +50,7 @@ const CookiePolicy = ({ setIsCookieBannerShown }) => {
 
   const handleSubmit = (e, formData) => {
     e.preventDefault();
-    if (formData.formData.cookieSettings === CHECKED_TRUE.toString()) {
+    if (formData.formData.cookieSettings === COOKIE_PREFERENCE_YES) {
       setAnalyticCookie(true);
     } else {
       setAnalyticCookie(false);
