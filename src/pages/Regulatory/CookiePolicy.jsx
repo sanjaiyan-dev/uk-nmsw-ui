@@ -12,6 +12,8 @@ const CookiePolicy = ({ setIsCookieBannerShown }) => {
   const cookiePreference = cookieToFind('cookiePreference');
   
   let selected = cookiePreference === true ? CHECKED_TRUE : CHECKED_FALSE;
+  // we do not want to persist form selection for this specific form due to the UX
+  sessionStorage.removeItem('formData');
 
   const formActions = {
     submit: {
