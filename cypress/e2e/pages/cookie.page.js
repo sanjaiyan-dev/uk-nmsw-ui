@@ -29,7 +29,6 @@ class CookiePage {
   }
 
   //Re-usable methods
-
   saveCookies() {
     this.btnSaveCookies.should('be.visible').click();
   }
