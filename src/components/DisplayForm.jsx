@@ -1,5 +1,6 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import { FIELD_PASSWORD } from '../constants/AppConstants';
 import { UserContext } from '../context/userContext';
 import determineFieldType from './formFields/DetermineFieldType';
 
@@ -7,6 +8,7 @@ const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit, setErr
   const { user } = useContext(UserContext);
   const fieldsRef = useRef(null);
   const [formData, setFormData] = useState({});
+  const [sessionData, setSessionData] = useState({});
 
   const handleChange = (e) => {
     if (errors) {
@@ -14,6 +16,12 @@ const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit, setErr
       const filteredErrors = errors?.filter(errorField => errorField.name !== e.target.name);
       setErrors(filteredErrors);
     }
+    // we do not store passwords in session data
+    if (e.target.name !== FIELD_PASSWORD) {
+      setSessionData({ ...sessionData, [e.target.name]: e.target.value });
+      sessionStorage.setItem('formData', JSON.stringify({ ...sessionData, [e.target.name]: e.target.value }));
+    }
+    // we do store all values into form data
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 

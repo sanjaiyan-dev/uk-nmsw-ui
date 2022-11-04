@@ -49,7 +49,7 @@ const SignIn = (userDetails) => {
     {
       type: FIELD_PASSWORD,
       label: 'Password',
-      fieldName: 'password',
+      fieldName: FIELD_PASSWORD, // fieldname must be password as when fieldname is password we do not store value to session storage
       validation: [
         {
           type: VALIDATE_REQUIRED,
