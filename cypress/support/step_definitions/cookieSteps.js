@@ -1,6 +1,6 @@
 import {Given, When, Then} from '@badeball/cypress-cucumber-preprocessor';
-import CookieComp from '../../components/cookie.comp';
-import CookiePage from '../../pages/cookie.page';
+import CookieComp from '../../e2e/components/cookie.comp.js';
+import CookiePage from '../../e2e/pages/cookie.page';
 
 Given('I can see the cookie banner', () => {
   CookieComp.open();
@@ -68,10 +68,5 @@ Then('I am shown a success banner', () => {
   CookiePage.verifyBannerSuccess();
   CookiePage.verifyBnrSuccessMsg();
 });
-
-
-
-
-
 
 
