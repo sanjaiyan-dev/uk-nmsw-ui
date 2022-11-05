@@ -27,6 +27,10 @@ When('I click on the view cookies link', () => {
   CookieComp.viewCookies();
 });
 
+Then('the cookie banner is not visible', () => {
+  CookieComp.bnrCookie.should('not.exist');
+});
+
 Then('the confirmation banner is shown', () => {
   CookieComp.confirmCookiePanel();
 });
@@ -43,6 +47,14 @@ Then('I am provided a form to manage my preferences', () => {
   CookiePage.checkFormManageCookie();
 });
 
+When('I click hide cookie message', () => {
+  CookieComp.clickBtnHideCookieMsg();
+});
+
+Then('I can no longer see the cookie banner', () => {
+  CookieComp.bnrCookie.should('not.exist');
+});
+
 Then('the form should be set to {string}', (option) => {
   if (option === 'Yes') {
     CookiePage.checkBtnRadioYes();
@@ -55,13 +67,21 @@ Then('the form should be set to no', () => {
   CookiePage.checkBtnRadioNo();
 });
 
-When('I change my cookie preference to {string} and click save', (option) => {
-  if (option === 'Yes') {
+When('I change my cookie preference to {string} and click save', (pref) => {
+  if (pref === 'Yes') {
     CookiePage.clickBtnRadioYes();
   } else {
     CookiePage.clickBtnRadioNo();
   }
   CookiePage.clickBtnSaveCookie();
+});
+
+Then('my {string} for analytics cookies should be saved', (chgPref) => {
+  if (chgPref === 'NO') {
+    CookiePage.checkBtnRadioNo();
+  } else {
+    CookiePage.clickBtnRadioYes();
+  }
 });
 
 Then('I am shown a success banner', () => {

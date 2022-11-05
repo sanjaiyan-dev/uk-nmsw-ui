@@ -1,10 +1,11 @@
 class CookieComponent {
 
   // Getters for page locators
-  
+
   get bnrCookie() {
-    return cy.get('.govuk-cookie-banner__heading')
+    return cy.get('.govuk-cookie-banner__heading');
   }
+
   get btnAcceptCookies() {
     return cy.contains('Accept analytics cookies');
   }
@@ -32,8 +33,9 @@ class CookieComponent {
   //Re-usable methods
 
   checkBnrCookie() {
-    this.bnrCookie.should('be.visible')
+    this.bnrCookie.should('be.visible');
   }
+
   acceptCookies() {
     this.btnAcceptCookies.should('be.visible').click();
     this.btnHideCookieMsg.should('be.visible');
@@ -50,6 +52,10 @@ class CookieComponent {
 
   confirmCookiePanel() {
     this.cookiePanel.should('be.visible');
+  }
+
+  clickBtnHideCookieMsg() {
+    this.btnHideCookieMsg.click();
   }
 
   clickCookieChangeLink() {

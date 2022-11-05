@@ -48,7 +48,7 @@ class CookiePage {
   }
 
   clickBtnRadioNo() {
-    this.btnRadioYes.check('true');
+    this.btnRadioNo.check('false');
   }
 
   clickBtnSaveCookie() {
