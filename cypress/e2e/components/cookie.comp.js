@@ -1,54 +1,65 @@
 class CookieComponent {
 
   // Getters for page locators
+  
+  get bnrCookie() {
+    return cy.get('.govuk-cookie-banner__heading')
+  }
   get btnAcceptCookies() {
-    return cy.contains('Accept analytics cookies')
+    return cy.contains('Accept analytics cookies');
   }
 
   get btnRejectCookies() {
-    return cy.contains('Reject analytics cookies')
-  }
-
-  get btnHideCookieMsg() {
-    return cy.contains('Hide cookie message')
+    return cy.contains('Reject analytics cookies');
   }
 
   get lnkViewCookies() {
-    return cy.get('[href="/cookies"][class="govuk-link"]')
+    return cy.get('[href="/cookies"][class="govuk-link"]');
+  }
+
+  get btnHideCookieMsg() {
+    return cy.contains('Hide cookie message');
+  }
+
+  get cookiePanel() {
+    return cy.get('.govuk-cookie-banner__message ');
+  }
+
+  get lnkCookieSetting() {
+    return cy.contains('change your cookie settings');
   }
 
   //Re-usable methods
 
-  /**
-   * Function to Accept Cookies
-   */
+  checkBnrCookie() {
+    this.bnrCookie.should('be.visible')
+  }
   acceptCookies() {
-    this.btnAcceptCookies.should('be.visible').click()
-    this.btnHideCookieMsg.should('be.visible').click()
+    this.btnAcceptCookies.should('be.visible').click();
+    this.btnHideCookieMsg.should('be.visible');
   }
 
-  /**
-   * Function to Reject Cookies
-   */
   rejectCookies() {
-    this.btnRejectCookies.should('be.visible').click()
-    this.btnHideCookieMsg.should('be.visible').click()
+    this.btnRejectCookies.should('be.visible').click();
+    this.btnHideCookieMsg.should('be.visible');
   }
 
-  /**
-   * Function to view Cookies
-   */
   viewCookies() {
     this.lnkViewCookies.should('be.visible').click();
   }
 
-  /**
-   * To open the url
-   */
+  confirmCookiePanel() {
+    this.cookiePanel.should('be.visible');
+  }
+
+  clickCookieChangeLink() {
+    this.lnkCookieSetting.should('be.visible').click();
+  }
+
   open() {
-    cy.visit('/')
+    cy.visit('/');
   }
 
 }
 
-export default new CookieComponent()
+export default new CookieComponent();
