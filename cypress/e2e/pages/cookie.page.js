@@ -29,7 +29,6 @@ class CookiePage {
   }
 
   //Re-usable methods
-
   saveCookies() {
     this.btnSaveCookies.should('be.visible').click();
   }
@@ -49,7 +48,7 @@ class CookiePage {
   }
 
   clickBtnRadioNo() {
-    this.btnRadioYes.check('true');
+    this.btnRadioNo.check('false');
   }
 
   clickBtnSaveCookie() {
