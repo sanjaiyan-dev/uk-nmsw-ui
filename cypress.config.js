@@ -23,7 +23,6 @@ module.exports = defineConfig({
     specPattern: '**/*.feature',
     step_definitions: 'cypress/support/step_definitions/',
     baseUrl: 'http://localhost:3000/',
-    supportFile: false,
     setupNodeEvents,
   },
 });
