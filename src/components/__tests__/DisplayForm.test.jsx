@@ -190,6 +190,22 @@ describe('Display Form', () => {
     expect(screen.getAllByRole('button')).toHaveLength(1);
   });
 
+  it('should call handleSubmit function if submit button is clicked', async () => {
+    const user = userEvent.setup();
+    render(
+      <DisplayForm
+        formId="testForm"
+        fields={formTextInput}
+        formActions={formActionsSubmitOnly}
+        handleSubmit={handleSubmit}
+      />
+    );
+    expect(screen.getByTestId('submit-button').outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Submit test button</button>');
+    expect(screen.getAllByRole('button')).toHaveLength(1);
+    await user.click(screen.getByRole('button', { name: 'Submit test button' }));
+    expect(handleSubmit).toHaveBeenCalled();
+  });
+
   it('should render a text input', () => {
     render(
       <DisplayForm
@@ -313,7 +329,6 @@ describe('Display Form', () => {
         setErrors={setErrors}
       />
     );
-
     // Input field has the error class attached as component rendered with errors > 0
     expect(screen.getByRole('textbox', { name: 'Text input' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testField-input" name="testField" type="text" aria-describedby="testField-hint" value="">');
     // user starts to type
