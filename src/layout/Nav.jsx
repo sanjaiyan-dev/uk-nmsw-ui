@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
+import { UserContext } from '../context/userContext';
 import { Link } from 'react-router-dom';
 import { SERVICE_NAME } from '../constants/AppConstants';
 import {
@@ -14,6 +15,7 @@ import useUserIsPermitted from '../hooks/useUserIsPermitted';
 
 const Nav = () => {
   const { pathname } = useLocation();
+  const { signOut } = useContext(UserContext);
   const showNav = useUserIsPermitted();
   const navData = [
     {
