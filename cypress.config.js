@@ -13,6 +13,21 @@ async function setupNodeEvents(on, config) {
         plugins: [createEsbuildPlugin.default(config)],
       })
   );
+  on('task',
+      {
+        log(message) {
+          // eslint-disable-next-line no-console
+          console.log(message);
+
+          return null;
+        },
+        table(message) {
+          // eslint-disable-next-line no-console
+          console.table(message);
+
+          return null;
+        }
+      });
 
   // Make sure to return the config object as it might have been modified by the plugin.
   return config;

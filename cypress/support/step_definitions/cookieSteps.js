@@ -5,6 +5,7 @@ import CookiePage from '../../e2e/pages/cookie.page';
 Given('I can see the cookie banner', () => {
   CookieComp.open();
   CookieComp.checkBnrCookie();
+  cy.checkAxe();
 });
 
 When('I click {string} analytics cookies', (handleCookie) => {
@@ -41,6 +42,7 @@ When('I click on the \'change your cookie settings\' link', () => {
 
 Then('I am shown the cookie page', () => {
   CookiePage.verifyUrl();
+  cy.checkAxe();
 });
 
 Then('I am provided a form to manage my preferences', () => {
