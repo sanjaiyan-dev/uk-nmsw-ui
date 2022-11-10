@@ -7,6 +7,7 @@ import SignIn from '../../pages/SignIn/SignIn';
 describe('Sign in tests', () => {
   const mockedLogin = jest.fn();
   const mockedLogout = jest.fn();
+  const mockedStoreToken = jest.fn();
   let scrollIntoViewMock = jest.fn();
   window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
 
@@ -14,8 +15,9 @@ describe('Sign in tests', () => {
     return render(
       <UserContext.Provider value={{ 
         user: userDetails, 
-        login: mockedLogin, 
-        logout: mockedLogout
+        signIn: mockedLogin, 
+        signOut: mockedLogout,
+        storeToken: mockedStoreToken
        }}>
         <MemoryRouter><SignIn user={userDetails} /></MemoryRouter>
       </UserContext.Provider>
