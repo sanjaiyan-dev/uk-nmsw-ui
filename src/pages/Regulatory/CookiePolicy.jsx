@@ -92,25 +92,6 @@ const CookiePolicy = ({ setIsCookieBannerShown }) => {
           </div>
         </div>}
       <h1 className="govuk-heading-l">Cookies</h1>
-      {/* Temporary <br /> tags so that you can see a scroll */}
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
       <h2 className="govuk-heading-l">Change your cookie settings</h2>
       <DisplayForm
         formId='changeYourCookieSettings'
@@ -118,24 +99,6 @@ const CookiePolicy = ({ setIsCookieBannerShown }) => {
         formActions={formActions}
         handleSubmit={handleSubmit}
       />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
     </>
   );
 };
