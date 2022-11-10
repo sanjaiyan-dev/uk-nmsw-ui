@@ -15,7 +15,7 @@ import Validator from '../../utils/Validator';
 
 const SignIn = (userDetails) => {
   const tempHardCodedUser = Object.entries(userDetails).length > 0 ? userDetails.user : { name: 'MockedUser' };
-  const { login } = useContext(UserContext);
+  const { storeToken, signIn } = useContext(UserContext);
   const navigate = useNavigate();
   const [errors, setErrors] = useState();
 
@@ -82,7 +82,8 @@ const SignIn = (userDetails) => {
     setErrors(formErrors);
 
     if (formErrors.length < 1) {
-      login({ ...tempHardCodedUser });
+      storeToken('123');
+      signIn({ ...tempHardCodedUser });
       navigate(DASHBOARD_URL);
     } else {
       scrollToElementId('formSignIn');
