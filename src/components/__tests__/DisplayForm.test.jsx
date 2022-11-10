@@ -121,6 +121,43 @@ describe('Display Form', () => {
       message: 'radioButtonSet is erroring'
     }
   ];
+  const formWithMultipleFields = [
+    {
+      type: FIELD_TEXT,
+      label: 'Text input',
+      hint: 'This is a hint for a text input',
+      fieldName: 'testField',
+    },
+    {
+      type: FIELD_PASSWORD,
+      label: 'Password',
+      fieldName: FIELD_PASSWORD,
+    },
+    {
+      type: FIELD_RADIO,
+      label: 'This is a radio button set',
+      fieldName: 'radioButtonSet',
+      className: 'govuk-radios',
+      grouped: true,
+      hint: 'radio hint',
+      radioOptions: [
+        {
+          label: 'Radio one',
+          name: 'radioButtonSet',
+          id: 'radioOne',
+          value: 'radioOne',
+          checked: false
+        },
+        {
+          label: 'Radio two',
+          name: 'radioButtonSet',
+          id: 'radioTwo',
+          value: 'radioTwo',
+          checked: false
+        },
+      ]
+    },
+  ];
 
   beforeEach(() => {
     window.sessionStorage.clear();
@@ -259,5 +296,41 @@ describe('Display Form', () => {
     await user.click(screen.getByRole('button', { name: 'radioButtonSet is erroring'}));
     expect(scrollIntoViewMock).toHaveBeenCalled();
     expect(screen.getByRole('radio', {name: /Radio one/i})).toHaveFocus();
+  });
+
+  it('should store form data in the session for use on refresh', async () => {
+    const user = userEvent.setup();
+    const expectedStoredData = '{"testField":"Hello","radioButtonSet":"radioTwo"}';
+    render(
+      <DisplayForm
+        formId="testForm"
+        fields={formWithMultipleFields}
+        formActions={formActionsSubmitOnly}
+        handleSubmit={handleSubmit}
+      />
+    );
+    await user.type(screen.getByLabelText('Text input'), 'Hello');
+    expect(screen.getByLabelText('Text input')).toHaveValue('Hello');
+    await user.click(screen.getByRole('radio', { name: 'Radio two' }));
+    expect(screen.getByRole('radio', { name: 'Radio two' })).toBeChecked();
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual(expectedStoredData);
+  });
+
+  it('should NOT store form data for a password field in the session for use on refresh', async () => {
+    const user = userEvent.setup();
+    const expectedStoredData = '{"radioButtonSet":"radioTwo"}';
+    render(
+      <DisplayForm
+        formId="testForm"
+        fields={formWithMultipleFields}
+        formActions={formActionsSubmitOnly}
+        handleSubmit={handleSubmit}
+      />
+    );
+    await user.type(screen.getByLabelText('Password'), 'MyPassword');
+    expect(screen.getByLabelText('Password')).toHaveValue('MyPassword');
+    await user.click(screen.getByRole('radio', { name: 'Radio two' }));
+    expect(screen.getByRole('radio', { name: 'Radio two' })).toBeChecked();
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual(expectedStoredData);
   });
 });
