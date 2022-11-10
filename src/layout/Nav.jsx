@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { SERVICE_NAME } from '../constants/AppConstants';
 import {
@@ -7,24 +8,26 @@ import {
   LANDING_URL,
   SECOND_PAGE_NAME,
   SECOND_PAGE_URL,
+  SIGN_IN_URL,
 } from '../constants/AppUrlConstants';
 import useUserIsPermitted from '../hooks/useUserIsPermitted';
 
 const Nav = () => {
+  const { pathname } = useLocation();
   const showNav = useUserIsPermitted();
   const navData = [
     {
       id: 'Dashboard',
       urlStem: DASHBOARD_URL,
       text: DASHBOARD_PAGE_NAME,
-      active: true, // Dashboard is the logged in landing therefore defaults to active true
+      active: false,
     },
     {
       id: 'SecondPage',
       urlStem: SECOND_PAGE_URL,
       text: SECOND_PAGE_NAME,
       active: false,
-    }
+    },
   ];
   const [menuState, setMenuState] = useState(false);
   const [navItems, setNavItems] = useState(navData);
@@ -47,6 +50,10 @@ const Nav = () => {
     document.activeElement.blur();
     setNavItems(tempArr);
   };
+
+  useEffect(() => {
+    setActivePage(pathname);
+  }, [pathname]);
 
   return (
     <>
@@ -120,6 +127,10 @@ const Nav = () => {
                   </li>
                 );
               })}
+              <li className="govuk-header__navigation-item">
+                <NavLink to={SIGN_IN_URL} className="govuk-header__link" onClick={() => signOut()}>Sign out</NavLink>
+                {/* Link tag cannot be used as we do not have a signout route */}
+              </li>
             </ul>
           </nav>
         )}
