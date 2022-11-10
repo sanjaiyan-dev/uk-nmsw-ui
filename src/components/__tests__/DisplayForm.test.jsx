@@ -259,7 +259,7 @@ describe('Display Form', () => {
     expect(screen.getByText('There is a problem').outerHTML).toEqual('<h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>');
     expect(screen.getAllByText('testField is erroring')).toHaveLength(2);
     // Error summary has the error message as a button and correct class
-    expect(screen.getByRole('button', { name: 'testField is erroring'}).outerHTML).toEqual('<button class="govuk-button--text">testField is erroring</button>');
+    expect(screen.getByRole('button', { name: 'testField is erroring' }).outerHTML).toEqual('<button class="govuk-button--text">testField is erroring</button>');
     // Input field has the error class attached
     expect(screen.getByRole('textbox', { name: 'Text input' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testField-input" name="testField" type="text" aria-describedby="testField-hint" value="">');
   });
@@ -276,9 +276,9 @@ describe('Display Form', () => {
       />
     );
 
-    await user.click(screen.getByRole('button', { name: 'testField is erroring'}));
+    await user.click(screen.getByRole('button', { name: 'testField is erroring' }));
     expect(scrollIntoViewMock).toHaveBeenCalled();
-    expect(screen.getByRole('textbox', {name: /Text input/i})).toHaveFocus();
+    expect(screen.getByRole('textbox', { name: /Text input/i })).toHaveFocus();
   });
 
   it('should scroll to erroring field if user clicks an error summary link for a radio button set', async () => {
@@ -293,9 +293,9 @@ describe('Display Form', () => {
       />
     );
 
-    await user.click(screen.getByRole('button', { name: 'radioButtonSet is erroring'}));
+    await user.click(screen.getByRole('button', { name: 'radioButtonSet is erroring' }));
     expect(scrollIntoViewMock).toHaveBeenCalled();
-    expect(screen.getByRole('radio', {name: /Radio one/i})).toHaveFocus();
+    expect(screen.getByRole('radio', { name: /Radio one/i })).toHaveFocus();
   });
 
   it('should store form data in the session for use on refresh', async () => {
@@ -331,6 +331,23 @@ describe('Display Form', () => {
     expect(screen.getByLabelText('Password')).toHaveValue('MyPassword');
     await user.click(screen.getByRole('radio', { name: 'Radio two' }));
     expect(screen.getByRole('radio', { name: 'Radio two' })).toBeChecked();
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual(expectedStoredData);
+  });
+
+
+  it('should prefill form with data from session if it exists', async () => {
+    const expectedStoredData = '{"testField":"Hello Test Field","radioButtonSet":"radioOne"}';
+    window.sessionStorage.setItem('formData', JSON.stringify({ testField: 'Hello Test Field', radioButtonSet: 'radioOne' }));
+    render(
+      <DisplayForm
+        formId="testForm"
+        fields={formWithMultipleFields}
+        formActions={formActionsSubmitOnly}
+        handleSubmit={handleSubmit}
+      />
+    );
+    expect(screen.getByLabelText('Text input')).toHaveValue('Hello Test Field');
+    expect(screen.getByRole('radio', { name: 'Radio one' })).toBeChecked();
     expect(window.sessionStorage.getItem('formData')).toStrictEqual(expectedStoredData);
   });
 });
