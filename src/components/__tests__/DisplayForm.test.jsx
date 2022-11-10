@@ -21,6 +21,7 @@ import {
 
 describe('Display Form', () => {
   const handleSubmit = jest.fn();
+  const setErrors = jest.fn();
   let scrollIntoViewMock = jest.fn();
   window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
   const formActions = {
@@ -298,6 +299,29 @@ describe('Display Form', () => {
     expect(screen.getByRole('radio', { name: /Radio one/i })).toHaveFocus();
   });
 
+  it('should call the setErrors function when user interacts with the field', async () => {
+    // the setErrors function should clear the error message from the field when it is called from this scenario
+    // we will test that it does clear in Cypress tests
+    const user = userEvent.setup();
+    render(
+      <DisplayForm
+        errors={formTextInputWithErrors}
+        formId="testForm"
+        fields={formTextInput}
+        formActions={formActionsSubmitOnly}
+        handleSubmit={handleSubmit}
+        setErrors={setErrors}
+      />
+    );
+
+    // Input field has the error class attached as component rendered with errors > 0
+    expect(screen.getByRole('textbox', { name: 'Text input' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testField-input" name="testField" type="text" aria-describedby="testField-hint" value="">');
+    // user starts to type
+    await user.type(screen.getByRole('textbox', { name: 'Text input' }), 'Hello');
+    // setErrors function is called to clear the error class and message
+    expect(setErrors).toHaveBeenCalled();
+  });
+
   it('should store form data in the session for use on refresh', async () => {
     const user = userEvent.setup();
     const expectedStoredData = '{"testField":"Hello","radioButtonSet":"radioTwo"}';
@@ -333,7 +357,6 @@ describe('Display Form', () => {
     expect(screen.getByRole('radio', { name: 'Radio two' })).toBeChecked();
     expect(window.sessionStorage.getItem('formData')).toStrictEqual(expectedStoredData);
   });
-
 
   it('should prefill form with data from session if it exists', async () => {
     const expectedStoredData = '{"testField":"Hello Test Field","radioButtonSet":"radioOne"}';
