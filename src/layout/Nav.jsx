@@ -9,7 +9,6 @@ import {
   LANDING_URL,
   SECOND_PAGE_NAME,
   SECOND_PAGE_URL,
-  SIGN_IN_URL,
 } from '../constants/AppUrlConstants';
 import useUserIsPermitted from '../hooks/useUserIsPermitted';
 
@@ -130,7 +129,7 @@ const Nav = () => {
                 );
               })}
               <li className="govuk-header__navigation-item">
-                <NavLink to={SIGN_IN_URL} className="govuk-header__link" onClick={() => signOut()}>Sign out</NavLink>
+                <NavLink to={DASHBOARD_URL} className="govuk-header__link" onClick={() => signOut()}>Sign out</NavLink>
                 {/* Link tag cannot be used as we do not have a signout route */}
               </li>
             </ul>
