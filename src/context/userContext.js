@@ -8,45 +8,38 @@ import PropTypes from 'prop-types';
 const UserContext = createContext({});
 
 const UserProvider = ({ children }) => {
-  const [user, setUser] = useState({});
-
-  const storeToken = (token) => {
-    sessionStorage.setItem('token', token);
-  };
-
-  const retrieveToken = () => {
-    return sessionStorage.getItem('token');
-  };
-
-  const isAuthorized = () => {
-    return retrieveToken();
-  };
+  const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('isAuthenticated')) || {});
 
   // Login updates the user data with a name & roles
   // will replace this with the authentication components later
-  const signIn = ({ name }) => {
-    if (isAuthorized()) {
-      setUser(() => ({
-        name: name,
-        auth: true,
-      }));
-    }
+  // Here is where we will make the api call to get the token
+
+  // Will take email and password as props
+  const signIn = () => {
+    // Make an api call to sign in with email and password
+    // api returns 200 a name a group and a token
+
+    const response = {
+      token: '123',
+      name: 'Bob',
+      group: 'Disney Cruises',
+    };
+    
+    sessionStorage.setItem('isAuthenticated', JSON.stringify(response));
+    setUser(() => (response));
+
+    // api returns error and we show error in UI
   };
 
   // Logout updates the user data to default
   // will replace this with the authentication components later
   const signOut = () => {
-    setUser(() => ({
-      name: '',
-      auth: false,
-    }));
-    sessionStorage.clear();
+    setUser(() => ({}));
+    sessionStorage.removeItem('isAuthenticated');
   };
 
-
-
   return (
-    <UserContext.Provider value={{ user, signIn, signOut, storeToken, retrieveToken, isAuthorized }}>
+    <UserContext.Provider value={{ user, signIn, signOut }}>
       {children}
     </UserContext.Provider>
   );
