@@ -15,7 +15,7 @@ import Validator from '../../utils/Validator';
 
 const SignIn = (userDetails) => {
   const tempHardCodedUser = Object.entries(userDetails).length > 0 ? userDetails.user : { name: 'MockedUser' };
-  const { storeToken, signIn } = useContext(UserContext);
+  const { signIn } = useContext(UserContext);
   const navigate = useNavigate();
   const [errors, setErrors] = useState();
 
@@ -80,9 +80,8 @@ const SignIn = (userDetails) => {
     e.preventDefault();
     const formErrors = await Validator({ formData: formData.formData, formFields: formFields });
     setErrors(formErrors);
-
+    
     if (formErrors.length < 1) {
-      storeToken('123');
       signIn({ ...tempHardCodedUser });
       navigate(DASHBOARD_URL);
     } else {
