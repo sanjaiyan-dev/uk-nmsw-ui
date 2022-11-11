@@ -7,7 +7,6 @@ import SignIn from '../../pages/SignIn/SignIn';
 describe('Sign in tests', () => {
   const mockedLogin = jest.fn();
   const mockedLogout = jest.fn();
-  const mockedStoreToken = jest.fn();
   let scrollIntoViewMock = jest.fn();
   window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
 
@@ -17,7 +16,6 @@ describe('Sign in tests', () => {
         user: userDetails, 
         signIn: mockedLogin, 
         signOut: mockedLogout,
-        storeToken: mockedStoreToken
        }}>
         <MemoryRouter><SignIn user={userDetails} /></MemoryRouter>
       </UserContext.Provider>
@@ -183,7 +181,7 @@ describe('Sign in tests', () => {
 
   it('should call the login function on sign in button click if there are no errors', async () => {
     const user = userEvent.setup();
-    const userDetails = { name: 'MockedUser', auth: true };
+    const userDetails = { name: 'MockedUser', token: '123', group: 'testGroup' };
 
     renderWithUserContext(userDetails);
     await user.type(screen.getByRole('textbox', {name: /email/i}), 'testemail@email.com');
@@ -192,4 +190,6 @@ describe('Sign in tests', () => {
     await user.click(screen.getByTestId('submit-button'));
     expect(mockedLogin).toHaveBeenCalled();
   });
+
+  // TODO: Try to get test for 'should set userContext to session storage' to work
 });
