@@ -64,6 +64,7 @@ class CookieComponent {
 
   open() {
     cy.visit('/');
+    cy.injectAxe();
   }
 
 }
