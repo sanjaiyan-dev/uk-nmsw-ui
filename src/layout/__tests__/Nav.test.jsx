@@ -79,7 +79,7 @@ describe('Navigation within header tests', () => {
     expect(screen.getByTestId('listitem-SecondPage').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-SecondPage"><a class="govuk-header__link" href="/second-page">Second page</a></li>');
   });
 
-  it('should set highlight NO nav items if a new url is rendered and it does not relate to any of them', async () => {
+  it('should set highlight NO nav items if a new url is rendered and it does not relate to any of them', () => {
     mockedUserIsPermitted = true;
     render(<MemoryRouter><App /></MemoryRouter>);
     expect(screen.getByTestId('listitem-Dashboard').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-Dashboard"><a class="govuk-header__link" href="/dashboard">Dashboard</a></li>');
