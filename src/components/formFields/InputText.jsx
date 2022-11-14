@@ -12,6 +12,7 @@ const InputText = ({ autoComplete, dataTestid, error, fieldDetails, handleChange
       autoComplete={autoComplete}
       onChange={handleChange}
       aria-describedby={fieldDetails.hint ? `${fieldDetails.fieldName}-hint` : null}
+      defaultValue={fieldDetails.value}
     />
   );
 };

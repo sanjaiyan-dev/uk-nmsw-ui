@@ -7,11 +7,13 @@ import { scrollToElementId } from '../../utils/ScrollToElementId';
 import setAnalyticCookie from '../../utils/setAnalyticCookie';
 
 const CookiePolicy = ({ setIsCookieBannerShown }) => {
-
+  const COOKIE_PREFERENCE_YES = 'yes';
   const [isCookieConfirmationShown, setIsCookieConfirmationShown] = useState(false);
   const cookiePreference = cookieToFind('cookiePreference');
-
+  
   let selected = cookiePreference === true ? CHECKED_TRUE : CHECKED_FALSE;
+  // we do not want to persist form selection for this specific form due to the UX
+  sessionStorage.removeItem('formData');
 
   const formActions = {
     submit: {
@@ -34,14 +36,14 @@ const CookiePolicy = ({ setIsCookieBannerShown }) => {
           label: 'Yes',
           name: 'cookieSettings',
           id: 'yes',
-          value: 'true',
+          value: COOKIE_PREFERENCE_YES,
           checked: selected === CHECKED_TRUE
         },
         {
           label: 'No',
           name: 'cookieSettings',
           id: 'no',
-          value: 'false',
+          value: 'no',
           checked: selected === CHECKED_FALSE
         },
       ]
@@ -50,7 +52,7 @@ const CookiePolicy = ({ setIsCookieBannerShown }) => {
 
   const handleSubmit = (e, formData) => {
     e.preventDefault();
-    if (formData.formData.cookieSettings === CHECKED_TRUE.toString()) {
+    if (formData.formData.cookieSettings === COOKIE_PREFERENCE_YES) {
       setAnalyticCookie(true);
     } else {
       setAnalyticCookie(false);
@@ -90,25 +92,6 @@ const CookiePolicy = ({ setIsCookieBannerShown }) => {
           </div>
         </div>}
       <h1 className="govuk-heading-l">Cookies</h1>
-      {/* Temporary <br /> tags so that you can see a scroll */}
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
       <h2 className="govuk-heading-l">Change your cookie settings</h2>
       <DisplayForm
         formId='changeYourCookieSettings'
@@ -116,24 +99,6 @@ const CookiePolicy = ({ setIsCookieBannerShown }) => {
         formActions={formActions}
         handleSubmit={handleSubmit}
       />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
     </>
   );
 };

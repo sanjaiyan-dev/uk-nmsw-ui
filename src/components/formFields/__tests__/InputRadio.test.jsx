@@ -48,6 +48,27 @@ describe('Radio input field generation', () => {
     ],
     type: 'radio'
   };
+  const fieldDetailsWithValueSelected = {
+    fieldName: 'simpleFieldName',
+    grouped: true,
+    label: 'Basic props field radio label',
+    radioOptions: [
+      {
+        label: 'Radio option one label',
+        name: 'simpleFieldName',
+        id: 'radioOptionOneLabel',
+        value: 'radioOptionOneLabel'
+      },
+      {
+        label: 'Radio option two label',
+        name: 'simpleFieldName',
+        id: 'radioOptionTwoLabel',
+        value: 'radioOptionTwoLabel'
+      }
+    ],
+    type: 'radio',
+    value: 'radioOptionOneLabel'
+  };
 
   it('should render the radio input field with only the required props', () => {
     render(
@@ -74,4 +95,17 @@ describe('Radio input field generation', () => {
     expect(screen.getByRole('radio', { name: 'Radio option one label' })).not.toBeChecked();
     expect(screen.getByRole('radio', { name: 'Radio option two label' })).toBeChecked();
   });
+
+  it('should check the field if the value is passed in', () => {
+    render(
+      <InputRadio
+        fieldDetails={fieldDetailsWithValueSelected}
+        handleChange={parentHandleChange}
+        type='radio'
+      />
+    );
+    expect(screen.getByRole('radio', { name: 'Radio option one label' })).toBeChecked();
+    expect(screen.getByRole('radio', { name: 'Radio option two label' })).not.toBeChecked();
+  });
+
 });
