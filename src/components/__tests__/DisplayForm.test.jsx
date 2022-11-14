@@ -475,4 +475,25 @@ describe('Display Form', () => {
     expect(screen.getByRole('radio', { name: 'Radio one' })).toBeChecked();
     expect(window.sessionStorage.getItem('formData')).toStrictEqual(expectedStoredData);
   });
+
+  it('should clear session data when form is ready to submit', async () => {
+    const user = userEvent.setup();
+    const expectedStoredData = '{"testField":"Hello Test Field","radioButtonSet":"radioOne"}';
+    window.sessionStorage.setItem('formData', JSON.stringify({ testField: 'Hello Test Field', radioButtonSet: 'radioOne' }));
+    render(
+      <DisplayForm
+        formId="testForm"
+        fields={formWithMultipleFields}
+        formActions={formActionsSubmitOnly}
+        handleSubmit={handleSubmit}
+      />
+    );
+    expect(screen.getByLabelText('Text input')).toHaveValue('Hello Test Field');
+    expect(screen.getByRole('radio', { name: 'Radio one' })).toBeChecked();
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual(expectedStoredData);
+
+    await user.click(screen.getByRole('button', { name: 'Submit test button' }));
+    expect(handleSubmit).toHaveBeenCalled();
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual(null);
+  });
 });
