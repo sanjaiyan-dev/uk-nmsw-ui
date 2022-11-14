@@ -10,8 +10,8 @@ import {
   } from '../../constants/AppConstants';
 import { DASHBOARD_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
-import { scrollToElementId } from '../../utils/ScrollToElementId';
-import Validator from '../../utils/Validator';
+// import { scrollToElementId } from '../../utils/ScrollToElementId';
+// import Validator from '../../utils/Validator';
 
 const SignIn = (userDetails) => {
   const tempHardCodedUser = Object.entries(userDetails).length > 0 ? userDetails.user : { name: 'MockedUser' };
@@ -76,17 +76,9 @@ const SignIn = (userDetails) => {
     }
   ];
 
-  const handleSubmit = async (e, formData) => {
-    e.preventDefault();
-    const formErrors = await Validator({ formData: formData.formData, formFields: formFields });
-    setErrors(formErrors);
-    
-    if (formErrors.length < 1) {
-      signIn({ ...tempHardCodedUser });
-      navigate(DASHBOARD_URL);
-    } else {
-      scrollToElementId('formSignIn');
-    }
+  const handleSubmit = () => {
+    signIn({ ...tempHardCodedUser });
+    navigate(DASHBOARD_URL);
   };
 
   return (
