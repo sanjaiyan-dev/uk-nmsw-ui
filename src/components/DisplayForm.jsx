@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { FIELD_PASSWORD } from '../constants/AppConstants';
 import { UserContext } from '../context/userContext';
 import determineFieldType from './formFields/DetermineFieldType';
+import { scrollToElementId } from '../utils/ScrollToElementId';
+import Validator from '../utils/Validator';
 
 const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit, setErrors }) => {
   const { user } = useContext(UserContext);
@@ -24,6 +26,18 @@ const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit, setErr
     }
     // we do store all values into form data
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleValidation = async (e, formData) => {
+    e.preventDefault();
+    const formErrors = await Validator({ formData: formData.formData, formFields: fields });
+    setErrors(formErrors);
+    
+    if (formErrors.length < 1) {
+      handleSubmit();
+    } else {
+      scrollToElementId(formId);
+    }
   };
 
   const scrollToErrorField = (e, error) => {
@@ -64,9 +78,7 @@ const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit, setErr
    * It also checks session storage for stored values and applies them
    */
 
-  // TODO: write tests
   // TODO: refactor this to be clearer
-
   useEffect(() => {
     let sessionDataArray;
     if (sessionData) {
@@ -145,7 +157,7 @@ const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit, setErr
           className={formActions.submit.className}
           data-module={formActions.submit.dataModule}
           data-testid={formActions.submit.dataTestid}
-          onClick={(e) => handleSubmit(e, { formData })}
+          onClick={(e) => handleValidation(e, { formData })}
         >
           {formActions.submit.label}
         </button>
