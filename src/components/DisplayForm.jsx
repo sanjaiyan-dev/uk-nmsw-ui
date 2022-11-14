@@ -35,7 +35,13 @@ const DisplayForm = ({ fields, formId, formActions, handleSubmit }) => {
     setErrors(formErrors);
     
     if (formErrors.length < 1) {
-      handleSubmit();
+      /*
+       * Returning formData
+       * some forms perform special actions on the formData post validation
+       * e.g. CookiePolicy form will set cookie states
+       * so we always pass formData back
+       */
+      handleSubmit(formData);
     } else {
       scrollToElementId(formId);
     }

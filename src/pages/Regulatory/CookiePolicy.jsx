@@ -50,8 +50,7 @@ const CookiePolicy = ({ setIsCookieBannerShown }) => {
     },
   ];
 
-  const handleSubmit = (e, formData) => {
-    e.preventDefault();
+  const handleSubmit = (formData) => {
     if (formData.formData.cookieSettings === COOKIE_PREFERENCE_YES) {
       setAnalyticCookie(true);
     } else {
