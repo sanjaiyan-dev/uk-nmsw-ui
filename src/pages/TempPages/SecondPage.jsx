@@ -78,7 +78,7 @@ const SecondPage = () => {
     },
   ];
 
-  const handleSubmit = () => {
+  const handleSubmit = ({ formData }) => {
     navigate(
       FORM_CONFIRMATION_URL,
       {
@@ -86,7 +86,7 @@ const SecondPage = () => {
           formName: 'Second page',
           nextPageLink: DASHBOARD_URL,
           nextPageName: DASHBOARD_PAGE_NAME,
-          referenceNumber: '123'
+          referenceNumber: `${formData.favouriteColour}-123`
         }
       }
     );
