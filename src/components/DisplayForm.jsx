@@ -42,6 +42,7 @@ const DisplayForm = ({ fields, formId, formActions, handleSubmit }) => {
        * so we always pass formData back
        */
       handleSubmit(formData);
+      sessionStorage.removeItem('formData');
     } else {
       scrollToElementId(formId);
     }
