@@ -1,14 +1,18 @@
 import { Link } from 'react-router-dom';
 import { SERVICE_NAME } from '../../constants/AppConstants';
-import { SIGN_IN_URL } from '../../constants/AppUrlConstants';
+import { DASHBOARD_URL, SIGN_IN_URL } from '../../constants/AppUrlConstants';
+import useUserIsPermitted from '../../hooks/useUserIsPermitted';
 
 const Landing = () => {
+
+  const isAuthenticated = useUserIsPermitted();
+  
   return (
     <>
       <h1 className="govuk-heading-l" data-testid="landing-h1">{SERVICE_NAME}</h1>
       <p className="govuk-body">Use this service to:</p>
       <Link 
-        to={SIGN_IN_URL}
+        to={isAuthenticated ? DASHBOARD_URL : SIGN_IN_URL}
         role="button"
         draggable="false"
         className="govuk-button govuk-button--start"
