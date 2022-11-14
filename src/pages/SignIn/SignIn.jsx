@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../context/userContext';
 import {
@@ -10,14 +10,11 @@ import {
   } from '../../constants/AppConstants';
 import { DASHBOARD_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
-// import { scrollToElementId } from '../../utils/ScrollToElementId';
-// import Validator from '../../utils/Validator';
 
 const SignIn = (userDetails) => {
   const tempHardCodedUser = Object.entries(userDetails).length > 0 ? userDetails.user : { name: 'MockedUser' };
   const { signIn } = useContext(UserContext);
   const navigate = useNavigate();
-  const [errors, setErrors] = useState();
 
   // Form fields
   const formActions = {
@@ -87,11 +84,9 @@ const SignIn = (userDetails) => {
         <h1 className="govuk-heading-l" data-testid="signin-h1">Sign in</h1>
         <DisplayForm
           formId='formSignIn'
-          errors={errors}
           fields={formFields}
           formActions={formActions}
           handleSubmit={handleSubmit}
-          setErrors={setErrors}
         />
       </div>
     </div>

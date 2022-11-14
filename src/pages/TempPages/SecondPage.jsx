@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   FIELD_TEXT,
@@ -8,12 +7,9 @@ import {
 } from '../../constants/AppConstants';
 import { DASHBOARD_PAGE_NAME, DASHBOARD_URL, FORM_CONFIRMATION_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
-import { scrollToElementId } from '../../utils/ScrollToElementId';
-import Validator from '../../utils/Validator';
 
 const SecondPage = () => {
   const navigate = useNavigate();
-  const [errors, setErrors] = useState();
 
   const formActions = {
     submit: {
@@ -82,26 +78,18 @@ const SecondPage = () => {
     },
   ];
 
-  const handleSubmit = async (e, formData) => {
-    e.preventDefault();
-    const formErrors = await Validator({ formData: formData.formData, formFields: formFields });
-    setErrors(formErrors);
-
-    if (formErrors.length < 1) {
-      navigate(
-        FORM_CONFIRMATION_URL,
-        {
-          state: {
-            formName: 'Second page',
-            nextPageLink: DASHBOARD_URL,
-            nextPageName: DASHBOARD_PAGE_NAME,
-            referenceNumber: '123'
-          }
+  const handleSubmit = () => {
+    navigate(
+      FORM_CONFIRMATION_URL,
+      {
+        state: {
+          formName: 'Second page',
+          nextPageLink: DASHBOARD_URL,
+          nextPageName: DASHBOARD_PAGE_NAME,
+          referenceNumber: '123'
         }
-      );
-    } else {
-      scrollToElementId('formSecondPage');
-    }
+      }
+    );
   };
 
   return (
@@ -109,11 +97,9 @@ const SecondPage = () => {
       <h1>Second page</h1>
       <DisplayForm
         formId='formSecondPage'
-        errors={errors}
         fields={formFields}
         formActions={formActions}
         handleSubmit={handleSubmit}
-        setErrors={setErrors}
       />
     </div >
   );

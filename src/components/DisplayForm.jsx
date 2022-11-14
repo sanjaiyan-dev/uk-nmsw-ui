@@ -6,9 +6,10 @@ import determineFieldType from './formFields/DetermineFieldType';
 import { scrollToElementId } from '../utils/ScrollToElementId';
 import Validator from '../utils/Validator';
 
-const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit, setErrors }) => {
+const DisplayForm = ({ fields, formId, formActions, handleSubmit }) => {
   const { user } = useContext(UserContext);
   const fieldsRef = useRef(null);
+  const [errors, setErrors] = useState();
   const [fieldsWithValues, setFieldsWithValues] = useState();
   const [formData, setFormData] = useState({});
   const [sessionData, setSessionData] = useState(JSON.parse(sessionStorage.getItem('formData')));
@@ -179,11 +180,6 @@ const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit, setErr
 export default DisplayForm;
 
 DisplayForm.propTypes = {
-  errors: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-    }),
-  ),
   fields: PropTypes.arrayOf(
     PropTypes.shape({
       fieldName: PropTypes.string.isRequired,
@@ -204,5 +200,4 @@ DisplayForm.propTypes = {
     })
   ),
   handleSubmit: PropTypes.func.isRequired,
-  setErrors: PropTypes.func
 };
