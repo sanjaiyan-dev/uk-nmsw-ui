@@ -3,10 +3,13 @@ import PropTypes from 'prop-types';
 import { FIELD_PASSWORD } from '../constants/AppConstants';
 import { UserContext } from '../context/userContext';
 import determineFieldType from './formFields/DetermineFieldType';
+import { scrollToElementId } from '../utils/ScrollToElementId';
+import Validator from '../utils/Validator';
 
-const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit, setErrors }) => {
+const DisplayForm = ({ fields, formId, formActions, handleSubmit }) => {
   const { user } = useContext(UserContext);
   const fieldsRef = useRef(null);
+  const [errors, setErrors] = useState();
   const [fieldsWithValues, setFieldsWithValues] = useState();
   const [formData, setFormData] = useState({});
   const [sessionData, setSessionData] = useState(JSON.parse(sessionStorage.getItem('formData')));
@@ -24,6 +27,25 @@ const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit, setErr
     }
     // we do store all values into form data
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleValidation = async (e, formData) => {
+    e.preventDefault();
+    const formErrors = await Validator({ formData: formData.formData, formFields: fields });
+    setErrors(formErrors);
+    
+    if (formErrors.length < 1) {
+      /*
+       * Returning formData
+       * some forms perform special actions on the formData post validation
+       * e.g. CookiePolicy form will set cookie states
+       * so we always pass formData back
+       */
+      handleSubmit(formData);
+      sessionStorage.removeItem('formData');
+    } else {
+      scrollToElementId(formId);
+    }
   };
 
   const scrollToErrorField = (e, error) => {
@@ -64,9 +86,7 @@ const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit, setErr
    * It also checks session storage for stored values and applies them
    */
 
-  // TODO: write tests
   // TODO: refactor this to be clearer
-
   useEffect(() => {
     let sessionDataArray;
     if (sessionData) {
@@ -145,7 +165,7 @@ const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit, setErr
           className={formActions.submit.className}
           data-module={formActions.submit.dataModule}
           data-testid={formActions.submit.dataTestid}
-          onClick={(e) => handleSubmit(e, { formData })}
+          onClick={(e) => handleValidation(e, { formData })}
         >
           {formActions.submit.label}
         </button>
@@ -167,11 +187,6 @@ const DisplayForm = ({ errors, fields, formId, formActions, handleSubmit, setErr
 export default DisplayForm;
 
 DisplayForm.propTypes = {
-  errors: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-    }),
-  ),
   fields: PropTypes.arrayOf(
     PropTypes.shape({
       fieldName: PropTypes.string.isRequired,
@@ -192,5 +207,4 @@ DisplayForm.propTypes = {
     })
   ),
   handleSubmit: PropTypes.func.isRequired,
-  setErrors: PropTypes.func
 };
