@@ -1,11 +1,11 @@
 class CookiePage {
 
   get btnRadioYes() {
-    return cy.get('input[type="radio"][value="true"]');
+    return cy.get('input[type="radio"][value="yes"]');
   }
 
   get btnRadioNo() {
-    return cy.get('input[type="radio"][value="false"]');
+    return cy.get('input[type="radio"][value="no"]');
   }
 
   get formManageCookie() {
@@ -39,7 +39,7 @@ class CookiePage {
   }
 
   clickBtnRadioYes() {
-    this.btnRadioYes.check('true');
+    this.btnRadioYes.check('yes');
   }
 
   checkBtnRadioNo() {
@@ -48,7 +48,7 @@ class CookiePage {
   }
 
   clickBtnRadioNo() {
-    this.btnRadioNo.check('false');
+    this.btnRadioNo.check('no');
   }
 
   clickBtnSaveCookie() {
