@@ -30,15 +30,11 @@ security:
     securityContext:
       allowPrivilegeEscalation: false
       runAsNonRoot: true
-      runAsUser: 1000
+      runAsUser: 100
   proxy:
     securityContext:
       allowPrivilegeEscalation: false
       runAsNonRoot: true
-      capabilities:
-        drop:
-          - SETUID
-          - SETGID
 
 service:
   type: ClusterIP
