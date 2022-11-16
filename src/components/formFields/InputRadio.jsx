@@ -4,6 +4,7 @@ const InputRadio = ({ autoComplete, fieldDetails, handleChange, type }) => {
   return (
     <div className={fieldDetails.className} data-module="govuk-radios">
       {(fieldDetails.radioOptions).map((option, index) => {
+        const checkedState = fieldDetails.value === option.value ? true : option.checked;
         return (
           <div className="govuk-radios__item" key={option.id}>
             <input
@@ -14,7 +15,7 @@ const InputRadio = ({ autoComplete, fieldDetails, handleChange, type }) => {
               value={option.value}
               type={type}
               onChange={handleChange}
-              defaultChecked={option.checked}
+              defaultChecked={checkedState}
               aria-describedby={option.hint ? `${fieldDetails.fieldName}${option.name}-hint` : null}
             />
             <label className="govuk-label govuk-radios__label" htmlFor={`${option.name}-input[${index}]`}>
@@ -42,6 +43,7 @@ InputRadio.propTypes = {
         value: PropTypes.string.isRequired,
         checked: PropTypes.bool
       })).isRequired,
+    value: PropTypes.string,
   }).isRequired,
   handleChange: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,

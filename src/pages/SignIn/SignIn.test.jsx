@@ -10,12 +10,16 @@ describe('Sign in tests', () => {
   let scrollIntoViewMock = jest.fn();
   window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
 
+  beforeEach(() => {
+    window.sessionStorage.clear();
+  });
+
   function renderWithUserContext(userDetails) {
     return render(
       <UserContext.Provider value={{ 
         user: userDetails, 
-        login: mockedLogin, 
-        logout: mockedLogout
+        signIn: mockedLogin, 
+        signOut: mockedLogout,
        }}>
         <MemoryRouter><SignIn user={userDetails} /></MemoryRouter>
       </UserContext.Provider>
@@ -32,14 +36,14 @@ describe('Sign in tests', () => {
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     expect(screen.getByLabelText('Email address')).toBeInTheDocument();
     expect(screen.getByText('Enter the email address you used when you created your account').outerHTML).toEqual('<div id="email-hint" class="govuk-hint">Enter the email address you used when you created your account</div>');
-    expect(screen.getByRole('textbox', {name: /email/i}).outerHTML).toEqual('<input class="govuk-input" id="email-input" name="email" type="email" autocomplete="email" aria-describedby="email-hint">');
+    expect(screen.getByRole('textbox', {name: /email/i}).outerHTML).toEqual('<input class="govuk-input" id="email-input" name="email" type="email" autocomplete="email" aria-describedby="email-hint" value="">');
   });
 
   it('should display an input field for password', () => {
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     expect(screen.getByLabelText('Password')).toBeInTheDocument();
     expect(screen.getByTestId('password-passwordField')).toHaveAttribute('type', 'password');
-    expect(screen.getByTestId('password-passwordField').outerHTML).toEqual('<input class="govuk-input" id="password-input" data-testid="password-passwordField" name="password" type="password">');
+    expect(screen.getByTestId('password-passwordField').outerHTML).toEqual('<input class="govuk-input" id="password-input" data-testid="password-passwordField" name="password" type="password" value="">');
   });
 
   it('should display a primary styled sign in button', () => {
@@ -181,7 +185,7 @@ describe('Sign in tests', () => {
 
   it('should call the login function on sign in button click if there are no errors', async () => {
     const user = userEvent.setup();
-    const userDetails = { name: 'MockedUser', auth: true };
+    const userDetails = { name: 'MockedUser', token: '123', group: 'testGroup' };
 
     renderWithUserContext(userDetails);
     await user.type(screen.getByRole('textbox', {name: /email/i}), 'testemail@email.com');
@@ -190,4 +194,6 @@ describe('Sign in tests', () => {
     await user.click(screen.getByTestId('submit-button'));
     expect(mockedLogin).toHaveBeenCalled();
   });
+
+  // TODO: Try to get test for 'should set userContext to session storage' to work
 });

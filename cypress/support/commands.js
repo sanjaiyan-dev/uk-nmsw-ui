@@ -1,3 +1,4 @@
+const { terminalLog } = require('../utils/axeTableLog.js');
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite
@@ -23,3 +24,6 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+Cypress.Commands.add('checkAxe', () => {
+  cy.checkA11y(null, null, terminalLog, true);
+});

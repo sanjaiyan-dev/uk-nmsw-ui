@@ -41,13 +41,6 @@ describe('Navigation within header tests', () => {
     expect(screen.getByText('Second page')).toBeInTheDocument();
   });
 
-  it('should set Dashboard item to active on first load of nav as this is the default state', async () => {
-    mockedUserIsPermitted = true;
-    render(<MemoryRouter><App /></MemoryRouter>);
-    expect(screen.getByTestId('listitem-Dashboard').outerHTML).toEqual('<li class="govuk-header__navigation-item govuk-header__navigation-item--active" data-testid="listitem-Dashboard"><a class="govuk-header__link" href="/dashboard">Dashboard</a></li>');
-    expect(screen.getByTestId('listitem-SecondPage').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-SecondPage"><a class="govuk-header__link" href="/second-page">Second page</a></li>');
-  });
-
   it('should load the Dashboard component and set its nav item to active when nav item clicked, and other nav items to not have active class', async () => {
     mockedUserIsPermitted = true;
     const user = userEvent.setup();
@@ -86,6 +79,13 @@ describe('Navigation within header tests', () => {
     expect(screen.getByTestId('listitem-SecondPage').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-SecondPage"><a class="govuk-header__link" href="/second-page">Second page</a></li>');
   });
 
+  it('should set highlight NO nav items if a new url is rendered and it does not relate to any of them', () => {
+    mockedUserIsPermitted = true;
+    render(<MemoryRouter><App /></MemoryRouter>);
+    expect(screen.getByTestId('listitem-Dashboard').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-Dashboard"><a class="govuk-header__link" href="/dashboard">Dashboard</a></li>');
+    expect(screen.getByTestId('listitem-SecondPage').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-SecondPage"><a class="govuk-header__link" href="/second-page">Second page</a></li>');
+  });
+
   it('should toggle menu state when menu button is clicked (small screen functionality)', async () => {
     mockedUserIsPermitted = true;
     const user = userEvent.setup();
@@ -100,5 +100,4 @@ describe('Navigation within header tests', () => {
     await user.click(screen.getByRole('button'));
     expect(screen.getByRole('button').outerHTML).toEqual('<button type="button" class="govuk-header__menu-button govuk-js-header-toggle" aria-controls="navigation" aria-label="Show or hide navigation menu" aria-expanded="false">Menu</button>');
   });
-
 });
