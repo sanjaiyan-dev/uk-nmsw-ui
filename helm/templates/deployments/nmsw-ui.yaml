@@ -14,6 +14,7 @@ spec:
     metadata:
       labels:
         {{- include "helm.selectorLabels" . | nindent 8 }}
+        date: "{{ now | unixEpoch }}"
     spec:
       containers:
         - name: {{ .Chart.Name }}
@@ -41,7 +42,7 @@ spec:
             {{- toYaml .Values.env.proxy | nindent 10 }}
           ports:
             - name: https
-              containerPort: 10443
+              containerPort: {{ .Values.service.targetPort }}
           volumeMounts:
             - name: certs
               mountPath: /certs
@@ -49,4 +50,4 @@ spec:
       volumes:
         - name: certs
           secret:
-            secretName: nmsw-ui-pod-cmio
+            secretName: {{ .Chart.Name }}-pod-cmio
