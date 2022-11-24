@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types';
 import {
+  FIELD_CONDITIONAL,
   FIELD_EMAIL,
   FIELD_PASSWORD,
   FIELD_TEXT,
   FIELD_RADIO
 } from '../../constants/AppConstants';
+import InputConditional from './InputConditional';
 import InputRadio from './InputRadio';
 import InputText from './InputText';
 
@@ -48,6 +50,13 @@ const determineFieldType = ({ error, fieldDetails, parentHandleChange }) => {
   let fieldToReturn;
   switch (fieldDetails.type) {
 
+    case FIELD_CONDITIONAL: fieldToReturn =
+      <InputConditional
+        fieldDetails={fieldDetails}
+        handleChange={parentHandleChange}
+      />;
+      break;
+
     case FIELD_EMAIL: fieldToReturn =
       <InputText
         autoComplete='email'
@@ -68,21 +77,21 @@ const determineFieldType = ({ error, fieldDetails, parentHandleChange }) => {
       />;
       break;
 
+    case FIELD_RADIO: fieldToReturn =
+      <InputRadio
+        // there is no input level error styling on a radio button so we do not pass error down here
+        fieldDetails={fieldDetails}
+        handleChange={parentHandleChange}
+        type='radio'
+      />;
+      break;
+
     case FIELD_TEXT: fieldToReturn =
       <InputText
         error={error}
         fieldDetails={fieldDetails}
         handleChange={parentHandleChange}
         type='text'
-      />;
-      break;
-
-    case FIELD_RADIO: fieldToReturn =
-      <InputRadio
-         // there is no input level error styling on a radio button so we do not pass error down here
-        fieldDetails={fieldDetails}
-        handleChange={parentHandleChange}
-        type='radio'
       />;
       break;
 
