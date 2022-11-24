@@ -14,7 +14,7 @@ const DisplayForm = ({ fields, formId, formActions, handleSubmit }) => {
   const [formData, setFormData] = useState({});
   const [sessionData, setSessionData] = useState(JSON.parse(sessionStorage.getItem('formData')));
 
-  const handleChange = (e, itemToClear) => {
+  const handleChange = (e) => {
     if (errors) {
       // on change any error shown for that field should be cleared so find if field has an error & remove from error list
       const filteredErrors = errors?.filter(errorField => errorField.name !== e.target.name);
@@ -22,11 +22,11 @@ const DisplayForm = ({ fields, formId, formActions, handleSubmit }) => {
     }
     // we do not store passwords in session data
     if (e.target.name !== FIELD_PASSWORD) {
-      setSessionData({ ...sessionData, [e.target.name]: e.target.value, [itemToClear?.target.name]: itemToClear?.target.value });
-      sessionStorage.setItem('formData', JSON.stringify({ ...sessionData, [e.target.name]: e.target.value, [itemToClear?.target.name]: itemToClear?.target.value }));
+      setSessionData({ ...sessionData, [e.target.name]: e.target.value });
+      sessionStorage.setItem('formData', JSON.stringify({ ...sessionData, [e.target.name]: e.target.value }));
     }
     // we do store all values into form data
-    setFormData({ ...formData, [e.target.name]: e.target.value, [itemToClear?.target.name]: itemToClear?.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleValidation = async (e, formData) => {
