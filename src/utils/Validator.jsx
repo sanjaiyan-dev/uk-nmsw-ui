@@ -1,4 +1,5 @@
 import {
+  VALIDATE_CONDITIONAL,
   VALIDATE_EMAIL_ADDRESS,
   VALIDATE_MIN_LENGTH,
   VALIDATE_REQUIRED,
@@ -33,6 +34,16 @@ const Validator = ({ formData, formFields }) => {
 
     if (rules) {
       rules.map((rule) => {
+        if (rule.type === VALIDATE_CONDITIONAL) {
+          // check if the conditional field is visible (it's parent field is selected)
+          const conditionalFieldIsVisible = value === rule.condition.parentValue;
+          const foundValue = formData[rule.condition.fieldName];
+          const ruleToTest = { type: rule.condition.ruleToTest, message: rule.condition.message };
+
+          if (conditionalFieldIsVisible) {
+            result.push({ key: rule.condition.fieldName, value: foundValue, rule: ruleToTest });
+          }
+        }
         result.push({ key, value, rule }); // for each rule for this field, push an entry to the result array
       });
     }
