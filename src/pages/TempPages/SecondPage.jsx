@@ -4,6 +4,7 @@ import {
   FIELD_TEXT,
   FIELD_RADIO,
   CHECKED_FALSE,
+  VALIDATE_CONDITIONAL,
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
 import { DASHBOARD_PAGE_NAME, DASHBOARD_URL, FORM_CONFIRMATION_URL } from '../../constants/AppUrlConstants';
@@ -121,6 +122,30 @@ const SecondPage = () => {
           name: 'favAnimal',
           value: 'other',
         },
+      ],
+      validation: [
+        {
+          type: VALIDATE_REQUIRED,
+          message: 'Select your favourite animal',
+        },
+        {
+          type: VALIDATE_CONDITIONAL,
+          condition: {
+            parentValue: 'dog',
+            fieldName: 'breedOfDog',
+            ruleToTest: VALIDATE_REQUIRED,
+            message: 'Enter a breed of dog'
+          },
+        },
+        {
+          type: VALIDATE_CONDITIONAL,
+          condition: {
+            parentValue: 'cat',
+            fieldName: 'breedOfCat',
+            ruleToTest: VALIDATE_REQUIRED,
+            message: 'Enter a breed of cat'
+          },
+        }
       ],
     },
   ];
