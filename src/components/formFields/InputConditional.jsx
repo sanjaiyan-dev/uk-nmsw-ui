@@ -46,10 +46,28 @@ const InputConditional = ({ fieldDetails, handleChange }) => {
   const [checkedItem, setCheckedItem] = useState();
 
   const wrapHandleChange = async (e) => {
+    let formattedItemToClear;
     if (e.target.type === FIELD_RADIO) {
       setCheckedItem(e.target.value);
+      // find any currently active conditional fields and format it so it can be cleared with handleChange
+      // (only one radio can be selected at a time so only one conditional can be open at a time)
+      if (activeConditionalField) {
+        document.getElementById(`${activeConditionalField.name}-input`).value = null;
+        formattedItemToClear = {
+          target: {
+            name: activeConditionalField.name,
+            value: null,
+          }
+        };
+      }
+      // find this radio option's conditional field (if any) and update the activeConditionalField
+      // so we know to clear it if a new radio option is selected
+      const conditionalField = fieldDetails.radioOptions.find(({ parentFieldValue }) => parentFieldValue === e.target.value);
+      setActiveConditionalField(conditionalField);
     }
-    handleChange(e);
+    // pass both the selected radioOption AND any conditionalField that needs to be cleared to handleChange
+    // this is where formData and sessionData are then updated with the new values
+    handleChange(e, formattedItemToClear);
   };
 
   return (
