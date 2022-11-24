@@ -24,7 +24,7 @@ const RadioField = ({ checkedState, index, label, name, value, handleChange }) =
 const TextField = ({ errors, hint, isVisible, label, name, value, handleChange }) => {
   return (
     <div data-testid={`${name}-container`} className={isVisible ? 'govuk-radios__conditional' : 'govuk-radios__conditional govuk-radios__conditional--hidden'}>
-      <div className='govuk-form-group'>
+      <div className={errors?.name ? 'govuk-form-group govuk-form-group--error' : 'govuk-form-group'}>
         <label className="govuk-label" htmlFor={`${name}-input`}>
           {label}
         </label>
@@ -36,7 +36,7 @@ const TextField = ({ errors, hint, isVisible, label, name, value, handleChange }
         </p>
         <input
           aria-describedby={hint ? `${name}-hint` : null}
-          className="govuk-input govuk-!-width-one-third"
+          className={errors?.name ? 'govuk-input govuk-!-width-one-third govuk-input--error' : 'govuk-input govuk-!-width-one-third'}
           defaultValue={value}
           id={`${name}-input`}
           name={name}
