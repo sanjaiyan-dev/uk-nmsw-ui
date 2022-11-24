@@ -478,7 +478,7 @@ describe('Display Form', () => {
   // PREFILLING DATA
   it('should store form data in the session for use on refresh', async () => {
     const user = userEvent.setup();
-    const expectedStoredData = '{"testField":"Hello","radioButtonSet":"radioTwo"}';
+    const expectedStoredData = '{"testField":"Hello","radioButtonSet":"radioTwo","radioWithConditional":"optionWithConditional","conditionalTextInput":"world"}';
     render(
       <DisplayForm
         formId="testForm"
@@ -491,6 +491,10 @@ describe('Display Form', () => {
     expect(screen.getByLabelText('Text input')).toHaveValue('Hello');
     await user.click(screen.getByRole('radio', { name: 'Radio two' }));
     expect(screen.getByRole('radio', { name: 'Radio two' })).toBeChecked();
+    await user.click(screen.getByRole('radio', { name: 'Option that has a conditional' }));
+    expect(screen.getByRole('radio', { name: 'Option that has a conditional' })).toBeChecked();
+    await user.type(screen.getByLabelText('Conditional text input'), 'world');
+    expect(screen.getByLabelText('Conditional text input')).toHaveValue('world');
     expect(window.sessionStorage.getItem('formData')).toStrictEqual(expectedStoredData);
   });
 
@@ -513,8 +517,8 @@ describe('Display Form', () => {
   });
 
   it('should prefill form with data from session if it exists', async () => {
-    const expectedStoredData = '{"testField":"Hello Test Field","radioButtonSet":"radioOne"}';
-    window.sessionStorage.setItem('formData', JSON.stringify({ testField: 'Hello Test Field', radioButtonSet: 'radioOne' }));
+    const expectedStoredData = '{"testField":"Hello Test Field","radioButtonSet":"radioOne","radioWithConditional":"optionWithConditional","conditionalTextInput":"world"}';
+    window.sessionStorage.setItem('formData', JSON.stringify({ testField: 'Hello Test Field', radioButtonSet: 'radioOne', radioWithConditional: 'optionWithConditional', conditionalTextInput: 'world' }));
     render(
       <DisplayForm
         formId="testForm"
@@ -525,6 +529,8 @@ describe('Display Form', () => {
     );
     expect(screen.getByLabelText('Text input')).toHaveValue('Hello Test Field');
     expect(screen.getByRole('radio', { name: 'Radio one' })).toBeChecked();
+    expect(screen.getByRole('radio', { name: 'Option that has a conditional' })).toBeChecked();
+    expect(screen.getByLabelText('Conditional text input')).toHaveValue('world');
     expect(window.sessionStorage.getItem('formData')).toStrictEqual(expectedStoredData);
   });
 
