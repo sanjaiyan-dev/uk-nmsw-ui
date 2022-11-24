@@ -22,7 +22,7 @@ const RadioField = ({ index, label, name, value, handleChange }) => {
 
 const TextField = ({ hint, isVisible, label, name, handleChange }) => {
   return (
-    <div className={isVisible ? 'govuk-radios__conditional' : 'govuk-radios__conditional govuk-radios__conditional--hidden'}>
+    <div data-testid={`${name}-container`} className={isVisible ? 'govuk-radios__conditional' : 'govuk-radios__conditional govuk-radios__conditional--hidden'}>
       <div className='govuk-form-group'>
         <label className="govuk-label" htmlFor={`${name}-input`}>
           {label}
@@ -32,7 +32,7 @@ const TextField = ({ hint, isVisible, label, name, handleChange }) => {
         </div>
         <input
           aria-describedby={hint ? `${name}-hint` : null}
-          className="govuk-input  govuk-!-width-one-third"
+          className="govuk-input govuk-!-width-one-third"
           id={`${name}-input`}
           name={name}
           type={FIELD_TEXT}
