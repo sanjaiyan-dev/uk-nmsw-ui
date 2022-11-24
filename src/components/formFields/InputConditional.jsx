@@ -2,11 +2,10 @@ import { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { FIELD_RADIO, FIELD_TEXT } from '../../constants/AppConstants';
 
-const RadioField = ({ fieldName, hint, index, label, name, value, handleChange }) => {
+const RadioField = ({ index, label, name, value, handleChange }) => {
   return (
     <div className="govuk-radios__item">
       <input
-        aria-describedby={hint ? `${fieldName}${name}-hint` : null}
         className="govuk-radios__input"
         id={`${name}-input[${index}]`}
         name={name}
@@ -21,18 +20,21 @@ const RadioField = ({ fieldName, hint, index, label, name, value, handleChange }
   );
 };
 
-const TextField = ({ fieldName, hint, isVisible, label, handleChange }) => {
+const TextField = ({ hint, isVisible, label, name, handleChange }) => {
   return (
     <div className={isVisible ? 'govuk-radios__conditional' : 'govuk-radios__conditional govuk-radios__conditional--hidden'}>
       <div className='govuk-form-group'>
-        <label className="govuk-label" htmlFor={`${fieldName}-input`}>
+        <label className="govuk-label" htmlFor={`${name}-input`}>
           {label}
         </label>
+        <div id={`${name}-hint`} className="govuk-hint">
+          {hint}
+        </div>
         <input
-          aria-describedby={hint ? `${fieldName}-hint` : null}
+          aria-describedby={hint ? `${name}-hint` : null}
           className="govuk-input  govuk-!-width-one-third"
-          id={`${fieldName}-input`}
-          name={fieldName}
+          id={`${name}-input`}
+          name={name}
           type={FIELD_TEXT}
           onChange={handleChange}
         />
@@ -74,14 +76,11 @@ const InputConditional = ({ fieldDetails, handleChange }) => {
     <div className={fieldDetails.className} data-module="govuk-radios">
       {(fieldDetails.radioOptions).map((option, index) => {
         const isVisible = checkedItem === option.parentFieldValue ? true : false;
-
         return (
           <Fragment key={`${option.name}-input[${index}]`}>
             {
               option.radioField ?
                 <RadioField
-                  fieldName={fieldDetails.fieldName}
-                  hint={option.hint}
                   index={index}
                   label={option.label}
                   name={option.name}
@@ -90,10 +89,10 @@ const InputConditional = ({ fieldDetails, handleChange }) => {
                 />
                 :
                 <TextField
-                  fieldName={option.name}
                   hint={option.hint}
                   isVisible={isVisible}
                   label={option.label}
+                  name={option.name}
                   handleChange={wrapHandleChange}
                 />
             }
@@ -105,8 +104,6 @@ const InputConditional = ({ fieldDetails, handleChange }) => {
 };
 
 RadioField.propTypes = {
-  fieldName: PropTypes.string.isRequired,
-  hint: PropTypes.string,
   index: PropTypes.number.isRequired,
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
@@ -115,16 +112,16 @@ RadioField.propTypes = {
 };
 
 TextField.propTypes = {
-  fieldName: PropTypes.string.isRequired,
   hint: PropTypes.string,
   isVisible: PropTypes.bool.isRequired,
   label: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
 };
 
 InputConditional.propTypes = {
   fieldDetails: PropTypes.shape({
-    className: PropTypes.string, // allows us to pass an inline style
+    className: PropTypes.string.isRequired,
     fieldName: PropTypes.string.isRequired,
     hint: PropTypes.string,
     radioOptions: PropTypes.arrayOf(

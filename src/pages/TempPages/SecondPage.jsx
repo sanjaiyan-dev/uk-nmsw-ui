@@ -105,6 +105,7 @@ const SecondPage = () => {
         {
           radioField: false,
           parentFieldValue: 'dog',
+          hint: 'What sort of dogs do you like?',
           label: 'Breed of dog',
           name: 'breedOfDog',
         },
