@@ -159,6 +159,7 @@ const DisplayForm = ({ fields, formId, formActions, handleSubmit }) => {
             >
               {
                 determineFieldType({
+                  allErrors: errors,  // allows us to add the error handling logic for conditional fields
                   error: error?.message,
                   fieldDetails: field,
                   parentHandleChange: handleChange,
