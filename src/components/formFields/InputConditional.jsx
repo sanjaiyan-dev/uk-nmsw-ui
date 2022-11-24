@@ -42,6 +42,7 @@ const TextField = ({ errors, hint, isVisible, label, name, value, handleChange }
           name={name}
           type={FIELD_TEXT}
           onChange={handleChange}
+          onPaste={handleChange}
         />
       </div>
     </div>
