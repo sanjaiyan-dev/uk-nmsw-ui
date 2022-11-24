@@ -101,6 +101,8 @@ describe('Conditional input field generation', () => {
     expect(screen.getByRole('radio', { name: 'Rabbit' }).outerHTML).toEqual('<input class="govuk-radios__input" id="favAnimal-input[4]" name="favAnimal" type="radio" value="rabbit">');
     expect(screen.getByRole('radio', { name: 'Other' })).toBeInTheDocument();
     expect(screen.getByRole('radio', { name: 'Other' }).outerHTML).toEqual('<input class="govuk-radios__input" id="favAnimal-input[5]" name="favAnimal" type="radio" value="other">');
+    expect(screen.queryByRole('radio', { name: 'breedOfCat' })).not.toBeInTheDocument(); // tests the text field isn't displayed as radio
+    expect(screen.queryByRole('radio', { name: 'breedOfDog' })).not.toBeInTheDocument(); // tests the text field isn't displayed as radio
   });
 
   it('should render the radio input fields with all props', () => {
