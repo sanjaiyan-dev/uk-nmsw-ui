@@ -21,7 +21,7 @@ const RadioField = ({ checkedState, index, label, name, value, handleChange }) =
   );
 };
 
-const TextField = ({ hint, isVisible, label, name, value, handleChange }) => {
+const TextField = ({ errors, hint, isVisible, label, name, value, handleChange }) => {
   return (
     <div data-testid={`${name}-container`} className={isVisible ? 'govuk-radios__conditional' : 'govuk-radios__conditional govuk-radios__conditional--hidden'}>
       <div className='govuk-form-group'>
@@ -31,6 +31,9 @@ const TextField = ({ hint, isVisible, label, name, value, handleChange }) => {
         <div id={`${name}-hint`} className="govuk-hint">
           {hint}
         </div>
+        <p id={`${name}-error`} className="govuk-error-message">
+          <span className="govuk-visually-hidden">Error:</span> {errors?.message ? errors.message : null}
+        </p>
         <input
           aria-describedby={hint ? `${name}-hint` : null}
           className="govuk-input govuk-!-width-one-third"
@@ -46,7 +49,7 @@ const TextField = ({ hint, isVisible, label, name, value, handleChange }) => {
 };
 
 
-const InputConditional = ({ fieldDetails, handleChange }) => {
+const InputConditional = ({ errors, fieldDetails, handleChange }) => {
   const [activeConditionalField, setActiveConditionalField] = useState();
   const [checkedItem, setCheckedItem] = useState(fieldDetails.value);
   const [conditionalDefaultValue, setConditionalDefaultValue] = useState(fieldDetails.conditionalValueToFill?.value);
@@ -77,9 +80,11 @@ const InputConditional = ({ fieldDetails, handleChange }) => {
     <div className={fieldDetails.className} data-module="govuk-radios">
       {(fieldDetails.radioOptions).map((option, index) => {
         const checkedState = checkedItem === option.value ? true : option.checked;
-        const conditionalValuePrefill = checkedItem === option.parentFieldValue ? conditionalDefaultValue : null;
-        
         const isVisible = checkedItem === option.parentFieldValue ? true : false;
+        const conditionalValuePrefill = isVisible ? conditionalDefaultValue : null;  
+        const conditionalError = isVisible
+        ? errors?.find(errorField => errorField.name === option.name)
+        : null;
 
         return (
           <Fragment key={`${option.name}-input[${index}]`}>
@@ -95,6 +100,7 @@ const InputConditional = ({ fieldDetails, handleChange }) => {
                 />
                 :
                 <TextField
+                  errors={conditionalError}
                   hint={option.hint}
                   isVisible={isVisible}
                   label={option.label}
@@ -120,6 +126,7 @@ RadioField.propTypes = {
 };
 
 TextField.propTypes = {
+  errors: PropTypes.object,
   hint: PropTypes.string,
   isVisible: PropTypes.bool.isRequired,
   label: PropTypes.string.isRequired,
@@ -129,6 +136,7 @@ TextField.propTypes = {
 };
 
 InputConditional.propTypes = {
+  errors: PropTypes.array,
   fieldDetails: PropTypes.shape({
     className: PropTypes.string.isRequired,
     conditionalValueToFill: PropTypes.object,
