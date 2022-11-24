@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { FIELD_PASSWORD } from '../constants/AppConstants';
+import { FIELD_CONDITIONAL, FIELD_PASSWORD } from '../constants/AppConstants';
 import { UserContext } from '../context/userContext';
 import determineFieldType from './formFields/DetermineFieldType';
 import { scrollToElementId } from '../utils/ScrollToElementId';
@@ -14,7 +14,7 @@ const DisplayForm = ({ fields, formId, formActions, handleSubmit }) => {
   const [formData, setFormData] = useState({});
   const [sessionData, setSessionData] = useState(JSON.parse(sessionStorage.getItem('formData')));
 
-  const handleChange = (e) => {
+  const handleChange = (e, itemToClear) => {
     if (errors) {
       // on change any error shown for that field should be cleared so find if field has an error & remove from error list
       const filteredErrors = errors?.filter(errorField => errorField.name !== e.target.name);
@@ -22,11 +22,11 @@ const DisplayForm = ({ fields, formId, formActions, handleSubmit }) => {
     }
     // we do not store passwords in session data
     if (e.target.name !== FIELD_PASSWORD) {
-      setSessionData({ ...sessionData, [e.target.name]: e.target.value });
-      sessionStorage.setItem('formData', JSON.stringify({ ...sessionData, [e.target.name]: e.target.value }));
+      setSessionData({ ...sessionData, [e.target.name]: e.target.value, [itemToClear?.target.name]: itemToClear?.target.value });
+      sessionStorage.setItem('formData', JSON.stringify({ ...sessionData, [e.target.name]: e.target.value, [itemToClear?.target.name]: itemToClear?.target.value }));
     }
     // we do store all values into form data
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value, [itemToClear?.target.name]: itemToClear?.target.value });
   };
 
   const handleValidation = async (e, formData) => {
@@ -94,9 +94,18 @@ const DisplayForm = ({ fields, formId, formActions, handleSubmit }) => {
     }
 
     const mappedFormFields = fields.map((field) => {
+      let valuesToAdd;
       const sessionDataValue = sessionDataArray?.find(sessionDataField => sessionDataField.name === field.fieldName);
-      return ({ ...field, value: sessionDataValue?.value });
+      if (field.type === FIELD_CONDITIONAL) {
+        const conditionalField = field.radioOptions.find(field => field.parentFieldValue === sessionDataValue?.value);
+        const sessionConditionalValue = sessionDataArray?.find(sessionDataField => sessionDataField.name === conditionalField?.name);
+        valuesToAdd = { ...field, value: sessionDataValue?.value, conditionalValueToFill: sessionConditionalValue };
+      } else {
+        valuesToAdd = { ...field, value: sessionDataValue?.value };
+      }
+      return (valuesToAdd);
     });
+
     setFieldsWithValues(mappedFormFields);
 
     const mappedFormData = fields.map((field) => {
