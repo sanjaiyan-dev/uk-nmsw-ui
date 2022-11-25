@@ -499,7 +499,7 @@ describe('Display Form', () => {
 
   it('should store expanded data if it is provided from an autocomplete field', async () => {
     const user = userEvent.setup();
-    const expectedStoredData = '{"testField":"Hello","radioButtonSet":"radioTwo","itemsExpandedDetails":{"items":{"name":"ObjectTwo","identifier":"two"}},"items":"ObjectTwo"}';
+    const expectedStoredData = '{"testField":"Hello","radioButtonSet":"radioTwo","items":"ObjectTwo","itemsExpandedDetails":{"items":{"name":"ObjectTwo","identifier":"two"}}}';
     render(
       <DisplayForm
         formId="testForm"

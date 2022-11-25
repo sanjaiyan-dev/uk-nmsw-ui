@@ -25,24 +25,30 @@ const DisplayForm = ({ fields, formId, formActions, handleSubmit }) => {
     }
 
     // create the dataset to store, accounting for objects coming from autocomplete
-    const dataSet = e.target.additionalDetails 
+    const additionalDetails = e.target.additionalDetails
       ? { [`${[e.target.name]}${EXPANDED_DETAILS}`]: e.target.additionalDetails, [e.target.name]: e.target.value }
-      :  { [e.target.name]: e.target.value };
+      : { [e.target.name]: e.target.value };
+
+    const dataSet = {
+      [e.target.name]: e.target.value,
+      ...additionalDetails,
+      [itemToClear?.target.name]: itemToClear?.target.value
+    };
 
     // we do not store passwords in session data
     if (e.target.name !== FIELD_PASSWORD) {
-      setSessionData({ ...sessionData, [e.target.name]: e.target.value, ...dataSet, [itemToClear?.target.name]: itemToClear?.target.value });
-      sessionStorage.setItem('formData', JSON.stringify({ ...sessionData, ...dataSet, [e.target.name]: e.target.value, [itemToClear?.target.name]: itemToClear?.target.value }));
+      setSessionData({ ...sessionData, ...dataSet });
+      sessionStorage.setItem('formData', JSON.stringify({ ...sessionData, ...dataSet }));
     }
     // we do store all values into form data
-    setFormData({ ...formData, [e.target.name]: e.target.value, ...dataSet, [itemToClear?.target.name]: itemToClear?.target.value });
+    setFormData({ ...formData, ...dataSet });
   };
 
   const handleValidation = async (e, formData) => {
     e.preventDefault();
     const formErrors = await Validator({ formData: formData.formData, formFields: fields });
     setErrors(formErrors);
-    
+
     if (formErrors.length < 1) {
       /*
        * Returning formData
@@ -99,7 +105,7 @@ const DisplayForm = ({ fields, formId, formActions, handleSubmit }) => {
   useEffect(() => {
     let sessionDataArray;
     if (sessionData) {
-      sessionDataArray = Object.entries(sessionData).map(item => { return {name: item[0], value: item[1]}; });
+      sessionDataArray = Object.entries(sessionData).map(item => { return { name: item[0], value: item[1] }; });
     }
 
     const mappedFormFields = fields.map((field) => {
