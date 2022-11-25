@@ -15,6 +15,14 @@ import Autocomplete from 'accessible-autocomplete/react';
 const InputAutocomplete = ({ fieldDetails, handleChange }) => {
   const [hideListBox, setHideListBox] = useState(false); // only used for defaultValue bug workaround
 
+  /* 
+   * There is no onBlur event available for us to place a function on
+   * There is no onKeyPress event available for us to place a function on
+   * There is no current way other than vanillaJS to capture that the
+   * user has cleared the field with delete/backspace and then 
+   * clear the value from formData/sessionData
+   */
+
   const suggest = (userQuery, populateResults) => {
     if (!userQuery) { return; }
     // TODO: We should look at using lodash.debounce to prevent calls being made too fast as user types
@@ -97,6 +105,26 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
     }
   }, [hideListBox]);
 
+  useEffect(() => {
+    const handleKeypress = e => {
+      if (e.key === 'Delete' || e.key === 'Backspace') {
+        const formattedEvent = {
+          target: {
+            name: e.target.name,
+            value: null,
+            additionalDetails: {},
+          }
+        };
+        handleChange(formattedEvent);
+      }
+    };
+    const element = document.getElementById(`${fieldDetails.fieldName}-input`);
+    element.addEventListener('keydown', handleKeypress);
+    return () => {
+      element.removeEventListener('keydown', handleKeypress);
+    };
+  }, []);
+
   // We need to use the template function to handle our results coming in objects
   // this lets us format the strings to display as we like
   // for more details see https://github.com/alphagov/accessible-autocomplete
@@ -108,7 +136,7 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
       <Autocomplete
         confirmOnBlur={false}
         id={`${fieldDetails.fieldName}-input`}
-        minLength={2}
+        minLength={1}
         name={fieldDetails.fieldName}
         source={suggest}
         templates={{
