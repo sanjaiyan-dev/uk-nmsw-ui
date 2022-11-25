@@ -181,6 +181,13 @@ const SecondPage = () => {
   ];
 
   const handleSubmit = ({ formData }) => {
+    let referenceNumber;
+    if (formData.countryExpandedDetails?.country && formData.portExpandedDetails?.port) {
+      referenceNumber = `CountryCode: ${formData.countryExpandedDetails.country.code}, Port: ${formData.portExpandedDetails.port.unlocode}`;
+    } else {
+      referenceNumber = `Country: ${formData.country}, Port: ${formData.port}`;
+    }
+
     navigate(
       FORM_CONFIRMATION_URL,
       {
@@ -188,7 +195,7 @@ const SecondPage = () => {
           formName: 'Second page',
           nextPageLink: DASHBOARD_URL,
           nextPageName: DASHBOARD_PAGE_NAME,
-          referenceNumber: `CountryCode: ${formData.countryExpandedDetails.country.code}, Port: ${formData.portExpandedDetails.port.unlocode}`
+          referenceNumber: referenceNumber
         }
       }
     );
