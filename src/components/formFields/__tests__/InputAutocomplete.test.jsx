@@ -70,6 +70,26 @@ describe('Text input field generation', () => {
     fieldName: 'fullFieldName',
     responseKey: 'name',
   };
+  const fieldDetailsTwoResponseKeys = {
+    // dataAPIEndpoint: 'theEndpointUrl' // when we implement the endpoint
+    dataAPIEndpoint: [
+      {
+        name: 'ObjectOne',
+        identifier: 'one'
+      },
+      {
+        name: 'ObjectTwo',
+        identifier: 'two'
+      },
+      {
+        name: 'ObjectThree',
+        identifier: 'three'
+      },
+    ], // for while we're passing in a mocked array of data
+    fieldName: 'fullFieldName',
+    responseKey: 'name',
+    additionalKey: 'identifier'
+  };
 
   it('should render the autocomplete input field  with only the required props', () => {
     render(
@@ -113,6 +133,39 @@ describe('Text input field generation', () => {
     expect(screen.getByText('ObjectOne')).toBeInTheDocument();
     expect(screen.getByText('ObjectTwo')).toBeInTheDocument();
     expect(screen.getByText('ObjectThree')).toBeInTheDocument();
+  });
+
+  it('should return the concatenated value when the field has two response keys', async () => {
+    const user = userEvent.setup();
+    render(
+      <InputAutocomplete
+        fieldDetails={fieldDetailsTwoResponseKeys}
+        handleChange={parentHandleChange}
+      />
+    );
+    expect(screen.getByRole('combobox', { name: '' })).toBeInTheDocument();
+    expect(screen.getByRole('listbox', { name: '' })).toBeInTheDocument();
+
+    await user.type(screen.getByRole('combobox', { name: '' }), 'Object');
+    expect(screen.getByText('ObjectOne one')).toBeInTheDocument();
+    expect(screen.getByText('ObjectTwo two')).toBeInTheDocument();
+    expect(screen.getByText('ObjectThree three')).toBeInTheDocument();
+  });
+
+  it('should update the value of the input if a selection is made from the list', async () => {
+    const user = userEvent.setup();
+    render(
+      <InputAutocomplete
+        fieldDetails={fieldDetailsTwoResponseKeys}
+        handleChange={parentHandleChange}
+      />
+    );
+    expect(screen.getByRole('combobox', { name: '' })).toBeInTheDocument();
+    expect(screen.getByRole('listbox', { name: '' })).toBeInTheDocument();
+
+    await user.type(screen.getByRole('combobox', { name: '' }), 'Object');
+    await user.click(screen.getByText('ObjectTwo two'));
+    expect(screen.getByRole('combobox', { name: '' })).toHaveValue('ObjectTwo two');
   });
 
 });
