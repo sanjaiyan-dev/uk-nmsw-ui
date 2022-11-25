@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Autocomplete from 'accessible-autocomplete/react';
 
@@ -12,6 +13,7 @@ import Autocomplete from 'accessible-autocomplete/react';
 // some explanation of aria-activedescendant: https://www.holisticseo.digital/technical-seo/web-accessibility/aria-activedescendant/
 
 const InputAutocomplete = ({ fieldDetails, handleChange }) => {
+  const [hideListBox, setHideListBox] = useState(false); // only used for defaultValue bug workaround
 
   const suggest = (userQuery, populateResults) => {
     if (!userQuery) { return; }
@@ -74,6 +76,26 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
     handleChange(formattedEvent);
   };
 
+  // See issue#424, #495, at alphagov/accessible-autocomplete
+  // There is an ongoing issue around setting defaultValue when using template
+  // whereby the suggest doesn't run and so the dropdown shows 'undefined' instead of not opening/showing the value
+  // it also results in an error (seen in console) TypeError: Cannot read properties of undefined (reading 'toLowerCase') onBlur/onConfirm
+  // the workaround is to use javascript to set the value of the input which forces the suggest to run
+  // TODO: when fixed on alphagov/accessible-autocomplete, fix here
+  useEffect(() => {
+    if (!fieldDetails.value) {
+      return;
+    }
+    document.getElementById(`${fieldDetails.fieldName}-input`).value = fieldDetails.value;
+    setHideListBox(true);
+  }, [fieldDetails.value]);
+
+  useEffect(() => {
+    if (hideListBox) {
+      document.getElementById(`${fieldDetails.fieldName}-input__listbox`).className = 'autocomplete__menu autocomplete__menu--inline autocomplete__menu--hidden';
+      setHideListBox(false);
+    }
+  }, [hideListBox]);
 
   // We need to use the template function to handle our results coming in objects
   // this lets us format the strings to display as we like
