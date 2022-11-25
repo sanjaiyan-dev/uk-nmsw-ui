@@ -160,7 +160,7 @@ const SecondPage = () => {
       validation: [
         {
           type: VALIDATE_REQUIRED,
-          message: 'Select your country',
+          message: 'Select your country from the list',
         },
       ],
     },
@@ -170,7 +170,13 @@ const SecondPage = () => {
       fieldName: 'port',
       dataAPIEndpoint: portList,
       responseKey: 'name',
-      additionalKey: 'unlocode'
+      additionalKey: 'unlocode',
+      validation: [
+        {
+          type: VALIDATE_REQUIRED,
+          message: 'Select your port from the list',
+        },
+      ],
     },
   ];
 
