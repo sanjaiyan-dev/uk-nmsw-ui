@@ -182,7 +182,7 @@ const SecondPage = () => {
           formName: 'Second page',
           nextPageLink: DASHBOARD_URL,
           nextPageName: DASHBOARD_PAGE_NAME,
-          referenceNumber: `${formData.breedOfCat}-123`
+          referenceNumber: `Country: ${formData.country}, Port: ${formData.port}`
         }
       }
     );
