@@ -49,7 +49,25 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
 
   const handleOnConfirm = (e) => {
     if (!e) { return; }
-    handleChange(e);
+    let displayValue;
+
+    // Returns either a concatenated value if required and available e.g. port name + port unlocode
+    // Or the single string e.g. ports without a unlocode, field that does not have an additionalKey set
+    if (fieldDetails.additionalKey && e[fieldDetails.additionalKey]) {
+      displayValue = `${e[fieldDetails.responseKey]} ${e[fieldDetails.additionalKey]}`;
+    } else {
+      displayValue = e[fieldDetails.responseKey];
+    }
+
+    // format the data so it can be accepted by the handleChange function
+    const formattedEvent = {
+      target: {
+        name: fieldDetails.fieldName,
+        value: displayValue,
+      }
+    };
+
+    handleChange(formattedEvent);
   };
 
 
@@ -60,18 +78,20 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
   // if we wanted to show different values we could call separate functions, or define them in the template function to return 
   // different results
   return (
-    <Autocomplete
-      confirmOnBlur={false}
-      id={`${fieldDetails.fieldName}-input`}
-      minLength={2}
-      name={fieldDetails.fieldName}
-      source={suggest}
-      templates={{
-        inputValue: template,
-        suggestion: template,
-      }}
-      onConfirm={(e) => handleOnConfirm(e)}
-    />
+    <div className='autocomplete-input'>
+      <Autocomplete
+        confirmOnBlur={false}
+        id={`${fieldDetails.fieldName}-input`}
+        minLength={2}
+        name={fieldDetails.fieldName}
+        source={suggest}
+        templates={{
+          inputValue: template,
+          suggestion: template,
+        }}
+        onConfirm={(e) => handleOnConfirm(e)}
+      />
+    </div>
   );
 };
 
