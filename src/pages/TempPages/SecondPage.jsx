@@ -10,8 +10,8 @@ import {
 } from '../../constants/AppConstants';
 import { DASHBOARD_PAGE_NAME, DASHBOARD_URL, FORM_CONFIRMATION_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
-import { countries } from './TempMockList-country';
-import { portList } from './TempMockList-port';
+import { countries } from './TempMockList-countries';
+import { portList } from './TempMockList-portList';
 
 const SecondPage = () => {
   const navigate = useNavigate();

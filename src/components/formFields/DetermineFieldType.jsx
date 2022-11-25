@@ -1,11 +1,13 @@
 import PropTypes from 'prop-types';
 import {
+  FIELD_AUTOCOMPLETE,
   FIELD_CONDITIONAL,
   FIELD_EMAIL,
   FIELD_PASSWORD,
   FIELD_TEXT,
   FIELD_RADIO
 } from '../../constants/AppConstants';
+import InputAutocomplete from './InputAutocomplete';
 import InputConditional from './InputConditional';
 import InputRadio from './InputRadio';
 import InputText from './InputText';
@@ -49,6 +51,16 @@ const SingleInput = ({ error, fieldName, fieldToReturn, hint, label }) => {
 const determineFieldType = ({ allErrors, error, fieldDetails, parentHandleChange }) => {
   let fieldToReturn;
   switch (fieldDetails.type) {
+
+    case FIELD_AUTOCOMPLETE: fieldToReturn =
+      <InputAutocomplete
+        autoComplete='email'
+        error={error} // if error true, error styling applied to input
+        fieldDetails={fieldDetails}
+        handleChange={parentHandleChange}
+        type='autocomplete'
+      />;
+      break;
 
     case FIELD_CONDITIONAL: fieldToReturn =
       <InputConditional
