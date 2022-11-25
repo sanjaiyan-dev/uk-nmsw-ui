@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import {
+  FIELD_AUTOCOMPLETE,
   FIELD_CONDITIONAL,
   FIELD_TEXT,
   FIELD_RADIO,
@@ -9,6 +10,8 @@ import {
 } from '../../constants/AppConstants';
 import { DASHBOARD_PAGE_NAME, DASHBOARD_URL, FORM_CONFIRMATION_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
+import { countries } from './TempMockList-country';
+import { portList } from './TempMockList-port';
 
 const SecondPage = () => {
   const navigate = useNavigate();
@@ -147,6 +150,27 @@ const SecondPage = () => {
           },
         }
       ],
+    },
+    {
+      type: FIELD_AUTOCOMPLETE,
+      label: 'Select your country',
+      fieldName: 'country',
+      dataAPIEndpoint: countries,
+      responseKey: 'name',
+      validation: [
+        {
+          type: VALIDATE_REQUIRED,
+          message: 'Select your country',
+        },
+      ],
+    },
+    {
+      type: FIELD_AUTOCOMPLETE,
+      label: 'Select your port',
+      fieldName: 'port',
+      dataAPIEndpoint: portList,
+      responseKey: 'name',
+      additionalKey: 'unlocode'
     },
   ];
 
