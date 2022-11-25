@@ -168,4 +168,50 @@ describe('Text input field generation', () => {
     expect(screen.getByRole('combobox', { name: '' })).toHaveValue('ObjectTwo two');
   });
 
+  it('should call handleChange function if user clears field via backspace key', async () => {
+    const user = userEvent.setup();
+    render(
+      <InputAutocomplete
+        fieldDetails={fieldDetailsTwoResponseKeys}
+        handleChange={parentHandleChange}
+      />
+    );
+    expect(screen.getByRole('combobox', { name: '' })).toBeInTheDocument();
+    expect(screen.getByRole('listbox', { name: '' })).toBeInTheDocument();
+
+    const input = screen.getByRole('combobox', { name: '' });
+
+    await user.type(screen.getByRole('combobox', { name: '' }), 'Object');
+    await user.click(screen.getByText('ObjectTwo two'));
+    expect(input).toHaveValue('ObjectTwo two');
+    
+    input.setSelectionRange(0, 14);
+    await user.keyboard('{backspace}');
+    expect(input).toHaveValue('');
+    expect(parentHandleChange).toHaveBeenCalled();
+  });
+
+  it('should call handleChange function if user clears field via delete key', async () => {
+    const user = userEvent.setup();
+    render(
+      <InputAutocomplete
+        fieldDetails={fieldDetailsTwoResponseKeys}
+        handleChange={parentHandleChange}
+      />
+    );
+    expect(screen.getByRole('combobox', { name: '' })).toBeInTheDocument();
+    expect(screen.getByRole('listbox', { name: '' })).toBeInTheDocument();
+
+    const input = screen.getByRole('combobox', { name: '' });
+
+    await user.type(screen.getByRole('combobox', { name: '' }), 'Object');
+    await user.click(screen.getByText('ObjectOne one'));
+    expect(input).toHaveValue('ObjectOne one');
+    
+    input.setSelectionRange(0, 14);
+    await user.keyboard('{delete}');
+    expect(input).toHaveValue('');
+    expect(parentHandleChange).toHaveBeenCalled();
+  });
+
 });
