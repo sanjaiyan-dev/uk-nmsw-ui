@@ -33,8 +33,13 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
     // and combolist suggestions (suggestion)
     // result being from the results of the suggest function
     let response;
-    if (result) {
-      response = result;
+    if (result && result[fieldDetails.responseKey]) {
+      // this occurs when user has typed in the field
+      if (fieldDetails.additionalKey && result[fieldDetails.additionalKey]) {
+        response = `${result[fieldDetails.responseKey]} ${result[fieldDetails.additionalKey]}`;
+      } else {
+        response = result[fieldDetails.responseKey];
+      }
     } else {
       // this covers when user hasn't typed in field yet / field is null
       return;
