@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { FIELD_CONDITIONAL, FIELD_PASSWORD } from '../constants/AppConstants';
+import { EXPANDED_DETAILS, FIELD_CONDITIONAL, FIELD_PASSWORD } from '../constants/AppConstants';
 import { UserContext } from '../context/userContext';
 import determineFieldType from './formFields/DetermineFieldType';
 import { scrollToElementId } from '../utils/ScrollToElementId';
@@ -15,18 +15,27 @@ const DisplayForm = ({ fields, formId, formActions, handleSubmit }) => {
   const [sessionData, setSessionData] = useState(JSON.parse(sessionStorage.getItem('formData')));
 
   const handleChange = (e, itemToClear) => {
+    // e may be an html event (e.g. radio button selected, text entered in input field)
+    // or an object from an autocomplete field being selected
+
     if (errors) {
       // on change any error shown for that field should be cleared so find if field has an error & remove from error list
       const filteredErrors = errors?.filter(errorField => errorField.name !== e.target.name);
       setErrors(filteredErrors);
     }
+
+    // create the dataset to store, accounting for objects coming from autocomplete
+    const dataSet = e.target.additionalDetails 
+      ? { [`${[e.target.name]}${EXPANDED_DETAILS}`]: e.target.additionalDetails, [e.target.name]: e.target.value }
+      :  { [e.target.name]: e.target.value };
+
     // we do not store passwords in session data
     if (e.target.name !== FIELD_PASSWORD) {
-      setSessionData({ ...sessionData, [e.target.name]: e.target.value, [itemToClear?.target.name]: itemToClear?.target.value });
-      sessionStorage.setItem('formData', JSON.stringify({ ...sessionData, [e.target.name]: e.target.value, [itemToClear?.target.name]: itemToClear?.target.value }));
+      setSessionData({ ...sessionData, [e.target.name]: e.target.value, ...dataSet, [itemToClear?.target.name]: itemToClear?.target.value });
+      sessionStorage.setItem('formData', JSON.stringify({ ...sessionData, ...dataSet, [e.target.name]: e.target.value, [itemToClear?.target.name]: itemToClear?.target.value }));
     }
     // we do store all values into form data
-    setFormData({ ...formData, [e.target.name]: e.target.value, [itemToClear?.target.name]: itemToClear?.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value, ...dataSet, [itemToClear?.target.name]: itemToClear?.target.value });
   };
 
   const handleValidation = async (e, formData) => {
