@@ -19,37 +19,76 @@ TODO:
 - replace using govuk-button className with buttonPrimary constant
 - replace using govuk-button govuk-button--secondary with buttonSecondary constant
 
-Requirements:
 
-Your `Page` must contain 
-- a `handleSubmit` function for submit actions
-- a `handleCancel` function for cancel actions (optional)
+Actions
+ - submit
+ - cancel
+ - save and come back later **NOT YET ADDED TO CODE**
 
-Object structure:
+Styles
+ - primary button (currently you add `govuk-button`)
+ - secondary button (currently you add `govuk-button govuk-button--secondary)
+
+This triggers the `handleSubmit` function from your parent `Page`
 
 ```
 [action]: {
-  className: [required],
-  label: [required],
+  className: [style],
+  label: [labelText],
 }
 ```
 
-Parameters:
+Required parameters:
 
 ### action
 - submit : triggers the `handleSubmit` function from your parent `Page`
 - cancel: triggers the `handleCancel` function from your parent `Page`
+- save and come back later : tbd
 
-### className
+### style
 - `govuk-button`: applies the style for the visually primary button of the page - mainly used for submit
 - `govuk-button govuk-button--secondary` : applies the style for teh visually secondary button(s) of the page - mainly used for cancel
 
-### label
+### labelText
 The words you wish to show on your button
+
+
+
+
+
+Determine which form actions you need
+ - submit
+ - cancel
+ - save and come back later **NOT YET ADDED TO CODE**
+
+Determine which styling each requires
+ - primary button (usually for main submit)
+ - secondary button (usually for cancel)
+ - text button (usually for save and come back later type submits)
+
+Create an object of formActions for your form
+
+```javascript
+  const formActions = {
+    submit: {
+      className: 'govuk-button',
+      dataModule: 'govuk-button',
+      dataTestid: 'submit-button',
+      label: 'Save',
+      type: 'button',
+    },
+    cancel: {
+      className: 'govuk-button govuk-button--secondary',
+      dataModule: 'govuk-button',
+      dataTestid: 'submit-button',
+      label: 'Cancel',
+      type: 'button',
+    }
+  };
+```
 
 ----
 
-<<<<<<< HEAD
 
 _TODO: refactor Add formActions in DisplayForm to map the form actions rather than specify directly. And then update these docs_
 
@@ -450,70 +489,6 @@ const SecondPage = () => {
 
 export default SecondPage;
 ```
-=======
-## Field Type Options
->>>>>>> fd8db67 (Add form action options)
-
-Standard inputs
-- [Autocomplete](#Autocomplete)
-- [Radio buttons](#RadioButtons)
-- [Radio buttons with conditional text field(s)](#Conditionals)
-- [Text input](#TextInput)
-
-Specific inputs
-- TODO: [Date](#Date)
-- [Email](#Email)
-- [Password](#Password)
-
-### Autocomplete
-
-Requirements
-
-- The API endpoint that allows GETting the data for this field. It must be an endpoint that allows for search/filter based on a string passed to it
-
-Object structure
-
-```
-{
-  type: FIELD_AUTOCOMPLETE,
-  dataAPIEndpoint: [required],
-  fieldName: [required],
-  hint: [optional]
-  label: [required],
-  responseKey: [required],
-  additionalKey: [OPTIONAL: additional data key],
-  validation: [
-    {
-      type: [rule],
-      message: [error message],
-    },
-  ],
-}
-```
-
-Parameters
-
-### type
-Import and use `FIELD_AUTOCOMPLETE` from `src/constants/AppConstants`
-
-### dataAPIEndpoint
-The url for the API where we can get the list of options to display within the autocomplete field.
-It must be an endpoint setup to allow for search/filter based on what the user has typed into the autocomplete field.
-
-### fieldName
-A string that will be used for `name` and to create `id` and other field references.
-
-### hint (optional)
-An optional string
-
-### label
-A string that will be shown as the question/label text for the field
-
-### responseKey
-The key from the API data set returned that lets us find the value to display in the input (e.g. `name` )
-
-### additionalResponseKey (optional)
-An additional key if two fields are required to create a name (e.g. key: `name` and additionalKey: `unlocode` for ports)
 
 ----
 
