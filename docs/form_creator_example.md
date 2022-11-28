@@ -1,129 +1,15 @@
 # Form Creator
 
-This app has an in built form creator with reusable components for if you wish to add more forms.
+Below is a step by step example of creating a new form using the creator components.
 
-- [Create a new input type](#CreateInput)
-- <a href="https://github.com/UKHomeOffice/nmsw-ui/blob/main/docs/form_creator_example.md">Create a new form - step by step example</a>
-- [Structure diagram for reference](#StructureDiagram) (updated November 2022)
-----
+## <a id="CreateForm"></a>Create a form
 
-## <a id="CreateInput"></a>Create a new input type
-
-Grouped inputs are inputs that require a fieldset, and use legend.
-e.g. radio buttons, checkboxes, multiple grouped text inputs
-
-This how to uses the date fieldset as an example
-
-### 1. Create your input component
-
-- Create a new file in `src/components/formFields/`
-- Title it `Input` followed by the type of input e.g. `InputRadio.jsx` or `InputAddress.jsx`
-
-In this example we created `InputDate.jsx`
-
-Setup your PropTypes
-
-Some prop types may not be required for this type of field, e.g. 
-- inputMode is used for `InputDate.jsx` but not other fields.
-- autocomplete and data-test-id is needed for `InputText.jsx`
-- type is also needed for `InputText.jsx` as a text input could be a type of email, password, or regular text. But it is not needed for `InputDate` as a date input will always be text.
-
-Example for Date fields (a grouped field)
-```javascript
-InputDate.propTypes = {
-  fieldDetails: PropTypes.shape({
-    fieldName: PropTypes.string.isRequired,
-    hint: PropTypes.string,
-    className: PropTypes.string,
-  }).isRequired,
-  handleChange: PropTypes.func.isRequired,
-};
-```
-
-Create your component
-
-```javascript
-const InputDate = ({ fieldDetails, handleChange }) => {
-  return (
-    <div className="govuk-date-input" id={`${fieldDetails.fieldName}-input`}>
-      <div className="govuk-date-input__item">
-        <div className="govuk-form-group">
-          <label className="govuk-label govuk-date-input__label" htmlFor={`${fieldDetails.fieldName}-input-day`}>
-            Day
-          </label>
-          <input
-            className="govuk-input govuk-date-input__input govuk-input--width-2"
-            id={`${fieldDetails.fieldName}-input-day`}
-            name={`${fieldDetails.fieldName}-input-day`}
-            type="text"
-            inputMode="numeric"
-            onChange={handleChange}
-            aria-describedby={fieldDetails.hint ? `${fieldDetails.fieldName}-hint` : null}
-          />
-        </div>
-      </div>
-      <div className="govuk-date-input__item">
-        <div className="govuk-form-group">
-          <label className="govuk-label govuk-date-input__label" htmlFor={`${fieldDetails.fieldName}-input-month`}>
-            Month
-          </label>
-          <input
-            className="govuk-input govuk-date-input__input govuk-input--width-2"
-            id={`${fieldDetails.fieldName}-input-month`}
-            name={`${fieldDetails.fieldName}-input-month`}
-            type="text"
-            inputMode="numeric"
-            onChange={handleChange}
-          />
-        </div>
-      </div>
-      <div className="govuk-date-input__item">
-        <div className="govuk-form-group">
-          <label className="govuk-label govuk-date-input__label" htmlFor={`${fieldDetails.fieldName}-input-year`}>
-            Year
-          </label>
-          <input
-            className="govuk-input govuk-date-input__input govuk-input--width-4"
-            id={`${fieldDetails.fieldName}-input-year`}
-            name={`${fieldDetails.fieldName}-input-year`}
-            type="text"
-            inputMode="numeric"
-            onChange={handleChange}
-          />
-        </div>
-      </div>
-    </div>
-  );
-};
-```
-
-### 2. Add your input type to the switch statement on DetermineFieldType
-
-Create a constant for your field type in `src/constants/AppConstants` and import it, and your new input file (e.g. `InputDate`) into `src/components/formFields/DetermineFieldType.jsx`
-
-```javascript
-export const FIELD_DATE = 'date';
-```
-
-Add an item to the switch statement in `DetermineFieldType`
-
-```javascript
-...
-
-switch (fieldDetails.type) {
-
-    case FIELD_DATE: fieldToReturn =
-      <InputDate
-        error={error} // if error true, error styling applied to input
-        fieldDetails={fieldDetails}
-        handleChange={parentHandleChange}
-      />;
-      break;
-...
-```
-
-----
-
+1. [Add formActions](#AddFormActions)
+2. [Add formFields](#AddFormFields)
+3. [Add validation rules (if required)](#AddValidationRunes)
+4. [Add handleSubmit ](#AddHandleSubmit)
+5. [Add handleCancel](#AddHandleCancel)
+6. [Add <DisplayForm> to your return](#AddDisplayForm)
 
 _TODO: refactor Add formActions in DisplayForm to map the form actions rather than specify directly. And then update these docs_
 
@@ -347,7 +233,7 @@ If you use a confirmation page
         }
       );
     } else {
-      scrollToTop();
+      scrollToElementId('formSecondPage');
     }
   };
 ```
@@ -391,7 +277,7 @@ import {
 } from '../../constants/AppConstants';
 import { DASHBOARD_PAGE_NAME, DASHBOARD_URL, FORM_CONFIRMATION_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
-import { scrollToTop } from '../../utils/scrollToElement';
+import { scrollToElementId } from '../../utils/ScrollToElementId';
 import Validator from '../../utils/Validator';
 
 const SecondPage = () => {
@@ -503,7 +389,7 @@ const SecondPage = () => {
         }
       );
     } else {
-      scrollToTop();
+      scrollToElementId('formSecondPage');
     }
   };
 
@@ -524,11 +410,3 @@ const SecondPage = () => {
 
 export default SecondPage;
 ```
-
-----
-
-## Structure Diagram
-
-_Last updated November 2022_
-
-<a href="https://github.com/UKHomeOffice/nmsw-ui/blob/main/docs/formComposerDiagram-preview.png"><img src="https://github.com/UKHomeOffice/nmsw-ui/blob/main/docs/formComposerDiagram-preview.png" alt="Form constructor diagram" title="Form constructor diagram" height="150" /></a>
