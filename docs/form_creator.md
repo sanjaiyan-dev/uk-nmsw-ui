@@ -4,7 +4,27 @@ This app has an in built form creator with reusable components for if you wish t
 
 
 - [Form action options](#FormActionOptions)
-- [Field type options](#FieldTypeOptions)
+
+## Field types
+Standard inputs
+- [Autocomplete](#Autocomplete)
+- [Radio buttons](#RadioButtons)
+- [Radio buttons with conditional text field(s)](#Conditionals)
+- [Text input](#TextInput)
+
+Specific inputs
+- TODO: [Date](#Date)
+- [Email](#Email)
+- [Password](#Password)
+
+Validating fields
+- [Required](#Required)
+- [Conditional](#Conditional)
+- [Email](#Email)
+- [Minimum Length](#MinimumLength)
+
+
+## Other guides
 - <a href="https://github.com/UKHomeOffice/nmsw-ui/blob/main/docs/form_creator_example.md">Create a new form - step by step example</a>
 - <a href="https://github.com/UKHomeOffice/nmsw-ui/blob/main/docs/form_creator_new_input_type.md">Creating a new input type</a>
 - [Structure diagram for reference](#StructureDiagram) (updated November 2022)
@@ -669,6 +689,133 @@ A string that will be shown as the question/label text for the field
 
 ----
 
+## Validating Fields
+If a field requires validation you add a validation array to the field object.
+A field can have no validation array (no rules), an array with one object (rule), or an array with multiple objects (rules)
+
+1. [Rules](#rules)
+2. [Examples](#examples)
+
+### Rules
+
+#### Required
+Field is a mandatory field and cannot be nul
+
+```
+{
+  type: VALIDATE_REQUIRED,
+  message: [error message to show in UI]
+}
+```
+
+#### Conditional
+Field is a conditional field and has one or more rules to be validated if that conditional field is visible (i.e. it's parent radio is checked).
+The validation is run based on the rules entered in the nested `condition` object.
+
+```
+{
+  type: VALIDATE_CONDITIONAL,
+  condition: {
+    parentValue: [value of parent field],
+    fieldName: [this conditional field's name],
+    ruleToTest: [rule constant],
+    message: [error message to show in UI]
+  },
+}
+```
+
+#### Email
+Specifically tests if the value entered matches an email pattern.
+This test only runs if there is a value in the field and is ignored if field is null.
+
+```
+{
+  type: VALIDATE_EMAIL,
+  message: [error message to show in UI]
+  },
+}
+```
+
+#### Minimum Length
+Specifically tests if the length of the value entered is > the number specified in the `conditions` entry.
+This test only runs if there is a value in the field and is ignored if field is null.
+
+```
+{
+  type: VALIDATE_MIN_LENGTH,
+  condition: [minimum length]
+  message: [error message to show in UI]
+  },
+}
+```
+
+
+### Examples
+
+e.g.
+```
+{
+  type: FIELD_TEXT,
+  label: 'First name',
+  fieldName: 'firstName',
+  validation: [
+    {
+      type: VALIDATE_REQUIRED,
+      message: 'Enter your first name',
+    },
+  ],
+},
+```
+
+There can be multiple validation rules objects per field, all are placed within the validation array
+
+e.g.
+```
+{
+  type: FIELD_CONDITIONAL,
+  label: 'What is your favourite animal',
+  fieldName: 'favAnimal',
+  className: 'govuk-radios',
+  grouped: true,
+  radioOptions: [
+    {
+      radioField: true,
+      label: 'Cat',
+      name: 'favAnimal',
+      value: 'cat',
+    },
+    {
+      radioField: false,
+      parentFieldValue: 'cat',
+      label: 'Breed of cat',
+      name: 'breedOfCat',
+    },
+    {
+      radioField: true,
+      label: 'Dog',
+      name: 'favAnimal',
+      value: 'dog',
+    },
+  ],
+  validation: [
+    {
+      type: VALIDATE_REQUIRED,
+      message: 'Select your favourite animal',
+    },
+    {
+      type: VALIDATE_CONDITIONAL,
+      condition: {
+        parentValue: 'cat',
+        fieldName: 'breedOfCat',
+        ruleToTest: VALIDATE_REQUIRED,
+        message: 'Enter a breed of cat'
+      },
+    }
+  ],
+}
+```
+
+----
 ## Structure Diagram
 
 _Last updated November 2022_
