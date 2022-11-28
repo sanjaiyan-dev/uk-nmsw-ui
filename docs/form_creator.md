@@ -52,7 +52,7 @@ Required parameters:
 ### labelText
 The words you wish to show on your button
 
-
+----
 
 
 
@@ -567,6 +567,105 @@ A string that will be shown as the question/label text for the field
 - label: a string that will be shown as the question/label text for the field
 - name: a string that will be used for `name` and to create `id` and other field references
 
+
+----
+
+## Text Input
+
+Requirements
+
+n/a
+
+Object structure
+
+```
+{
+  type: FIELD_TEXT,
+  fieldName: [required],
+  hint: [optional],
+  label: [required]
+}
+```
+
+Parameters
+
+### type
+Import and use `FIELD_TEXT` from `src/constants/AppConstants`
+
+### fieldName
+A string that will be used for `name` and to create `id` and other field references.
+
+### hint (optional)
+An optional string
+
+### label
+A string that will be shown as the question/label text for the field
+
+----
+
+## Email
+
+Requirements
+
+n/a
+
+Object structure
+
+```
+{
+  type: FIELD_EMAIL,
+  fieldName: [required],
+  hint: [optional],
+  label: [required]
+}
+```
+
+Parameters
+
+### type
+Import and use `FIELD_EMAIL` from `src/constants/AppConstants`
+
+### fieldName
+A string that will be used for `name` and to create `id` and other field references.
+
+### hint (optional)
+An optional string
+
+### label
+A string that will be shown as the question/label text for the field
+
+----
+
+## Password
+
+Requirements
+
+n/a
+
+Object structure
+
+```
+{
+  type: FIELD_PASSWORD,
+  fieldName: [required],
+  hint: [optional],
+  label: [required]
+}
+```
+
+Parameters
+
+### type
+Import and use `FIELD_PASSWORD` from `src/constants/AppConstants`
+
+### fieldName
+A string that will be used for `name` and to create `id` and other field references.
+
+### hint (optional)
+An optional string
+
+### label
+A string that will be shown as the question/label text for the field
 
 ----
 
