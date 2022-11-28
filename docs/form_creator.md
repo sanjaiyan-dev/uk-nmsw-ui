@@ -492,6 +492,84 @@ export default SecondPage;
 
 ----
 
+## Conditional
+
+A list of radio buttons where one or more of the radio options can have an associated text input. The text input is only shown/validated/value stored if it's assocaited radio button is checked.
+
+TODO:
+- replace using the className of `govuk-radios` or `govuk-radios govuk-radios--inline` with constants for vertical/horizontal
+- replace need for specifying grouped = true and build that into the DetermineFieldType switch statement for ease (radio buttons are always grouped)
+- use `fieldName` to add the name to the option in InputRadio.jsx, removing the need to repeat it in each radioOption
+
+Requirements
+
+n/a
+
+Object structure
+
+```
+{
+  type: FIELD_CONDITIONAL,
+  className: [required],
+  fieldName: [required],
+  grouped: true,
+  hint: [optional],
+  label: [required],
+  radioOptions: [
+    {
+      radioField: [required],
+      label: [required],
+      name: [required],
+      value: [required],
+    },
+    {
+      radioField: [required],
+      parentFieldValue: [required],
+      hint: [optional],
+      label: [required],
+      name: [required],
+    },
+  ],
+},
+```
+
+Parameters
+
+### type
+Import and use `FIELD_CONDITIONAL` from `src/constants/AppConstants`
+
+### className
+Radio buttons can be aligned vertically (`govuk-radios`) or horizontally (`govuk-radios govuk-radios--inline`)
+
+### fieldName
+A string that will be used for `name` and to create `id` and other field references.
+
+### grouped
+Always specify this as `true` as radio buttons are grouped inputs and use a different fieldset/label html structure.
+This is defined within `src/components/formFields/DetermineFieldType` and at some point we will refactor this so that `grouped: true` does not need to be specified within the field object
+
+### hint (optional)
+An optional string
+
+### label
+A string that will be shown as the question/label text for the field
+
+### radioOptions : radio button
+- radioField: set to `true` for this option to be a radio button
+- label: A string that will be shown as the associated label text for the field
+- name: must be the same as `fieldName` as it is the name of the radio button set
+- value: The value that will be stored and used if the radio button is checked
+
+### radioOptions : conditional text input
+- radioField: set to `false` for this option to be a conditional text input
+- parentFieldValue: the `value` from the associated parent field, this allows us to show/hide/store this field only when parent field is checked
+- hint: (optional) An optional string
+- label: a string that will be shown as the question/label text for the field
+- name: a string that will be used for `name` and to create `id` and other field references
+
+
+----
+
 ## Structure Diagram
 
 _Last updated November 2022_
