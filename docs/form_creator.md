@@ -7,7 +7,6 @@ This app has an in built form creator with reusable components for if you wish t
 - Field type options
 - <a href="https://github.com/UKHomeOffice/nmsw-ui/blob/main/docs/form_creator_example.md">Create a new form - step by step example</a>
 - <a href="https://github.com/UKHomeOffice/nmsw-ui/blob/main/docs/form_creator_new_input_type.md">Creating a new input type</a>
-- [Create a new input type](#CreateInput)
 - [Structure diagram for reference](#StructureDiagram) (updated November 2022)
 ----
 
@@ -421,4 +420,4 @@ export default SecondPage;
 
 _Last updated November 2022_
 
-<a href="https://github.com/UKHomeOffice/nmsw-ui/blob/main/docs/formComposerDiagram-preview.png"><img src="https://github.com/UKHomeOffice/nmsw-ui/blob/main/docs/formComposerDiagram-preview.png" alt="Form constructor diagram" title="Form constructor diagram" height="150" /></a>
+<a href="https://raw.githubusercontent.com/UKHomeOffice/nmsw-ui/main/docs/formComposerDiagram.png"><img src="https://raw.githubusercontent.com/UKHomeOffice/nmsw-ui/main/docs/formComposerDiagram.png" alt="Form constructor diagram" title="Form constructor diagram" height="150" /></a>
