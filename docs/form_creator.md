@@ -3,16 +3,93 @@
 This app has an in built form creator with reusable components for if you wish to add more forms.
 
 
-- Form action options
-- Field type options
+- [Form action options](#FormActionOptions)
+- [Field type options](#FieldTypeOptions)
 - <a href="https://github.com/UKHomeOffice/nmsw-ui/blob/main/docs/form_creator_example.md">Create a new form - step by step example</a>
 - <a href="https://github.com/UKHomeOffice/nmsw-ui/blob/main/docs/form_creator_new_input_type.md">Creating a new input type</a>
 - [Structure diagram for reference](#StructureDiagram) (updated November 2022)
 ----
 
+## Form Action Options
+
+TODO:
+- dataModule: remove from the parameters and code into the DisplayForm button section as it is always govuk-button
+- dataTestid: remove from the parameters and code, it shouldn't be needed as we can use type for finding button
+- type: remove from the parameters and code, it should always be button
+- replace using govuk-button className with buttonPrimary constant
+- replace using govuk-button govuk-button--secondary with buttonSecondary constant
+
+
+Actions
+ - submit
+ - cancel
+ - save and come back later **NOT YET ADDED TO CODE**
+
+Styles
+ - primary button (currently you add `govuk-button`)
+ - secondary button (currently you add `govuk-button govuk-button--secondary)
+
+This triggers the `handleSubmit` function from your parent `Page`
+
+```
+[action]: {
+  className: [style],
+  label: [labelText],
+}
+```
+
+Required parameters:
+
+### action
+- submit : triggers the `handleSubmit` function from your parent `Page`
+- cancel: triggers the `handleCancel` function from your parent `Page`
+- save and come back later : tbd
+
+### style
+- `govuk-button`: applies the style for the visually primary button of the page - mainly used for submit
+- `govuk-button govuk-button--secondary` : applies the style for teh visually secondary button(s) of the page - mainly used for cancel
+
+### labelText
+The words you wish to show on your button
+
+
+
+
+
+Determine which form actions you need
+ - submit
+ - cancel
+ - save and come back later **NOT YET ADDED TO CODE**
+
+Determine which styling each requires
+ - primary button (usually for main submit)
+ - secondary button (usually for cancel)
+ - text button (usually for save and come back later type submits)
+
+Create an object of formActions for your form
+
+```javascript
+  const formActions = {
+    submit: {
+      className: 'govuk-button',
+      dataModule: 'govuk-button',
+      dataTestid: 'submit-button',
+      label: 'Save',
+      type: 'button',
+    },
+    cancel: {
+      className: 'govuk-button govuk-button--secondary',
+      dataModule: 'govuk-button',
+      dataTestid: 'submit-button',
+      label: 'Cancel',
+      type: 'button',
+    }
+  };
+```
 
 ----
 
+<<<<<<< HEAD
 
 _TODO: refactor Add formActions in DisplayForm to map the form actions rather than specify directly. And then update these docs_
 
@@ -413,6 +490,9 @@ const SecondPage = () => {
 
 export default SecondPage;
 ```
+=======
+## Field Type Options
+>>>>>>> fd8db67 (Add form action options)
 
 ----
 
