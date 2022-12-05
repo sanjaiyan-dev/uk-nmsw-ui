@@ -2,540 +2,486 @@
 
 This app has an in built form creator with reusable components for if you wish to add more forms.
 
-- [Create a new input type](#CreateInput)
-- [Create a new form](#CreateForm)
-  1. [Add formActions](#AddFormActions)
-  2. [Add formFields](#AddFormFields)
-  3. [Add validation rules (if required)](#AddValidationRunes)
-  4. [Add handleSubmit ](#AddHandleSubmit)
-  5. [Add handleCancel](#AddHandleCancel)
-  6. [Add <DisplayForm> to your return](#AddDisplayForm)
-- Structure diagram for reference (updated November 2022)
+## Field actions
+- [Form action options](#FormActionOptions)
+
+## Field types
+Standard inputs
+- [Autocomplete](#Autocomplete)
+- [Radio buttons](#RadioButtons)
+- [Radio buttons with conditional text field(s)](#Conditionals)
+- [Text input](#TextInput)
+
+Specific inputs
+- TODO: [Date](#Date)
+- [Email](#Email)
+- [Password](#Password)
+
+Validating fields
+- [Required](#Required)
+- [Conditional](#Conditional)
+- [Email](#Email)
+- [Minimum Length](#MinimumLength)
+
+
+## Other guides
+- <a href="https://github.com/UKHomeOffice/nmsw-ui/blob/main/docs/form_creator_example.md">Create a new form - step by step example</a>
+- <a href="https://github.com/UKHomeOffice/nmsw-ui/blob/main/docs/form_creator_new_input_type.md">Creating a new input type</a>
+- [Structure diagram for reference](#StructureDiagram) (updated November 2022)
 ----
 
-## <a id="CreateInput"></a>Create a new input type
+## Form Action Options
 
-Grouped inputs are inputs that require a fieldset, and use legend.
-e.g. radio buttons, checkboxes, multiple grouped text inputs
+TODO:
+- dataModule: remove from the parameters and code into the DisplayForm button section as it is always govuk-button
+- dataTestid: remove from the parameters and code, it shouldn't be needed as we can use type for finding button
+- type: remove from the parameters and code, it should always be button
+- replace using govuk-button className with buttonPrimary constant
+- replace using govuk-button govuk-button--secondary with buttonSecondary constant
 
-This how to uses the date fieldset as an example
+Requirements:
 
-### 1. Create your input component
+Your `Page` must contain 
+- a `handleSubmit` function for submit actions
+- a `handleCancel` function for cancel actions (optional)
 
-- Create a new file in `src/components/formFields/`
-- Title it `Input` followed by the type of input e.g. `InputRadio.jsx` or `InputAddress.jsx`
+Object structure:
 
-In this example we created `InputDate.jsx`
-
-Setup your PropTypes
-
-Some prop types may not be required for this type of field, e.g. 
-- inputMode is used for `InputDate.jsx` but not other fields.
-- autocomplete and data-test-id is needed for `InputText.jsx`
-- type is also needed for `InputText.jsx` as a text input could be a type of email, password, or regular text. But it is not needed for `InputDate` as a date input will always be text.
-
-Example for Date fields (a grouped field)
-```javascript
-InputDate.propTypes = {
-  fieldDetails: PropTypes.shape({
-    fieldName: PropTypes.string.isRequired,
-    hint: PropTypes.string,
-    className: PropTypes.string,
-  }).isRequired,
-  handleChange: PropTypes.func.isRequired,
-};
+```
+[action]: {
+  className: [required],
+  label: [required],
+}
 ```
 
-Create your component
+Parameters:
 
-```javascript
-const InputDate = ({ fieldDetails, handleChange }) => {
-  return (
-    <div className="govuk-date-input" id={`${fieldDetails.fieldName}-input`}>
-      <div className="govuk-date-input__item">
-        <div className="govuk-form-group">
-          <label className="govuk-label govuk-date-input__label" htmlFor={`${fieldDetails.fieldName}-input-day`}>
-            Day
-          </label>
-          <input
-            className="govuk-input govuk-date-input__input govuk-input--width-2"
-            id={`${fieldDetails.fieldName}-input-day`}
-            name={`${fieldDetails.fieldName}-input-day`}
-            type="text"
-            inputMode="numeric"
-            onChange={handleChange}
-            aria-describedby={fieldDetails.hint ? `${fieldDetails.fieldName}-hint` : null}
-          />
-        </div>
-      </div>
-      <div className="govuk-date-input__item">
-        <div className="govuk-form-group">
-          <label className="govuk-label govuk-date-input__label" htmlFor={`${fieldDetails.fieldName}-input-month`}>
-            Month
-          </label>
-          <input
-            className="govuk-input govuk-date-input__input govuk-input--width-2"
-            id={`${fieldDetails.fieldName}-input-month`}
-            name={`${fieldDetails.fieldName}-input-month`}
-            type="text"
-            inputMode="numeric"
-            onChange={handleChange}
-          />
-        </div>
-      </div>
-      <div className="govuk-date-input__item">
-        <div className="govuk-form-group">
-          <label className="govuk-label govuk-date-input__label" htmlFor={`${fieldDetails.fieldName}-input-year`}>
-            Year
-          </label>
-          <input
-            className="govuk-input govuk-date-input__input govuk-input--width-4"
-            id={`${fieldDetails.fieldName}-input-year`}
-            name={`${fieldDetails.fieldName}-input-year`}
-            type="text"
-            inputMode="numeric"
-            onChange={handleChange}
-          />
-        </div>
-      </div>
-    </div>
-  );
-};
-```
+### action
+- submit : triggers the `handleSubmit` function from your parent `Page`
+- cancel: triggers the `handleCancel` function from your parent `Page`
 
-### 2. Add your input type to the switch statement on DetermineFieldType
+### className
+- `govuk-button`: applies the style for the visually primary button of the page - mainly used for submit
+- `govuk-button govuk-button--secondary` : applies the style for teh visually secondary button(s) of the page - mainly used for cancel
 
-Create a constant for your field type in `src/constants/AppConstants` and import it, and your new input file (e.g. `InputDate`) into `src/components/formFields/DetermineFieldType.jsx`
-
-```javascript
-export const FIELD_DATE = 'date';
-```
-
-Add an item to the switch statement in `DetermineFieldType`
-
-```javascript
-...
-
-switch (fieldDetails.type) {
-
-    case FIELD_DATE: fieldToReturn =
-      <InputDate
-        error={error} // if error true, error styling applied to input
-        fieldDetails={fieldDetails}
-        handleChange={parentHandleChange}
-      />;
-      break;
-...
-```
+### label
+The words you wish to show on your button
 
 ----
 
-## <a id="CreateForm"></a>Create a form
+## Autocomplete
 
-_TODO: refactor Add formActions in DisplayForm to map the form actions rather than specify directly. And then update these docs_
+Requirements
 
-### 1. <a id="AddFormActions"></a>Add formActions
+- The API endpoint that allows GETting the data for this field. It must be an endpoint that allows for search/filter based on a string passed to it
 
-Go to the page or component file you want to add your form to (or create your page if it's for a new page).
+Object structure
 
-Determine which form actions you need
- - submit
- - cancel
- - save and come back later **NOT YET ADDED TO CODE**
-
-Determine which styling each requires
- - primary button (usually for main submit)
- - secondary button (usually for cancel)
- - text button (usually for save and come back later type submits)
-
-Create an object of formActions for your form
-
-```javascript
-  const formActions = {
-    submit: {
-      className: 'govuk-button',
-      dataModule: 'govuk-button',
-      dataTestid: 'submit-button',
-      label: 'Save',
-      type: 'button',
-    },
-    cancel: {
-      className: 'govuk-button govuk-button--secondary',
-      dataModule: 'govuk-button',
-      dataTestid: 'submit-button',
-      label: 'Cancel',
-      type: 'button',
-    }
-  };
+```
+{
+  type: FIELD_AUTOCOMPLETE,
+  dataAPIEndpoint: [required],
+  fieldName: [required],
+  hint: [optional]
+  label: [required],
+  responseKey: [required],
+  additionalKey: [OPTIONAL: additional data key],
+}
 ```
 
-### 2. <a id="AddFormFields"></a>Add formFields
+Parameters
 
-Create an object of formFields for your form
+### type
+Import and use `FIELD_AUTOCOMPLETE` from `src/constants/AppConstants`
 
-_For this example we'll add a text input of type text, a set of 3 radio buttons, and our new date input_
+### dataAPIEndpoint
+The url for the API where we can get the list of options to display within the autocomplete field.
+It must be an endpoint setup to allow for search/filter based on what the user has typed into the autocomplete field.
 
-```javascript
-const formFields = [
-    {
-      type: FIELD_TEXT,
-      label: 'First name',
-      hint: 'Enter your first name',
-      fieldName: 'firstName',
-    },
-    {
-      type: FIELD_RADIO,
-      label: 'What is your favourite colour',
-      fieldName: 'favouriteColour',
-      className: 'govuk-radios',
-      grouped: true,
-      radioOptions: [
-        {
-          label: 'Red',
-          name: 'favouriteColour',
-          id: 'red',
-          value: 'red',
-          checked: CHECKED_FALSE
-        },
-        {
-          label: 'Blue',
-          name: 'favouriteColour',
-          id: 'blue',
-          value: 'blue',
-          checked: CHECKED_FALSE
-        },
-        {
-          label: 'Green',
-          name: 'favouriteColour',
-          id: 'green',
-          value: 'green',
-          checked: CHECKED_FALSE
-        },
-        {
-          label: 'Other',
-          name: 'favouriteColour',
-          id: 'other',
-          value: 'other',
-          checked: CHECKED_FALSE
-        },
-      ],
-    },
-    {
-      type: FIELD_DATE,
-      label: 'Sample date field',
-      hint: 'Enter a date',
-      fieldName: 'myDate',
-      grouped: true,
-    },
-  ];
+### fieldName
+A string that will be used for `name` and to create `id` and other field references.
 
-  ```
+### hint (optional)
+An optional string
 
-### 3. <a id="AddValidationRules"></a>Add validation rules (if required)
+### label
+A string that will be shown as the question/label text for the field
 
-Into your formField object, add any validation rules for each field.
+### responseKey
+The key from the API data set returned that lets us find the value to display in the input (e.g. `name` )
 
-Each field can take multiple rules, they're tested in the order you provide them and the first rule to fail is the one displayed to the user.
-
-_NOTE: If you have a new type of validation, you can add it's rule to the `src/utils/Validator.jsx` file._
-
-Example rule types
-- VALIDATE_REQUIRED : field must not be empty
-- VALIDATE_MIN_LENGTH : if field is not empty then it must have at least the specified number of characters in it
-- VALIDATE_EMAIL_ADDRESS : if field is not empty, then it must match a regex test for including `@` and `.xx` where x is any letter
-
-Validation objects must have a type and a message, and if there are additional conditions (such as min length) a condition.
-
-_For this example we will require the text field to have a min length of 2 characters and the date field to be completed._
-
-```javascript
-const formFields = [
-    {
-      type: FIELD_TEXT,
-      label: 'First name',
-      hint: 'Enter your first name',
-      fieldName: 'firstName',
-      validation: [
-        {
-          type: VALIDATE_REQUIRED,
-          message: 'Enter your first name',
-        },
-        {
-          type: VALIDATE_MIN_LENGTH,
-          message: 'First name must be a minimum of 2 characters',
-          condition: 2,
-        },
-      ],
-    },
-    {
-      type: FIELD_RADIO,
-      label: 'What is your favourite colour',
-      fieldName: 'favouriteColour',
-      className: 'govuk-radios',
-      grouped: true,
-      radioOptions: [
-        {
-          label: 'Red',
-          name: 'favouriteColour',
-          id: 'red',
-          value: 'red',
-          checked: CHECKED_FALSE
-        },
-        {
-          label: 'Blue',
-          name: 'favouriteColour',
-          id: 'blue',
-          value: 'blue',
-          checked: CHECKED_FALSE
-        },
-        {
-          label: 'Green',
-          name: 'favouriteColour',
-          id: 'green',
-          value: 'green',
-          checked: CHECKED_FALSE
-        },
-        {
-          label: 'Other',
-          name: 'favouriteColour',
-          id: 'other',
-          value: 'other',
-          checked: CHECKED_FALSE
-        },
-      ],
-    },
-    {
-      type: FIELD_DATE,
-      label: 'Sample date field',
-      hint: 'Enter a date',
-      fieldName: 'myDate',
-      grouped: true,
-      validation: [
-        {
-          type: VALIDATE_REQUIRED,
-          message: 'Enter your date',
-        },
-      ],
-    },
-  ];
-```
-
-### 4. <a id="AddHandleSubmit"></a>Add handleSubmit 
-
-_TODO: Add an example API call once those are built_
-
-Add your handleSubmit function. You need to include:
-- calling the Validator and setting any errors it returns
-- scrolling to the form element (so user is taken to where the errors display) if there are errors
-- where to navigate to if there are not errors
-- what to do with the data from the form (PATCH, POST, etc.)
-
-If you use a confirmation page
-- you must include the form name
-- you must include the next page link and the name it relates to
-- you *may* include a reference number if you have one available
-
-```javascript
- const handleSubmit = async (e, formData) => {
-    e.preventDefault();
-    const formErrors = await Validator({ formData: formData.formData, formFields: formFields });
-    setErrors(formErrors);
-
-    if (formErrors.length < 1) {
-      navigate(
-        FORM_CONFIRMATION_URL,
-        {
-          state: {
-            formName: 'Example form',
-            nextPageLink: DASHBOARD_URL,
-            nextPageName: DASHBOARD_PAGE_NAME,
-            // referenceNumber: referenceNumber // only include referenceNumber if you will receive one from your API POST/PATCH call, otherwise leave this out
-          }
-        }
-      );
-    } else {
-      scrollToTop();
-    }
-  };
-```
-
-### 5. <a id="AddHandleCancel"></a>Add handleCancel
-
-_TODO: Add a handleCancel example_
-
-### 6. <a id="AddDisplayForm"></a>Add <DisplayForm> to your return
-
-Add the DisplayForm component to your return
-
-```javascript
-  return (
-    <div className="govuk-grid-row">
-      <h1>Second page</h1>
-      <DisplayForm
-        formId='formSecondPage'
-        errors={errors}
-        fields={formFields}
-        formActions={formActions}
-        handleSubmit={handleSubmit}
-        setErrors={setErrors}
-      />
-    </div >
-  );
-```
-
-### Your final page component will then look something like this:
-
-```javascript
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import {
-  FIELD_DATE,
-  FIELD_RADIO,
-  FIELD_TEXT,
-  CHECKED_FALSE,
-  VALIDATE_MIN_LENGTH,
-  VALIDATE_REQUIRED,
-} from '../../constants/AppConstants';
-import { DASHBOARD_PAGE_NAME, DASHBOARD_URL, FORM_CONFIRMATION_URL } from '../../constants/AppUrlConstants';
-import DisplayForm from '../../components/DisplayForm';
-import { scrollToTop } from '../../utils/scrollToElement';
-import Validator from '../../utils/Validator';
-
-const SecondPage = () => {
-  const navigate = useNavigate();
-  const [errors, setErrors] = useState();
-  const referenceNumber = '123';
-
-  const formActions = {
-    submit: {
-      className: 'govuk-button',
-      dataModule: 'govuk-button',
-      dataTestid: 'submit-button',
-      label: 'Save',
-      type: 'button',
-    },
-    cancel: {
-      className: 'govuk-button--secondary',
-      dataModule: 'govuk-button',
-      dataTestid: 'submit-button',
-      label: 'Cancel',
-      type: 'button',
-    }
-  };
-  const formFields = [
-    {
-      type: FIELD_TEXT,
-      label: 'First name',
-      hint: 'Enter your first name',
-      fieldName: 'firstName',
-      validation: [
-        {
-          type: VALIDATE_REQUIRED,
-          message: 'Enter your first name',
-        },
-        {
-          type: VALIDATE_MIN_LENGTH,
-          message: 'First name must be a minimum of 2 characters',
-          condition: 2,
-        },
-      ],
-    },
-    {
-      type: FIELD_RADIO,
-      label: 'What is your favourite colour',
-      fieldName: 'favouriteColour',
-      className: 'govuk-radios',
-      grouped: true,
-      radioOptions: [
-        {
-          label: 'Red',
-          name: 'favouriteColour',
-          id: 'red',
-          value: 'red',
-          checked: CHECKED_FALSE
-        },
-        {
-          label: 'Blue',
-          name: 'favouriteColour',
-          id: 'blue',
-          value: 'blue',
-          checked: CHECKED_FALSE
-        },
-        {
-          label: 'Green',
-          name: 'favouriteColour',
-          id: 'green',
-          value: 'green',
-          checked: CHECKED_FALSE
-        },
-        {
-          label: 'Other',
-          name: 'favouriteColour',
-          id: 'other',
-          value: 'other',
-          checked: CHECKED_FALSE
-        },
-      ],
-    },
-    {
-      type: FIELD_DATE,
-      label: 'Sample date field',
-      hint: 'Enter a date',
-      fieldName: 'myDate',
-      grouped: true,
-      validation: [
-        {
-          type: VALIDATE_REQUIRED,
-          message: 'Enter your date',
-        },
-      ],
-    },
-  ];
-
-  const handleSubmit = async (e, formData) => {
-    e.preventDefault();
-    const formErrors = await Validator({ formData: formData.formData, formFields: formFields });
-    setErrors(formErrors);
-
-    if (formErrors.length < 1) {
-      navigate(
-        FORM_CONFIRMATION_URL,
-        {
-          state: {
-            formName: 'Example form',
-            nextPageLink: DASHBOARD_URL,
-            nextPageName: DASHBOARD_PAGE_NAME,
-            referenceNumber: referenceNumber
-          }
-        }
-      );
-    } else {
-      scrollToTop();
-    }
-  };
-
-  return (
-    <div className="govuk-grid-row">
-      <h1>Second page</h1>
-      <DisplayForm
-        formId='formSecondPage'
-        errors={errors}
-        fields={formFields}
-        formActions={formActions}
-        handleSubmit={handleSubmit}
-        setErrors={setErrors}
-      />
-    </div >
-  );
-};
-
-export default SecondPage;
-```
+### additionalResponseKey (optional)
+An additional key if two fields are required to create a name (e.g. key: `name` and additionalKey: `unlocode` for ports)
 
 ----
 
+## Radio Buttons
+
+TODO:
+- replace using the className of `govuk-radios` or `govuk-radios govuk-radios--inline` with constants for vertical/horizontal
+- replace need for specifying grouped = true and build that into the DetermineFieldType switch statement for ease (radio buttons are always grouped)
+- use `fieldName` to add the name to the option in InputRadio.jsx, removing the need to repeat it in each radioOption
+
+Requirements
+
+n/a
+
+Object structure
+
+```
+{
+  type: FIELD_RADIO,
+  className: [required],
+  fieldName: [required],
+  grouped: true,
+  hint: [optional]
+  label: [required],
+  radioOptions: [
+    {
+      label: [required],
+      name: [required],
+      value: [required],
+      checked: [optional]
+    },
+  ],
+},
+```
+
+Parameters
+
+### type
+Import and use `FIELD_RADIO` from `src/constants/AppConstants`
+
+### className
+Radio buttons can be aligned vertically (`govuk-radios`) or horizontally (`govuk-radios govuk-radios--inline`)
+
+### fieldName
+A string that will be used for `name` and to create `id` and other field references.
+
+### grouped
+Always specify this as `true` as radio buttons are grouped inputs and use a different fieldset/label html structure.
+This is defined within `src/components/formFields/DetermineFieldType` and at some point we will refactor this so that `grouped: true` does not need to be specified within the field object
+
+### hint (optional)
+An optional string
+
+### label
+A string that will be shown as the question/label text for the field
+
+### radioOptions
+- label: A string that will be shown as the associated label text for the field
+- name: must be the same as `fieldName` as it is the name of the radio button set
+- value: The value that will be stored and used if the radio button is checked
+- checked: optional, if set to `true` then the radio button will default to checked on render
+
+----
+
+## Conditional
+
+A list of radio buttons where one or more of the radio options can have an associated text input. The text input is only shown/validated/value stored if it's assocaited radio button is checked.
+
+TODO:
+- replace using the className of `govuk-radios` or `govuk-radios govuk-radios--inline` with constants for vertical/horizontal
+- replace need for specifying grouped = true and build that into the DetermineFieldType switch statement for ease (radio buttons are always grouped)
+- use `fieldName` to add the name to the option in InputRadio.jsx, removing the need to repeat it in each radioOption
+
+Requirements
+
+n/a
+
+Object structure
+
+```
+{
+  type: FIELD_CONDITIONAL,
+  className: [required],
+  fieldName: [required],
+  grouped: true,
+  hint: [optional],
+  label: [required],
+  radioOptions: [
+    {
+      radioField: [required],
+      label: [required],
+      name: [required],
+      value: [required],
+    },
+    {
+      radioField: [required],
+      parentFieldValue: [required],
+      hint: [optional],
+      label: [required],
+      name: [required],
+    },
+  ],
+},
+```
+
+Parameters
+
+### type
+Import and use `FIELD_CONDITIONAL` from `src/constants/AppConstants`
+
+### className
+Radio buttons can be aligned vertically (`govuk-radios`) or horizontally (`govuk-radios govuk-radios--inline`)
+
+### fieldName
+A string that will be used for `name` and to create `id` and other field references.
+
+### grouped
+Always specify this as `true` as radio buttons are grouped inputs and use a different fieldset/label html structure.
+This is defined within `src/components/formFields/DetermineFieldType` and at some point we will refactor this so that `grouped: true` does not need to be specified within the field object
+
+### hint (optional)
+An optional string
+
+### label
+A string that will be shown as the question/label text for the field
+
+### radioOptions : radio button
+- radioField: set to `true` for this option to be a radio button
+- label: A string that will be shown as the associated label text for the field
+- name: must be the same as `fieldName` as it is the name of the radio button set
+- value: The value that will be stored and used if the radio button is checked
+
+### radioOptions : conditional text input
+- radioField: set to `false` for this option to be a conditional text input
+- parentFieldValue: the `value` from the associated parent field, this allows us to show/hide/store this field only when parent field is checked
+- hint: (optional) An optional string
+- label: a string that will be shown as the question/label text for the field
+- name: a string that will be used for `name` and to create `id` and other field references
+
+
+----
+
+## Text Input
+
+Requirements
+
+n/a
+
+Object structure
+
+```
+{
+  type: FIELD_TEXT,
+  fieldName: [required],
+  hint: [optional],
+  label: [required]
+}
+```
+
+Parameters
+
+### type
+Import and use `FIELD_TEXT` from `src/constants/AppConstants`
+
+### fieldName
+A string that will be used for `name` and to create `id` and other field references.
+
+### hint (optional)
+An optional string
+
+### label
+A string that will be shown as the question/label text for the field
+
+----
+
+## Email
+
+Requirements
+
+n/a
+
+Object structure
+
+```
+{
+  type: FIELD_EMAIL,
+  fieldName: [required],
+  hint: [optional],
+  label: [required]
+}
+```
+
+Parameters
+
+### type
+Import and use `FIELD_EMAIL` from `src/constants/AppConstants`
+
+### fieldName
+A string that will be used for `name` and to create `id` and other field references.
+
+### hint (optional)
+An optional string
+
+### label
+A string that will be shown as the question/label text for the field
+
+----
+
+## Password
+
+Requirements
+
+n/a
+
+Object structure
+
+```
+{
+  type: FIELD_PASSWORD,
+  fieldName: [required],
+  hint: [optional],
+  label: [required]
+}
+```
+
+Parameters
+
+### type
+Import and use `FIELD_PASSWORD` from `src/constants/AppConstants`
+
+### fieldName
+A string that will be used for `name` and to create `id` and other field references.
+
+### hint (optional)
+An optional string
+
+### label
+A string that will be shown as the question/label text for the field
+
+----
+
+## Validating Fields
+If a field requires validation you add a validation array to the field object.
+A field can have no validation array (no rules), an array with one object (rule), or an array with multiple objects (rules)
+
+1. [Rules](#rules)
+2. [Examples](#examples)
+
+### Rules
+
+#### Required
+Field is a mandatory field and cannot be nul
+
+```
+{
+  type: VALIDATE_REQUIRED,
+  message: [error message to show in UI]
+}
+```
+
+#### Conditional
+Field is a conditional field and has one or more rules to be validated if that conditional field is visible (i.e. it's parent radio is checked).
+The validation is run based on the rules entered in the nested `condition` object.
+
+```
+{
+  type: VALIDATE_CONDITIONAL,
+  condition: {
+    parentValue: [value of parent field],
+    fieldName: [this conditional field's name],
+    ruleToTest: [rule constant],
+    message: [error message to show in UI]
+  },
+}
+```
+
+#### Email
+Specifically tests if the value entered matches an email pattern.
+This test only runs if there is a value in the field and is ignored if field is null.
+
+```
+{
+  type: VALIDATE_EMAIL,
+  message: [error message to show in UI]
+  },
+}
+```
+
+#### Minimum Length
+Specifically tests if the length of the value entered is > the number specified in the `conditions` entry.
+This test only runs if there is a value in the field and is ignored if field is null.
+
+```
+{
+  type: VALIDATE_MIN_LENGTH,
+  condition: [minimum length]
+  message: [error message to show in UI]
+  },
+}
+```
+
+
+### Examples
+
+e.g.
+```
+{
+  type: FIELD_TEXT,
+  label: 'First name',
+  fieldName: 'firstName',
+  validation: [
+    {
+      type: VALIDATE_REQUIRED,
+      message: 'Enter your first name',
+    },
+  ],
+},
+```
+
+There can be multiple validation rules objects per field, all are placed within the validation array
+
+e.g.
+```
+{
+  type: FIELD_CONDITIONAL,
+  label: 'What is your favourite animal',
+  fieldName: 'favAnimal',
+  className: 'govuk-radios',
+  grouped: true,
+  radioOptions: [
+    {
+      radioField: true,
+      label: 'Cat',
+      name: 'favAnimal',
+      value: 'cat',
+    },
+    {
+      radioField: false,
+      parentFieldValue: 'cat',
+      label: 'Breed of cat',
+      name: 'breedOfCat',
+    },
+    {
+      radioField: true,
+      label: 'Dog',
+      name: 'favAnimal',
+      value: 'dog',
+    },
+  ],
+  validation: [
+    {
+      type: VALIDATE_REQUIRED,
+      message: 'Select your favourite animal',
+    },
+    {
+      type: VALIDATE_CONDITIONAL,
+      condition: {
+        parentValue: 'cat',
+        fieldName: 'breedOfCat',
+        ruleToTest: VALIDATE_REQUIRED,
+        message: 'Enter a breed of cat'
+      },
+    }
+  ],
+}
+```
+
+----
 ## Structure Diagram
 
 _Last updated November 2022_
 
-<a href="https://github.com/UKHomeOffice/nmsw-ui/blob/main/docs/formComposerDiagram-preview.png"><img src="https://github.com/UKHomeOffice/nmsw-ui/blob/main/docs/formComposerDiagram-preview.png" alt="Form constructor diagram" title="Form constructor diagram" height="150" /></a>
+<a href="https://raw.githubusercontent.com/UKHomeOffice/nmsw-ui/main/docs/formComposerDiagram.png"><img src="https://raw.githubusercontent.com/UKHomeOffice/nmsw-ui/main/docs/formComposerDiagram.png" alt="Form constructor diagram" title="Form constructor diagram" height="150" /></a>
