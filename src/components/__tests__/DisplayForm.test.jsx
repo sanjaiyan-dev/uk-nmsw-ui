@@ -717,6 +717,25 @@ describe('Display Form', () => {
     expect(window.sessionStorage.getItem('formData')).toStrictEqual(expectedStoredData);
   });
 
+  it('should clear session values of conditional fields if they become hidden', async () => {
+    const user = userEvent.setup();
+    const expectedStoredData = '{"radioWithConditional":"optionNoConditional","conditionalTextInput":null}';
+    render(
+      <DisplayForm
+        formId="testForm"
+        fields={formWithMultipleFields}
+        formActions={formActionsSubmitOnly}
+        handleSubmit={handleSubmit}
+      />
+    );
+    
+    await user.click(screen.getByRole('radio', { name: 'Option that has a conditional' }));
+    await user.type(screen.getByRole('radio', { name: 'Option that has a conditional' }), 'Hello');
+    await user.click(screen.getByRole('radio', { name: 'Option without a conditional' }));
+    
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual(expectedStoredData);
+  });
+
   it('should clear session data when form is ready to submit', async () => {
     const user = userEvent.setup();
     const expectedStoredData = '{"testField":"Hello Test Field","radioButtonSet":"radioOne"}';
