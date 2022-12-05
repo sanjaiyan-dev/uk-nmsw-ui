@@ -2,7 +2,7 @@ import { Navigate, Routes, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import useUserIsPermitted from './hooks/useUserIsPermitted';
 import ProtectedRoutes from './utils/ProtectedRoutes';
-import ScrollToTop from './utils/ScrollToTop';
+import ScrollToTopOnNewPage from './utils/ScrollToTopOnNewPage';
 
 // URLs
 import {
@@ -31,7 +31,7 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
   const isPermittedToView = useUserIsPermitted();
 
   return (
-    <ScrollToTop>
+    <ScrollToTopOnNewPage>
       <Routes>
         <Route path='/' element={<Landing />} />
         <Route path={ACCESSIBILITY_URL} element={<AccessibilityStatement />} />
@@ -46,7 +46,7 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
         </Route>
         <Route path='*' element={<Navigate to='/' replace />} />
       </Routes>
-    </ScrollToTop>
+    </ScrollToTopOnNewPage>
   );
 };
 
