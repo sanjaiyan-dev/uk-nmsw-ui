@@ -10,8 +10,8 @@ mkdir -p /run/nginx
 # for file in /usr/share/nginx/html/*.js
 # do
 #   echo "== ENV sub for $file =="
-#   sed -i 's,REPLACE_SGMR_DATA_API_BASE_URL,'${SGMR_DATA_API_BASE_URL}',g' $file
-#   sed -i 's,REPLACE_SGMR_MAINTENANCE,'${SGMR_MAINTENANCE}',g' $file
+#   sed -i 's,REPLACE_NMSW_DATA_API_BASE_URL,'${NMSW_DATA_API_BASE_URL}',g' $file
+#   sed -i 's,REPLACE_NMSW_MAINTENANCE,'${NMSW_MAINTENANCE}',g' $file
 #   sed -i 's,REPLACE_GOV_NOTIFY_SUPPORT_EMAIL,'${GOV_NOTIFY_SUPPORT_EMAIL}',g' $file
 # done
 # echo "== Finished ENV sub =="
