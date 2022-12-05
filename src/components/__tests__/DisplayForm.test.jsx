@@ -497,6 +497,28 @@ describe('Display Form', () => {
     expect(screen.getByTestId('password-passwordField')).toBeInTheDocument();
   });
 
+  it('should store expanded data if it is provided from an autocomplete field', async () => {
+    const user = userEvent.setup();
+    const expectedStoredData = '{"testField":"Hello","radioButtonSet":"radioTwo","items":"ObjectTwo","itemsExpandedDetails":{"items":{"name":"ObjectTwo","identifier":"two"}}}';
+    render(
+      <DisplayForm
+        formId="testForm"
+        fields={formWithMultipleFields}
+        formActions={formActionsSubmitOnly}
+        handleSubmit={handleSubmit}
+      />
+    );
+    await user.type(screen.getByLabelText('Text input'), 'Hello');
+    expect(screen.getByLabelText('Text input')).toHaveValue('Hello');
+    await user.click(screen.getByRole('radio', { name: 'Radio two' }));
+    expect(screen.getByRole('radio', { name: 'Radio two' })).toBeChecked();
+    await user.type(screen.getByRole('combobox', { name: 'Autocomplete input' }), 'Object');
+    await user.click(screen.getByText('ObjectTwo'));
+    expect(screen.getByRole('combobox', { name: 'Autocomplete input' })).toHaveValue('ObjectTwo');
+
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual(expectedStoredData);
+  });
+
   // ERRORS
   it('should render error summary & field error if there are field errors', async () => {
     const user = userEvent.setup();

@@ -59,11 +59,15 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
       displayValue = e[fieldDetails.responseKey];
     }
 
-    // format the data so it can be accepted by the handleChange function
+    // We want to include both the display value, and any additional field object information received from the API
+    // So the page's handleSubmit can decide what to send on the POST/PUT call
     const formattedEvent = {
       target: {
         name: fieldDetails.fieldName,
         value: displayValue,
+        additionalDetails: {
+          [fieldDetails.fieldName]: e
+        },
       }
     };
 
