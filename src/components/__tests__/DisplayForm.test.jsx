@@ -7,6 +7,7 @@ import {
   FIELD_PASSWORD,
   FIELD_RADIO,
   FIELD_TEXT,
+  VALIDATE_CONDITIONAL,
   VALIDATE_EMAIL_ADDRESS,
   VALIDATE_MIN_LENGTH,
   VALIDATE_REQUIRED,
@@ -52,6 +53,78 @@ describe('Display Form', () => {
       type: 'button',
     },
   };
+  const formRequiredConditionalTextInput = [
+    {
+      type: FIELD_CONDITIONAL,
+      label: 'What is your favourite animal',
+      fieldName: 'favAnimal',
+      className: 'govuk-radios',
+      grouped: true,
+      radioOptions: [
+        {
+          radioField: true,
+          label: 'Cat',
+          name: 'favAnimal',
+          value: 'cat',
+        },
+        {
+          radioField: false,
+          parentFieldValue: 'cat',
+          label: 'Breed of cat',
+          name: 'breedOfCat',
+        },
+        {
+          radioField: true,
+          label: 'Dog',
+          name: 'favAnimal',
+          value: 'dog',
+        },
+        {
+          radioField: false,
+          parentFieldValue: 'dog',
+          hint: 'What sort of dogs do you like?',
+          label: 'Breed of dog',
+          name: 'breedOfDog',
+        },
+        {
+          radioField: true,
+          label: 'Rabbit',
+          name: 'favAnimal',
+          value: 'rabbit',
+        },
+        {
+          radioField: true,
+          label: 'Other',
+          name: 'favAnimal',
+          value: 'other',
+        },
+      ],
+      validation: [
+        {
+          type: VALIDATE_REQUIRED,
+          message: 'Select your favourite animal',
+        },
+        {
+          type: VALIDATE_CONDITIONAL,
+          condition: {
+            parentValue: 'dog',
+            fieldName: 'breedOfDog',
+            ruleToTest: VALIDATE_REQUIRED,
+            message: 'Enter a breed of dog'
+          },
+        },
+        {
+          type: VALIDATE_CONDITIONAL,
+          condition: {
+            parentValue: 'cat',
+            fieldName: 'breedOfCat',
+            ruleToTest: VALIDATE_REQUIRED,
+            message: 'Enter a breed of cat'
+          },
+        }
+      ],
+    },
+  ];
   const formRequiredTextInput = [
     {
       type: FIELD_TEXT,
@@ -377,6 +450,28 @@ describe('Display Form', () => {
     expect(screen.getByRole('button', { name: 'Enter your text input value' }).outerHTML).toEqual('<button class="govuk-button--text">Enter your text input value</button>');
     // Input field has the error class attached
     expect(screen.getByRole('textbox', { name: 'Text input' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testField-input" name="testField" type="text" aria-describedby="testField-hint" value="">');
+  });
+
+  it('should render error summary & field error for a conditional field if there are field errors', async () => {
+    const user = userEvent.setup();
+    render(
+      <DisplayForm
+        formId="testForm"
+        fields={formRequiredConditionalTextInput}
+        formActions={formActionsSubmitOnly}
+        handleSubmit={handleSubmit}
+      />
+    );
+
+    await user.click(screen.getByRole('radio', { name: 'Cat' }));
+    await user.click(screen.getByRole('button', { name: 'Submit test button' }));
+
+    expect(screen.getByText('There is a problem').outerHTML).toEqual('<h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>');
+    expect(screen.getAllByText('Enter a breed of cat')).toHaveLength(2);
+    // // Error summary has the error message as a button and correct class
+    expect(screen.getByRole('button', { name: 'Enter a breed of cat' }).outerHTML).toEqual('<button class="govuk-button--text">Enter a breed of cat</button>');
+    // // Input field has the error class attached
+    expect(screen.getByTestId('breedOfCat-container').outerHTML).toEqual('<div data-testid="breedOfCat-container" class="govuk-radios__conditional"><div class="govuk-form-group govuk-form-group--error"><label class="govuk-label" for="breedOfCat-input">Breed of cat</label><div id="breedOfCat-hint" class="govuk-hint"></div><p id="breedOfCat-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> Enter a breed of cat</p><input class="govuk-input govuk-!-width-one-third govuk-input--error" id="breedOfCat-input" name="breedOfCat" type="text" value=""></div></div>');
   });
 
   it('should return an error if a minimum character count is not met', async () => {

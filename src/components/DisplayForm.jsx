@@ -52,7 +52,7 @@ const DisplayForm = ({ fields, formId, formActions, handleSubmit }) => {
     e.preventDefault();
     const fieldMap = getFieldMap();
     const fieldLabelNode = fieldMap.get(error.name);
-    fieldLabelNode.scrollIntoView();
+    fieldLabelNode?.scrollIntoView();
     // /* TODO: replace with useRef/forwardRef */
     // radio buttons and checkbox lists add their index key to their id so we can find and focus on them
     document.getElementById(`${error.name}-input`) ? document.getElementById(`${error.name}-input`).focus() : document.getElementById(`${error.name}-input[0]`).focus();
@@ -159,6 +159,7 @@ const DisplayForm = ({ fields, formId, formActions, handleSubmit }) => {
             >
               {
                 determineFieldType({
+                  allErrors: errors,  // allows us to add the error handling logic for conditional fields
                   error: error?.message,
                   fieldDetails: field,
                   parentHandleChange: handleChange,

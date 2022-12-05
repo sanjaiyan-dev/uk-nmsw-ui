@@ -46,12 +46,13 @@ const SingleInput = ({ error, fieldName, fieldToReturn, hint, label }) => {
   );
 };
 
-const determineFieldType = ({ error, fieldDetails, parentHandleChange }) => {
+const determineFieldType = ({ allErrors, error, fieldDetails, parentHandleChange }) => {
   let fieldToReturn;
   switch (fieldDetails.type) {
 
     case FIELD_CONDITIONAL: fieldToReturn =
       <InputConditional
+        errors={allErrors} // allows us to add the error handling logic for conditional fields only on those fields
         fieldDetails={fieldDetails}
         handleChange={parentHandleChange}
       />;
@@ -101,6 +102,7 @@ const determineFieldType = ({ error, fieldDetails, parentHandleChange }) => {
   return (
     <>
       {fieldDetails.grouped ? <GroupedInputs
+        allErrors={allErrors}
         error={error}
         fieldName={fieldDetails.fieldName}
         fieldToReturn={fieldToReturn}
@@ -123,6 +125,7 @@ const determineFieldType = ({ error, fieldDetails, parentHandleChange }) => {
 export default determineFieldType;
 
 determineFieldType.propTypes = {
+  allErrors: PropTypes.array,
   error: PropTypes.string,
   fieldDetails: PropTypes.objectOf(
     PropTypes.shape({
@@ -137,6 +140,7 @@ determineFieldType.propTypes = {
 };
 
 GroupedInputs.propTypes = {
+  allErrors: PropTypes.array,
   error: PropTypes.string,
   fieldName: PropTypes.string.isRequired,
   fieldToReturn: PropTypes.object.isRequired,
