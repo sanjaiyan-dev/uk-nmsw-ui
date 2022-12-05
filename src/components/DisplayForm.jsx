@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { FIELD_PASSWORD } from '../constants/AppConstants';
 import { UserContext } from '../context/userContext';
 import determineFieldType from './formFields/DetermineFieldType';
-import { scrollToH1 } from '../utils/ScrollToElement';
+import { scrollToTop } from '../utils/ScrollToElement';
 import Validator from '../utils/Validator';
 
 const DisplayForm = ({ fields, formId, formActions, handleSubmit }) => {
@@ -44,7 +44,7 @@ const DisplayForm = ({ fields, formId, formActions, handleSubmit }) => {
       handleSubmit(formData);
       sessionStorage.removeItem('formData');
     } else {
-      scrollToH1();
+      scrollToTop();
     }
   };
 

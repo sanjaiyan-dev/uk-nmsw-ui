@@ -354,7 +354,7 @@ If you use a confirmation page
         }
       );
     } else {
-      scrollToH1();
+      scrollToTop();
     }
   };
 ```
@@ -398,7 +398,7 @@ import {
 } from '../../constants/AppConstants';
 import { DASHBOARD_PAGE_NAME, DASHBOARD_URL, FORM_CONFIRMATION_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
-import { scrollToH1 } from '../../utils/scrollToElement';
+import { scrollToTop } from '../../utils/scrollToElement';
 import Validator from '../../utils/Validator';
 
 const SecondPage = () => {
@@ -510,7 +510,7 @@ const SecondPage = () => {
         }
       );
     } else {
-      scrollToH1();
+      scrollToTop();
     }
   };
 

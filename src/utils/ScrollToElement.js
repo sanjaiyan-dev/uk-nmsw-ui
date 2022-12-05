@@ -3,6 +3,6 @@ export const scrollToElementId = (id) => {
     document.activeElement.blur();
 };
 
-export const scrollToH1 = () => {
+export const scrollToTop = () => {
   document.getElementsByTagName('html')[0].scrollIntoView();
 };

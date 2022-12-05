@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router';
 import PropTypes from 'prop-types';
 
-const ScrollToTop = ({ children }) => {
+const ScrollToTopOnNewPage = ({ children }) => {
   const location = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -12,8 +12,8 @@ const ScrollToTop = ({ children }) => {
   return <>{children}</>;
 };
 
-export default ScrollToTop;
+export default ScrollToTopOnNewPage;
 
-ScrollToTop.propTypes = {
+ScrollToTopOnNewPage.propTypes = {
   children: PropTypes.node, // allows any renderable object
 };
