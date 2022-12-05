@@ -158,7 +158,7 @@ const SecondPage = () => {
           formName: 'Second page',
           nextPageLink: DASHBOARD_URL,
           nextPageName: DASHBOARD_PAGE_NAME,
-          referenceNumber: `${formData.favouriteColour}-123`
+          referenceNumber: `${formData.breedOfCat}-123`
         }
       }
     );

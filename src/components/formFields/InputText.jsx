@@ -11,6 +11,7 @@ const InputText = ({ autoComplete, dataTestid, error, fieldDetails, handleChange
       type={type}
       autoComplete={autoComplete}
       onChange={handleChange}
+      onPaste={handleChange}
       aria-describedby={fieldDetails.hint ? `${fieldDetails.fieldName}-hint` : null}
       defaultValue={fieldDetails.value}
     />

@@ -1,6 +1,7 @@
 import { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { FIELD_RADIO, FIELD_TEXT } from '../../constants/AppConstants';
+import { useEffect } from 'react';
 
 const RadioField = ({ checkedState, index, label, name, value, handleChange }) => {
   return (
@@ -42,6 +43,7 @@ const TextField = ({ errors, hint, isVisible, label, name, value, handleChange }
           name={name}
           type={FIELD_TEXT}
           onChange={handleChange}
+          onPaste={handleChange}
         />
       </div>
     </div>
@@ -75,6 +77,18 @@ const InputConditional = ({ errors, fieldDetails, handleChange }) => {
     }
     handleChange(e, formattedItemToClear);
   };
+
+  useEffect(() => {
+    if (conditionalDefaultValue) {
+      const formatPrefilledItem = {
+        target: {
+          name: fieldDetails.conditionalValueToFill.name,
+          value: fieldDetails.conditionalValueToFill.value,
+        }
+      };
+      handleChange(formatPrefilledItem);
+    }
+  }, [conditionalDefaultValue]);
 
   return (
     <div className={fieldDetails.className} data-module="govuk-radios">
