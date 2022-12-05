@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import DisplayForm from '../DisplayForm';
 import {
+  FIELD_AUTOCOMPLETE,
   FIELD_CONDITIONAL,
   FIELD_EMAIL,
   FIELD_PASSWORD,
@@ -53,6 +54,35 @@ describe('Display Form', () => {
       type: 'button',
     },
   };
+  const formRequiredAutocompleteInput = [
+    {
+      type: FIELD_AUTOCOMPLETE,
+      label: 'Autocomplete input',
+      fieldName: 'items',
+      hint: 'Hint for Autocomplete input',
+      dataAPIEndpoint: [
+        {
+          name: 'ObjectOne',
+          identifier: 'one'
+        },
+        {
+          name: 'ObjectTwo',
+          identifier: 'two'
+        },
+        {
+          name: 'ObjectThree',
+          identifier: 'three'
+        },
+      ], // for while we're passing in a mocked array of data
+      responseKey: 'name',
+      validation: [
+        {
+          type: VALIDATE_REQUIRED,
+          message: 'Select your Autocomplete input item',
+        },
+      ],
+    },
+  ];
   const formRequiredConditionalTextInput = [
     {
       type: FIELD_CONDITIONAL,
@@ -242,6 +272,27 @@ describe('Display Form', () => {
   ];
   const formWithMultipleFields = [
     {
+      type: FIELD_AUTOCOMPLETE,
+      label: 'Autocomplete input',
+      fieldName: 'items',
+      hint: 'Hint for Autocomplete input',
+      dataAPIEndpoint: [
+        {
+          name: 'ObjectOne',
+          identifier: 'one'
+        },
+        {
+          name: 'ObjectTwo',
+          identifier: 'two'
+        },
+        {
+          name: 'ObjectThree',
+          identifier: 'three'
+        },
+      ], // for while we're passing in a mocked array of data
+      responseKey: 'name',
+    },
+    {
       type: FIELD_TEXT,
       label: 'Text input',
       hint: 'This is a hint for a text input',
@@ -356,18 +407,19 @@ describe('Display Form', () => {
   });
 
   // INPUTS
-  it('should render a text input', () => {
+  it('should render an autocomplete input', async () => {
     render(
       <DisplayForm
         formId="testForm"
-        fields={formRequiredTextInput}
+        fields={formRequiredAutocompleteInput}
         formActions={formActionsSubmitOnly}
         handleSubmit={handleSubmit}
       />
     );
-    expect(screen.getByLabelText('Text input')).toBeInTheDocument();
-    expect(screen.getByText('This is a hint for a text input').outerHTML).toEqual('<div id="testField-hint" class="govuk-hint">This is a hint for a text input</div>');
-    expect(screen.getByRole('textbox', { name: 'Text input' })).toBeInTheDocument();
+    expect(screen.getByLabelText('Autocomplete input')).toBeInTheDocument();
+    expect(screen.getByText('Hint for Autocomplete input').outerHTML).toEqual('<div id="items-hint" class="govuk-hint">Hint for Autocomplete input</div>');
+    expect(screen.getByRole('combobox', { name: 'Autocomplete input' })).toBeInTheDocument();
+    expect(screen.getByRole('listbox', { name: '' })).toBeInTheDocument();
   });
 
   it('should render a radio button input', () => {
@@ -406,6 +458,20 @@ describe('Display Form', () => {
     expect(screen.getByRole('radio', { name: 'Option that has a conditional' })).toBeInTheDocument();
     expect(screen.getByRole('radio', { name: 'Option without a conditional' })).toBeInTheDocument();
     expect(screen.queryByRole('radio', { name: 'Conditional text input' })).not.toBeInTheDocument(); // tests the text field isn't displayed as radio
+  });
+
+  it('should render a text input', () => {
+    render(
+      <DisplayForm
+        formId="testForm"
+        fields={formRequiredTextInput}
+        formActions={formActionsSubmitOnly}
+        handleSubmit={handleSubmit}
+      />
+    );
+    expect(screen.getByLabelText('Text input')).toBeInTheDocument();
+    expect(screen.getByText('This is a hint for a text input').outerHTML).toEqual('<div id="testField-hint" class="govuk-hint">This is a hint for a text input</div>');
+    expect(screen.getByRole('textbox', { name: 'Text input' })).toBeInTheDocument();
   });
 
   it('should render the special input types', () => {
