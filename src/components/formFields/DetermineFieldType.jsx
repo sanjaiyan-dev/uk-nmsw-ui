@@ -54,7 +54,6 @@ const determineFieldType = ({ allErrors, error, fieldDetails, parentHandleChange
 
     case FIELD_AUTOCOMPLETE: fieldToReturn =
       <InputAutocomplete
-        autoComplete='email'
         error={error} // if error true, error styling applied to input
         fieldDetails={fieldDetails}
         handleChange={parentHandleChange}
