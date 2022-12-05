@@ -203,14 +203,16 @@ const SecondPage = () => {
 
   return (
     <div className="govuk-grid-row">
-      <h1>Second page</h1>
-      <DisplayForm
-        formId='formSecondPage'
-        fields={formFields}
-        formActions={formActions}
-        handleSubmit={handleSubmit}
-      />
-    </div >
+      <div className="govuk-grid-column-two-thirds">
+        <DisplayForm
+          pageHeading="Second page"
+          formId='formSecondPage'
+          fields={formFields}
+          formActions={formActions}
+          handleSubmit={handleSubmit}
+        />
+      </div >
+    </div>
   );
 };
 

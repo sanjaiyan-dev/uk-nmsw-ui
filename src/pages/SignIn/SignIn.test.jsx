@@ -28,7 +28,7 @@ describe('Sign in tests', () => {
 
   it('should render the sign in page', () => {
     render(<MemoryRouter><SignIn /></MemoryRouter>);
-    expect(screen.getByTestId('signin-h1')).toHaveTextContent('Sign in');
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Sign in');
     expect(screen.getByTestId('submit-button')).toHaveTextContent('Sign in');
   });
 
