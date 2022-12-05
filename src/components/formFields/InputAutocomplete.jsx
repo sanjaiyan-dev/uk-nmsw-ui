@@ -1,17 +1,18 @@
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Autocomplete from 'accessible-autocomplete/react';
 
-// there is an open PR to fix the aria-activedescendent issue: 
-// https://github.com/alphagov/accessible-autocomplete/issues/434
-// https://github.com/alphagov/accessible-autocomplete/pull/553/files
-
-// The aria-activedescendent looks to work correctly, if you use your mouse to select an item from the list
-// then aria-activedescendent's value changes and voice over reads it out correctly
-// The error occurs because when the combobox pop up (list) is closed, the value of aria-activedescendent is set to = 'false'
-// and false is an invalid value for it.
-// some explanation of aria-activedescendant: https://www.holisticseo.digital/technical-seo/web-accessibility/aria-activedescendant/
-
+/* there is an open PR to fix the aria-activedescendent issue: 
+ * https://github.com/alphagov/accessible-autocomplete/issues/434
+ * https://github.com/alphagov/accessible-autocomplete/pull/553/files
+ * The aria-activedescendent looks to work correctly, if you use your mouse to select an item from the list
+ * then aria-activedescendent's value changes and voice over reads it out correctly
+ * The error occurs because when the combobox pop up (list) is closed, the value of aria-activedescendent is set to = 'false'
+ * and false is an invalid value for it.
+ * some explanation of aria-activedescendant: https://www.holisticseo.digital/technical-seo/web-accessibility/aria-activedescendant/
+*/
 const InputAutocomplete = ({ fieldDetails, handleChange }) => {
+  const [hideListBox, setHideListBox] = useState(false); // only used for defaultValue bug workaround
 
   const suggest = (userQuery, populateResults) => {
     if (!userQuery) { return; }
@@ -74,6 +75,58 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
     handleChange(formattedEvent);
   };
 
+  /* See issue#424, #495, at alphagov/accessible-autocomplete
+    * There is an ongoing issue around setting defaultValue when using template
+    * whereby the suggest doesn't run and so the dropdown shows 'undefined' instead of not opening/showing the value
+    * it also results in an error (seen in console) TypeError: Cannot read properties of undefined (reading 'toLowerCase') onBlur/onConfirm
+    * the workaround is to use javascript to set the value of the input which forces the suggest to run
+    * TODO: when fixed on alphagov/accessible-autocomplete, fix here
+  */
+  useEffect(() => {
+    if (!fieldDetails.value) {
+      return;
+    }
+    document.getElementById(`${fieldDetails.fieldName}-input`).value = fieldDetails.value;
+    setHideListBox(true);
+
+    // TODO: when we connect this to an API call we will make the API call here to get the data
+    // trigger a handle confirm so that any additional field values are also passed back to the form data and not lost
+  }, [fieldDetails.value]);
+
+
+  useEffect(() => {
+    if (hideListBox) {
+      document.getElementById(`${fieldDetails.fieldName}-input__listbox`).className = 'autocomplete__menu autocomplete__menu--inline autocomplete__menu--hidden';
+      setHideListBox(false);
+    }
+  }, [hideListBox]);
+
+  /* 
+   * There is no onBlur event available for us to place a function on
+   * There is no onKeyPress event available for us to place a function on
+   * There is no current way other than vanillaJS to capture that the
+   * user has cleared the field with delete/backspace and then 
+   * clear the value from formData/sessionData
+  */
+  useEffect(() => {
+    const handleKeypress = e => {
+      if (e.key === 'Delete' || e.key === 'Backspace') {
+        const formattedEvent = {
+          target: {
+            name: e.target.name,
+            value: null,
+            additionalDetails: {},
+          }
+        };
+        handleChange(formattedEvent);
+      }
+    };
+    const element = document.getElementById(`${fieldDetails.fieldName}-input`);
+    element.addEventListener('keydown', handleKeypress);
+    return () => {
+      element.removeEventListener('keydown', handleKeypress);
+    };
+  }, []);
 
   // We need to use the template function to handle our results coming in objects
   // this lets us format the strings to display as we like
@@ -86,7 +139,7 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
       <Autocomplete
         confirmOnBlur={false}
         id={`${fieldDetails.fieldName}-input`}
-        minLength={2}
+        minLength={1}
         name={fieldDetails.fieldName}
         source={suggest}
         templates={{

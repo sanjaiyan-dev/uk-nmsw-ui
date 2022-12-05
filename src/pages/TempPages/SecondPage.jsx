@@ -160,7 +160,7 @@ const SecondPage = () => {
       validation: [
         {
           type: VALIDATE_REQUIRED,
-          message: 'Select your country',
+          message: 'Select your country from the list',
         },
       ],
     },
@@ -170,11 +170,24 @@ const SecondPage = () => {
       fieldName: 'port',
       dataAPIEndpoint: portList,
       responseKey: 'name',
-      additionalKey: 'unlocode'
+      additionalKey: 'unlocode',
+      validation: [
+        {
+          type: VALIDATE_REQUIRED,
+          message: 'Select your port from the list',
+        },
+      ],
     },
   ];
 
   const handleSubmit = ({ formData }) => {
+    let referenceNumber;
+    if (formData.countryExpandedDetails?.country && formData.portExpandedDetails?.port) {
+      referenceNumber = `CountryCode: ${formData.countryExpandedDetails.country.code}, Port: ${formData.portExpandedDetails.port.unlocode}`;
+    } else {
+      referenceNumber = `Country: ${formData.country}, Port: ${formData.port}`;
+    }
+
     navigate(
       FORM_CONFIRMATION_URL,
       {
@@ -182,7 +195,7 @@ const SecondPage = () => {
           formName: 'Second page',
           nextPageLink: DASHBOARD_URL,
           nextPageName: DASHBOARD_PAGE_NAME,
-          referenceNumber: `CountryCode: ${formData.countryExpandedDetails.country.code}, Port: ${formData.portExpandedDetails.port.unlocode}`
+          referenceNumber: referenceNumber
         }
       }
     );
