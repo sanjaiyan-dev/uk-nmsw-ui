@@ -234,5 +234,6 @@ DisplayForm.propTypes = {
       type: PropTypes.string.isRequired,
     })
   ),
+  pageHeading: PropTypes.string.isRequired,
   handleSubmit: PropTypes.func.isRequired,
 };
