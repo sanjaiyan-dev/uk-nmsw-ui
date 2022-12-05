@@ -658,6 +658,34 @@ describe('Display Form', () => {
     
   });
 
+  it('should clear a conditional field error if a user selects a new radio option', async () => {
+    const user = userEvent.setup();
+    render(
+      <DisplayForm
+        formId="testForm"
+        fields={formRequiredConditionalTextInput}
+        formActions={formActionsSubmitOnly}
+        handleSubmit={handleSubmit}
+      />
+    );
+
+    await user.click(screen.getByRole('radio', { name: 'Cat' }));
+    await user.click(screen.getByRole('button', { name: 'Submit test button' }));
+
+    expect(screen.getByText('There is a problem').outerHTML).toEqual('<h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>');
+    expect(screen.getAllByText('Enter a breed of cat')).toHaveLength(2);
+    // // Error summary has the error message as a button and correct class
+    expect(screen.getByRole('button', { name: 'Enter a breed of cat' }).outerHTML).toEqual('<button class="govuk-button--text">Enter a breed of cat</button>');
+    // // Input field has the error class attached
+    expect(screen.getByTestId('breedOfCat-container').outerHTML).toEqual('<div data-testid="breedOfCat-container" class="govuk-radios__conditional"><div class="govuk-form-group govuk-form-group--error"><label class="govuk-label" for="breedOfCat-input">Breed of cat</label><div id="breedOfCat-hint" class="govuk-hint"></div><p id="breedOfCat-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> Enter a breed of cat</p><input class="govuk-input govuk-!-width-one-third govuk-input--error" id="breedOfCat-input" name="breedOfCat" type="text" value=""></div></div>');
+  
+    await user.click(screen.getByRole('radio', { name: 'Rabbit' }));
+    expect(screen.queryByText('Enter a breed of cat')).not.toBeInTheDocument();
+    // // Input field does not have the error class attached
+    expect(screen.getByTestId('breedOfCat-container').outerHTML).toEqual('<div data-testid="breedOfCat-container" class="govuk-radios__conditional govuk-radios__conditional--hidden"><div class="govuk-form-group"><label class="govuk-label" for="breedOfCat-input">Breed of cat</label><div id="breedOfCat-hint" class="govuk-hint"></div><p id="breedOfCat-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> </p><input class="govuk-input govuk-!-width-one-third" id="breedOfCat-input" name="breedOfCat" type="text" value=""></div></div>');
+  
+  });
+
   // PREFILLING DATA
   it('should store form data in the session for use on refresh', async () => {
     const user = userEvent.setup();
