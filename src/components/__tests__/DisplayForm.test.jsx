@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import DisplayForm from '../DisplayForm';
 import {
+  FIELD_CONDITIONAL,
   FIELD_EMAIL,
   FIELD_PASSWORD,
   FIELD_RADIO,
@@ -51,7 +52,7 @@ describe('Display Form', () => {
       type: 'button',
     },
   };
-  const formMandatoryTextInput = [
+  const formRequiredTextInput = [
     {
       type: FIELD_TEXT,
       label: 'Text input',
@@ -71,24 +72,6 @@ describe('Display Form', () => {
       label: 'Text input',
       fieldName: 'testField',
       validation: [
-        {
-          type: VALIDATE_MIN_LENGTH,
-          message: 'Field must be a minimum of 8 characters',
-          condition: 8,
-        },
-      ],
-    }
-  ];
-  const formMultipleValidationRules = [
-    {
-      type: FIELD_TEXT,
-      label: 'Text input',
-      fieldName: 'testField',
-      validation: [
-        {
-          type: VALIDATE_REQUIRED,
-          message: 'Enter your text input value',
-        },
         {
           type: VALIDATE_MIN_LENGTH,
           message: 'Field must be a minimum of 8 characters',
@@ -135,6 +118,24 @@ describe('Display Form', () => {
         },
       ],
     },
+  ];
+  const formMultipleValidationRules = [
+    {
+      type: FIELD_TEXT,
+      label: 'Text input',
+      fieldName: 'testField',
+      validation: [
+        {
+          type: VALIDATE_REQUIRED,
+          message: 'Enter your text input value',
+        },
+        {
+          type: VALIDATE_MIN_LENGTH,
+          message: 'Field must be a minimum of 8 characters',
+          condition: 8,
+        },
+      ],
+    }
   ];
   const formSpecialInputs = [
     {
@@ -202,17 +203,46 @@ describe('Display Form', () => {
         },
       ]
     },
+    {
+      type: FIELD_CONDITIONAL,
+      className: 'govuk-radios',
+      label: 'This is a radio set with a conditional field',
+      fieldName: 'radioWithConditional',
+      hint: 'Hint for conditional set',
+      grouped: true,
+      radioOptions: [
+        {
+          radioField: true,
+          label: 'Option that has a conditional',
+          name: 'radioWithConditional',
+          value: 'optionWithConditional',
+        },
+        {
+          radioField: false,
+          parentFieldValue: 'optionWithConditional',
+          label: 'Conditional text input',
+          name: 'conditionalTextInput',
+        },
+        {
+          radioField: true,
+          label: 'Option without a conditional',
+          name: 'radioWithConditional',
+          value: 'optionNoConditional',
+        },
+      ],
+    }
   ];
 
   beforeEach(() => {
     window.sessionStorage.clear();
   });
 
+  // ACTION BUTTONS
   it('should render a submit and cancel button if both exist', () => {
     render(
       <DisplayForm
         formId="testForm"
-        fields={formMandatoryTextInput}
+        fields={formRequiredTextInput}
         formActions={formActions}
         handleSubmit={handleSubmit}
       />
@@ -225,7 +255,7 @@ describe('Display Form', () => {
     render(
       <DisplayForm
         formId="testForm"
-        fields={formMandatoryTextInput}
+        fields={formRequiredTextInput}
         formActions={formActionsSubmitOnly}
         handleSubmit={handleSubmit}
       />
@@ -239,7 +269,7 @@ describe('Display Form', () => {
     render(
       <DisplayForm
         formId="testForm"
-        fields={formMandatoryTextInput}
+        fields={formRequiredTextInput}
         formActions={formActionsSubmitOnly}
         handleSubmit={handleSubmit}
       />
@@ -252,11 +282,12 @@ describe('Display Form', () => {
     expect(handleSubmit).toHaveBeenCalled();
   });
 
+  // INPUTS
   it('should render a text input', () => {
     render(
       <DisplayForm
         formId="testForm"
-        fields={formMandatoryTextInput}
+        fields={formRequiredTextInput}
         formActions={formActionsSubmitOnly}
         handleSubmit={handleSubmit}
       />
@@ -285,6 +316,25 @@ describe('Display Form', () => {
     expect(screen.getByRole('radio', { name: 'Radio three' })).toBeInTheDocument();
   });
 
+  it('should render a radio button set with conditional fields input', () => {
+    render(
+      <DisplayForm
+        formId="testForm"
+        fields={formWithMultipleFields}
+        formActions={formActionsSubmitOnly}
+        handleSubmit={handleSubmit}
+      />
+    );
+    expect(screen.getByText('This is a radio set with a conditional field')).toBeInTheDocument();
+    expect(screen.getByText('Hint for conditional set').outerHTML).toEqual('<div id="radioWithConditional-hint" class="govuk-hint">Hint for conditional set</div>');
+    expect(screen.getByLabelText('Option that has a conditional')).toBeInTheDocument();
+    expect(screen.getByLabelText('Conditional text input')).toBeInTheDocument();
+    expect(screen.getByLabelText('Option without a conditional')).toBeInTheDocument();
+    expect(screen.getByRole('radio', { name: 'Option that has a conditional' })).toBeInTheDocument();
+    expect(screen.getByRole('radio', { name: 'Option without a conditional' })).toBeInTheDocument();
+    expect(screen.queryByRole('radio', { name: 'Conditional text input' })).not.toBeInTheDocument(); // tests the text field isn't displayed as radio
+  });
+
   it('should render the special input types', () => {
     render(
       <DisplayForm
@@ -308,12 +358,13 @@ describe('Display Form', () => {
     expect(screen.getByTestId('password-passwordField')).toBeInTheDocument();
   });
 
+  // ERRORS
   it('should render error summary & field error if there are field errors', async () => {
     const user = userEvent.setup();
     render(
       <DisplayForm
         formId="testForm"
-        fields={formMandatoryTextInput}
+        fields={formRequiredTextInput}
         formActions={formActionsSubmitOnly}
         handleSubmit={handleSubmit}
       />
@@ -374,7 +425,7 @@ describe('Display Form', () => {
     render(
       <DisplayForm
         formId="testForm"
-        fields={formMandatoryTextInput}
+        fields={formRequiredTextInput}
         formActions={formActionsSubmitOnly}
         handleSubmit={handleSubmit}
       />
@@ -408,7 +459,7 @@ describe('Display Form', () => {
     render(
       <DisplayForm
         formId="testForm"
-        fields={formMandatoryTextInput}
+        fields={formRequiredTextInput}
         formActions={formActionsSubmitOnly}
         handleSubmit={handleSubmit}
       />
@@ -424,6 +475,7 @@ describe('Display Form', () => {
     
   });
 
+  // PREFILLING DATA
   it('should store form data in the session for use on refresh', async () => {
     const user = userEvent.setup();
     const expectedStoredData = '{"testField":"Hello","radioButtonSet":"radioTwo"}';

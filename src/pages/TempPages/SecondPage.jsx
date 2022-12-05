@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import {
+  FIELD_CONDITIONAL,
   FIELD_TEXT,
   FIELD_RADIO,
   CHECKED_FALSE,
@@ -73,6 +74,52 @@ const SecondPage = () => {
         {
           type: VALIDATE_REQUIRED,
           message: 'Select your favourite colour',
+        },
+      ],
+    },
+    {
+      type: FIELD_CONDITIONAL,
+      label: 'What is your favourite animal',
+      fieldName: 'favAnimal',
+      className: 'govuk-radios',
+      grouped: true,
+      radioOptions: [
+        {
+          radioField: true,
+          label: 'Cat',
+          name: 'favAnimal',
+          value: 'cat',
+        },
+        {
+          radioField: false,
+          parentFieldValue: 'cat',
+          label: 'Breed of cat',
+          name: 'breedOfCat',
+        },
+        {
+          radioField: true,
+          label: 'Dog',
+          name: 'favAnimal',
+          value: 'dog',
+        },
+        {
+          radioField: false,
+          parentFieldValue: 'dog',
+          hint: 'What sort of dogs do you like?',
+          label: 'Breed of dog',
+          name: 'breedOfDog',
+        },
+        {
+          radioField: true,
+          label: 'Rabbit',
+          name: 'favAnimal',
+          value: 'rabbit',
+        },
+        {
+          radioField: true,
+          label: 'Other',
+          name: 'favAnimal',
+          value: 'other',
         },
       ],
     },
