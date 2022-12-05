@@ -6,7 +6,7 @@ import determineFieldType from './formFields/DetermineFieldType';
 import { scrollToTop } from '../utils/ScrollToElement';
 import Validator from '../utils/Validator';
 
-const DisplayForm = ({ fields, formId, formActions, handleSubmit }) => {
+const DisplayForm = ({ fields, formId, formActions, pageHeading, handleSubmit }) => {
   const { user } = useContext(UserContext);
   const fieldsRef = useRef(null);
   const [errors, setErrors] = useState();
@@ -133,7 +133,7 @@ const DisplayForm = ({ fields, formId, formActions, handleSubmit }) => {
 
   if (!formActions || !fieldsWithValues) { return null; }
   return (
-    <form id={formId} autoComplete="off">
+    <>
       {errors?.length > 0 && (
         <div className="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary">
           <h2 className="govuk-error-summary__title" id="error-summary-title">
@@ -156,56 +156,59 @@ const DisplayForm = ({ fields, formId, formActions, handleSubmit }) => {
           </div>
         </div>
       )}
-      {
-        fieldsWithValues.map((field) => {
-          const error = errors?.find(errorField => errorField.name === field.fieldName);
-          return (
-            <div
-              key={field.fieldName}
-              id={field.fieldName}
-              ref={(node) => {
-                const map = getFieldMap();
-                if (node) {
-                  map.set(field.fieldName, node); // on mount adds the refs
-                } else {
-                  map.delete(field.fieldName); // on unmount removes the refs
-                }
-              }}
-            >
-              {
-                determineFieldType({
-                  allErrors: errors,  // allows us to add the error handling logic for conditional fields
-                  error: error?.message,
-                  fieldDetails: field,
-                  parentHandleChange: handleChange,
-                })
-              }
-            </div>
-          );
-        })
-      }
-      <div className="govuk-button-group">
-        <button
-          type={formActions.submit.type}
-          className={formActions.submit.className}
-          data-module={formActions.submit.dataModule}
-          data-testid={formActions.submit.dataTestid}
-          onClick={(e) => handleValidation(e, { formData })}
-        >
-          {formActions.submit.label}
-        </button>
+      <h1 className="govuk-heading-l">{pageHeading}</h1>
+      <form id={formId} autoComplete="off">
         {
-          formActions.cancel && <button
-            type={formActions.cancel.type}
-            className={formActions.cancel.className}
-            data-module={formActions.cancel.dataModule}
-            data-testid={formActions.cancel.dataTestid}
-          >
-            {formActions.cancel.label}
-          </button>
+          fieldsWithValues.map((field) => {
+            const error = errors?.find(errorField => errorField.name === field.fieldName);
+            return (
+              <div
+                key={field.fieldName}
+                id={field.fieldName}
+                ref={(node) => {
+                  const map = getFieldMap();
+                  if (node) {
+                    map.set(field.fieldName, node); // on mount adds the refs
+                  } else {
+                    map.delete(field.fieldName); // on unmount removes the refs
+                  }
+                }}
+              >
+                {
+                  determineFieldType({
+                    allErrors: errors,  // allows us to add the error handling logic for conditional fields
+                    error: error?.message,
+                    fieldDetails: field,
+                    parentHandleChange: handleChange,
+                  })
+                }
+              </div>
+            );
+          })
         }
-      </div>
-    </form>
+        <div className="govuk-button-group">
+          <button
+            type={formActions.submit.type}
+            className={formActions.submit.className}
+            data-module={formActions.submit.dataModule}
+            data-testid={formActions.submit.dataTestid}
+            onClick={(e) => handleValidation(e, { formData })}
+          >
+            {formActions.submit.label}
+          </button>
+          {
+            formActions.cancel && <button
+              type={formActions.cancel.type}
+              className={formActions.cancel.className}
+              data-module={formActions.cancel.dataModule}
+              data-testid={formActions.cancel.dataTestid}
+            >
+              {formActions.cancel.label}
+            </button>
+          }
+        </div>
+      </form>
+    </>
   );
 };
 
@@ -231,5 +234,6 @@ DisplayForm.propTypes = {
       type: PropTypes.string.isRequired,
     })
   ),
+  pageHeading: PropTypes.string.isRequired,
   handleSubmit: PropTypes.func.isRequired,
 };
