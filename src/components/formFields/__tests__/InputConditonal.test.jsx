@@ -85,6 +85,36 @@ describe('Conditional input field generation', () => {
       },
     ],
   };
+  const fieldDetailsWithValueSelected = {
+    type: FIELD_CONDITIONAL,
+    className: 'govuk-radios',
+    hint: 'A hint on choosing a colour',
+    label: 'What is your favourite colour',
+    fieldName: 'favColour',
+    grouped: true,
+    radioOptions: [
+      {
+        radioField: true,
+        label: 'Red',
+        name: 'favColour',
+        value: 'red',
+      },
+      {
+        radioField: false,
+        parentFieldValue: 'red',
+        hint: 'What shade of red do you like?',
+        label: 'Shade of red',
+        name: 'shadeOfRed',
+      },
+      {
+        radioField: true,
+        label: 'Other',
+        name: 'favColour',
+        value: 'other',
+      },
+    ],
+    value: 'red',
+  };
   
   it('should render the radio input fields with only the required props', () => {
     render(
@@ -129,20 +159,20 @@ describe('Conditional input field generation', () => {
     
     // The following are conditional fields, they will exist but should have a hidden class
     expect(screen.getByTestId('breedOfCat-container')).toBeInTheDocument();
-    expect(screen.getByTestId('breedOfCat-container').outerHTML).toEqual('<div data-testid="breedOfCat-container" class="govuk-radios__conditional govuk-radios__conditional--hidden"><div class="govuk-form-group"><label class="govuk-label" for="breedOfCat-input">Breed of cat</label><div id="breedOfCat-hint" class="govuk-hint"></div><input class="govuk-input govuk-!-width-one-third" id="breedOfCat-input" name="breedOfCat" type="text"></div></div>');
+    expect(screen.getByTestId('breedOfCat-container').outerHTML).toEqual('<div data-testid="breedOfCat-container" class="govuk-radios__conditional govuk-radios__conditional--hidden"><div class="govuk-form-group"><label class="govuk-label" for="breedOfCat-input">Breed of cat</label><div id="breedOfCat-hint" class="govuk-hint"></div><input class="govuk-input govuk-!-width-one-third" id="breedOfCat-input" name="breedOfCat" type="text" value=""></div></div>');
     expect(screen.getByTestId('breedOfDog-container')).toBeInTheDocument();
-    expect(screen.getByTestId('breedOfDog-container').outerHTML).toEqual('<div data-testid="breedOfDog-container" class="govuk-radios__conditional govuk-radios__conditional--hidden"><div class="govuk-form-group"><label class="govuk-label" for="breedOfDog-input">Breed of dog</label><div id="breedOfDog-hint" class="govuk-hint"></div><input class="govuk-input govuk-!-width-one-third" id="breedOfDog-input" name="breedOfDog" type="text"></div></div>');
+    expect(screen.getByTestId('breedOfDog-container').outerHTML).toEqual('<div data-testid="breedOfDog-container" class="govuk-radios__conditional govuk-radios__conditional--hidden"><div class="govuk-form-group"><label class="govuk-label" for="breedOfDog-input">Breed of dog</label><div id="breedOfDog-hint" class="govuk-hint"></div><input class="govuk-input govuk-!-width-one-third" id="breedOfDog-input" name="breedOfDog" type="text" value=""></div></div>');
     
     // Click on the cat radio and now the Breed of cat should not have the hidden class aka it is visible
     await user.click(screen.getByRole('radio', { name: 'Cat' }));
     expect(screen.getByRole('radio', { name: 'Cat' })).toBeChecked();
-    expect(screen.getByTestId('breedOfCat-container').outerHTML).toEqual('<div data-testid="breedOfCat-container" class="govuk-radios__conditional"><div class="govuk-form-group"><label class="govuk-label" for="breedOfCat-input">Breed of cat</label><div id="breedOfCat-hint" class="govuk-hint"></div><input class="govuk-input govuk-!-width-one-third" id="breedOfCat-input" name="breedOfCat" type="text"></div></div>');
+    expect(screen.getByTestId('breedOfCat-container').outerHTML).toEqual('<div data-testid="breedOfCat-container" class="govuk-radios__conditional"><div class="govuk-form-group"><label class="govuk-label" for="breedOfCat-input">Breed of cat</label><div id="breedOfCat-hint" class="govuk-hint"></div><input class="govuk-input govuk-!-width-one-third" id="breedOfCat-input" name="breedOfCat" type="text" value=""></div></div>');
   
     // Click on the dog radio and now Breed of cat should be hidden and breed of dog should be visible
     await user.click(screen.getByRole('radio', { name: 'Dog' }));
     expect(screen.getByRole('radio', { name: 'Dog' })).toBeChecked();
-    expect(screen.getByTestId('breedOfCat-container').outerHTML).toEqual('<div data-testid="breedOfCat-container" class="govuk-radios__conditional govuk-radios__conditional--hidden"><div class="govuk-form-group"><label class="govuk-label" for="breedOfCat-input">Breed of cat</label><div id="breedOfCat-hint" class="govuk-hint"></div><input class="govuk-input govuk-!-width-one-third" id="breedOfCat-input" name="breedOfCat" type="text"></div></div>');
-    expect(screen.getByTestId('breedOfDog-container').outerHTML).toEqual('<div data-testid="breedOfDog-container" class="govuk-radios__conditional"><div class="govuk-form-group"><label class="govuk-label" for="breedOfDog-input">Breed of dog</label><div id="breedOfDog-hint" class="govuk-hint"></div><input class="govuk-input govuk-!-width-one-third" id="breedOfDog-input" name="breedOfDog" type="text"></div></div>');
+    expect(screen.getByTestId('breedOfCat-container').outerHTML).toEqual('<div data-testid="breedOfCat-container" class="govuk-radios__conditional govuk-radios__conditional--hidden"><div class="govuk-form-group"><label class="govuk-label" for="breedOfCat-input">Breed of cat</label><div id="breedOfCat-hint" class="govuk-hint"></div><input class="govuk-input govuk-!-width-one-third" id="breedOfCat-input" name="breedOfCat" type="text" value=""></div></div>');
+    expect(screen.getByTestId('breedOfDog-container').outerHTML).toEqual('<div data-testid="breedOfDog-container" class="govuk-radios__conditional"><div class="govuk-form-group"><label class="govuk-label" for="breedOfDog-input">Breed of dog</label><div id="breedOfDog-hint" class="govuk-hint"></div><input class="govuk-input govuk-!-width-one-third" id="breedOfDog-input" name="breedOfDog" type="text" value=""></div></div>');
   });
 
   it('should render the hint on the conditional text field if one provided', async () => {
@@ -157,6 +187,18 @@ describe('Conditional input field generation', () => {
     // using a text check to test the text is in the html as it should render, but inside a div with a hidden class
     expect(screen.getByText('What shade of red do you like?')).toBeInTheDocument();
     // using a html check to test for the class being visible AND the help text and aria-described by being in the div
-    expect(screen.getByTestId('shadeOfRed-container').outerHTML).toEqual('<div data-testid="shadeOfRed-container" class="govuk-radios__conditional"><div class="govuk-form-group"><label class="govuk-label" for="shadeOfRed-input">Shade of red</label><div id="shadeOfRed-hint" class="govuk-hint">What shade of red do you like?</div><input aria-describedby="shadeOfRed-hint" class="govuk-input govuk-!-width-one-third" id="shadeOfRed-input" name="shadeOfRed" type="text"></div></div>');
+    expect(screen.getByTestId('shadeOfRed-container').outerHTML).toEqual('<div data-testid="shadeOfRed-container" class="govuk-radios__conditional"><div class="govuk-form-group"><label class="govuk-label" for="shadeOfRed-input">Shade of red</label><div id="shadeOfRed-hint" class="govuk-hint">What shade of red do you like?</div><input aria-describedby="shadeOfRed-hint" class="govuk-input govuk-!-width-one-third" id="shadeOfRed-input" name="shadeOfRed" type="text" value=""></div></div>');
+  });
+
+  it('should check the field if the value is passed in', () => {
+    render(
+      <InputConditional
+        fieldDetails={fieldDetailsWithValueSelected}
+        handleChange={parentHandleChange}
+        type='radio'
+      />
+    );
+    expect(screen.getByRole('radio', { name: 'Red' })).toBeChecked();
+    expect(screen.getByRole('radio', { name: 'Other' })).not.toBeChecked();
   });
 });
