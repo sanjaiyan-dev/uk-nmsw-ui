@@ -85,8 +85,6 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
       const objectExpandedItem = objectItem[fieldDetails.fieldName];
       const objectAdditionalKey = objectExpandedItem[fieldDetails.additionalKey];
       const build = objectAdditionalKey ? `${objectExpandedItem[fieldDetails.responseKey]} ${objectAdditionalKey}` : objectExpandedItem[fieldDetails.responseKey];
-      // console.log('ak', build)
-      // const additionalKeyValue = objectItem[]
       valueToTest = build;
     } else {
       valueToTest = defaultValue;
@@ -108,14 +106,19 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
       retrievedValue = e;
     }
 
-    // const retrievedValue = e === valueToTest ? apiResponseData.find(o => o.name === defaultValue) : e;
+    // TODO
+    // scenario to fix still
+    // select a port with unlocode
+    // refresh
+    // click on port field
+    // select same port
+    // port name is setting to undefined -- it should be setting to port.name
 
-    console.log('ret', retrievedValue);
 
     // Returns either a concatenated value if required and available e.g. port name + port unlocode
     // Or the single string e.g. ports without a unlocode, field that does not have an additionalKey set
     if (fieldDetails.additionalKey && retrievedValue[fieldDetails.additionalKey]) {
-      displayValue = `${e[fieldDetails.responseKey]} ${retrievedValue[fieldDetails.additionalKey]}`;
+      displayValue = `${retrievedValue[fieldDetails.responseKey]} ${retrievedValue[fieldDetails.additionalKey]}`;
     } else {
       displayValue = retrievedValue[fieldDetails.responseKey];
     }
