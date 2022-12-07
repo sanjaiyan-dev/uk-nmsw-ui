@@ -46,8 +46,12 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
       }
     } else if (defaultValue) {
       if (fieldDetails.additionalKey) {
-        // get the expanded details from 
-        console.log('aaaaa');
+        // get the expanded details from the session
+        const sessionInfo = JSON.parse(sessionStorage.getItem('formData'));
+        const expandedFieldName = `${fieldDetails.fieldName}ExpandedDetails`;
+        const objectItem = sessionInfo[expandedFieldName];
+        const objectExpandedItem = objectItem[fieldDetails.fieldName];
+        response = `${objectExpandedItem[fieldDetails.responseKey]} ${objectExpandedItem[fieldDetails.additionalKey]}`;
       } else {
         const defaultValueObject = apiResponseData.find(o => o[fieldDetails.responseKey] === defaultValue);
         response = defaultValueObject[fieldDetails.responseKey];
@@ -61,7 +65,19 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
 
   const handleOnConfirm = (e) => {
     if (!e) { return; }
-    let retrievedValue = e === defaultValue ? apiResponseData.find(o => o.name === defaultValue) : e;
+    let retrievedValue;
+
+    if (fieldDetails.additionalKey) {
+      // get the expanded details from the session
+      const sessionInfo = JSON.parse(sessionStorage.getItem('formData'));
+      const expandedFieldName = `${fieldDetails.fieldName}ExpandedDetails`;
+      const objectItem = sessionInfo[expandedFieldName];
+      const objectExpandedItem = objectItem[fieldDetails.fieldName];
+      retrievedValue = objectExpandedItem;
+    } else {
+      retrievedValue = e === defaultValue ? apiResponseData.find(o => o.name === defaultValue) : e;
+    }
+
     let displayValue;
 
     // Returns either a concatenated value if required and available e.g. port name + port unlocode
