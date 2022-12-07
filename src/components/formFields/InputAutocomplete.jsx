@@ -62,7 +62,7 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
      * AND: if they click on that item
      * THEN: the value and it's expanded data must persist
      */
-    if (sessionData[fieldDetails.fieldName] && fieldDetails.additionalKey) {
+    if (sessionData && sessionData[fieldDetails.fieldName] && fieldDetails.additionalKey) {
       // If a field has an additional key, when it has a value we include that in the item value
       // when it does not we do not include it to avoid 'undefined' showing in the UI
       const objectExpandedItem = sessionData[`${fieldDetails.fieldName}ExpandedDetails`][fieldDetails.fieldName];
