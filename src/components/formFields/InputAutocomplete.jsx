@@ -99,16 +99,26 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
       retrievedValue = e;
     }
 
-    // Returns either a concatenated value if required and available e.g. port name + port unlocode
-    // Or the single string e.g. ports without a unlocode, field that does not have an additionalKey set
+    /*
+     * GIVEN: an item on the list has been clicked and we have retrieved its object
+     * WHEN: the field has an additionalKey and the retrieved object has a value for that additionalKey
+     * THEN: we concatenate the responseKey value and the additionalKey value together as the displayValue to show in the UI
+     * 
+     * WHEN: the field does not have an additionalKey OR it has an additionalKey but the object has no value for this
+     * THEN: we set the displayValue to just have the responseKey value
+     */
     if (fieldDetails.additionalKey && retrievedValue[fieldDetails.additionalKey]) {
       displayValue = `${retrievedValue[fieldDetails.responseKey]} ${retrievedValue[fieldDetails.additionalKey]}`;
     } else {
       displayValue = retrievedValue[fieldDetails.responseKey];
     }
 
-    // We want to include both the display value, and any additional field object information received from the API
-    // So the page's handleSubmit can decide what to send on the POST/PUT call
+    /*
+     * An items object may include data that is not shown in the UI
+     * We always want to pass that data back to the handleChange function
+     * So that it is available to pass back to the handleSubmit function
+     * and therefore available for use
+     */
     const formattedEvent = {
       target: {
         name: fieldDetails.fieldName,
