@@ -12,13 +12,16 @@ import Autocomplete from 'accessible-autocomplete/react';
  * some explanation of aria-activedescendant: https://www.holisticseo.digital/technical-seo/web-accessibility/aria-activedescendant/
 */
 const InputAutocomplete = ({ fieldDetails, handleChange }) => {
+  const apiResponseData = fieldDetails.dataAPIEndpoint;
+  const defaultValue = fieldDetails.value ? fieldDetails.value : '';
+  // const [defaultValueObject, setDefaultValueObject] = useState();
   const [hideListBox, setHideListBox] = useState(false); // only used for defaultValue bug workaround
 
   const suggest = (userQuery, populateResults) => {
     if (!userQuery) { return; }
     // TODO: We should look at using lodash.debounce to prevent calls being made too fast as user types
     // TODO: apiResponseData will be replaced with the api call to return the first [x] values of the dataset
-    const apiResponseData = fieldDetails.dataAPIEndpoint;
+    // const apiResponseData = fieldDetails.dataAPIEndpoint;
 
     // adding a filter in here to mimic the userQuery being used to get a response
     // TODO: filteredResults will be replaced with the api call to return a filtered dataset based on the userQuery
@@ -41,6 +44,11 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
       } else {
         response = result[fieldDetails.responseKey];
       }
+    } else if (defaultValue) {
+      
+      let obj = apiResponseData.find(o => o[fieldDetails.responseKey] === defaultValue);
+      response = obj[fieldDetails.responseKey];
+
     } else {
       // this covers when user hasn't typed in field yet / field is null
       return;
@@ -50,14 +58,15 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
 
   const handleOnConfirm = (e) => {
     if (!e) { return; }
+    let retrievedValue = e === defaultValue ? apiResponseData.find(o => o.name === defaultValue) : e;
     let displayValue;
 
     // Returns either a concatenated value if required and available e.g. port name + port unlocode
     // Or the single string e.g. ports without a unlocode, field that does not have an additionalKey set
-    if (fieldDetails.additionalKey && e[fieldDetails.additionalKey]) {
-      displayValue = `${e[fieldDetails.responseKey]} ${e[fieldDetails.additionalKey]}`;
+    if (fieldDetails.additionalKey && retrievedValue[fieldDetails.additionalKey]) {
+      displayValue = `${e[fieldDetails.responseKey]} ${retrievedValue[fieldDetails.additionalKey]}`;
     } else {
-      displayValue = e[fieldDetails.responseKey];
+      displayValue = retrievedValue[fieldDetails.responseKey];
     }
 
     // We want to include both the display value, and any additional field object information received from the API
@@ -67,7 +76,7 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
         name: fieldDetails.fieldName,
         value: displayValue,
         additionalDetails: {
-          [fieldDetails.fieldName]: e
+          [fieldDetails.fieldName]: retrievedValue
         },
       }
     };
@@ -138,6 +147,7 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
     <div className='autocomplete-input'>
       <Autocomplete
         confirmOnBlur={false}
+        defaultValue={defaultValue}
         id={`${fieldDetails.fieldName}-input`}
         minLength={1}
         name={fieldDetails.fieldName}
