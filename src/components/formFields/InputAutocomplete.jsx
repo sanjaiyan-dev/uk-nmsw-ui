@@ -14,8 +14,7 @@ import Autocomplete from 'accessible-autocomplete/react';
 const InputAutocomplete = ({ fieldDetails, handleChange }) => {
   const apiResponseData = fieldDetails.dataAPIEndpoint;
   const defaultValue = fieldDetails.value || '';
-
-  // const [hideListBox, setHideListBox] = useState(false); // only used for defaultValue bug workaround
+  const sessionData = JSON.parse(sessionStorage.getItem('formData'));
 
   const suggest = (userQuery, populateResults) => {
     if (!userQuery) { return; }
@@ -33,10 +32,6 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
 
 
   const template = (result) => {
-    // TODO: refactor this once we connect the APIs -- try to remove the deep nested if statements
-    // as the user types their query, this formats what is displayed in the input (inputValue)
-    // and combolist suggestions (suggestion)
-    // result being from the results of the suggest function
     let response;
     if (result && result[fieldDetails.responseKey]) {
       // this occurs when user has typed in the field
@@ -45,26 +40,9 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
       } else {
         response = result[fieldDetails.responseKey];
       }
-    } else if (defaultValue) {
-      if (fieldDetails.additionalKey) {
-        // get the expanded details from the session
-        const sessionInfo = JSON.parse(sessionStorage.getItem('formData'));
-        const expandedFieldName = `${fieldDetails.fieldName}ExpandedDetails`;
-        const objectItem = sessionInfo[expandedFieldName];
-        const objectExpandedItem = objectItem[fieldDetails.fieldName];
-        if (objectExpandedItem) {
-          if (objectExpandedItem[fieldDetails.additionalKey]) {
-            response = `${objectExpandedItem[fieldDetails.responseKey]} ${objectExpandedItem[fieldDetails.additionalKey]}`;
-          } else {
-            response = objectExpandedItem[fieldDetails.responseKey];
-          }
-        } else {
-          return;
-        }
-      } else {
-        const defaultValueObject = apiResponseData.find(o => o[fieldDetails.responseKey] === defaultValue);
-        response = defaultValueObject[fieldDetails.responseKey];
-      }
+    } else if (sessionData) {
+      // on page load this handles if there is a session to prepopulate the value from
+      response = sessionData[fieldDetails.fieldName];
     } else {
       // this covers when user hasn't typed in field yet / field is null
       return;
