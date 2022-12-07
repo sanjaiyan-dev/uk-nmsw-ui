@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Autocomplete from 'accessible-autocomplete/react';
 
@@ -14,8 +14,7 @@ import Autocomplete from 'accessible-autocomplete/react';
 const InputAutocomplete = ({ fieldDetails, handleChange }) => {
   const apiResponseData = fieldDetails.dataAPIEndpoint;
   const defaultValue = fieldDetails.value ? fieldDetails.value : '';
-  // const [defaultValueObject, setDefaultValueObject] = useState();
-  const [hideListBox, setHideListBox] = useState(false); // only used for defaultValue bug workaround
+  // const [hideListBox, setHideListBox] = useState(false); // only used for defaultValue bug workaround
 
   const suggest = (userQuery, populateResults) => {
     if (!userQuery) { return; }
@@ -33,6 +32,7 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
 
 
   const template = (result) => {
+    // TODO: refactor this once we connect the APIs -- try to remove the deep nested if statements
     // as the user types their query, this formats what is displayed in the input (inputValue)
     // and combolist suggestions (suggestion)
     // result being from the results of the suggest function
@@ -45,10 +45,13 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
         response = result[fieldDetails.responseKey];
       }
     } else if (defaultValue) {
-      
-      let obj = apiResponseData.find(o => o[fieldDetails.responseKey] === defaultValue);
-      response = obj[fieldDetails.responseKey];
-
+      if (fieldDetails.additionalKey) {
+        // get the expanded details from 
+        console.log('aaaaa');
+      } else {
+        const defaultValueObject = apiResponseData.find(o => o[fieldDetails.responseKey] === defaultValue);
+        response = defaultValueObject[fieldDetails.responseKey];
+      }
     } else {
       // this covers when user hasn't typed in field yet / field is null
       return;
@@ -84,31 +87,32 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
     handleChange(formattedEvent);
   };
 
-  /* See issue#424, #495, at alphagov/accessible-autocomplete
-    * There is an ongoing issue around setting defaultValue when using template
-    * whereby the suggest doesn't run and so the dropdown shows 'undefined' instead of not opening/showing the value
-    * it also results in an error (seen in console) TypeError: Cannot read properties of undefined (reading 'toLowerCase') onBlur/onConfirm
-    * the workaround is to use javascript to set the value of the input which forces the suggest to run
-    * TODO: when fixed on alphagov/accessible-autocomplete, fix here
-  */
-  useEffect(() => {
-    if (!fieldDetails.value) {
-      return;
-    }
-    document.getElementById(`${fieldDetails.fieldName}-input`).value = fieldDetails.value;
-    setHideListBox(true);
 
-    // TODO: when we connect this to an API call we will make the API call here to get the data
-    // trigger a handle confirm so that any additional field values are also passed back to the form data and not lost
-  }, [fieldDetails.value]);
+  // /* See issue#424, #495, at alphagov/accessible-autocomplete
+  //   * There is an ongoing issue around setting defaultValue when using template
+  //   * whereby the suggest doesn't run and so the dropdown shows 'undefined' instead of not opening/showing the value
+  //   * it also results in an error (seen in console) TypeError: Cannot read properties of undefined (reading 'toLowerCase') onBlur/onConfirm
+  //   * the workaround is to use javascript to set the value of the input which forces the suggest to run
+  //   * TODO: when fixed on alphagov/accessible-autocomplete, fix here
+  // */
+  // useEffect(() => {
+  //   if (!fieldDetails.value) {
+  //     return;
+  //   }
+  //   document.getElementById(`${fieldDetails.fieldName}-input`).value = fieldDetails.value;
+  //   setHideListBox(true);
+
+  //   // TODO: when we connect this to an API call we will make the API call here to get the data
+  //   // trigger a handle confirm so that any additional field values are also passed back to the form data and not lost
+  // }, [fieldDetails.value]);
 
 
-  useEffect(() => {
-    if (hideListBox) {
-      document.getElementById(`${fieldDetails.fieldName}-input__listbox`).className = 'autocomplete__menu autocomplete__menu--inline autocomplete__menu--hidden';
-      setHideListBox(false);
-    }
-  }, [hideListBox]);
+  // useEffect(() => {
+  //   if (hideListBox) {
+  //     document.getElementById(`${fieldDetails.fieldName}-input__listbox`).className = 'autocomplete__menu autocomplete__menu--inline autocomplete__menu--hidden';
+  //     setHideListBox(false);
+  //   }
+  // }, [hideListBox]);
 
   /* 
    * There is no onBlur event available for us to place a function on
