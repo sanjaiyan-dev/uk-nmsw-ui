@@ -84,14 +84,6 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
       retrievedValue = e;
     }
 
-    // TODO
-    // scenario to fix still
-    // select a port with unlocode
-    // refresh
-    // click on port field
-    // select same port
-    // port name is setting to undefined -- it should be setting to port.name
-
 
     // Returns either a concatenated value if required and available e.g. port name + port unlocode
     // Or the single string e.g. ports without a unlocode, field that does not have an additionalKey set
@@ -115,33 +107,6 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
 
     handleChange(formattedEvent);
   };
-
-
-  // /* See issue#424, #495, at alphagov/accessible-autocomplete
-  //   * There is an ongoing issue around setting defaultValue when using template
-  //   * whereby the suggest doesn't run and so the dropdown shows 'undefined' instead of not opening/showing the value
-  //   * it also results in an error (seen in console) TypeError: Cannot read properties of undefined (reading 'toLowerCase') onBlur/onConfirm
-  //   * the workaround is to use javascript to set the value of the input which forces the suggest to run
-  //   * TODO: when fixed on alphagov/accessible-autocomplete, fix here
-  // */
-  // useEffect(() => {
-  //   if (!fieldDetails.value) {
-  //     return;
-  //   }
-  //   document.getElementById(`${fieldDetails.fieldName}-input`).value = fieldDetails.value;
-  //   setHideListBox(true);
-
-  //   // TODO: when we connect this to an API call we will make the API call here to get the data
-  //   // trigger a handle confirm so that any additional field values are also passed back to the form data and not lost
-  // }, [fieldDetails.value]);
-
-
-  // useEffect(() => {
-  //   if (hideListBox) {
-  //     document.getElementById(`${fieldDetails.fieldName}-input__listbox`).className = 'autocomplete__menu autocomplete__menu--inline autocomplete__menu--hidden';
-  //     setHideListBox(false);
-  //   }
-  // }, [hideListBox]);
 
   /* 
    * There is no onBlur event available for us to place a function on
