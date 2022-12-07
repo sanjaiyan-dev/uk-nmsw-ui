@@ -25,7 +25,7 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
     // adding a filter in here to mimic the userQuery being used to get a response
     // TODO: filteredResults will be replaced with the api call to return a filtered dataset based on the userQuery
     const filteredResults = apiResponseData.filter(o => Object.keys(o).some(k => o[k].toLowerCase().includes(userQuery.toLowerCase())));
-
+// console.log(filteredResults)
     // this is part of the Autocomplete componet and how we return results to the list
     populateResults(filteredResults);
   };
