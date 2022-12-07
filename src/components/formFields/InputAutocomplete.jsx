@@ -13,7 +13,8 @@ import Autocomplete from 'accessible-autocomplete/react';
 */
 const InputAutocomplete = ({ fieldDetails, handleChange }) => {
   const apiResponseData = fieldDetails.dataAPIEndpoint;
-  const defaultValue = fieldDetails.value ? fieldDetails.value : '';
+  const defaultValue = fieldDetails.value || '';
+
   // const [hideListBox, setHideListBox] = useState(false); // only used for defaultValue bug workaround
 
   const suggest = (userQuery, populateResults) => {
@@ -51,7 +52,15 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
         const expandedFieldName = `${fieldDetails.fieldName}ExpandedDetails`;
         const objectItem = sessionInfo[expandedFieldName];
         const objectExpandedItem = objectItem[fieldDetails.fieldName];
-        response = `${objectExpandedItem[fieldDetails.responseKey]} ${objectExpandedItem[fieldDetails.additionalKey]}`;
+        if (objectExpandedItem) {
+          if (objectExpandedItem[fieldDetails.additionalKey]) {
+            response = `${objectExpandedItem[fieldDetails.responseKey]} ${objectExpandedItem[fieldDetails.additionalKey]}`;
+          } else {
+            response = objectExpandedItem[fieldDetails.responseKey];
+          }
+        } else {
+          return;
+        }
       } else {
         const defaultValueObject = apiResponseData.find(o => o[fieldDetails.responseKey] === defaultValue);
         response = defaultValueObject[fieldDetails.responseKey];
@@ -65,20 +74,43 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
 
   const handleOnConfirm = (e) => {
     if (!e) { return; }
-    let retrievedValue;
+    let displayValue;
+    let valueToTest;
 
-    if (fieldDetails.additionalKey) {
+    if (defaultValue && fieldDetails.additionalKey) {
       // get the expanded details from the session
       const sessionInfo = JSON.parse(sessionStorage.getItem('formData'));
       const expandedFieldName = `${fieldDetails.fieldName}ExpandedDetails`;
       const objectItem = sessionInfo[expandedFieldName];
       const objectExpandedItem = objectItem[fieldDetails.fieldName];
-      retrievedValue = objectExpandedItem;
+      const objectAdditionalKey = objectExpandedItem[fieldDetails.additionalKey];
+      const build = objectAdditionalKey ? `${objectExpandedItem[fieldDetails.responseKey]} ${objectAdditionalKey}` : objectExpandedItem[fieldDetails.responseKey];
+      // console.log('ak', build)
+      // const additionalKeyValue = objectItem[]
+      valueToTest = build;
     } else {
-      retrievedValue = e === defaultValue ? apiResponseData.find(o => o.name === defaultValue) : e;
+      valueToTest = defaultValue;
     }
 
-    let displayValue;
+    let retrievedValue;
+    if (e === valueToTest) {
+      if (fieldDetails.additionalKey) {
+        const sessionInfo = JSON.parse(sessionStorage.getItem('formData'));
+        const expandedFieldName = `${fieldDetails.fieldName}ExpandedDetails`;
+        const objectItem = sessionInfo[expandedFieldName];
+        const objectExpandedItem = objectItem[fieldDetails.fieldName];
+        const objectResponseValue = objectExpandedItem[fieldDetails.responseKey];
+        retrievedValue = apiResponseData.find(o => o[fieldDetails.responseKey] === objectResponseValue);
+      } else {
+        retrievedValue = apiResponseData.find(o =>  o[fieldDetails.responseKey] === defaultValue);
+      }
+    } else {
+      retrievedValue = e;
+    }
+
+    // const retrievedValue = e === valueToTest ? apiResponseData.find(o => o.name === defaultValue) : e;
+
+    console.log('ret', retrievedValue);
 
     // Returns either a concatenated value if required and available e.g. port name + port unlocode
     // Or the single string e.g. ports without a unlocode, field that does not have an additionalKey set
