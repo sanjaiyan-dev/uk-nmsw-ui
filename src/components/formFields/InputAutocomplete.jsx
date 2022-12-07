@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Autocomplete from 'accessible-autocomplete/react';
 
@@ -12,27 +12,26 @@ import Autocomplete from 'accessible-autocomplete/react';
  * some explanation of aria-activedescendant: https://www.holisticseo.digital/technical-seo/web-accessibility/aria-activedescendant/
 */
 const InputAutocomplete = ({ fieldDetails, handleChange }) => {
-  const [hideListBox, setHideListBox] = useState(false); // only used for defaultValue bug workaround
+  const apiResponseData = fieldDetails.dataAPIEndpoint;
+  const defaultValue = fieldDetails.value || '';
+  const sessionData = JSON.parse(sessionStorage.getItem('formData'));
 
   const suggest = (userQuery, populateResults) => {
     if (!userQuery) { return; }
     // TODO: We should look at using lodash.debounce to prevent calls being made too fast as user types
     // TODO: apiResponseData will be replaced with the api call to return the first [x] values of the dataset
-    const apiResponseData = fieldDetails.dataAPIEndpoint;
+    // const apiResponseData = fieldDetails.dataAPIEndpoint;
 
     // adding a filter in here to mimic the userQuery being used to get a response
     // TODO: filteredResults will be replaced with the api call to return a filtered dataset based on the userQuery
     const filteredResults = apiResponseData.filter(o => Object.keys(o).some(k => o[k].toLowerCase().includes(userQuery.toLowerCase())));
-
+// console.log(filteredResults)
     // this is part of the Autocomplete componet and how we return results to the list
     populateResults(filteredResults);
   };
 
 
   const template = (result) => {
-    // as the user types their query, this formats what is displayed in the input (inputValue)
-    // and combolist suggestions (suggestion)
-    // result being from the results of the suggest function
     let response;
     if (result && result[fieldDetails.responseKey]) {
       // this occurs when user has typed in the field
@@ -41,6 +40,9 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
       } else {
         response = result[fieldDetails.responseKey];
       }
+    } else if (sessionData) {
+      // on page load this handles if there is a session to prepopulate the value from
+      response = sessionData[fieldDetails.fieldName];
     } else {
       // this covers when user hasn't typed in field yet / field is null
       return;
@@ -51,55 +53,84 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
   const handleOnConfirm = (e) => {
     if (!e) { return; }
     let displayValue;
+    let valueToTest;
 
-    // Returns either a concatenated value if required and available e.g. port name + port unlocode
-    // Or the single string e.g. ports without a unlocode, field that does not have an additionalKey set
-    if (fieldDetails.additionalKey && e[fieldDetails.additionalKey]) {
-      displayValue = `${e[fieldDetails.responseKey]} ${e[fieldDetails.additionalKey]}`;
+    /*
+     * GIVEN: there is session data for this field
+     * WHEN: the user clicks on the input
+     * THEN: the list shows only the item related to the session value
+     * AND: if they click on that item
+     * THEN: the value and it's expanded data must persist
+     */
+    if (sessionData && sessionData[fieldDetails.fieldName] && fieldDetails.additionalKey) {
+      // If a field has an additional key, when it has a value we include that in the item value
+      // when it does not we do not include it to avoid 'undefined' showing in the UI
+      const objectExpandedItem = sessionData[`${fieldDetails.fieldName}ExpandedDetails`][fieldDetails.fieldName];
+      valueToTest = objectExpandedItem[fieldDetails.additionalKey]
+        ? `${objectExpandedItem[fieldDetails.responseKey]} ${objectExpandedItem[fieldDetails.additionalKey]}`
+        : objectExpandedItem[fieldDetails.responseKey];
     } else {
-      displayValue = e[fieldDetails.responseKey];
+      valueToTest = defaultValue;
     }
 
-    // We want to include both the display value, and any additional field object information received from the API
-    // So the page's handleSubmit can decide what to send on the POST/PUT call
+    /* GIVEN: an item in the list is clicked on
+     * WHEN: the value of that item (e) matches the value of defaultValue (aka it's from the session)
+     * AND: the field has an additional key
+     * THEN: we determine the search term by extracting the value of the responseKey from the session data
+     * AND: we can use that to retrieve the related object from the dataset
+     * 
+     * WHEN: the field does NOT have an additional key
+     * THEN: we can use the defaultValue as the search term
+     * 
+     * WHEN: the value of that item (e) does NOT match the value of defaultValue (aka user has typed something new)
+     * THEN: we do not need to search as e contains the full object
+     * this is because when the list is created based on the user typing, the suggest function returns the full object
+     * for a result but when we prefill the input value from the session the suggest function does not run
+     */
+    let retrievedValue;
+    if (e === valueToTest) {
+      if (fieldDetails.additionalKey) {
+        const termToSearchOn = sessionData[`${fieldDetails.fieldName}ExpandedDetails`][fieldDetails.fieldName][fieldDetails.responseKey];
+        retrievedValue = apiResponseData.find(o => o[fieldDetails.responseKey] === termToSearchOn);
+      } else {
+        retrievedValue = apiResponseData.find(o =>  o[fieldDetails.responseKey] === defaultValue);
+      }
+    } else {
+      retrievedValue = e;
+    }
+
+    /*
+     * GIVEN: an item on the list has been clicked and we have retrieved its object
+     * WHEN: the field has an additionalKey and the retrieved object has a value for that additionalKey
+     * THEN: we concatenate the responseKey value and the additionalKey value together as the displayValue to show in the UI
+     * 
+     * WHEN: the field does not have an additionalKey OR it has an additionalKey but the object has no value for this
+     * THEN: we set the displayValue to just have the responseKey value
+     */
+    if (fieldDetails.additionalKey && retrievedValue[fieldDetails.additionalKey]) {
+      displayValue = `${retrievedValue[fieldDetails.responseKey]} ${retrievedValue[fieldDetails.additionalKey]}`;
+    } else {
+      displayValue = retrievedValue[fieldDetails.responseKey];
+    }
+
+    /*
+     * An items object may include data that is not shown in the UI
+     * We always want to pass that data back to the handleChange function
+     * So that it is available to pass back to the handleSubmit function
+     * and therefore available for use
+     */
     const formattedEvent = {
       target: {
         name: fieldDetails.fieldName,
         value: displayValue,
         additionalDetails: {
-          [fieldDetails.fieldName]: e
+          [fieldDetails.fieldName]: retrievedValue
         },
       }
     };
 
     handleChange(formattedEvent);
   };
-
-  /* See issue#424, #495, at alphagov/accessible-autocomplete
-    * There is an ongoing issue around setting defaultValue when using template
-    * whereby the suggest doesn't run and so the dropdown shows 'undefined' instead of not opening/showing the value
-    * it also results in an error (seen in console) TypeError: Cannot read properties of undefined (reading 'toLowerCase') onBlur/onConfirm
-    * the workaround is to use javascript to set the value of the input which forces the suggest to run
-    * TODO: when fixed on alphagov/accessible-autocomplete, fix here
-  */
-  useEffect(() => {
-    if (!fieldDetails.value) {
-      return;
-    }
-    document.getElementById(`${fieldDetails.fieldName}-input`).value = fieldDetails.value;
-    setHideListBox(true);
-
-    // TODO: when we connect this to an API call we will make the API call here to get the data
-    // trigger a handle confirm so that any additional field values are also passed back to the form data and not lost
-  }, [fieldDetails.value]);
-
-
-  useEffect(() => {
-    if (hideListBox) {
-      document.getElementById(`${fieldDetails.fieldName}-input__listbox`).className = 'autocomplete__menu autocomplete__menu--inline autocomplete__menu--hidden';
-      setHideListBox(false);
-    }
-  }, [hideListBox]);
 
   /* 
    * There is no onBlur event available for us to place a function on
@@ -138,6 +169,7 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
     <div className='autocomplete-input'>
       <Autocomplete
         confirmOnBlur={false}
+        defaultValue={defaultValue}
         id={`${fieldDetails.fieldName}-input`}
         minLength={1}
         name={fieldDetails.fieldName}

@@ -49,7 +49,6 @@ describe('Text input field generation', () => {
     hint: 'The hint text',
     responseKey: 'name',
     additionalKey: 'identifier',
-    value: 'ObjectThree',
   };
   const fieldDetailsOneResponseKey = {
     // dataAPIEndpoint: 'theEndpointUrl' // when we implement the endpoint
@@ -91,7 +90,11 @@ describe('Text input field generation', () => {
     additionalKey: 'identifier'
   };
 
-  it('should render the autocomplete input field  with only the required props', () => {
+  beforeEach(() => {
+    window.sessionStorage.clear();
+  });
+
+  it('should render the autocomplete input field with only the required props', () => {
     render(
       <InputAutocomplete
         fieldDetails={fieldDetailsBasic}
@@ -104,7 +107,7 @@ describe('Text input field generation', () => {
     expect(screen.getByRole('listbox', { name: '' }).outerHTML).toEqual('<ul class="autocomplete__menu autocomplete__menu--inline autocomplete__menu--hidden" id="fullFieldName-input__listbox" role="listbox"></ul>');
   });
 
-  it('should render the autocomplete input field with all props passed', () => {
+  it('should render the autocomplete input field with all props passed except value', () => {
     render(
       <InputAutocomplete
         fieldDetails={fieldDetailsAllProps}
@@ -116,7 +119,7 @@ describe('Text input field generation', () => {
     expect(screen.getByRole('combobox', { name: '' }).outerHTML).toEqual('<input aria-expanded="false" aria-activedescendant="false" aria-owns="fullFieldName-input__listbox" aria-autocomplete="list" aria-describedby="fullFieldName-input__assistiveHint" autocomplete="off" class="autocomplete__input autocomplete__input--default" id="fullFieldName-input" name="fullFieldName" placeholder="" type="text" role="combobox" value="">');
     expect(screen.getByRole('listbox', { name: '' }).outerHTML).toEqual('<ul class="autocomplete__menu autocomplete__menu--inline autocomplete__menu--hidden" id="fullFieldName-input__listbox" role="listbox"></ul>');
   });
-  
+
   it('should render the list options based on what the user enters', async () => {
     const user = userEvent.setup();
     render(
@@ -184,7 +187,7 @@ describe('Text input field generation', () => {
     await user.type(screen.getByRole('combobox', { name: '' }), 'Object');
     await user.click(screen.getByText('ObjectTwo two'));
     expect(input).toHaveValue('ObjectTwo two');
-    
+
     input.setSelectionRange(0, 14);
     await user.keyboard('{backspace}');
     expect(input).toHaveValue('');
@@ -207,7 +210,7 @@ describe('Text input field generation', () => {
     await user.type(screen.getByRole('combobox', { name: '' }), 'Object');
     await user.click(screen.getByText('ObjectOne one'));
     expect(input).toHaveValue('ObjectOne one');
-    
+
     input.setSelectionRange(0, 14);
     await user.keyboard('{delete}');
     expect(input).toHaveValue('');
