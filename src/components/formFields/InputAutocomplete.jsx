@@ -55,15 +55,15 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
     let displayValue;
     let valueToTest;
 
-    if (defaultValue && fieldDetails.additionalKey) {
-      // get the expanded details from the session
-      const sessionInfo = JSON.parse(sessionStorage.getItem('formData'));
-      const expandedFieldName = `${fieldDetails.fieldName}ExpandedDetails`;
-      const objectItem = sessionInfo[expandedFieldName];
-      const objectExpandedItem = objectItem[fieldDetails.fieldName];
-      const objectAdditionalKey = objectExpandedItem[fieldDetails.additionalKey];
-      const build = objectAdditionalKey ? `${objectExpandedItem[fieldDetails.responseKey]} ${objectAdditionalKey}` : objectExpandedItem[fieldDetails.responseKey];
-      valueToTest = build;
+    // If value is prefilled from the session data, this ensures we pass back the expanded details
+    // if the user clicks in the input and clicks the value in the list again
+    if (sessionData[fieldDetails.fieldName] && fieldDetails.additionalKey) {
+      // Not all datasets that have an additionalKey have a value for that key
+      // the below is to avoid having 'undefined' show up in the list
+      const objectExpandedItem = sessionData[`${fieldDetails.fieldName}ExpandedDetails`][fieldDetails.fieldName];
+      valueToTest = objectExpandedItem[fieldDetails.additionalKey]
+        ? `${objectExpandedItem[fieldDetails.responseKey]} ${objectExpandedItem[fieldDetails.additionalKey]}`
+        : objectExpandedItem[fieldDetails.responseKey];
     } else {
       valueToTest = defaultValue;
     }
