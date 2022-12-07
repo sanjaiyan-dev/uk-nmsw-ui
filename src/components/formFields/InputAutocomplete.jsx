@@ -55,11 +55,16 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
     let displayValue;
     let valueToTest;
 
-    // If value is prefilled from the session data, this ensures we pass back the expanded details
-    // if the user clicks in the input and clicks the value in the list again
+    /*
+     * GIVEN: there is session data for this field
+     * WHEN: the user clicks on the input
+     * THEN: the list shows only the item related to the session value
+     * AND: if they click on that item
+     * THEN: the value and it's expanded data must persist
+     */
     if (sessionData[fieldDetails.fieldName] && fieldDetails.additionalKey) {
-      // Not all datasets that have an additionalKey have a value for that key
-      // the below is to avoid having 'undefined' show up in the list
+      // If a field has an additional key, when it has a value we include that in the item value
+      // when it does not we do not include it to avoid 'undefined' showing in the UI
       const objectExpandedItem = sessionData[`${fieldDetails.fieldName}ExpandedDetails`][fieldDetails.fieldName];
       valueToTest = objectExpandedItem[fieldDetails.additionalKey]
         ? `${objectExpandedItem[fieldDetails.responseKey]} ${objectExpandedItem[fieldDetails.additionalKey]}`
@@ -68,22 +73,31 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
       valueToTest = defaultValue;
     }
 
+    /* GIVEN: an item in the list is clicked on
+     * WHEN: the value of that item (e) matches the value of defaultValue (aka it's from the session)
+     * AND: the field has an additional key
+     * THEN: we determine the search term by extracting the value of the responseKey from the session data
+     * AND: we can use that to retrieve the related object from the dataset
+     * 
+     * WHEN: the field does NOT have an additional key
+     * THEN: we can use the defaultValue as the search term
+     * 
+     * WHEN: the value of that item (e) does NOT match the value of defaultValue (aka user has typed something new)
+     * THEN: we do not need to search as e contains the full object
+     * this is because when the list is created based on the user typing, the suggest function returns the full object
+     * for a result but when we prefill the input value from the session the suggest function does not run
+     */
     let retrievedValue;
     if (e === valueToTest) {
       if (fieldDetails.additionalKey) {
-        const sessionInfo = JSON.parse(sessionStorage.getItem('formData'));
-        const expandedFieldName = `${fieldDetails.fieldName}ExpandedDetails`;
-        const objectItem = sessionInfo[expandedFieldName];
-        const objectExpandedItem = objectItem[fieldDetails.fieldName];
-        const objectResponseValue = objectExpandedItem[fieldDetails.responseKey];
-        retrievedValue = apiResponseData.find(o => o[fieldDetails.responseKey] === objectResponseValue);
+        const termToSearchOn = sessionData[`${fieldDetails.fieldName}ExpandedDetails`][fieldDetails.fieldName][fieldDetails.responseKey];
+        retrievedValue = apiResponseData.find(o => o[fieldDetails.responseKey] === termToSearchOn);
       } else {
         retrievedValue = apiResponseData.find(o =>  o[fieldDetails.responseKey] === defaultValue);
       }
     } else {
       retrievedValue = e;
     }
-
 
     // Returns either a concatenated value if required and available e.g. port name + port unlocode
     // Or the single string e.g. ports without a unlocode, field that does not have an additionalKey set
