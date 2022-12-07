@@ -91,6 +91,10 @@ describe('Text input field generation', () => {
     additionalKey: 'identifier'
   };
 
+  beforeEach(() => {
+    window.sessionStorage.clear();
+  });
+
   it('should render the autocomplete input field  with only the required props', () => {
     render(
       <InputAutocomplete
@@ -113,8 +117,8 @@ describe('Text input field generation', () => {
     );
     expect(screen.getByRole('combobox', { name: '' })).toBeInTheDocument();
     expect(screen.getByRole('listbox', { name: '' })).toBeInTheDocument();
-    expect(screen.getByRole('combobox', { name: '' }).outerHTML).toEqual('<input aria-expanded="false" aria-activedescendant="false" aria-owns="fullFieldName-input__listbox" aria-autocomplete="list" aria-describedby="fullFieldName-input__assistiveHint" autocomplete="off" class="autocomplete__input autocomplete__input--default" id="fullFieldName-input" name="fullFieldName" placeholder="" type="text" role="combobox" value="">');
-    expect(screen.getByRole('listbox', { name: '' }).outerHTML).toEqual('<ul class="autocomplete__menu autocomplete__menu--inline autocomplete__menu--hidden" id="fullFieldName-input__listbox" role="listbox"></ul>');
+    expect(screen.getByRole('combobox', { name: '' }).outerHTML).toEqual('<input aria-expanded="false" aria-activedescendant="false" aria-owns="fullFieldName-input__listbox" aria-autocomplete="list" aria-describedby="fullFieldName-input__assistiveHint" autocomplete="off" class="autocomplete__input autocomplete__input--default" id="fullFieldName-input" name="fullFieldName" placeholder="" type="text" role="combobox" value="ObjectThree">');
+    expect(screen.getByRole('listbox', { name: '' }).outerHTML).toEqual('<ul class="autocomplete__menu autocomplete__menu--inline autocomplete__menu--hidden" id="fullFieldName-input__listbox" role="listbox"><li aria-selected="false" class="autocomplete__option" id="fullFieldName-input__option--0" role="option" tabindex="-1" aria-posinset="1" aria-setsize="1">""</li></ul>');
   });
   
   it('should render the list options based on what the user enters', async () => {
