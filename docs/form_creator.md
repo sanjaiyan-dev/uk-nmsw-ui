@@ -109,23 +109,16 @@ Object structure:
 
 ```
 <action>: {
-  className: <required>,
   label: <required>,
 }
 ```
-If cancel button:
+
+If cancel button include the redirectUrl:
+
 ```
 <action>: {
   label: <required>,
   redirectURL: <required>,
-}
-```
-
-If cancel button:
-```
-[action]: {
-  label: [required],
-  redirectURL: [required],
 }
 ```
 
@@ -135,11 +128,12 @@ Parameters:
 - submit : triggers the `handleSubmit` function from your parent `Page`
 - cancel: triggers the `handleCancel` function from your parent `Page`
 
+### className
+- `govuk-button`: applies the style for the visually primary button of the page - mainly used for submit
+- `govuk-button govuk-button--secondary` : applies the style for teh visually secondary button(s) of the page - mainly used for cancel
+
 ### label
 The words you wish to show on your button
-
-### redirectURL
-The page you want to redirect the user to if they click cancel
 
 ----
 
