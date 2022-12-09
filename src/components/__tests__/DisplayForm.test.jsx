@@ -465,10 +465,10 @@ describe('Display Form', () => {
         />
       </MemoryRouter>
     );
-    expect(screen.getByLabelText('Country code')).toBeInTheDocument();
-    expect(screen.getByRole('textbox', { name: 'Country code' })).toBeInTheDocument();
-    expect(screen.getByLabelText('Phone number')).toBeInTheDocument();
-    expect(screen.getByRole('textbox', { name: 'Phone number' })).toBeInTheDocument();
+    expect(screen.getByLabelText('Country code field')).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: 'Country code field' })).toBeInTheDocument();
+    expect(screen.getByLabelText('Phone number field')).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: 'Phone number field' })).toBeInTheDocument();
     expect(screen.getByText('This is a hint for a phone input').outerHTML).toEqual('<div id="testPhoneField-hint" class="govuk-hint">This is a hint for a phone input</div>');
   });
 
@@ -620,8 +620,8 @@ describe('Display Form', () => {
     // Error summary has the error message as a button and correct class
     expect(screen.getByRole('button', { name: 'Enter your phone value' }).outerHTML).toEqual('<button class="govuk-button--text">Enter your phone value</button>');
     // Input field has the error class attached
-    expect(screen.getByRole('textbox', { name: 'Country code' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code govuk-input--error" id="testPhoneField-input[0]" name="testPhoneFieldCountryCode" type="text" inputmode="numeric" aria-describedby="testPhoneField-hint" value="">');
-    expect(screen.getByRole('textbox', { name: 'Phone number' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testPhoneField-input[1]" name="testPhoneFieldPhoneNumber" type="tel" autocomplete="tel" aria-describedby="testPhoneField-hint" value="">');
+    expect(screen.getByRole('textbox', { name: 'Country code field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code govuk-input--error" id="testPhoneField-input[0]" name="testPhoneFieldCountryCode" type="text" inputmode="numeric" aria-describedby="testPhoneField-hint" value="">');
+    expect(screen.getByRole('textbox', { name: 'Phone number field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testPhoneField-input[1]" name="testPhoneFieldPhoneNumber" type="tel" autocomplete="tel" aria-describedby="testPhoneField-hint" value="">');
   });
 
   it('should render an error if just country code of phone number is provided', async () => {
@@ -637,14 +637,14 @@ describe('Display Form', () => {
       </MemoryRouter>
     );
 
-    await user.type(screen.getByRole('textbox', { name: 'Country code' }), '123');
+    await user.type(screen.getByRole('textbox', { name: 'Country code field' }), '123');
     await user.click(screen.getByRole('button', { name: 'Submit test button' }));
     expect(screen.getAllByText('Enter your phone value')).toHaveLength(2);
     // Error summary has the error message as a button and correct class
     expect(screen.getByRole('button', { name: 'Enter your phone value' }).outerHTML).toEqual('<button class="govuk-button--text">Enter your phone value</button>');
     // Input field has the error class attached
-    expect(screen.getByRole('textbox', { name: 'Country code' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code govuk-input--error" id="testPhoneField-input[0]" name="testPhoneFieldCountryCode" type="text" inputmode="numeric" aria-describedby="testPhoneField-hint" value="123">');
-    expect(screen.getByRole('textbox', { name: 'Phone number' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testPhoneField-input[1]" name="testPhoneFieldPhoneNumber" type="tel" autocomplete="tel" aria-describedby="testPhoneField-hint" value="">');
+    expect(screen.getByRole('textbox', { name: 'Country code field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code govuk-input--error" id="testPhoneField-input[0]" name="testPhoneFieldCountryCode" type="text" inputmode="numeric" aria-describedby="testPhoneField-hint" value="123">');
+    expect(screen.getByRole('textbox', { name: 'Phone number field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testPhoneField-input[1]" name="testPhoneFieldPhoneNumber" type="tel" autocomplete="tel" aria-describedby="testPhoneField-hint" value="">');
   });
 
   it('should render an error if just phone number of phone number is provided', async () => {
@@ -660,14 +660,14 @@ describe('Display Form', () => {
       </MemoryRouter>
     );
 
-    await user.type(screen.getByRole('textbox', { name: 'Phone number' }), '123');
+    await user.type(screen.getByRole('textbox', { name: 'Phone number field' }), '123');
     await user.click(screen.getByRole('button', { name: 'Submit test button' }));
     expect(screen.getAllByText('Enter your phone value')).toHaveLength(2);
     // Error summary has the error message as a button and correct class
     expect(screen.getByRole('button', { name: 'Enter your phone value' }).outerHTML).toEqual('<button class="govuk-button--text">Enter your phone value</button>');
     // Input field has the error class attached
-    expect(screen.getByRole('textbox', { name: 'Country code' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code govuk-input--error" id="testPhoneField-input[0]" name="testPhoneFieldCountryCode" type="text" inputmode="numeric" aria-describedby="testPhoneField-hint" value="">');
-    expect(screen.getByRole('textbox', { name: 'Phone number' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testPhoneField-input[1]" name="testPhoneFieldPhoneNumber" type="tel" autocomplete="tel" aria-describedby="testPhoneField-hint" value="123">');
+    expect(screen.getByRole('textbox', { name: 'Country code field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code govuk-input--error" id="testPhoneField-input[0]" name="testPhoneFieldCountryCode" type="text" inputmode="numeric" aria-describedby="testPhoneField-hint" value="">');
+    expect(screen.getByRole('textbox', { name: 'Phone number field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testPhoneField-input[1]" name="testPhoneFieldPhoneNumber" type="tel" autocomplete="tel" aria-describedby="testPhoneField-hint" value="123">');
   });
 
   it('should NOT render an error if both country code and phone number of phone number is provided', async () => {
@@ -683,13 +683,13 @@ describe('Display Form', () => {
       </MemoryRouter>
     );
 
-    await user.type(screen.getByRole('textbox', { name: 'Country code' }), '123');
-    await user.type(screen.getByRole('textbox', { name: 'Phone number' }), '12345');
+    await user.type(screen.getByRole('textbox', { name: 'Country code field' }), '123');
+    await user.type(screen.getByRole('textbox', { name: 'Phone number field' }), '12345');
     await user.click(screen.getByRole('button', { name: 'Submit test button' }));
     expect(screen.queryByText('Enter your phone value')).not.toBeInTheDocument();
     // Input field has the error class attached
-    expect(screen.getByRole('textbox', { name: 'Country code' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code" id="testPhoneField-input[0]" name="testPhoneFieldCountryCode" type="text" inputmode="numeric" aria-describedby="testPhoneField-hint" value="123">');
-    expect(screen.getByRole('textbox', { name: 'Phone number' }).outerHTML).toEqual('<input class="govuk-input" id="testPhoneField-input[1]" name="testPhoneFieldPhoneNumber" type="tel" autocomplete="tel" aria-describedby="testPhoneField-hint" value="12345">');
+    expect(screen.getByRole('textbox', { name: 'Country code field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code" id="testPhoneField-input[0]" name="testPhoneFieldCountryCode" type="text" inputmode="numeric" aria-describedby="testPhoneField-hint" value="123">');
+    expect(screen.getByRole('textbox', { name: 'Phone number field' }).outerHTML).toEqual('<input class="govuk-input" id="testPhoneField-input[1]" name="testPhoneFieldPhoneNumber" type="tel" autocomplete="tel" aria-describedby="testPhoneField-hint" value="12345">');
   });
 
   it('should render error summary & field error for a conditional field if there are field errors', async () => {
@@ -867,29 +867,29 @@ describe('Display Form', () => {
     await user.click(screen.getByRole('button', { name: 'Submit test button' }));
     expect(screen.getAllByText('Enter your phone value')).toHaveLength(2);
     expect(screen.getByRole('button', { name: 'Enter your phone value' }).outerHTML).toEqual('<button class="govuk-button--text">Enter your phone value</button>');
-    expect(screen.getByRole('textbox', { name: 'Country code' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code govuk-input--error" id="testPhoneField-input[0]" name="testPhoneFieldCountryCode" type="text" inputmode="numeric" aria-describedby="testPhoneField-hint" value="">');
-    expect(screen.getByRole('textbox', { name: 'Phone number' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testPhoneField-input[1]" name="testPhoneFieldPhoneNumber" type="tel" autocomplete="tel" aria-describedby="testPhoneField-hint" value="">');
+    expect(screen.getByRole('textbox', { name: 'Country code field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code govuk-input--error" id="testPhoneField-input[0]" name="testPhoneFieldCountryCode" type="text" inputmode="numeric" aria-describedby="testPhoneField-hint" value="">');
+    expect(screen.getByRole('textbox', { name: 'Phone number field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testPhoneField-input[1]" name="testPhoneFieldPhoneNumber" type="tel" autocomplete="tel" aria-describedby="testPhoneField-hint" value="">');
 
     // typing in phone number field should clear error
-    await user.type(screen.getByRole('textbox', { name: 'Phone number' }), '1');
+    await user.type(screen.getByRole('textbox', { name: 'Phone number field' }), '1');
     expect(screen.queryByText('Enter your phone value')).not.toBeInTheDocument();
-    expect(screen.getByRole('textbox', { name: 'Country code' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code" id="testPhoneField-input[0]" name="testPhoneFieldCountryCode" type="text" inputmode="numeric" aria-describedby="testPhoneField-hint" value="">');
-    expect(screen.getByRole('textbox', { name: 'Phone number' }).outerHTML).toEqual('<input class="govuk-input" id="testPhoneField-input[1]" name="testPhoneFieldPhoneNumber" type="tel" autocomplete="tel" aria-describedby="testPhoneField-hint" value="1">');
+    expect(screen.getByRole('textbox', { name: 'Country code field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code" id="testPhoneField-input[0]" name="testPhoneFieldCountryCode" type="text" inputmode="numeric" aria-describedby="testPhoneField-hint" value="">');
+    expect(screen.getByRole('textbox', { name: 'Phone number field' }).outerHTML).toEqual('<input class="govuk-input" id="testPhoneField-input[1]" name="testPhoneFieldPhoneNumber" type="tel" autocomplete="tel" aria-describedby="testPhoneField-hint" value="1">');
     
     // trigger error again
-    screen.getByRole('textbox', { name: 'Phone number' }).setSelectionRange(0, 14);
+    screen.getByRole('textbox', { name: 'Phone number field' }).setSelectionRange(0, 14);
     await user.keyboard('{delete}');
     await user.click(screen.getByRole('button', { name: 'Submit test button' }));
     expect(screen.getAllByText('Enter your phone value')).toHaveLength(2);
     expect(screen.getByRole('button', { name: 'Enter your phone value' }).outerHTML).toEqual('<button class="govuk-button--text">Enter your phone value</button>');
-    expect(screen.getByRole('textbox', { name: 'Country code' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code govuk-input--error" id="testPhoneField-input[0]" name="testPhoneFieldCountryCode" type="text" inputmode="numeric" aria-describedby="testPhoneField-hint" value="">');
-    expect(screen.getByRole('textbox', { name: 'Phone number' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testPhoneField-input[1]" name="testPhoneFieldPhoneNumber" type="tel" autocomplete="tel" aria-describedby="testPhoneField-hint" value="">');
+    expect(screen.getByRole('textbox', { name: 'Country code field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code govuk-input--error" id="testPhoneField-input[0]" name="testPhoneFieldCountryCode" type="text" inputmode="numeric" aria-describedby="testPhoneField-hint" value="">');
+    expect(screen.getByRole('textbox', { name: 'Phone number field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testPhoneField-input[1]" name="testPhoneFieldPhoneNumber" type="tel" autocomplete="tel" aria-describedby="testPhoneField-hint" value="">');
 
     // typing in country code field should clear error
-    await user.type(screen.getByRole('textbox', { name: 'Country code' }), '1');
+    await user.type(screen.getByRole('textbox', { name: 'Country code field' }), '1');
     expect(screen.queryByText('Enter your phone value')).not.toBeInTheDocument();
-    expect(screen.getByRole('textbox', { name: 'Country code' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code" id="testPhoneField-input[0]" name="testPhoneFieldCountryCode" type="text" inputmode="numeric" aria-describedby="testPhoneField-hint" value="1">');
-    expect(screen.getByRole('textbox', { name: 'Phone number' }).outerHTML).toEqual('<input class="govuk-input" id="testPhoneField-input[1]" name="testPhoneFieldPhoneNumber" type="tel" autocomplete="tel" aria-describedby="testPhoneField-hint" value="">');
+    expect(screen.getByRole('textbox', { name: 'Country code field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code" id="testPhoneField-input[0]" name="testPhoneFieldCountryCode" type="text" inputmode="numeric" aria-describedby="testPhoneField-hint" value="1">');
+    expect(screen.getByRole('textbox', { name: 'Phone number field' }).outerHTML).toEqual('<input class="govuk-input" id="testPhoneField-input[1]" name="testPhoneFieldPhoneNumber" type="tel" autocomplete="tel" aria-describedby="testPhoneField-hint" value="">');
   });
 
   // PREFILLING DATA
@@ -954,8 +954,8 @@ describe('Display Form', () => {
     expect(screen.getByRole('radio', { name: 'Radio one' })).toBeChecked();
     expect(screen.getByRole('radio', { name: 'Option that has a conditional' })).toBeChecked();
     expect(screen.getByLabelText('Conditional text input')).toHaveValue('world');
-    expect(screen.getByRole('textbox', { name: 'Country code' })).toHaveValue('123');
-    expect(screen.getByRole('textbox', { name: 'Phone number' })).toHaveValue('12345');
+    expect(screen.getByRole('textbox', { name: 'Country code field' })).toHaveValue('123');
+    expect(screen.getByRole('textbox', { name: 'Phone number field' })).toHaveValue('12345');
     expect(window.sessionStorage.getItem('formData')).toStrictEqual(expectedStoredData);
   });
 
