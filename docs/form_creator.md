@@ -121,6 +121,14 @@ If cancel button:
 }
 ```
 
+If cancel button:
+```
+[action]: {
+  label: [required],
+  redirectURL: [required],
+}
+```
+
 Parameters:
 
 ### action
