@@ -31,6 +31,7 @@ const InputPhoneNumber = ({ error, fieldDetails, handleChange }) => {
 
   return (
     <div className="phoneNumber-input">
+      <label className="govuk-visually-hidden" htmlFor={`${fieldDetails.fieldName}-input[0]`}>Country code</label> 
       <input
         className={countryCodeClassToApply}
         id={`${fieldDetails.fieldName}-input[0]`}
@@ -42,6 +43,7 @@ const InputPhoneNumber = ({ error, fieldDetails, handleChange }) => {
         defaultValue={countryCode}
         aria-describedby={fieldDetails.hint ? `${fieldDetails.fieldName}-hint` : null}
       />
+      <label className="govuk-visually-hidden" htmlFor={`${fieldDetails.fieldName}-input[1]`}>Phone number</label> 
       <input
         className={phoneNumberClassToApply}
         id={`${fieldDetails.fieldName}-input[1]`}
