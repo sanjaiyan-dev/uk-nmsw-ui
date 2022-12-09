@@ -246,6 +246,6 @@ DisplayForm.propTypes = {
     })
   }
   ),
-  pageHeading: PropTypes.string.isRequired,
+  pageHeading: PropTypes.string,
   handleSubmit: PropTypes.func.isRequired,
 };
