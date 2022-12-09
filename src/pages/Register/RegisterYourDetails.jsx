@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   FIELD_RADIO,
   FIELD_TEXT,
+  FIELD_PHONE,
   VALIDATE_REQUIRED
 } from '../../constants/AppConstants';
 import { REGISTER_PASSWORD } from '../../constants/AppUrlConstants';
@@ -39,6 +40,17 @@ const RegisterYourDetails = () => {
       ]
     },
     {
+      type: FIELD_PHONE,
+      fieldName: 'phoneNumber',
+      label: 'Phone number',
+      validation: [
+        {
+          type: VALIDATE_REQUIRED,
+          message: 'Enter your phone number'
+        },
+      ]
+    },
+    {
       type: FIELD_TEXT,
       fieldName: 'country',
       label: 'Country',
@@ -67,6 +79,12 @@ const RegisterYourDetails = () => {
           value: 'no',
         },
       ],
+      validation: [
+        {
+          type: VALIDATE_REQUIRED,
+          message: 'Select is your company a shipping agent'
+        },
+      ]
     },
   ];
 
