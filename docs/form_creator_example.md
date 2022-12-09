@@ -8,8 +8,7 @@ Below is a step by step example of creating a new form using the creator compone
 2. [Add formFields](#AddFormFields)
 3. [Add validation rules (if required)](#AddValidationRunes)
 4. [Add handleSubmit ](#AddHandleSubmit)
-5. [Add handleCancel](#AddHandleCancel)
-6. [Add <DisplayForm> to your return](#AddDisplayForm)
+5. [Add <DisplayForm> to your return](#AddDisplayForm)
 
 _TODO: refactor Add formActions in DisplayForm to map the form actions rather than specify directly. And then update these docs_
 
@@ -32,18 +31,11 @@ Create an object of formActions for your form
 ```javascript
   const formActions = {
     submit: {
-      className: 'govuk-button',
-      dataModule: 'govuk-button',
-      dataTestid: 'submit-button',
       label: 'Save',
-      type: 'button',
     },
     cancel: {
-      className: 'govuk-button govuk-button--secondary',
-      dataModule: 'govuk-button',
-      dataTestid: 'submit-button',
       label: 'Cancel',
-      type: 'button',
+      redirect_URL: DASHBOARD_URL
     }
   };
 ```
@@ -238,11 +230,7 @@ If you use a confirmation page
   };
 ```
 
-### 5. <a id="AddHandleCancel"></a>Add handleCancel
-
-_TODO: Add a handleCancel example_
-
-### 6. <a id="AddDisplayForm"></a>Add <DisplayForm> to your return
+### 5. <a id="AddDisplayForm"></a>Add <DisplayForm> to your return
 
 Add the DisplayForm component to your return
 
@@ -287,18 +275,11 @@ const SecondPage = () => {
 
   const formActions = {
     submit: {
-      className: 'govuk-button',
-      dataModule: 'govuk-button',
-      dataTestid: 'submit-button',
       label: 'Save',
-      type: 'button',
     },
     cancel: {
-      className: 'govuk-button--secondary',
-      dataModule: 'govuk-button',
-      dataTestid: 'submit-button',
       label: 'Cancel',
-      type: 'button',
+      redirectURL: DASHBOARD_URL
     }
   };
   const formFields = [
@@ -373,36 +354,27 @@ const SecondPage = () => {
 
   const handleSubmit = async (e, formData) => {
     e.preventDefault();
-    const formErrors = await Validator({ formData: formData.formData, formFields: formFields });
-    setErrors(formErrors);
-
-    if (formErrors.length < 1) {
-      navigate(
-        FORM_CONFIRMATION_URL,
-        {
-          state: {
-            formName: 'Example form',
-            nextPageLink: DASHBOARD_URL,
-            nextPageName: DASHBOARD_PAGE_NAME,
-            referenceNumber: referenceNumber
-          }
+    navigate(
+      FORM_CONFIRMATION_URL,
+      {
+        state: {
+          formName: 'Example form',
+          nextPageLink: DASHBOARD_URL,
+          nextPageName: DASHBOARD_PAGE_NAME,
+          referenceNumber: referenceNumber
         }
-      );
-    } else {
-      scrollToElementId('formSecondPage');
-    }
+      }
+    );
   };
 
   return (
     <div className="govuk-grid-row">
-      <h1>Second page</h1>
       <DisplayForm
         formId='formSecondPage'
-        errors={errors}
         fields={formFields}
         formActions={formActions}
+        pageHeading='Second page'
         handleSubmit={handleSubmit}
-        setErrors={setErrors}
       />
     </div >
   );
