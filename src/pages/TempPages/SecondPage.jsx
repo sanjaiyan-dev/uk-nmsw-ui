@@ -1,12 +1,17 @@
 import { useNavigate } from 'react-router-dom';
 import {
+  FIELD_AUTOCOMPLETE,
+  FIELD_CONDITIONAL,
   FIELD_TEXT,
   FIELD_RADIO,
   CHECKED_FALSE,
+  VALIDATE_CONDITIONAL,
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
 import { DASHBOARD_PAGE_NAME, DASHBOARD_URL, FORM_CONFIRMATION_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
+import { countries } from './TempMockList-countries';
+import { portList } from './TempMockList-portList';
 
 const SecondPage = () => {
   const navigate = useNavigate();
@@ -76,9 +81,113 @@ const SecondPage = () => {
         },
       ],
     },
+    {
+      type: FIELD_CONDITIONAL,
+      label: 'What is your favourite animal',
+      fieldName: 'favAnimal',
+      className: 'govuk-radios',
+      grouped: true,
+      radioOptions: [
+        {
+          radioField: true,
+          label: 'Cat',
+          name: 'favAnimal',
+          value: 'cat',
+        },
+        {
+          radioField: false,
+          parentFieldValue: 'cat',
+          label: 'Breed of cat',
+          name: 'breedOfCat',
+        },
+        {
+          radioField: true,
+          label: 'Dog',
+          name: 'favAnimal',
+          value: 'dog',
+        },
+        {
+          radioField: false,
+          parentFieldValue: 'dog',
+          hint: 'What sort of dogs do you like?',
+          label: 'Breed of dog',
+          name: 'breedOfDog',
+        },
+        {
+          radioField: true,
+          label: 'Rabbit',
+          name: 'favAnimal',
+          value: 'rabbit',
+        },
+        {
+          radioField: true,
+          label: 'Other',
+          name: 'favAnimal',
+          value: 'other',
+        },
+      ],
+      validation: [
+        {
+          type: VALIDATE_REQUIRED,
+          message: 'Select your favourite animal',
+        },
+        {
+          type: VALIDATE_CONDITIONAL,
+          condition: {
+            parentValue: 'dog',
+            fieldName: 'breedOfDog',
+            ruleToTest: VALIDATE_REQUIRED,
+            message: 'Enter a breed of dog'
+          },
+        },
+        {
+          type: VALIDATE_CONDITIONAL,
+          condition: {
+            parentValue: 'cat',
+            fieldName: 'breedOfCat',
+            ruleToTest: VALIDATE_REQUIRED,
+            message: 'Enter a breed of cat'
+          },
+        }
+      ],
+    },
+    {
+      type: FIELD_AUTOCOMPLETE,
+      label: 'Select your country',
+      fieldName: 'country',
+      dataAPIEndpoint: countries,
+      responseKey: 'name',
+      validation: [
+        {
+          type: VALIDATE_REQUIRED,
+          message: 'Select your country from the list',
+        },
+      ],
+    },
+    {
+      type: FIELD_AUTOCOMPLETE,
+      label: 'Select your port',
+      fieldName: 'port',
+      dataAPIEndpoint: portList,
+      responseKey: 'name',
+      additionalKey: 'unlocode',
+      validation: [
+        {
+          type: VALIDATE_REQUIRED,
+          message: 'Select your port from the list',
+        },
+      ],
+    },
   ];
 
   const handleSubmit = ({ formData }) => {
+    let referenceNumber;
+    if (formData.countryExpandedDetails?.country && formData.portExpandedDetails?.port) {
+      referenceNumber = `CountryCode: ${formData.countryExpandedDetails.country.code}, Port: ${formData.portExpandedDetails.port.unlocode}`;
+    } else {
+      referenceNumber = `Country: ${formData.country}, Port: ${formData.port}`;
+    }
+
     navigate(
       FORM_CONFIRMATION_URL,
       {
@@ -86,7 +195,7 @@ const SecondPage = () => {
           formName: 'Second page',
           nextPageLink: DASHBOARD_URL,
           nextPageName: DASHBOARD_PAGE_NAME,
-          referenceNumber: `${formData.favouriteColour}-123`
+          referenceNumber: referenceNumber
         }
       }
     );
@@ -94,14 +203,16 @@ const SecondPage = () => {
 
   return (
     <div className="govuk-grid-row">
-      <h1>Second page</h1>
-      <DisplayForm
-        formId='formSecondPage'
-        fields={formFields}
-        formActions={formActions}
-        handleSubmit={handleSubmit}
-      />
-    </div >
+      <div className="govuk-grid-column-two-thirds">
+        <DisplayForm
+          pageHeading="Second page"
+          formId='formSecondPage'
+          fields={formFields}
+          formActions={formActions}
+          handleSubmit={handleSubmit}
+        />
+      </div >
+    </div>
   );
 };
 

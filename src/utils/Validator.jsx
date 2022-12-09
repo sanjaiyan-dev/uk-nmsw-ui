@@ -1,4 +1,5 @@
 import {
+  VALIDATE_CONDITIONAL,
   VALIDATE_EMAIL_ADDRESS,
   VALIDATE_MIN_LENGTH,
   VALIDATE_REQUIRED,
@@ -29,10 +30,20 @@ const Validator = ({ formData, formFields }) => {
   const fieldsToValidate = Object.entries(formData).reduce((result, field) => { // result is our accumulator that starts as an empty array as defined at end of reduce
     const key = field[0];
     const value = field[1];
-    const rules = formFields.find(field => field.fieldName === key).validation; // find all the rules for this field, if any
+    const rules = formFields.find(field => field.fieldName === key) ?  formFields.find(field => field.fieldName === key).validation : null; // find all the rules for this field, if any
 
     if (rules) {
       rules.map((rule) => {
+        if (rule.type === VALIDATE_CONDITIONAL) {
+          // check if the conditional field is visible (it's parent field is selected)
+          const conditionalFieldIsVisible = value === rule.condition.parentValue;
+          const foundValue = formData[rule.condition.fieldName];
+          const ruleToTest = { type: rule.condition.ruleToTest, message: rule.condition.message };
+
+          if (conditionalFieldIsVisible) {
+            result.push({ key: rule.condition.fieldName, value: foundValue, rule: ruleToTest });
+          }
+        }
         result.push({ key, value, rule }); // for each rule for this field, push an entry to the result array
       });
     }

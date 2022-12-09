@@ -5,7 +5,6 @@ import {
   FIELD_EMAIL,
   FIELD_PASSWORD,
   VALIDATE_EMAIL_ADDRESS,
-  VALIDATE_MIN_LENGTH,
   VALIDATE_REQUIRED,
   } from '../../constants/AppConstants';
 import { DASHBOARD_URL } from '../../constants/AppUrlConstants';
@@ -54,23 +53,6 @@ const SignIn = (userDetails) => {
         },
       ],
     },
-    {
-      type: FIELD_PASSWORD,
-      label: 'Sample min length password field for testing',
-      hint: 'Because we would not show a min length error on sign in, only on account creations',
-      fieldName: 'sampleMinLengthTest',
-      validation: [
-        {
-          type: VALIDATE_REQUIRED,
-          message: 'Enter your sample field password',
-        },
-        {
-          type: VALIDATE_MIN_LENGTH,
-          message: 'Sample field must be a minimum of 8 characters',
-          condition: 8,
-        },
-      ],
-    }
   ];
 
   const handleSubmit = () => {
@@ -81,8 +63,8 @@ const SignIn = (userDetails) => {
   return (
     <div className="govuk-grid-row">
       <div className="govuk-grid-column-two-thirds">
-        <h1 className="govuk-heading-l" data-testid="signin-h1">Sign in</h1>
         <DisplayForm
+          pageHeading="Sign in"
           formId='formSignIn'
           fields={formFields}
           formActions={formActions}

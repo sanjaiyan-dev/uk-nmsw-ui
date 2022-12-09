@@ -28,7 +28,7 @@ describe('Sign in tests', () => {
 
   it('should render the sign in page', () => {
     render(<MemoryRouter><SignIn /></MemoryRouter>);
-    expect(screen.getByTestId('signin-h1')).toHaveTextContent('Sign in');
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Sign in');
     expect(screen.getByTestId('submit-button')).toHaveTextContent('Sign in');
   });
 
@@ -141,48 +141,6 @@ describe('Sign in tests', () => {
     expect(screen.queryByText('Enter your password')).not.toBeInTheDocument();
   });
 
-  it('should display the sample field required error if there is no sample field text',async  () => {
-    const user = userEvent.setup();
-    render(<MemoryRouter><SignIn /></MemoryRouter>);
-    await user.click(screen.getByTestId('submit-button'));
-    expect(screen.getAllByText('Enter your sample field password')).toHaveLength(2);
-  });
-
-  it('should scroll to sample field and set focus on sample field input if user clicks on sample field required error link', async () => {
-    const user = userEvent.setup();
-    render(<MemoryRouter><SignIn /></MemoryRouter>);
-    await user.click(screen.getByTestId('submit-button'));
-    await user.click(screen.getByRole('button', { name: 'Enter your sample field password'}));
-    expect(scrollIntoViewMock).toHaveBeenCalled();
-    expect(screen.getByTestId('sampleMinLengthTest-passwordField')).toHaveFocus();
-  });
-
-  it('should display the sample field min length error if the text in the field is < 8 characters', async () => {
-    const user = userEvent.setup();
-    render(<MemoryRouter><SignIn /></MemoryRouter>);
-    await user.type(screen.getByTestId('sampleMinLengthTest-passwordField'), 'one');
-    await user.click(screen.getByTestId('submit-button'));
-    expect(screen.getAllByText('Sample field must be a minimum of 8 characters')).toHaveLength(2);
-  });
-
-  it('should scroll to sample field and set focus on sample field input if user clicks on sample field min length error link', async () => {
-    const user = userEvent.setup();
-    render(<MemoryRouter><SignIn /></MemoryRouter>);
-    await user.type(screen.getByTestId('sampleMinLengthTest-passwordField'), 'one');
-    await user.click(screen.getByTestId('submit-button'));
-    await user.click(screen.getByRole('button', { name: 'Sample field must be a minimum of 8 characters'}));
-    expect(scrollIntoViewMock).toHaveBeenCalled();
-    expect(screen.getByTestId('sampleMinLengthTest-passwordField')).toHaveFocus();
-  });
-
-  it('should NOT display any sample field errors if the text in the field is >= 8 characters', async () => {
-    const user = userEvent.setup();
-    render(<MemoryRouter><SignIn /></MemoryRouter>);
-    await user.type(screen.getByTestId('sampleMinLengthTest-passwordField'), '12345678');
-    await user.click(screen.getByTestId('submit-button'));
-    expect(screen.queryByText('Sample field must be a minimum of 8 characters')).not.toBeInTheDocument();
-  });
-
   it('should call the login function on sign in button click if there are no errors', async () => {
     const user = userEvent.setup();
     const userDetails = { name: 'MockedUser', token: '123', group: 'testGroup' };
@@ -190,7 +148,6 @@ describe('Sign in tests', () => {
     renderWithUserContext(userDetails);
     await user.type(screen.getByRole('textbox', {name: /email/i}), 'testemail@email.com');
     await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
-    await user.type(screen.getByTestId('sampleMinLengthTest-passwordField'), 'testminlengthpassword');
     await user.click(screen.getByTestId('submit-button'));
     expect(mockedLogin).toHaveBeenCalled();
   });

@@ -1,10 +1,14 @@
 import PropTypes from 'prop-types';
 import {
+  FIELD_AUTOCOMPLETE,
+  FIELD_CONDITIONAL,
   FIELD_EMAIL,
   FIELD_PASSWORD,
   FIELD_TEXT,
   FIELD_RADIO
 } from '../../constants/AppConstants';
+import InputAutocomplete from './InputAutocomplete';
+import InputConditional from './InputConditional';
 import InputRadio from './InputRadio';
 import InputText from './InputText';
 
@@ -44,9 +48,26 @@ const SingleInput = ({ error, fieldName, fieldToReturn, hint, label }) => {
   );
 };
 
-const determineFieldType = ({ error, fieldDetails, parentHandleChange }) => {
+const determineFieldType = ({ allErrors, error, fieldDetails, parentHandleChange }) => {
   let fieldToReturn;
   switch (fieldDetails.type) {
+
+    case FIELD_AUTOCOMPLETE: fieldToReturn =
+      <InputAutocomplete
+        error={error} // if error true, error styling applied to input
+        fieldDetails={fieldDetails}
+        handleChange={parentHandleChange}
+        type='autocomplete'
+      />;
+      break;
+
+    case FIELD_CONDITIONAL: fieldToReturn =
+      <InputConditional
+        errors={allErrors} // allows us to add the error handling logic for conditional fields only on those fields
+        fieldDetails={fieldDetails}
+        handleChange={parentHandleChange}
+      />;
+      break;
 
     case FIELD_EMAIL: fieldToReturn =
       <InputText
@@ -68,6 +89,15 @@ const determineFieldType = ({ error, fieldDetails, parentHandleChange }) => {
       />;
       break;
 
+    case FIELD_RADIO: fieldToReturn =
+      <InputRadio
+        // there is no input level error styling on a radio button so we do not pass error down here
+        fieldDetails={fieldDetails}
+        handleChange={parentHandleChange}
+        type='radio'
+      />;
+      break;
+
     case FIELD_TEXT: fieldToReturn =
       <InputText
         error={error}
@@ -77,21 +107,13 @@ const determineFieldType = ({ error, fieldDetails, parentHandleChange }) => {
       />;
       break;
 
-    case FIELD_RADIO: fieldToReturn =
-      <InputRadio
-         // there is no input level error styling on a radio button so we do not pass error down here
-        fieldDetails={fieldDetails}
-        handleChange={parentHandleChange}
-        type='radio'
-      />;
-      break;
-
     default: fieldToReturn = null;
   }
 
   return (
     <>
       {fieldDetails.grouped ? <GroupedInputs
+        allErrors={allErrors}
         error={error}
         fieldName={fieldDetails.fieldName}
         fieldToReturn={fieldToReturn}
@@ -114,6 +136,7 @@ const determineFieldType = ({ error, fieldDetails, parentHandleChange }) => {
 export default determineFieldType;
 
 determineFieldType.propTypes = {
+  allErrors: PropTypes.array,
   error: PropTypes.string,
   fieldDetails: PropTypes.objectOf(
     PropTypes.shape({
@@ -128,6 +151,7 @@ determineFieldType.propTypes = {
 };
 
 GroupedInputs.propTypes = {
+  allErrors: PropTypes.array,
   error: PropTypes.string,
   fieldName: PropTypes.string.isRequired,
   fieldToReturn: PropTypes.object.isRequired,

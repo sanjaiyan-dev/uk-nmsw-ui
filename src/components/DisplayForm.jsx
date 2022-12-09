@@ -1,12 +1,12 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { FIELD_PASSWORD } from '../constants/AppConstants';
+import { EXPANDED_DETAILS, FIELD_CONDITIONAL, FIELD_PASSWORD } from '../constants/AppConstants';
 import { UserContext } from '../context/userContext';
 import determineFieldType from './formFields/DetermineFieldType';
-import { scrollToElementId } from '../utils/ScrollToElementId';
+import { scrollToTop } from '../utils/ScrollToElement';
 import Validator from '../utils/Validator';
 
-const DisplayForm = ({ fields, formId, formActions, handleSubmit }) => {
+const DisplayForm = ({ fields, formId, formActions, pageHeading, handleSubmit }) => {
   const { user } = useContext(UserContext);
   const fieldsRef = useRef(null);
   const [errors, setErrors] = useState();
@@ -14,26 +14,42 @@ const DisplayForm = ({ fields, formId, formActions, handleSubmit }) => {
   const [formData, setFormData] = useState({});
   const [sessionData, setSessionData] = useState(JSON.parse(sessionStorage.getItem('formData')));
 
-  const handleChange = (e) => {
+  const handleChange = (e, itemToClear) => {
+    // e may be an html event (e.g. radio button selected, text entered in input field)
+    // or an object from an autocomplete field being selected
+
     if (errors) {
       // on change any error shown for that field should be cleared so find if field has an error & remove from error list
-      const filteredErrors = errors?.filter(errorField => errorField.name !== e.target.name);
+      const itemToCheck = itemToClear ? itemToClear.target.name : e.target.name;
+      const filteredErrors = errors?.filter(errorField => errorField.name !== itemToCheck);
       setErrors(filteredErrors);
     }
+
+    // create the dataset to store, accounting for objects coming from autocomplete
+    const additionalDetails = e.target.additionalDetails
+      ? { [`${[e.target.name]}${EXPANDED_DETAILS}`]: e.target.additionalDetails, [e.target.name]: e.target.value }
+      : { [e.target.name]: e.target.value };
+
+    const dataSet = {
+      [e.target.name]: e.target.value,
+      ...additionalDetails,
+      [itemToClear?.target.name]: itemToClear?.target.value
+    };
+
     // we do not store passwords in session data
     if (e.target.name !== FIELD_PASSWORD) {
-      setSessionData({ ...sessionData, [e.target.name]: e.target.value });
-      sessionStorage.setItem('formData', JSON.stringify({ ...sessionData, [e.target.name]: e.target.value }));
+      setSessionData({ ...sessionData, ...dataSet });
+      sessionStorage.setItem('formData', JSON.stringify({ ...sessionData, ...dataSet }));
     }
     // we do store all values into form data
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({ ...formData, ...dataSet });
   };
 
   const handleValidation = async (e, formData) => {
     e.preventDefault();
     const formErrors = await Validator({ formData: formData.formData, formFields: fields });
     setErrors(formErrors);
-    
+
     if (formErrors.length < 1) {
       /*
        * Returning formData
@@ -44,7 +60,7 @@ const DisplayForm = ({ fields, formId, formActions, handleSubmit }) => {
       handleSubmit(formData);
       sessionStorage.removeItem('formData');
     } else {
-      scrollToElementId(formId);
+      scrollToTop();
     }
   };
 
@@ -52,7 +68,7 @@ const DisplayForm = ({ fields, formId, formActions, handleSubmit }) => {
     e.preventDefault();
     const fieldMap = getFieldMap();
     const fieldLabelNode = fieldMap.get(error.name);
-    fieldLabelNode.scrollIntoView();
+    fieldLabelNode?.scrollIntoView();
     // /* TODO: replace with useRef/forwardRef */
     // radio buttons and checkbox lists add their index key to their id so we can find and focus on them
     document.getElementById(`${error.name}-input`) ? document.getElementById(`${error.name}-input`).focus() : document.getElementById(`${error.name}-input[0]`).focus();
@@ -90,13 +106,22 @@ const DisplayForm = ({ fields, formId, formActions, handleSubmit }) => {
   useEffect(() => {
     let sessionDataArray;
     if (sessionData) {
-      sessionDataArray = Object.entries(sessionData).map(item => { return {name: item[0], value: item[1]}; });
+      sessionDataArray = Object.entries(sessionData).map(item => { return { name: item[0], value: item[1] }; });
     }
 
     const mappedFormFields = fields.map((field) => {
+      let valuesToAdd;
       const sessionDataValue = sessionDataArray?.find(sessionDataField => sessionDataField.name === field.fieldName);
-      return ({ ...field, value: sessionDataValue?.value });
+      if (field.type === FIELD_CONDITIONAL) {
+        const conditionalField = field.radioOptions.find(field => field.parentFieldValue === sessionDataValue?.value);
+        const sessionConditionalValue = sessionDataArray?.find(sessionDataField => sessionDataField.name === conditionalField?.name);
+        valuesToAdd = { ...field, value: sessionDataValue?.value, conditionalValueToFill: sessionConditionalValue };
+      } else {
+        valuesToAdd = { ...field, value: sessionDataValue?.value };
+      }
+      return (valuesToAdd);
     });
+
     setFieldsWithValues(mappedFormFields);
 
     const mappedFormData = fields.map((field) => {
@@ -109,7 +134,7 @@ const DisplayForm = ({ fields, formId, formActions, handleSubmit }) => {
 
   if (!formActions || !fieldsWithValues) { return null; }
   return (
-    <form id={formId} autoComplete="off">
+    <>
       {errors?.length > 0 && (
         <div className="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary">
           <h2 className="govuk-error-summary__title" id="error-summary-title">
@@ -132,55 +157,59 @@ const DisplayForm = ({ fields, formId, formActions, handleSubmit }) => {
           </div>
         </div>
       )}
-      {
-        fieldsWithValues.map((field) => {
-          const error = errors?.find(errorField => errorField.name === field.fieldName);
-          return (
-            <div
-              key={field.fieldName}
-              id={field.fieldName}
-              ref={(node) => {
-                const map = getFieldMap();
-                if (node) {
-                  map.set(field.fieldName, node); // on mount adds the refs
-                } else {
-                  map.delete(field.fieldName); // on unmount removes the refs
-                }
-              }}
-            >
-              {
-                determineFieldType({
-                  error: error?.message,
-                  fieldDetails: field,
-                  parentHandleChange: handleChange,
-                })
-              }
-            </div>
-          );
-        })
-      }
-      <div className="govuk-button-group">
-        <button
-          type={formActions.submit.type}
-          className={formActions.submit.className}
-          data-module={formActions.submit.dataModule}
-          data-testid={formActions.submit.dataTestid}
-          onClick={(e) => handleValidation(e, { formData })}
-        >
-          {formActions.submit.label}
-        </button>
+      <h1 className="govuk-heading-l">{pageHeading}</h1>
+      <form id={formId} autoComplete="off">
         {
-          formActions.cancel && <button
-            type={formActions.cancel.type}
-            className={formActions.cancel.className}
-            data-module={formActions.cancel.dataModule}
-            data-testid={formActions.cancel.dataTestid}
-          >
-            {formActions.cancel.label}
-          </button>
+          fieldsWithValues.map((field) => {
+            const error = errors?.find(errorField => errorField.name === field.fieldName);
+            return (
+              <div
+                key={field.fieldName}
+                id={field.fieldName}
+                ref={(node) => {
+                  const map = getFieldMap();
+                  if (node) {
+                    map.set(field.fieldName, node); // on mount adds the refs
+                  } else {
+                    map.delete(field.fieldName); // on unmount removes the refs
+                  }
+                }}
+              >
+                {
+                  determineFieldType({
+                    allErrors: errors,  // allows us to add the error handling logic for conditional fields
+                    error: error?.message,
+                    fieldDetails: field,
+                    parentHandleChange: handleChange,
+                  })
+                }
+              </div>
+            );
+          })
         }
-      </div>
-    </form>
+        <div className="govuk-button-group">
+          <button
+            type={formActions.submit.type}
+            className={formActions.submit.className}
+            data-module={formActions.submit.dataModule}
+            data-testid={formActions.submit.dataTestid}
+            onClick={(e) => handleValidation(e, { formData })}
+          >
+            {formActions.submit.label}
+          </button>
+          {
+            formActions.cancel && <button
+              type={formActions.cancel.type}
+              className={formActions.cancel.className}
+              data-module={formActions.cancel.dataModule}
+              data-testid={formActions.cancel.dataTestid}
+            >
+              {formActions.cancel.label}
+            </button>
+          }
+        </div>
+      </form>
+    </>
   );
 };
 
@@ -206,5 +235,6 @@ DisplayForm.propTypes = {
       type: PropTypes.string.isRequired,
     })
   ),
+  pageHeading: PropTypes.string.isRequired,
   handleSubmit: PropTypes.func.isRequired,
 };
