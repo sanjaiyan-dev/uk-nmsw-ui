@@ -3,6 +3,7 @@ import {
   FIELD_RADIO,
   FIELD_TEXT,
   FIELD_PHONE,
+  VALIDATE_PHONE_NUMBER,
   VALIDATE_REQUIRED
 } from '../../constants/AppConstants';
 import { REGISTER_PASSWORD } from '../../constants/AppUrlConstants';
@@ -48,6 +49,10 @@ const RegisterYourDetails = () => {
           type: VALIDATE_REQUIRED,
           message: 'Enter your phone number'
         },
+        {
+          type: VALIDATE_PHONE_NUMBER,
+          message: 'Enter your country code and phone number'
+        }
       ]
     },
     {
