@@ -109,5 +109,4 @@ describe('Register email address tests', () => {
     expect(screen.queryByText('Enter country')).not.toBeInTheDocument();
     expect(screen.queryByText('Select is your company a shipping agent')).not.toBeInTheDocument();
   });
-
 });
