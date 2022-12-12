@@ -167,58 +167,58 @@ const DisplayForm = ({ fields, formId, formActions, pageHeading, handleSubmit, c
       <h1 className="govuk-heading-xl">{pageHeading}</h1>
       {children}
       <div className="govuk-grid-row">
-      <form id={formId} className="govuk-grid-column-three-quarters" autoComplete="off">
-        {
-          fieldsWithValues.map((field) => {
-            const error = errors?.find(errorField => errorField.name === field.fieldName);
-            return (
-              <div
-                key={field.fieldName}
-                id={field.fieldName}
-                ref={(node) => {
-                  const map = getFieldMap();
-                  if (node) {
-                    map.set(field.fieldName, node); // on mount adds the refs
-                  } else {
-                    map.delete(field.fieldName); // on unmount removes the refs
-                  }
-                }}
-              >
-                {
-                  determineFieldType({
-                    allErrors: errors,  // allows us to add the error handling logic for conditional fields
-                    error: error?.message,
-                    fieldDetails: field,
-                    parentHandleChange: handleChange,
-                  })
-                }
-              </div>
-            );
-          })
-        }
-        <div className="govuk-button-group">
-          <button
-            type='button'
-            className='govuk-button'
-            data-module='govuk-button'
-            data-testid='submit-button'
-            onClick={(e) => handleValidation(e, { formData })}
-          >
-            {formActions.submit.label}
-          </button>
+        <form id={formId} className="govuk-grid-column-three-quarters" autoComplete="off">
           {
-            formActions.cancel && <button
-              type='button'
-              className='govuk-button govuk-button--secondary'
-              data-module='govuk-button'
-              data-testid='cancel-button'
-              onClick={() => handleCancel(formActions.cancel.redirectURL)}
-            >
-              {formActions.cancel.label}
-            </button>
+            fieldsWithValues.map((field) => {
+              const error = errors?.find(errorField => errorField.name === field.fieldName);
+              return (
+                <div
+                  key={field.fieldName}
+                  id={field.fieldName}
+                  ref={(node) => {
+                    const map = getFieldMap();
+                    if (node) {
+                      map.set(field.fieldName, node); // on mount adds the refs
+                    } else {
+                      map.delete(field.fieldName); // on unmount removes the refs
+                    }
+                  }}
+                >
+                  {
+                    determineFieldType({
+                      allErrors: errors,  // allows us to add the error handling logic for conditional fields
+                      error: error?.message,
+                      fieldDetails: field,
+                      parentHandleChange: handleChange,
+                    })
+                  }
+                </div>
+              );
+            })
           }
-        </div>
-      </form>
+          <div className="govuk-button-group">
+            <button
+              type='button'
+              className='govuk-button'
+              data-module='govuk-button'
+              data-testid='submit-button'
+              onClick={(e) => handleValidation(e, { formData })}
+            >
+              {formActions.submit.label}
+            </button>
+            {
+              formActions.cancel && <button
+                type='button'
+                className='govuk-button govuk-button--secondary'
+                data-module='govuk-button'
+                data-testid='cancel-button'
+                onClick={() => handleCancel(formActions.cancel.redirectURL)}
+              >
+                {formActions.cancel.label}
+              </button>
+            }
+          </div>
+        </form>
       </div>
     </>
   );
