@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
+import { REGISTER_ACCOUNT_ENDPOINT } from '../../constants/AppAPIConstants';
 import { FIELD_EMAIL, VALIDATE_EMAIL_ADDRESS, VALIDATE_FIELD_MATCH, VALIDATE_REQUIRED } from '../../constants/AppConstants';
 import { REGISTER_DETAILS } from '../../constants/AppUrlConstants';
-import { apiUrl } from '../../constants/Config';
 import usePostData from '../../hooks/usePostData';
 import DisplayForm from '../../components/DisplayForm';
 
@@ -65,7 +65,7 @@ const RegisterEmailAddress = () => {
   const handleSubmit = async (formData) => {
     try {
       const response = await usePostData({
-        url: `${apiUrl}/registration`,
+        url: REGISTER_ACCOUNT_ENDPOINT,
         dataToSubmit: {
           email: formData.formData.emailAddress,
         }
