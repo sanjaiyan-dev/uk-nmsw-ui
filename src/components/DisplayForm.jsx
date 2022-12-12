@@ -166,6 +166,7 @@ const DisplayForm = ({ fields, formId, formActions, pageHeading, handleSubmit, c
       )}
       <h1 className="govuk-heading-xl">{pageHeading}</h1>
       {children}
+      <div className="govuk-grid-row">
       <form id={formId} className="govuk-grid-column-three-quarters" autoComplete="off">
         {
           fieldsWithValues.map((field) => {
@@ -218,6 +219,7 @@ const DisplayForm = ({ fields, formId, formActions, pageHeading, handleSubmit, c
           }
         </div>
       </form>
+      </div>
     </>
   );
 };
