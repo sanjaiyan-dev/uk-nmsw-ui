@@ -1,10 +1,11 @@
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   FIELD_PASSWORD,
   VALIDATE_FIELD_MATCH,
   VALIDATE_MIN_LENGTH,
   VALIDATE_REQUIRED
 } from '../../constants/AppConstants';
+import { REGISTER_CONFIRMATION } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
 
 const SupportingText = () => {
@@ -19,7 +20,7 @@ const SupportingText = () => {
 };
 
 const RegisterYourPassword = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const formActions = {
     submit: {
@@ -67,7 +68,14 @@ const RegisterYourPassword = () => {
 
   const handleSubmit = async (e, formData) => {
     console.log('submit', e, formData);
-    // navigate(REGISTER_DETAILS);import { useNavigate } from 'react-router-dom';
+    navigate(
+      REGISTER_CONFIRMATION,
+      {
+        state: {
+          referenceNumber: 'COMPANY NAME GOES HERE'
+        }
+      }
+    );
   };
 
   return (

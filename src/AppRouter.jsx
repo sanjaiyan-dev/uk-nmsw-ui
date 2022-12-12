@@ -13,6 +13,7 @@ import {
   LANDING_URL,
   PRIVACY_URL,
   REGISTER_ACCOUNT,
+  REGISTER_CONFIRMATION,
   REGISTER_EMAIL,
   REGISTER_DETAILS,
   REGISTER_PASSWORD,
@@ -26,6 +27,7 @@ import CookiePolicy from './pages/Regulatory/CookiePolicy';
 import Landing from './pages/Landing/Landing';
 import PrivacyNotice from './pages/Regulatory/PrivacyNotice';
 // Register/Sign in pages
+import RegisterConfirmation from './pages/Register/RegisterConfirmation';
 import RegisterEmailAddress from './pages/Register/RegisterEmailAddress';
 import RegisterYourDetails from './pages/Register/RegisterYourDetails';
 import RegisterYourPassword from './pages/Register/RegisterYourPassword';
@@ -50,6 +52,7 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
         <Route path={LANDING_URL} element={<Landing />} />
         <Route path={PRIVACY_URL} element={<PrivacyNotice />} />
 
+        <Route path={REGISTER_CONFIRMATION} element={<RegisterConfirmation />} />
         <Route path={REGISTER_ACCOUNT} element={<RegisterEmailAddress />} />
         <Route path={REGISTER_EMAIL} element={<RegisterEmailAddress />} />
         <Route path={REGISTER_DETAILS} element={<RegisterYourDetails />} />
