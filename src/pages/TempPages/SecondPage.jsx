@@ -203,7 +203,7 @@ const SecondPage = () => {
 
   return (
     <div className="govuk-grid-row">
-      <div className="govuk-grid-column-two-thirds">
+      <div className="govuk-grid-column-three-quarters">
         <DisplayForm
           pageHeading="Second page"
           formId='formSecondPage'

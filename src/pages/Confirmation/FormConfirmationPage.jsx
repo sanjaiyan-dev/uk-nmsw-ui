@@ -19,7 +19,7 @@ const ConfirmFormSubmission = () => {
 
   return (
     <div className="govuk-grid-row">
-      <div className="govuk-grid-column-two-thirds">
+      <div className="govuk-grid-column-three-quarters">
         <div className="govuk-panel govuk-panel--confirmation">
           <h1 className="govuk-panel__title">
             {`${state.formName} submitted`}

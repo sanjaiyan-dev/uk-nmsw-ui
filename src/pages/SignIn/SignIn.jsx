@@ -58,7 +58,7 @@ const SignIn = (userDetails) => {
 
   return (
     <div className="govuk-grid-row">
-      <div className="govuk-grid-column-two-thirds">
+      <div className="govuk-grid-column-three-quarters">
         <DisplayForm
           pageHeading="Sign in"
           formId='formSignIn'
