@@ -164,9 +164,9 @@ const DisplayForm = ({ fields, formId, formActions, pageHeading, handleSubmit, c
           </div>
         </div>
       )}
-      <h1 className="govuk-heading-l">{pageHeading}</h1>
+      <h1 className="govuk-heading-xl">{pageHeading}</h1>
       {children}
-      <form id={formId} autoComplete="off">
+      <form id={formId} className="govuk-grid-column-three-quarters" autoComplete="off">
         {
           fieldsWithValues.map((field) => {
             const error = errors?.find(errorField => errorField.name === field.fieldName);
