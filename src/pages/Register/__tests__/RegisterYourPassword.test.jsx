@@ -20,7 +20,13 @@ describe('Register password tests', () => {
   it('should render an intro', async () => {
     render(<MemoryRouter><RegisterYourPassword /></MemoryRouter>);
     expect(screen.getByText('Your password must be at least 10 characters long. There is no restriction on the characters you use.')).toBeInTheDocument();
-    expect(screen.getByText('To create a long and strong password, the National Cyber Security Centre recommends using.')).toBeInTheDocument();
+    /*
+     * Because the text below is in a paragraph which has a link within it, RTL struggles to find the text in the render
+     * We could test by adding a data-testId
+     * but we can also test more easily with the Cypress tests
+     * so leaving this line for the Cypress tests
+     */
+    // expect(screen.getByText('To create a long and strong password, the National Cyber Security Centre recommends using ')).toBeInTheDocument();
     expect(screen.getByText('3 random words')).toBeInTheDocument();
     expect(screen.getByRole('link')).toHaveAttribute('href', 'https://www.ncsc.gov.uk/collection/top-tips-for-staying-secure-online/three-random-words#:~:text=Why%20does%20the%20NCSC%20recommend,enough%20for%20you%20to%20remember');
   });
@@ -28,9 +34,9 @@ describe('Register password tests', () => {
   it('should render two password questions', async () => {
     render(<MemoryRouter><RegisterYourPassword /></MemoryRouter>);
     expect(screen.getByLabelText('Password')).toBeInTheDocument();
-    expect(screen.getByLabelText('Password').outerHTML).toEqual('<input class="govuk-input" id="passwordInput" name="password" type="password"">');
+    expect(screen.getByLabelText('Password').outerHTML).toEqual('<input class="govuk-input" id="requirePassword-input" data-testid="requirePassword-passwordField" name="requirePassword" type="password" value="">');
     expect(screen.getByLabelText('Confirm your password')).toBeInTheDocument();
-    expect(screen.getByLabelText('Confirm your password').outerHTML).toEqual('<input class="govuk-input" id="confirmPasswordInput" name="confirmPassword" type="password"">');
+    expect(screen.getByLabelText('Confirm your password').outerHTML).toEqual('<input class="govuk-input" id="repeatPassword-input" data-testid="repeatPassword-passwordField" name="repeatPassword" type="password" value="">');
   });
 
   it('should render a continue button', async () => {
@@ -58,7 +64,7 @@ describe('Register password tests', () => {
     await user.click(screen.getByTestId('submit-button'));
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
     expect(screen.getAllByText('Enter a password')).toHaveLength(2);
-    expect(screen.getAllByText('Confirm your password')).toHaveLength(2);
+    expect(screen.getAllByText('Confirm your password')).toHaveLength(3); // label & 2 error messages
   });
 
   it('should display the required error messages if just confirm password is null', async () => {
@@ -67,8 +73,16 @@ describe('Register password tests', () => {
     await user.type(screen.getByLabelText('Password'), 'mypasswordis');
     await user.click(screen.getByTestId('submit-button'));
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
-    expect(screen.getAllByText('Enter a password')).toHaveLength(2);
-    expect(screen.getAllByText('Confirm your password')).toHaveLength(2);
+    expect(screen.getAllByText('Confirm your password')).toHaveLength(3);
+  });
+
+  it('should display the min length error messages if password field too short', async () => {
+    const user = userEvent.setup();
+    render(<MemoryRouter><RegisterYourPassword /></MemoryRouter>);
+    await user.type(screen.getByLabelText('Password'), 'shortpwd');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(screen.getByText('There is a problem')).toBeInTheDocument();
+    expect(screen.getAllByText('Passwords must be at least 10 characters long')).toHaveLength(2);
   });
 
   it('should display the error messages if password fields do not match', async () => {
@@ -89,6 +103,6 @@ describe('Register password tests', () => {
     await user.click(screen.getByTestId('submit-button'));
     expect(screen.queryByText('There is a problem')).not.toBeInTheDocument();
     expect(screen.queryByText('Enter a password')).not.toBeInTheDocument();
-    expect(screen.queryByText('Confirm your password')).not.toBeInTheDocument();
+    expect(screen.getAllByText('Confirm your password')).toHaveLength(1); // label only
   });
 });
