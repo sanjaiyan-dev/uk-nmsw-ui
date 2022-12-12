@@ -72,7 +72,7 @@ const RegisterYourPassword = () => {
       REGISTER_CONFIRMATION,
       {
         state: {
-          referenceNumber: 'COMPANY NAME GOES HERE'
+          companyName: 'COMPANY NAME GOES HERE'
         }
       }
     );

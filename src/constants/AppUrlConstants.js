@@ -15,10 +15,10 @@ export const SIGN_IN_URL = '/sign-in';
 
 // Create account/register pages
 export const REGISTER_ACCOUNT = '/create-account/email-address';
+export const REGISTER_CONFIRMATION = '/create-account/account-created';
 export const REGISTER_EMAIL = '/create-account/email-address';
 export const REGISTER_DETAILS = '/create-account/your-details';
 export const REGISTER_PASSWORD = '/create-account/your-password';
-export const REGISTER_CONFIRMATION = '/create-account/account-created';
 
 // Test pages
 export const SECOND_PAGE_NAME = 'Second page';
