@@ -95,15 +95,9 @@ const RegisterYourDetails = () => {
   ];
 
   const handleSubmit = async (formData) => {
-
+    const dataToSubmit = { ...formData.formData };
     console.log('submit', formData);
-
-    // do pass formData to next page for use
-
-
-
-    // and then take user to the next page
-    navigate(REGISTER_PASSWORD, { state: formData });
+    navigate(REGISTER_PASSWORD, { state: { dataToSubmit: dataToSubmit } });
   };
 
   return (
