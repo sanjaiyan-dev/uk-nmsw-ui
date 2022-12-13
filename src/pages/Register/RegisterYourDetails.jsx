@@ -3,6 +3,7 @@ import {
   FIELD_RADIO,
   FIELD_TEXT,
   FIELD_PHONE,
+  MULTI_PAGE_FORM,
   VALIDATE_PHONE_NUMBER,
   VALIDATE_REQUIRED
 } from '../../constants/AppConstants';
@@ -93,10 +94,15 @@ const RegisterYourDetails = () => {
     },
   ];
 
-  const handleSubmit = async (e, formData) => {
-    // This will trigger a PATCH to /registration endpoint
-    // with { "email": "example@mail.com" }
-    console.log('submit', e, formData);
+  const handleSubmit = async (formData) => {
+
+    console.log('submit', formData);
+
+    // do not clear the session storage
+    // do pass formData to next page for use
+
+
+
     // and then take user to the next page
     navigate(REGISTER_PASSWORD);
   };
@@ -108,6 +114,7 @@ const RegisterYourDetails = () => {
           formId='formRegisterYourDetails'
           fields={formFields}
           formActions={formActions}
+          formType={MULTI_PAGE_FORM}
           pageHeading='Your details'
           handleSubmit={handleSubmit}
         />
