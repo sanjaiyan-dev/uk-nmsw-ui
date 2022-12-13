@@ -98,13 +98,12 @@ const RegisterYourDetails = () => {
 
     console.log('submit', formData);
 
-    // do not clear the session storage
     // do pass formData to next page for use
 
 
 
     // and then take user to the next page
-    navigate(REGISTER_PASSWORD);
+    navigate(REGISTER_PASSWORD, { state: formData });
   };
 
   return (

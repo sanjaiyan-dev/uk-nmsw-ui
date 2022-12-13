@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   FIELD_PASSWORD,
   MULTI_PAGE_FORM,
@@ -22,6 +22,7 @@ const SupportingText = () => {
 
 const RegisterYourPassword = () => {
   const navigate = useNavigate();
+  const {state} = useLocation();
 
   const formActions = {
     submit: {
@@ -68,7 +69,10 @@ const RegisterYourPassword = () => {
   ];
 
   const handleSubmit = async (formData) => {
-    console.log('submit', formData);
+    // combine data from previous page of form
+    const dataToSubmit = { ...state.formData, ...formData.formData };
+    console.log(dataToSubmit);
+    sessionStorage.removeItem('formData');
     navigate(
       REGISTER_CONFIRMATION,
       {
