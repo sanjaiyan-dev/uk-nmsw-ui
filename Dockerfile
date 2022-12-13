@@ -10,6 +10,9 @@ COPY package*.json ./
 RUN npm ci && npm cache clean --force
 COPY . /src
 
+# This allows to pass env vars on runtime, see webpack.config.js:58 and run.sh
+ENV NMSW_DATA_API_BASE_URL=REPLACE_NMSW_DATA_API_BASE_URL
+
 RUN npm run build
 
 # Now build the final image based on Nginx
