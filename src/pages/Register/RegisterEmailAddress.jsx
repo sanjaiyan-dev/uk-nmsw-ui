@@ -67,7 +67,7 @@ const RegisterEmailAddress = () => {
 
   return (
     <div className="govuk-grid-row">
-      <div className="govuk-grid-column-two-thirds">
+      <div className="govuk-grid-column-three-quarters">
         <DisplayForm
           formId='formRegisterEmailAddress'
           fields={formFields}

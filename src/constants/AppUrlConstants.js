@@ -10,10 +10,12 @@ export const DASHBOARD_URL = '/dashboard';
 export const FORM_CONFIRMATION_URL = '/confirmation';
 export const LANDING_URL = '/';
 export const PRIVACY_URL = '/privacy-notice';
+export const SIGN_IN_PAGE_NAME = 'Sign in';
 export const SIGN_IN_URL = '/sign-in';
 
 // Create account/register pages
 export const REGISTER_ACCOUNT = '/create-account/email-address';
+export const REGISTER_CONFIRMATION = '/create-account/account-created';
 export const REGISTER_EMAIL = '/create-account/email-address';
 export const REGISTER_DETAILS = '/create-account/your-details';
 export const REGISTER_PASSWORD = '/create-account/your-password';

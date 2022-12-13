@@ -1,7 +1,7 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { SIGN_IN_URL } from '../../constants/AppUrlConstants';
 
-const ConfirmFormSubmission = () => {
-  const navigate = useNavigate();
+const RegisterConfirmation = () => {
   const { state } = useLocation();
 
   if (!state || Object.entries(state).length < 1) {
@@ -22,33 +22,22 @@ const ConfirmFormSubmission = () => {
       <div className="govuk-grid-column-three-quarters">
         <div className="govuk-panel govuk-panel--confirmation">
           <h1 className="govuk-panel__title">
-            {`${state.formName} submitted`}
+            Account created
           </h1>
-          {state.referenceNumber &&
+          {state.companyName &&
             <div className="govuk-panel__body">
-              Your reference number<br /><strong>{state.referenceNumber}</strong>
+              {`${state.companyName} has been setup.`}
             </div>
           }
         </div>
-        <p className="govuk-body">We have sent you a confirmation email.</p>
-
         <h2 className="govuk-heading-m">What happens next</h2>
 
         <p className="govuk-body">
-          We&apos;ve sent your voyage plan to Border Force. They will contact you if they need more information.
+          <Link to={SIGN_IN_URL}>Sign in</Link> to start using this service.
         </p>
-
-        <button
-          className="govuk-button govuk-button--secondary"
-          data-module="govuk-button"
-          type="button"
-          onClick={() => { navigate(state.nextPageLink); }}
-        >
-          Continue to {state.nextPageName}
-        </button>
       </div>
     </div>
   );
 };
 
-export default ConfirmFormSubmission;
+export default RegisterConfirmation;

@@ -103,7 +103,7 @@ const RegisterYourDetails = () => {
 
   return (
     <div className="govuk-grid-row">
-      <div className="govuk-grid-column-two-thirds">
+      <div className="govuk-grid-column-three-quarters">
         <DisplayForm
           formId='formRegisterYourDetails'
           fields={formFields}

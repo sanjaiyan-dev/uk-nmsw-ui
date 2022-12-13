@@ -17,7 +17,7 @@ const CookieBanner = ({ setIsCookieBannerShown }) => {
         <div className="govuk-cookie-banner__message govuk-width-container">
 
           <div className="govuk-grid-row">
-            <div className="govuk-grid-column-two-thirds">
+            <div className="govuk-grid-column-three-quarters">
               <h2 className="govuk-cookie-banner__heading govuk-heading-m">{`Cookies on ${SERVICE_NAME}`}</h2>
 
               <div className="govuk-cookie-banner__content">
@@ -51,7 +51,7 @@ const CookieBanner = ({ setIsCookieBannerShown }) => {
         <div className="govuk-cookie-banner__message govuk-width-container">
 
           <div className="govuk-grid-row">
-            <div className="govuk-grid-column-two-thirds">
+            <div className="govuk-grid-column-three-quarters">
 
               <div className="govuk-cookie-banner__content">
                 <p className="govuk-body" data-testid="cookieMessage">{`You've ${isAnalyticsAcceptedOrRejected} analytics cookies. You can `}
