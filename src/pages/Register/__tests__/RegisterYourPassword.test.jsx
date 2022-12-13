@@ -41,7 +41,7 @@ describe('Register password tests', () => {
 
   it('should render a continue button', async () => {
     render(<MemoryRouter><RegisterYourPassword /></MemoryRouter>);
-    expect(screen.getByRole('button', {name: 'Continue'}).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Continue</button>');
+    expect(screen.getByRole('button', { name: 'Continue' }).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Continue</button>');
   });
 
   it('should NOT call the handleSubmit function on button click if there ARE errors', async () => {
@@ -97,7 +97,7 @@ describe('Register password tests', () => {
 
   it('should NOT display error messagess if fields are valid', async () => {
     const user = userEvent.setup();
-    render(<MemoryRouter><RegisterYourPassword /></MemoryRouter>);
+    render(<MemoryRouter><RegisterYourPassword state={{ dataToSubmit: { sampleField: 'field value', secondField: 'second value' }}} /></MemoryRouter>);
     await user.type(screen.getByLabelText('Password'), 'mypasswordis');
     await user.type(screen.getByLabelText('Confirm your password'), 'mypasswordis');
     await user.click(screen.getByTestId('submit-button'));
