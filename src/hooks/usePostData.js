@@ -13,7 +13,7 @@ const usePostData = ({url, dataToSubmit, pageSource}) => {
           case 401:
           case 422:
           case 405: window.location.assign(`/sign-in?source=${source}`); break;
-          default: return ({ errors: true, status: err.response.status, message: err.response.data.message });
+          default: return ({ errors: true, status: err.response.status, message: err.response.data?.message });
         }
       }
     });
