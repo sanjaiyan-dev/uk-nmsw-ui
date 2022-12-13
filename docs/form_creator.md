@@ -135,6 +135,9 @@ Parameters:
 ### label
 The words you wish to show on your button
 
+### redirectURL
+The page you want to redirect the user to if they click cancel
+
 ----
 
 ## Autocomplete
