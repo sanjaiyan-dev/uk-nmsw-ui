@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom';
+import { REGISTER_ACCOUNT_ENDPOINT } from '../../constants/AppAPIConstants';
 import { FIELD_EMAIL, VALIDATE_EMAIL_ADDRESS, VALIDATE_FIELD_MATCH, VALIDATE_REQUIRED } from '../../constants/AppConstants';
 import { REGISTER_DETAILS } from '../../constants/AppUrlConstants';
+import usePostData from '../../hooks/usePostData';
 import DisplayForm from '../../components/DisplayForm';
 
 const SupportingText = () => {
@@ -60,9 +62,22 @@ const RegisterEmailAddress = () => {
     }
   ];
 
-  const handleSubmit = async (e, formData) => {
-    console.log('submit', e, formData);
-    navigate(REGISTER_DETAILS);
+  const handleSubmit = async (formData) => {
+    try {
+      const response = await usePostData({
+        url: REGISTER_ACCOUNT_ENDPOINT,
+        dataToSubmit: {
+          email: formData.formData.emailAddress,
+        }
+      });
+      if (response && response.id) { // using response.id as the indicator of success as status isn't passed back on success yet
+        navigate(REGISTER_DETAILS);
+      } else {
+        console.log('error', response);
+      }
+    } catch (err) {
+      console.log('err', err);
+    }
   };
 
   return (

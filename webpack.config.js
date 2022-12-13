@@ -2,6 +2,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
   entry: ['./src/index.js', './src/assets/main.scss'],
@@ -61,6 +62,10 @@ module.exports = {
         ],
       },
     ), 
+    // This allows to pass env vars on runtime, see /nginx/run.sh and Dockerfile
+    new webpack.EnvironmentPlugin({
+      NMSW_DATA_API_BASE_URL: 'http://localhost:5000',
+    }),
   ],
   devServer: {
     historyApiFallback: true,
