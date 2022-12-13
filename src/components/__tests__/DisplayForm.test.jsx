@@ -258,6 +258,24 @@ describe('Display Form', () => {
       ],
     }
   ];
+  const formWithBackwardsValidationOrder = [
+    {
+      type: FIELD_TEXT,
+      label: 'Text input',
+      fieldName: 'testField',
+      validation: [
+        {
+          type: VALIDATE_MIN_LENGTH,
+          message: 'Field must be a minimum of 8 characters',
+          condition: 8,
+        },
+        {
+          type: VALIDATE_REQUIRED,
+          message: 'Enter your text input value',
+        },
+      ],
+    }
+  ];
   const formSpecialInputs = [
     {
       type: FIELD_TEXT,
@@ -380,6 +398,7 @@ describe('Display Form', () => {
       ],
     }
   ];
+  
 
   beforeEach(() => {
     window.sessionStorage.clear();
@@ -746,6 +765,28 @@ describe('Display Form', () => {
         <DisplayForm
           formId="testForm"
           fields={formMultipleValidationRules}
+          formActions={formActionsSubmitOnly}
+          handleSubmit={handleSubmit}
+        />
+      </MemoryRouter>
+    );
+    await user.click(screen.getByRole('button', { name: 'Submit test button' }));
+
+    expect(screen.getByText('There is a problem').outerHTML).toEqual('<h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>');
+    expect(screen.getAllByText('Enter your text input value')).toHaveLength(2);
+    // Error summary has the error message as a button and correct class
+    expect(screen.getByRole('button', { name: 'Enter your text input value' }).outerHTML).toEqual('<button class="govuk-button--text">Enter your text input value</button>');
+    // Input field has the error class attached
+    expect(screen.getByRole('textbox', { name: 'Text input' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testField-input" name="testField" type="text" value="">');
+  });
+
+  it('should return the error for the first failing validation rule based on the validation switch order - regardless of the form object order', async () => {
+    const user = userEvent.setup();
+    render(
+      <MemoryRouter>
+        <DisplayForm
+          formId="testForm"
+          fields={formWithBackwardsValidationOrder}
           formActions={formActionsSubmitOnly}
           handleSubmit={handleSubmit}
         />
