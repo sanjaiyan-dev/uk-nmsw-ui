@@ -87,20 +87,18 @@ const RegisterEmailAddress = () => {
   };
 
   return (
-    <div className="govuk-grid-row">
-      <div className="govuk-grid-column-three-quarters">
-        <DisplayForm
-          formId='formRegisterEmailAddress'
-          fields={formFields}
-          formActions={formActions}
-          formType={SINGLE_PAGE_FORM}
-          pageHeading='What is your email address'
-          handleSubmit={handleSubmit}
-        >
-          <SupportingText />
-        </DisplayForm>
-      </div>
-    </div>
+    <>
+      <DisplayForm
+        formId='formRegisterEmailAddress'
+        fields={formFields}
+        formActions={formActions}
+        formType={SINGLE_PAGE_FORM}
+        pageHeading='What is your email address'
+        handleSubmit={handleSubmit}
+      >
+        <SupportingText />
+      </DisplayForm>
+    </>
   );
 };
 

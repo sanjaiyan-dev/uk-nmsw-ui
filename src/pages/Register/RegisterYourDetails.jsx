@@ -101,18 +101,16 @@ const RegisterYourDetails = () => {
   };
 
   return (
-    <div className="govuk-grid-row">
-      <div className="govuk-grid-column-three-quarters">
-        <DisplayForm
-          formId='formRegisterYourDetails'
-          fields={formFields}
-          formActions={formActions}
-          formType={MULTI_PAGE_FORM}
-          pageHeading='Your details'
-          handleSubmit={handleSubmit}
-        />
-      </div>
-    </div>
+    <>
+      <DisplayForm
+        formId='formRegisterYourDetails'
+        fields={formFields}
+        formActions={formActions}
+        formType={MULTI_PAGE_FORM}
+        pageHeading='Your details'
+        handleSubmit={handleSubmit}
+      />
+    </>
   );
 };
 

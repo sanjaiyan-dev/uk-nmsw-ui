@@ -22,7 +22,7 @@ const SupportingText = () => {
 
 const RegisterYourPassword = () => {
   const navigate = useNavigate();
-  const {state} = useLocation();
+  const { state } = useLocation();
 
   const formActions = {
     submit: {
@@ -84,20 +84,18 @@ const RegisterYourPassword = () => {
   };
 
   return (
-    <div className="govuk-grid-row">
-      <div className="govuk-grid-column-three-quarters">
-        <DisplayForm
-          formId='formRegisterYourPassword'
-          fields={formFields}
-          formActions={formActions}
-          formType={MULTI_PAGE_FORM}
-          pageHeading='Create a password'
-          handleSubmit={handleSubmit}
-        >
-          <SupportingText />
-        </DisplayForm>
-      </div>
-    </div>
+    <>
+      <DisplayForm
+        formId='formRegisterYourPassword'
+        fields={formFields}
+        formActions={formActions}
+        formType={MULTI_PAGE_FORM}
+        pageHeading='Create a password'
+        handleSubmit={handleSubmit}
+      >
+        <SupportingText />
+      </DisplayForm>
+    </>
   );
 };
 

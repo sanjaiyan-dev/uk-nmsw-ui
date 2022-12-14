@@ -153,81 +153,94 @@ const DisplayForm = ({ fields, formId, formActions, formType, pageHeading, handl
   if (!formActions || !fieldsWithValues) { return null; }
   return (
     <>
-      {errors?.length > 0 && (
-        <div className="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary">
-          <h2 className="govuk-error-summary__title" id="error-summary-title">
-            There is a problem
-          </h2>
-          <div className="govuk-error-summary__body">
-            <ul className="govuk-list govuk-error-summary__list">
-              {errors.map((error) => {
-                return (
-                  <li key={error.name}>
-                    <button className="govuk-button--text"
-                      onClick={(e) => { scrollToErrorField(e, error); }}
-                    >
-                      {error.message}
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        </div>
-      )}
-      <h1 className="govuk-heading-xl">{pageHeading}</h1>
-      {children}
       <div className="govuk-grid-row">
-        <form id={formId} className="govuk-grid-column-three-quarters" autoComplete="off">
-          {
-            fieldsWithValues.map((field) => {
-              const error = errors?.find(errorField => errorField.name === field.fieldName);
-              return (
-                <div
-                  key={field.fieldName}
-                  id={field.fieldName}
-                  ref={(node) => {
-                    const map = getFieldMap();
-                    if (node) {
-                      map.set(field.fieldName, node); // on mount adds the refs
-                    } else {
-                      map.delete(field.fieldName); // on unmount removes the refs
-                    }
-                  }}
-                >
-                  {
-                    determineFieldType({
-                      allErrors: errors,  // allows us to add the error handling logic for conditional fields
-                      error: error?.message,
-                      fieldDetails: field,
-                      parentHandleChange: handleChange,
-                    })
-                  }
-                </div>
-              );
-            })
-          }
-          <div className="govuk-button-group">
-            <button
-              type='button'
-              className='govuk-button'
-              data-module='govuk-button'
-              data-testid='submit-button'
-              onClick={(e) => handleValidation(e, { formData })}
-            >
-              {formActions.submit.label}
-            </button>
+        <div className="govuk-grid-column-two-thirds">
+          {errors?.length > 0 && (
+            <div className="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary">
+              <h2 className="govuk-error-summary__title" id="error-summary-title">
+                There is a problem
+              </h2>
+              <div className="govuk-error-summary__body">
+                <ul className="govuk-list govuk-error-summary__list">
+                  {errors.map((error) => {
+                    return (
+                      <li key={error.name}>
+                        <button className="govuk-button--text"
+                          onClick={(e) => { scrollToErrorField(e, error); }}
+                        >
+                          {error.message}
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="govuk-grid-row">
+        <h1 className="govuk-heading-xl govuk-grid-column-full">{pageHeading}</h1>
+      </div>
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-three-quarters">
+          {children}
+        </div>
+      </div>
+      <div className="govuk-grid-row">
+        <form id={formId} className="govuk-grid-column-two-thirds" autoComplete="off">
+          <div className="govuk-grid-column-three-quarters">
             {
-              formActions.cancel && <button
-                type='button'
-                className='govuk-button govuk-button--secondary'
-                data-module='govuk-button'
-                data-testid='cancel-button'
-                onClick={() => handleCancel(formActions.cancel.redirectURL)}
-              >
-                {formActions.cancel.label}
-              </button>
+              fieldsWithValues.map((field) => {
+                const error = errors?.find(errorField => errorField.name === field.fieldName);
+                return (
+                  <div
+                    key={field.fieldName}
+                    id={field.fieldName}
+                    ref={(node) => {
+                      const map = getFieldMap();
+                      if (node) {
+                        map.set(field.fieldName, node); // on mount adds the refs
+                      } else {
+                        map.delete(field.fieldName); // on unmount removes the refs
+                      }
+                    }}
+                  >
+                    {
+                      determineFieldType({
+                        allErrors: errors,  // allows us to add the error handling logic for conditional fields
+                        error: error?.message,
+                        fieldDetails: field,
+                        parentHandleChange: handleChange,
+                      })
+                    }
+                  </div>
+                );
+              })
             }
+            <div className="govuk-button-group">
+              <button
+                type='button'
+                className='govuk-button'
+                data-module='govuk-button'
+                data-testid='submit-button'
+                onClick={(e) => handleValidation(e, { formData })}
+              >
+                {formActions.submit.label}
+              </button>
+              {
+                formActions.cancel && <button
+                  type='button'
+                  className='govuk-button govuk-button--secondary'
+                  data-module='govuk-button'
+                  data-testid='cancel-button'
+                  onClick={() => handleCancel(formActions.cancel.redirectURL)}
+                >
+                  {formActions.cancel.label}
+                </button>
+              }
+
+            </div>
           </div>
         </form>
       </div>
