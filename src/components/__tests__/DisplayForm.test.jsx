@@ -10,6 +10,8 @@ import {
   FIELD_PHONE,
   FIELD_RADIO,
   FIELD_TEXT,
+  MULTI_PAGE_FORM,
+  SINGLE_PAGE_FORM,
   VALIDATE_CONDITIONAL,
   VALIDATE_EMAIL_ADDRESS,
   VALIDATE_MIN_LENGTH,
@@ -412,6 +414,7 @@ describe('Display Form', () => {
           formId="testForm"
           fields={formRequiredTextInput}
           formActions={formActions}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </MemoryRouter>
@@ -427,6 +430,7 @@ describe('Display Form', () => {
           formId="testForm"
           fields={formRequiredTextInput}
           formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </MemoryRouter>
@@ -443,6 +447,7 @@ describe('Display Form', () => {
           formId="testForm"
           fields={formRequiredTextInput}
           formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </MemoryRouter>
@@ -463,6 +468,7 @@ describe('Display Form', () => {
           formId="testForm"
           fields={formRequiredAutocompleteInput}
           formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </MemoryRouter>
@@ -480,6 +486,7 @@ describe('Display Form', () => {
           formId="testForm"
           fields={formRequiredPhoneNumberInput}
           formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </MemoryRouter>
@@ -498,6 +505,7 @@ describe('Display Form', () => {
           formId="testForm"
           fields={formRequiredRadioInput}
           formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </MemoryRouter>
@@ -519,6 +527,7 @@ describe('Display Form', () => {
           formId="testForm"
           fields={formWithMultipleFields}
           formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </MemoryRouter>
@@ -540,6 +549,7 @@ describe('Display Form', () => {
           formId="testForm"
           fields={formRequiredTextInput}
           formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </MemoryRouter>
@@ -556,6 +566,7 @@ describe('Display Form', () => {
           formId="testForm"
           fields={formSpecialInputs}
           formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </MemoryRouter>
@@ -583,6 +594,7 @@ describe('Display Form', () => {
           formId="testForm"
           fields={formWithMultipleFields}
           formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </MemoryRouter>
@@ -607,6 +619,7 @@ describe('Display Form', () => {
           formId="testForm"
           fields={formRequiredTextInput}
           formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </MemoryRouter>
@@ -629,6 +642,7 @@ describe('Display Form', () => {
           formId="testForm"
           fields={formRequiredPhoneNumberInput}
           formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </MemoryRouter>
@@ -651,6 +665,7 @@ describe('Display Form', () => {
           formId="testForm"
           fields={formRequiredPhoneNumberInput}
           formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </MemoryRouter>
@@ -674,6 +689,7 @@ describe('Display Form', () => {
           formId="testForm"
           fields={formRequiredPhoneNumberInput}
           formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </MemoryRouter>
@@ -697,6 +713,7 @@ describe('Display Form', () => {
           formId="testForm"
           fields={formRequiredPhoneNumberInput}
           formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </MemoryRouter>
@@ -719,6 +736,7 @@ describe('Display Form', () => {
           formId="testForm"
           fields={formRequiredConditionalTextInput}
           formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </MemoryRouter>
@@ -743,6 +761,7 @@ describe('Display Form', () => {
           formId="testForm"
           fields={formMinimumLengthTextInput}
           formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </MemoryRouter>
@@ -766,6 +785,7 @@ describe('Display Form', () => {
           formId="testForm"
           fields={formMultipleValidationRules}
           formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </MemoryRouter>
@@ -788,6 +808,7 @@ describe('Display Form', () => {
           formId="testForm"
           fields={formWithBackwardsValidationOrder}
           formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </MemoryRouter>
@@ -810,6 +831,7 @@ describe('Display Form', () => {
           formId="testForm"
           fields={formRequiredTextInput}
           formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </MemoryRouter>
@@ -828,6 +850,7 @@ describe('Display Form', () => {
           formId="testForm"
           fields={formRequiredRadioInput}
           formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </MemoryRouter>
@@ -848,6 +871,7 @@ describe('Display Form', () => {
           formId="testForm"
           fields={formRequiredTextInput}
           formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </MemoryRouter>
@@ -870,6 +894,7 @@ describe('Display Form', () => {
           formId="testForm"
           fields={formRequiredConditionalTextInput}
           formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </MemoryRouter>
@@ -899,6 +924,7 @@ describe('Display Form', () => {
           formId="testForm"
           fields={formRequiredPhoneNumberInput}
           formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </MemoryRouter>
@@ -943,6 +969,7 @@ describe('Display Form', () => {
           formId="testForm"
           fields={formWithMultipleFields}
           formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </MemoryRouter>
@@ -967,6 +994,7 @@ describe('Display Form', () => {
           formId="testForm"
           fields={formWithMultipleFields}
           formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </MemoryRouter>
@@ -987,6 +1015,7 @@ describe('Display Form', () => {
           formId="testForm"
           fields={formWithMultipleFields}
           formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </MemoryRouter>
@@ -1009,6 +1038,7 @@ describe('Display Form', () => {
           formId="testForm"
           fields={formWithMultipleFields}
           formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </MemoryRouter>
@@ -1031,6 +1061,7 @@ describe('Display Form', () => {
           formId="testForm"
           fields={formWithMultipleFields}
           formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </MemoryRouter>
@@ -1044,6 +1075,30 @@ describe('Display Form', () => {
     expect(window.sessionStorage.getItem('formData')).toStrictEqual(null);
   });
 
+  it('should NOT clear multipage formsession data when form is ready to submit', async () => {
+    const user = userEvent.setup();
+    const expectedStoredData = '{"testField":"Hello Test Field","radioButtonSet":"radioOne"}';
+    window.sessionStorage.setItem('formData', JSON.stringify({ testField: 'Hello Test Field', radioButtonSet: 'radioOne' }));
+    render(
+      <MemoryRouter>
+        <DisplayForm
+          formId="testForm"
+          fields={formWithMultipleFields}
+          formActions={formActionsSubmitOnly}
+          formType={MULTI_PAGE_FORM}
+          handleSubmit={handleSubmit}
+        />
+      </MemoryRouter>
+    );
+    expect(screen.getByLabelText('Text input')).toHaveValue('Hello Test Field');
+    expect(screen.getByRole('radio', { name: 'Radio one' })).toBeChecked();
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual(expectedStoredData);
+
+    await user.click(screen.getByRole('button', { name: 'Submit test button' }));
+    expect(handleSubmit).toHaveBeenCalled();
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual(expectedStoredData);
+  });
+
   it('should clear session data when form is cancelled', async () => {
     const user = userEvent.setup();
     const expectedStoredData = '{"testField":"Hello Test Field","radioButtonSet":"radioOne"}';
@@ -1054,6 +1109,7 @@ describe('Display Form', () => {
           formId="testForm"
           fields={formWithMultipleFields}
           formActions={formActions}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </MemoryRouter>

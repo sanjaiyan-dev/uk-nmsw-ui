@@ -1,13 +1,18 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { EXPANDED_DETAILS, FIELD_CONDITIONAL, FIELD_PASSWORD } from '../constants/AppConstants';
+import {
+  EXPANDED_DETAILS,
+  FIELD_CONDITIONAL,
+  FIELD_PASSWORD,
+  SINGLE_PAGE_FORM
+} from '../constants/AppConstants';
 import { UserContext } from '../context/userContext';
 import determineFieldType from './formFields/DetermineFieldType';
 import { scrollToTop } from '../utils/ScrollToElement';
 import Validator from '../utils/Validator';
 
-const DisplayForm = ({ fields, formId, formActions, pageHeading, handleSubmit, children }) => {
+const DisplayForm = ({ fields, formId, formActions, formType, pageHeading, handleSubmit, children }) => {
   const { user } = useContext(UserContext);
   const fieldsRef = useRef(null);
   const navigate = useNavigate();
@@ -65,7 +70,13 @@ const DisplayForm = ({ fields, formId, formActions, pageHeading, handleSubmit, c
        * so we always pass formData back
        */
       handleSubmit(formData);
-      sessionStorage.removeItem('formData');
+
+      /* If the form is a singlepage form we can clear the session 
+       * we do not clear the session for multipage forms
+      */
+      if (formType === SINGLE_PAGE_FORM) {
+        sessionStorage.removeItem('formData');
+      }
     } else {
       scrollToTop();
     }
@@ -246,8 +257,8 @@ DisplayForm.propTypes = {
       label: PropTypes.string.isRequired,
       redirectURL: PropTypes.string.isRequired
     })
-  }
-  ),
+  }),
+  formType: PropTypes.string.isRequired,
   pageHeading: PropTypes.string,
   handleSubmit: PropTypes.func.isRequired,
 };

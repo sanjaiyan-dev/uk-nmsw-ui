@@ -29,6 +29,9 @@ Validating fields
 - [Minimum Length](#minimum-length)
 - [Phone Number Format](#phone-number-format)
 
+## MultiPage Forms
+- [Multi Page Form](#multi-page-forms)
+
 
 ## Other guides
 - <a href="https://github.com/UKHomeOffice/nmsw-ui/blob/main/docs/form_creator_example.md">Create a new form - step by step example</a>
@@ -134,6 +137,9 @@ Parameters:
 
 ### label
 The words you wish to show on your button
+
+### redirectURL
+The page you want to redirect the user to if they click cancel
 
 ----
 
@@ -617,6 +623,32 @@ e.g.
   ],
 }
 ```
+
+----
+
+## Multi Page Forms
+If you are creating a multipage form your `handleSubmit` function must include the following:
+
+### First Page
+Create a `dataToSubmit` variable and populate it with this page's formData
+`const dataToSubmit = { ...formData.formData };`
+
+Within the `navigate` pass the dataToSubmit as state:
+`navigate(URL, { state: { dataToSubmit: dataToSubmit } });`
+
+### Step Pages
+Create a `dataToSubmit` variable and populate it with the data passed from the previous page, and this page's formData
+`const dataToSubmit = { ...state.dataToSubmit, ...formData.formData };`
+
+Within the `navigate` pass the dataToSubmit as state:
+`navigate(URL, { state: { dataToSubmit: dataToSubmit } });`
+
+### Final Page
+Create a `dataToSubmit` variable and populate it with the formData from state and the current page's formData:
+`const dataToSubmit = { ...state.dataToSubmit, ...formData.formData };`
+
+After submit remove all formData from sessionStorage
+`sessionStorage.removeItem('formData');`
 
 ----
 ## Structure Diagram

@@ -1,6 +1,7 @@
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   FIELD_PASSWORD,
+  MULTI_PAGE_FORM,
   VALIDATE_FIELD_MATCH,
   VALIDATE_MIN_LENGTH,
   VALIDATE_REQUIRED
@@ -21,6 +22,7 @@ const SupportingText = () => {
 
 const RegisterYourPassword = () => {
   const navigate = useNavigate();
+  const {state} = useLocation();
 
   const formActions = {
     submit: {
@@ -66,8 +68,11 @@ const RegisterYourPassword = () => {
     }
   ];
 
-  const handleSubmit = async (e, formData) => {
-    console.log('submit', e, formData);
+  const handleSubmit = async (formData) => {
+    // combine data from previous page of form
+    const dataToSubmit = { ...state?.dataToSubmit, ...formData.formData };
+    console.log(dataToSubmit);
+    sessionStorage.removeItem('formData');
     navigate(
       REGISTER_CONFIRMATION,
       {
@@ -85,6 +90,7 @@ const RegisterYourPassword = () => {
           formId='formRegisterYourPassword'
           fields={formFields}
           formActions={formActions}
+          formType={MULTI_PAGE_FORM}
           pageHeading='Create a password'
           handleSubmit={handleSubmit}
         >
