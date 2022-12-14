@@ -70,7 +70,7 @@ const RegisterYourPassword = () => {
 
   const handleSubmit = async (formData) => {
     // combine data from previous page of form
-    const dataToSubmit = { ...state.dataToSubmit, ...formData.formData };
+    const dataToSubmit = { ...state?.dataToSubmit, ...formData.formData };
     console.log(dataToSubmit);
     sessionStorage.removeItem('formData');
     navigate(

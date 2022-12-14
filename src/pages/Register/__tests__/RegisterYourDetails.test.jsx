@@ -109,4 +109,20 @@ describe('Register email address tests', () => {
     expect(screen.queryByText('Enter country')).not.toBeInTheDocument();
     expect(screen.queryByText('Select is your company a shipping agent')).not.toBeInTheDocument();
   });
+
+  it('should NOT clear form session data on submit', async () => {
+    const user = userEvent.setup();
+    const expectedStoredData = '{"fullName":"Joe Bloggs","companyName":"Joe Bloggs Company","phoneNumber":"(123)12345","country":"Australia","shippingAgent":"yes"}';
+    render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
+
+    await user.type(screen.getByLabelText('Full name'), 'Joe Bloggs');
+    await user.type(screen.getByLabelText('Your company name'), 'Joe Bloggs Company');
+    await user.type(screen.getByLabelText('Country code field'), '123');
+    await user.type(screen.getByLabelText('Phone number field'), '12345');
+    await user.type(screen.getByLabelText('Country'), 'Australia');
+    await user.click(screen.getByRole('radio', { name: 'Yes' }));
+
+    await user.click(screen.getByTestId('submit-button'));
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual(expectedStoredData);
+  });
 });
