@@ -87,9 +87,11 @@ describe('Register email address tests', () => {
     const user = userEvent.setup();
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     await user.type(screen.getByLabelText('Country code field'), '123');
+    await user.type(screen.getByLabelText('Country'), 'Australia');
     await user.click(screen.getByTestId('submit-button'));
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
     expect(screen.getAllByText('Enter your country code and phone number')).toHaveLength(2);
+    expect(screen.getAllByText('Enter 3 digit country code')).toHaveLength(2);
   });
 
   it('should NOT display error messagess if fields are valid', async () => {
@@ -99,7 +101,7 @@ describe('Register email address tests', () => {
     await user.type(screen.getByLabelText('Your company name'), 'Joe Bloggs Company');
     await user.type(screen.getByLabelText('Country code field'), '123');
     await user.type(screen.getByLabelText('Phone number field'), '12345');
-    await user.type(screen.getByLabelText('Country'), 'Australia');
+    await user.type(screen.getByLabelText('Country'), 'AUS');
     await user.click(screen.getByRole('radio', { name: 'Yes' }));
     await user.click(screen.getByTestId('submit-button'));
     expect(screen.queryByText('There is a problem')).not.toBeInTheDocument();
@@ -112,14 +114,14 @@ describe('Register email address tests', () => {
 
   it('should NOT clear form session data on submit', async () => {
     const user = userEvent.setup();
-    const expectedStoredData = '{"fullName":"Joe Bloggs","companyName":"Joe Bloggs Company","phoneNumber":"(123)12345","country":"Australia","shippingAgent":"yes"}';
+    const expectedStoredData = '{"fullName":"Joe Bloggs","companyName":"Joe Bloggs Company","phoneNumber":"(123)12345","country":"AUS","shippingAgent":"yes"}';
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
 
     await user.type(screen.getByLabelText('Full name'), 'Joe Bloggs');
     await user.type(screen.getByLabelText('Your company name'), 'Joe Bloggs Company');
     await user.type(screen.getByLabelText('Country code field'), '123');
     await user.type(screen.getByLabelText('Phone number field'), '12345');
-    await user.type(screen.getByLabelText('Country'), 'Australia');
+    await user.type(screen.getByLabelText('Country'), 'AUS');
     await user.click(screen.getByRole('radio', { name: 'Yes' }));
 
     await user.click(screen.getByTestId('submit-button'));
