@@ -1,15 +1,51 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
+import { REGISTER_EMAIL_VERIFIED_URL } from '../../../constants/AppUrlConstants';
 import RegisterYourDetails from '../RegisterYourDetails';
 
-describe('Register email address tests', () => {
+let mockUseLocationState = {};
+const mockedUseNavigate = jest.fn();
+jest.mock('react-router', () => ({
+  ...jest.requireActual('react-router'),
+  useNavigate: () => mockedUseNavigate,
+  useLocation: jest.fn().mockImplementation(() => {
+    return mockUseLocationState;
+  })
+}));
+
+describe('Your details tests', () => {
   const handleSubmit = jest.fn();
   let scrollIntoViewMock = jest.fn();
   window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
 
   beforeEach(() => {
+    mockUseLocationState = {};
     window.sessionStorage.clear();
+  });
+
+  it('should redirect user to other page if there is no state', async () => {
+    mockUseLocationState = {};
+    render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
+    await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith(REGISTER_EMAIL_VERIFIED_URL);
+    });
+  });
+
+  it('should redirect user to other page if there is no dataToSubmit object in state', async () => {
+    mockUseLocationState = { state: {} };
+    render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
+    await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith(REGISTER_EMAIL_VERIFIED_URL);
+    });
+  });
+
+  it('should redirect user to other page if there is no emailAddress in state', async () => {
+    mockUseLocationState = { state: { dataToSubmit: {} } };
+    render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
+    await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith(REGISTER_EMAIL_VERIFIED_URL);
+    });
   });
 
   it('should render h1', async () => {
