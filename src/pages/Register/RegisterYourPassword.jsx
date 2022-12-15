@@ -1,4 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom';
+import { REGISTER_ACCOUNT_ENDPOINT } from '../../constants/AppAPIConstants';
 import {
   FIELD_PASSWORD,
   MULTI_PAGE_FORM,
@@ -6,8 +7,9 @@ import {
   VALIDATE_MIN_LENGTH,
   VALIDATE_REQUIRED
 } from '../../constants/AppConstants';
-import { REGISTER_CONFIRMATION_URL } from '../../constants/AppUrlConstants';
+import { ERROR_URL, REGISTER_CONFIRMATION_URL, REGISTER_EMAIL_VERIFIED_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
+import usePatchData from '../../hooks/usePatchData';
 
 const SupportingText = () => {
   return (
@@ -71,16 +73,37 @@ const RegisterYourPassword = () => {
   const handleSubmit = async (formData) => {
     // combine data from previous page of form
     const dataToSubmit = { ...state?.dataToSubmit, ...formData.formData };
-    console.log(dataToSubmit);
-    sessionStorage.removeItem('formData');
-    navigate(
-      REGISTER_CONFIRMATION_URL,
-      {
-        state: {
-          companyName: 'COMPANY NAME GOES HERE'
+    try {
+      const response = await usePatchData({
+        url: REGISTER_ACCOUNT_ENDPOINT,
+        dataToSubmit: {
+          email: dataToSubmit.emailAddress,
+          fullName: dataToSubmit.fullName,
+          country: dataToSubmit.country, // max 3 characters (country code)
+          phoneNumber: dataToSubmit.phoneNumber,
+          password: dataToSubmit.requirePassword,
+          groupName: dataToSubmit.companyName,
+          groupTypeName: dataToSubmit.shippingAgent === 'yes' ? 'Shipping Agency' : 'Operator' // these are the only two valid public group types
         }
+      });
+      if (response && response.status === 200) {
+        sessionStorage.removeItem('formData');
+        navigate(
+          REGISTER_CONFIRMATION_URL,
+          {
+            state: {
+              companyName: response.data.groupName
+            }
+          }
+        );
+      } else {
+        navigate(ERROR_URL, { state: { 
+          message: response.message ? response.message : 'Something has gone wrong',
+          redirectURL: REGISTER_EMAIL_VERIFIED_URL }});
       }
-    );
+    } catch (err) {
+      navigate(ERROR_URL, { state: { message: 'Something has gone wrong', redirectURL: REGISTER_EMAIL_VERIFIED_URL }});
+    }
   };
 
   return (
