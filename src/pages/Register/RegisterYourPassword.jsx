@@ -6,7 +6,7 @@ import {
   VALIDATE_MIN_LENGTH,
   VALIDATE_REQUIRED
 } from '../../constants/AppConstants';
-import { REGISTER_CONFIRMATION } from '../../constants/AppUrlConstants';
+import { REGISTER_CONFIRMATION_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
 
 const SupportingText = () => {
@@ -74,7 +74,7 @@ const RegisterYourPassword = () => {
     console.log(dataToSubmit);
     sessionStorage.removeItem('formData');
     navigate(
-      REGISTER_CONFIRMATION,
+      REGISTER_CONFIRMATION_URL,
       {
         state: {
           companyName: 'COMPANY NAME GOES HERE'

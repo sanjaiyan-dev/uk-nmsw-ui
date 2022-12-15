@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { REGISTER_DETAILS } from '../../../constants/AppUrlConstants';
+import { REGISTER_DETAILS_URL } from '../../../constants/AppUrlConstants';
 import RegisterEmailAddress from '../RegisterEmailAddress';
 
 const mockedUseNavigate = jest.fn();
@@ -44,7 +44,7 @@ describe('Register email address POST tests', () => {
 
     // mocked usePostData returns a successful response (currently we take success as id received as we don't get the success code yet)
     await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(REGISTER_DETAILS);
+      expect(mockedUseNavigate).toHaveBeenCalledWith(REGISTER_DETAILS_URL);
     });
   });
 
