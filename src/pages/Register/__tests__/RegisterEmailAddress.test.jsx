@@ -141,5 +141,4 @@ describe('Register email address tests', () => {
     expect(screen.queryByText('Confirm your email address')).not.toBeInTheDocument();
     expect(screen.queryByText('Your email addresses must match')).not.toBeInTheDocument();
   });
-
 });
