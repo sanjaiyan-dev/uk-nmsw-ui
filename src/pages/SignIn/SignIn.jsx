@@ -7,7 +7,7 @@ import {
   SINGLE_PAGE_FORM,
   VALIDATE_EMAIL_ADDRESS,
   VALIDATE_REQUIRED,
-  } from '../../constants/AppConstants';
+} from '../../constants/AppConstants';
 import { DASHBOARD_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
 
@@ -58,18 +58,16 @@ const SignIn = (userDetails) => {
   };
 
   return (
-    <div className="govuk-grid-row">
-      <div className="govuk-grid-column-three-quarters">
-        <DisplayForm
-          pageHeading="Sign in"
-          formId='formSignIn'
-          fields={formFields}
-          formActions={formActions}
-          formType={SINGLE_PAGE_FORM}
-          handleSubmit={handleSubmit}
-        />
-      </div>
-    </div>
+    <>
+      <DisplayForm
+        pageHeading="Sign in"
+        formId='formSignIn'
+        fields={formFields}
+        formActions={formActions}
+        formType={SINGLE_PAGE_FORM}
+        handleSubmit={handleSubmit}
+      />
+    </>
   );
 };
 
