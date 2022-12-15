@@ -2,18 +2,18 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 const InputPhoneNumber = ({ error, fieldDetails, handleChange }) => {
-  const countryCodeClassToApply = error ? 'govuk-input govuk-input--width-5 phoneNumber-input_country-code govuk-input--error' : 'govuk-input govuk-input--width-5 phoneNumber-input_country-code';
+  const countryPhoneCodeClassToApply = error ? 'govuk-input govuk-input--width-5 phoneNumber-input_country-code govuk-input--error' : 'govuk-input govuk-input--width-5 phoneNumber-input_country-code';
   const phoneNumberClassToApply = error ? 'govuk-input govuk-input--error' : 'govuk-input';
-  const [countryCode, setCountryCode] = useState(fieldDetails.value?.split('(').pop().split(')')[0] || null);
+  const [countryPhoneCode, setCountryPhoneCode] = useState(fieldDetails.value?.split('(').pop().split(')')[0] || null);
   const [phoneNumber, setPhoneNumber] = useState(fieldDetails.value?.split(')')[1] || null);
 
   const formatDataAndHandleChange = (e) => {
-    let countryCodeEntered = countryCode || '';
+    let countryPhoneCodeEntered = countryPhoneCode || '';
     let phoneNumberEntered = phoneNumber || '';
 
-    if (e.target.name === `${fieldDetails.fieldName}CountryCode`) {
-      setCountryCode(e.target.value);
-      countryCodeEntered = e.target.value;
+    if (e.target.name === `${fieldDetails.fieldName}CountryPhoneCode`) {
+      setCountryPhoneCode(e.target.value);
+      countryPhoneCodeEntered = e.target.value;
     } else if (e.target.name === `${fieldDetails.fieldName}PhoneNumber`) {
       setPhoneNumber(e.target.value);
       phoneNumberEntered = e.target.value;
@@ -22,7 +22,7 @@ const InputPhoneNumber = ({ error, fieldDetails, handleChange }) => {
     const formattedItemToAdd = {
       target: {
         name: fieldDetails.fieldName,
-        value: `(${countryCodeEntered})${phoneNumberEntered}`,
+        value: `(${countryPhoneCodeEntered})${phoneNumberEntered}`,
       }
     };
 
@@ -31,16 +31,16 @@ const InputPhoneNumber = ({ error, fieldDetails, handleChange }) => {
 
   return (
     <div className="phoneNumber-input">
-      <label className="govuk-visually-hidden" htmlFor={`${fieldDetails.fieldName}-input[0]`}>Country code field</label> 
+      <label className="govuk-visually-hidden" htmlFor={`${fieldDetails.fieldName}-input[0]`}>Country phone code field</label> 
       <input
-        className={countryCodeClassToApply}
+        className={countryPhoneCodeClassToApply}
         id={`${fieldDetails.fieldName}-input[0]`}
-        name={`${fieldDetails.fieldName}CountryCode`}
+        name={`${fieldDetails.fieldName}CountryPhoneCode`}
         type="text"
         inputMode="numeric"
         onChange={formatDataAndHandleChange}
         onPaste={formatDataAndHandleChange}
-        defaultValue={countryCode}
+        defaultValue={countryPhoneCode}
         aria-describedby={fieldDetails.hint ? `${fieldDetails.fieldName}-hint` : null}
       />
       <label className="govuk-visually-hidden" htmlFor={`${fieldDetails.fieldName}-input[1]`}>Phone number field</label> 

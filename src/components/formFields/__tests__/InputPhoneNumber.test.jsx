@@ -25,11 +25,11 @@ describe('Phone input field generation', () => {
         handleChange={parentHandleChange}
       />
     );
-    expect(screen.getByLabelText('Country code field')).toBeInTheDocument();
-    expect(screen.getByRole('textbox', { name: 'Country code field' })).toBeInTheDocument();
+    expect(screen.getByLabelText('Country phone code field')).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: 'Country phone code field' })).toBeInTheDocument();
     expect(screen.getByLabelText('Phone number field')).toBeInTheDocument();
     expect(screen.getByRole('textbox', { name: 'Phone number field' })).toBeInTheDocument();
-    expect(screen.getByRole('textbox', { name: 'Country code field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code" id="fieldName-input[0]" name="fieldNameCountryCode" type="text" inputmode="numeric" value="">');
+    expect(screen.getByRole('textbox', { name: 'Country phone code field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code" id="fieldName-input[0]" name="fieldNameCountryPhoneCode" type="text" inputmode="numeric" value="">');
     expect(screen.getByRole('textbox', { name: 'Phone number field' }).outerHTML).toEqual('<input class="govuk-input" id="fieldName-input[1]" name="fieldNamePhoneNumber" type="tel" autocomplete="tel" value="">');
   });
 
@@ -40,11 +40,11 @@ describe('Phone input field generation', () => {
         handleChange={parentHandleChange}
       />
     );
-    expect(screen.getByLabelText('Country code field')).toBeInTheDocument();
-    expect(screen.getByRole('textbox', { name: 'Country code field' })).toBeInTheDocument();
+    expect(screen.getByLabelText('Country phone code field')).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: 'Country phone code field' })).toBeInTheDocument();
     expect(screen.getByLabelText('Phone number field')).toBeInTheDocument();
     expect(screen.getByRole('textbox', { name: 'Phone number field' })).toBeInTheDocument();
-    expect(screen.getByRole('textbox', { name: 'Country code field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code" id="fullFieldName-input[0]" name="fullFieldNameCountryCode" type="text" inputmode="numeric" aria-describedby="fullFieldName-hint" value="123">');
+    expect(screen.getByRole('textbox', { name: 'Country phone code field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code" id="fullFieldName-input[0]" name="fullFieldNameCountryPhoneCode" type="text" inputmode="numeric" aria-describedby="fullFieldName-hint" value="123">');
     expect(screen.getByRole('textbox', { name: 'Phone number field' }).outerHTML).toEqual('<input class="govuk-input" id="fullFieldName-input[1]" name="fullFieldNamePhoneNumber" type="tel" autocomplete="tel" aria-describedby="fullFieldName-hint" value="12345">');
   });
 
@@ -55,7 +55,7 @@ describe('Phone input field generation', () => {
         handleChange={parentHandleChange}
       />
     );
-    expect(screen.getByText('Country code field').outerHTML).toEqual('<label class="govuk-visually-hidden" for="fieldName-input[0]">Country code field</label>');
+    expect(screen.getByText('Country phone code field').outerHTML).toEqual('<label class="govuk-visually-hidden" for="fieldName-input[0]">Country phone code field</label>');
     expect(screen.getByText('Phone number field').outerHTML).toEqual('<label class="govuk-visually-hidden" for="fieldName-input[1]">Phone number field</label>');
   });
 
@@ -66,7 +66,7 @@ describe('Phone input field generation', () => {
         handleChange={parentHandleChange}
       />
     );
-    expect(screen.getByRole('textbox', { name: 'Country code field' })).toHaveValue('123');
+    expect(screen.getByRole('textbox', { name: 'Country phone code field' })).toHaveValue('123');
     expect(screen.getByRole('textbox', { name: 'Phone number field' })).toHaveValue('12345');
   });
 
@@ -78,7 +78,7 @@ describe('Phone input field generation', () => {
         handleChange={parentHandleChange}
       />
     );
-    expect(screen.getByRole('textbox', { name: 'Country code field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code govuk-input--error" id="fullFieldName-input[0]" name="fullFieldNameCountryCode" type="text" inputmode="numeric" aria-describedby="fullFieldName-hint" value="123">');
+    expect(screen.getByRole('textbox', { name: 'Country phone code field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code govuk-input--error" id="fullFieldName-input[0]" name="fullFieldNameCountryPhoneCode" type="text" inputmode="numeric" aria-describedby="fullFieldName-hint" value="123">');
     expect(screen.getByRole('textbox', { name: 'Phone number field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="fullFieldName-input[1]" name="fullFieldNamePhoneNumber" type="tel" autocomplete="tel" aria-describedby="fullFieldName-hint" value="12345">');
   });
 
@@ -89,7 +89,7 @@ describe('Phone input field generation', () => {
         handleChange={parentHandleChange}
       />
     );
-    expect(screen.getByRole('textbox', { name: 'Country code field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code" id="fullFieldName-input[0]" name="fullFieldNameCountryCode" type="text" inputmode="numeric" aria-describedby="fullFieldName-hint" value="123">');
+    expect(screen.getByRole('textbox', { name: 'Country phone code field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code" id="fullFieldName-input[0]" name="fullFieldNameCountryPhoneCode" type="text" inputmode="numeric" aria-describedby="fullFieldName-hint" value="123">');
     expect(screen.getByRole('textbox', { name: 'Phone number field' }).outerHTML).toEqual('<input class="govuk-input" id="fullFieldName-input[1]" name="fullFieldNamePhoneNumber" type="tel" autocomplete="tel" aria-describedby="fullFieldName-hint" value="12345">');
   });
 });

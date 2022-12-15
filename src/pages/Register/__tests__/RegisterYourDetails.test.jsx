@@ -32,8 +32,8 @@ describe('Register email address tests', () => {
   it('should render a phone number question', async () => {
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     expect(screen.getByText('Phone number field')).toBeInTheDocument();
-    expect(screen.getByLabelText('Country code field')).toBeInTheDocument();
-    expect(screen.getByRole('textbox', { name: 'Country code field' })).toBeInTheDocument();
+    expect(screen.getByLabelText('Country phone code field')).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: 'Country phone code field' })).toBeInTheDocument();
     expect(screen.getByLabelText('Phone number field')).toBeInTheDocument();
     expect(screen.getByRole('textbox', { name: 'Phone number field' })).toBeInTheDocument();
   });
@@ -86,12 +86,12 @@ describe('Register email address tests', () => {
   it('should display the error messages if fields are formatted incorrectly', async () => {
     const user = userEvent.setup();
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
-    await user.type(screen.getByLabelText('Country code field'), '123');
+    await user.type(screen.getByLabelText('Country phone code field'), '123');
     await user.type(screen.getByLabelText('Country'), 'Australia');
     await user.click(screen.getByTestId('submit-button'));
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
-    expect(screen.getAllByText('Enter your country code and phone number')).toHaveLength(2);
-    expect(screen.getAllByText('Enter 3 digit country code')).toHaveLength(2);
+    expect(screen.getAllByText('Enter your Country phone code and phone number')).toHaveLength(2);
+    expect(screen.getAllByText('Enter 3 digit Country phone code')).toHaveLength(2);
   });
 
   it('should NOT display error messagess if fields are valid', async () => {
@@ -99,7 +99,7 @@ describe('Register email address tests', () => {
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     await user.type(screen.getByLabelText('Full name'), 'Joe Bloggs');
     await user.type(screen.getByLabelText('Your company name'), 'Joe Bloggs Company');
-    await user.type(screen.getByLabelText('Country code field'), '123');
+    await user.type(screen.getByLabelText('Country phone code field'), '123');
     await user.type(screen.getByLabelText('Phone number field'), '12345');
     await user.type(screen.getByLabelText('Country'), 'AUS');
     await user.click(screen.getByRole('radio', { name: 'Yes' }));
@@ -119,7 +119,7 @@ describe('Register email address tests', () => {
 
     await user.type(screen.getByLabelText('Full name'), 'Joe Bloggs');
     await user.type(screen.getByLabelText('Your company name'), 'Joe Bloggs Company');
-    await user.type(screen.getByLabelText('Country code field'), '123');
+    await user.type(screen.getByLabelText('Country phone code field'), '123');
     await user.type(screen.getByLabelText('Phone number field'), '12345');
     await user.type(screen.getByLabelText('Country'), 'AUS');
     await user.click(screen.getByRole('radio', { name: 'Yes' }));
