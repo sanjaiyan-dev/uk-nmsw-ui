@@ -7,7 +7,7 @@ import {
   VALIDATE_PHONE_NUMBER,
   VALIDATE_REQUIRED
 } from '../../constants/AppConstants';
-import { REGISTER_PASSWORD } from '../../constants/AppUrlConstants';
+import { REGISTER_PASSWORD_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
 
 const RegisterYourDetails = () => {
@@ -97,7 +97,7 @@ const RegisterYourDetails = () => {
   const handleSubmit = async (formData) => {
     const dataToSubmit = { ...formData.formData };
     console.log('submit', formData);
-    navigate(REGISTER_PASSWORD, { state: { dataToSubmit: dataToSubmit } });
+    navigate(REGISTER_PASSWORD_URL, { state: { dataToSubmit: dataToSubmit } });
   };
 
   return (
