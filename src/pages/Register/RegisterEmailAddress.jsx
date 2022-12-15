@@ -7,7 +7,7 @@ import {
   VALIDATE_FIELD_MATCH,
   VALIDATE_REQUIRED
 } from '../../constants/AppConstants';
-import { REGISTER_DETAILS_URL } from '../../constants/AppUrlConstants';
+import { ERROR_URL, REGISTER_EMAIL_URL, REGISTER_DETAILS_URL } from '../../constants/AppUrlConstants';
 import usePostData from '../../hooks/usePostData';
 import DisplayForm from '../../components/DisplayForm';
 
@@ -76,13 +76,15 @@ const RegisterEmailAddress = () => {
           email: formData.formData.emailAddress,
         }
       });
-      if (response && response.id) { // using response.id as the indicator of success as status isn't passed back on success yet
+      if (response && response.status === 200) {
         navigate(REGISTER_DETAILS_URL);
       } else {
-        console.log('error', response);
+        navigate(ERROR_URL, { state: { 
+          message: response.message ? response.message : 'Something has gone wrong',
+          redirectURL: REGISTER_EMAIL_URL }});
       }
     } catch (err) {
-      console.log('err', err);
+      navigate(ERROR_URL, { state: { message: 'Something has gone wrong', redirectURL: REGISTER_EMAIL_URL }});
     }
   };
 

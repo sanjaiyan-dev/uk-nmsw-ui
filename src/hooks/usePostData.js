@@ -6,7 +6,7 @@ const usePostData = ({url, dataToSubmit, pageSource}) => {
   const data = axios.post(url, dataToSubmit, {
     headers: { Authorization: `Bearer ${Auth.retrieveToken()}` },
   })
-    .then((resp) => { return resp.data; })
+    .then((resp) => { return resp; })
     .catch((err) => {
       if (err.response) {
         switch (err.response.status) {
