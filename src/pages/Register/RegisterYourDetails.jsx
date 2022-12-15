@@ -4,6 +4,7 @@ import {
   FIELD_TEXT,
   FIELD_PHONE,
   MULTI_PAGE_FORM,
+  VALIDATE_MAX_LENGTH,
   VALIDATE_PHONE_NUMBER,
   VALIDATE_REQUIRED
 } from '../../constants/AppConstants';
@@ -64,6 +65,11 @@ const RegisterYourDetails = () => {
         {
           type: VALIDATE_REQUIRED,
           message: 'Enter country'
+        },
+        {
+          type: VALIDATE_MAX_LENGTH,
+          message: 'Enter 3 digit country code',
+          condition: 3
         },
       ]
     },
