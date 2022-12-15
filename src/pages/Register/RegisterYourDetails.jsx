@@ -103,8 +103,7 @@ const RegisterYourDetails = () => {
   ];
 
   const handleSubmit = async (formData) => {
-    const dataToSubmit = { ...formData.formData };
-    console.log('submit', formData);
+    const dataToSubmit = { ...state?.dataToSubmit, ...formData.formData };
     navigate(REGISTER_PASSWORD_URL, { state: { dataToSubmit: dataToSubmit } });
   };
 
