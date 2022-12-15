@@ -452,7 +452,7 @@ Parameters
 
 ### type
 Import and use `FIELD_PHONE` from `src/constants/AppConstants`
-We use FIELD_PHONE as it provides a specific layout and handles separating the country code from the rest of the phone number, as well as reformatting the number for use within two inputs in the UI as the API will return a single string (with specific formatting)
+We use FIELD_PHONE as it provides a specific layout and handles separating the Country phone code from the rest of the phone number, as well as reformatting the number for use within two inputs in the UI as the API will return a single string (with specific formatting)
 
 You should always include phone number validation with a phone number field
 
