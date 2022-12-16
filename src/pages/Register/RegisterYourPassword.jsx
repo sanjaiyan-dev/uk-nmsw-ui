@@ -42,7 +42,7 @@ const RegisterYourPassword = () => {
       validation: [
         {
           type: VALIDATE_REQUIRED,
-          message: 'Enter password'
+          message: 'Enter a password'
         },
         {
           type: VALIDATE_MIN_LENGTH,
