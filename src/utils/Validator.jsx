@@ -10,6 +10,10 @@ import {
 } from '../constants/AppConstants';
 
 const validateField = ({ type, value, condition }) => {
+  /* rules should be in order of importance here
+   * as once a rule is matched for a field, we will stop testing further
+   * rules for that field
+   */
   switch (type) {
     case VALIDATE_REQUIRED:
       if (!value || value.trim() === '') {
@@ -26,11 +30,11 @@ const validateField = ({ type, value, condition }) => {
         return 'error';
       }
       break;
-    // case VALIDATE_NO_SPACES:
-    //   if (value && !/\s/.test(value)) {
-    //     return 'error';
-    //   }
-    //   break;
+    case VALIDATE_NO_SPACES:
+      if (value && !/^\S+$/.test(value)) { // tests for spaces and errors if any found
+        return 'error';
+      }
+      break;
     case VALIDATE_EMAIL_ADDRESS:
       if (value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) {
         return 'error';
@@ -53,7 +57,7 @@ const validateField = ({ type, value, condition }) => {
 const Validator = ({ formData, formFields }) => {
   const fieldsToValidate = Object.entries(formData).reduce((result, field) => { // result is our accumulator that starts as an empty array as defined at end of reduce
     const key = field[0];
-    const value = field[1];
+    let value = field[1];
     const rules = formFields.find(field => field.fieldName === key) ? formFields.find(field => field.fieldName === key).validation : null; // find all the rules for this field, if any
 
     if (rules) {
@@ -88,7 +92,7 @@ const Validator = ({ formData, formFields }) => {
   }, []);
 
   // Now for each entry in field to validate we can call the validator and see if it errors
-  const errors = fieldsToValidate.reduce((result, field) => {
+  const allErrors = fieldsToValidate.reduce((result, field) => {
     const resp = validateField({ type: field.rule.type, value: field.value, condition: field.rule.condition });
     if (resp === 'error') {
       result.push({ name: field.key, message: field.rule.message });
@@ -96,7 +100,18 @@ const Validator = ({ formData, formFields }) => {
     return result;
   }, []);
 
-  return errors;
+  // TODO: think of a better way to handle this
+  const uniqueFieldErrors = allErrors.reduce((result, error) => {
+    // If there are multiple errors matched for a field, return only the first
+    // error order is determined in the formFields object on the page that contains the form
+    const findFirstErrorForField = allErrors.find(field => field.name === error.name);
+    if (findFirstErrorForField.message === error.message) {
+      result.push(error);
+    }
+    return result;
+  }, []);
+
+  return uniqueFieldErrors;
 };
 
 export default Validator;
