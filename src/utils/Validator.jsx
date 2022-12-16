@@ -4,6 +4,7 @@ import {
   VALIDATE_FIELD_MATCH,
   VALIDATE_MAX_LENGTH,
   VALIDATE_MIN_LENGTH,
+  VALIDATE_NO_SPACES,
   VALIDATE_PHONE_NUMBER,
   VALIDATE_REQUIRED,
 } from '../constants/AppConstants';
@@ -25,6 +26,11 @@ const validateField = ({ type, value, condition }) => {
         return 'error';
       }
       break;
+    // case VALIDATE_NO_SPACES:
+    //   if (value && !/\s/.test(value)) {
+    //     return 'error';
+    //   }
+    //   break;
     case VALIDATE_EMAIL_ADDRESS:
       if (value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) {
         return 'error';

@@ -4,6 +4,7 @@ import {
   MULTI_PAGE_FORM,
   VALIDATE_FIELD_MATCH,
   VALIDATE_MIN_LENGTH,
+  VALIDATE_NO_SPACES,
   VALIDATE_REQUIRED
 } from '../../constants/AppConstants';
 import { REGISTER_CONFIRMATION_URL } from '../../constants/AppUrlConstants';
@@ -48,6 +49,10 @@ const RegisterYourPassword = () => {
           message: 'Passwords must be at least 10 characters long',
           condition: 10
         },
+        // {
+        //   type: VALIDATE_NO_SPACES,
+        //   message: 'Enter a password that does not contain spaces'
+        // }
       ]
     },
     {

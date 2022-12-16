@@ -26,7 +26,9 @@ Validating fields
 - [Conditional](#conditional)
 - [Email Format](#email-format)
 - [Match](#match)
+- [Maximum Length](#maximum-length)
 - [Minimum Length](#minimum-length)
+- [No Spaces](#no-spaces)
 - [Phone Number Format](#phone-number-format)
 
 ## MultiPage Forms
@@ -533,14 +535,39 @@ Specifically tests if the value entered matches the value of another field.
 }
 ```
 
+#### Maximum Length
+Specifically tests if the length of the value entered is > the number specified in the `condition` entry.
+This test only runs if there is a value in the field and is ignored if field is null. 
+
+```
+{
+  type: VALIDATE_MAX_LENGTH,
+  condition: <maximum length>
+  message: <error message to show in UI>
+  },
+}
+```
+
 #### Minimum Length
-Specifically tests if the length of the value entered is > the number specified in the `conditions` entry.
+Specifically tests if the length of the value entered is < the number specified in the `condition` entry.
 This test only runs if there is a value in the field and is ignored if field is null.
 
 ```
 {
   type: VALIDATE_MIN_LENGTH,
   condition: <minimum length>
+  message: <error message to show in UI>
+  },
+}
+```
+
+
+#### No Spaces
+Used mainly for fields like passwords, it checks for a [space] and throws an error if any exist anywhere in the string
+
+```
+{
+  type: VALIDATE_NO_SPACES,
   message: <error message to show in UI>
   },
 }
