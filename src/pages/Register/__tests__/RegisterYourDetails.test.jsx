@@ -126,8 +126,8 @@ describe('Your details tests', () => {
     await user.type(screen.getByLabelText('Country'), 'Australia');
     await user.click(screen.getByTestId('submit-button'));
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
-    expect(screen.getAllByText('Enter your Country phone code and phone number')).toHaveLength(2);
-    expect(screen.getAllByText('Enter 3 digit Country phone code')).toHaveLength(2);
+    expect(screen.getAllByText('Enter your country code and phone number')).toHaveLength(2);
+    expect(screen.getAllByText('Enter 3 digit country code')).toHaveLength(2);
   });
 
   it('should NOT display error messagess if fields are valid', async () => {

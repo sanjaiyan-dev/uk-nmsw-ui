@@ -55,7 +55,7 @@ const RegisterYourDetails = () => {
         },
         {
           type: VALIDATE_PHONE_NUMBER,
-          message: 'Enter your Country phone code and phone number'
+          message: 'Enter your country code and phone number'
         }
       ]
     },
@@ -70,7 +70,7 @@ const RegisterYourDetails = () => {
         },
         {
           type: VALIDATE_MAX_LENGTH,
-          message: 'Enter 3 digit Country phone code',
+          message: 'Enter 3 digit country code',
           condition: 3
         },
       ]
