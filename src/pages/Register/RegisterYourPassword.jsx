@@ -42,17 +42,17 @@ const RegisterYourPassword = () => {
       validation: [
         {
           type: VALIDATE_REQUIRED,
-          message: 'Enter a password'
+          message: 'Enter password'
         },
         {
           type: VALIDATE_MIN_LENGTH,
           message: 'Passwords must be at least 10 characters long',
           condition: 10
         },
-        // {
-        //   type: VALIDATE_NO_SPACES,
-        //   message: 'Enter a password that does not contain spaces'
-        // }
+        {
+          type: VALIDATE_NO_SPACES,
+          message: 'Enter a password that does not contain spaces'
+        },
       ]
     },
     {
