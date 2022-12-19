@@ -24,3 +24,4 @@ export const VALIDATE_MAX_LENGTH = 'maxLength';
 export const VALIDATE_MIN_LENGTH = 'minLength';
 export const VALIDATE_PHONE_NUMBER = 'phoneNumber';
 export const VALIDATE_REQUIRED = 'required';
+export const VALIDATE_NO_SPACES = 'noSpaces';

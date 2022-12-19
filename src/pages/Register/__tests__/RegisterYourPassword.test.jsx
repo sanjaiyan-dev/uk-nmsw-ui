@@ -95,7 +95,7 @@ describe('Register password tests', () => {
     expect(screen.getAllByText('Confirm your password')).toHaveLength(3);
   });
 
-  it('should display the min length error messages if password field too short', async () => {
+  it('should display the min length error messages if password value too short', async () => {
     const user = userEvent.setup();
     render(<MemoryRouter><RegisterYourPassword /></MemoryRouter>);
     await user.type(screen.getByLabelText('Password'), 'shortpwd');
@@ -104,7 +104,7 @@ describe('Register password tests', () => {
     expect(screen.getAllByText('Passwords must be at least 10 characters long')).toHaveLength(2);
   });
 
-  it('should display the error messages if password fields do not match', async () => {
+  it('should display the error messages if password values do not match', async () => {
     const user = userEvent.setup();
     render(<MemoryRouter><RegisterYourPassword /></MemoryRouter>);
     await user.type(screen.getByLabelText('Password'), 'mypasswordis');
@@ -112,6 +112,53 @@ describe('Register password tests', () => {
     await user.click(screen.getByTestId('submit-button'));
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
     expect(screen.getAllByText('Passwords must match')).toHaveLength(2);
+  });
+
+  it('should display the error messages if password value has spaces', async () => {
+    const user = userEvent.setup();
+    render(<MemoryRouter><RegisterYourPassword state={{ dataToSubmit: { sampleField: 'field value', secondField: 'second value' }}} /></MemoryRouter>);
+    await user.type(screen.getByLabelText('Password'), 'my password');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(screen.getByText('There is a problem')).toBeInTheDocument();
+    expect(screen.getAllByText('Enter a password that does not contain spaces')).toHaveLength(2);
+  });
+
+  it('should display the error messages if password value has spaces at the start', async () => {
+    const user = userEvent.setup();
+    render(<MemoryRouter><RegisterYourPassword state={{ dataToSubmit: { sampleField: 'field value', secondField: 'second value' }}} /></MemoryRouter>);
+    await user.type(screen.getByLabelText('Password'), ' mypassword');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(screen.getByText('There is a problem')).toBeInTheDocument();
+    expect(screen.getAllByText('Enter a password that does not contain spaces')).toHaveLength(2);
+  });
+
+  it('should display the error messages if password value has spaces at the end', async () => {
+    const user = userEvent.setup();
+    render(<MemoryRouter><RegisterYourPassword state={{ dataToSubmit: { sampleField: 'field value', secondField: 'second value' }}} /></MemoryRouter>);
+    await user.type(screen.getByLabelText('Password'), 'mypassword ');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(screen.getByText('There is a problem')).toBeInTheDocument();
+    expect(screen.getAllByText('Enter a password that does not contain spaces')).toHaveLength(2);
+  });
+
+  it('should display the required error messages if password value is only spaces', async () => {
+    const user = userEvent.setup();
+    render(<MemoryRouter><RegisterYourPassword state={{ dataToSubmit: { sampleField: 'field value', secondField: 'second value' }}} /></MemoryRouter>);
+    await user.type(screen.getByLabelText('Password'), '          ');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(screen.getByText('There is a problem')).toBeInTheDocument();
+    expect(screen.getAllByText('Enter a password')).toHaveLength(2);
+    expect(screen.queryByText('Enter a password that does not contain spaces')).not.toBeInTheDocument();
+  });
+
+  it('should display the min length error message if password has spaces and is fewer than 10 characters', async () => {
+    const user = userEvent.setup();
+    render(<MemoryRouter><RegisterYourPassword state={{ dataToSubmit: { sampleField: 'field value', secondField: 'second value' }}} /></MemoryRouter>);
+    await user.type(screen.getByLabelText('Password'), '   s');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(screen.getByText('There is a problem')).toBeInTheDocument();
+    expect(screen.getAllByText('Passwords must be at least 10 characters long')).toHaveLength(2);
+    expect(screen.queryByText('Enter a password that does not contain spaces')).not.toBeInTheDocument();
   });
 
   it('should NOT display error messagess if fields are valid', async () => {
