@@ -5,6 +5,7 @@ import {
   FIELD_TEXT,
   FIELD_RADIO,
   CHECKED_FALSE,
+  SINGLE_PAGE_FORM,
   VALIDATE_CONDITIONAL,
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
@@ -209,6 +210,7 @@ const SecondPage = () => {
           formId='formSecondPage'
           fields={formFields}
           formActions={formActions}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </div >
