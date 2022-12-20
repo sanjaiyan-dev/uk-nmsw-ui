@@ -33,3 +33,12 @@ export const SECOND_PAGE_URL = '/second-page';
 
 // Pages were we should clear formData
 export const TOP_LEVEL_PAGES = [ACCESSIBILITY_URL, COOKIE_URL, DASHBOARD_URL, LANDING_URL, PRIVACY_URL];
+
+// Pages without back links
+export const NO_BACK_LINKS = [
+  ...TOP_LEVEL_PAGES,
+  FORM_CONFIRMATION_URL,
+  REGISTER_CONFIRMATION_URL,
+  REGISTER_EMAIL_VERIFIED_URL,
+  SIGN_IN_URL
+];
