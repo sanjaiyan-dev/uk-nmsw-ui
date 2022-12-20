@@ -52,6 +52,10 @@ const Nav = () => {
     setNavItems(tempArr);
   };
 
+  const removeFormData = () => {
+    sessionStorage.removeItem('formData');
+  };
+
   useEffect(() => {
     setActivePage(pathname);
   }, [pathname]);
@@ -62,7 +66,7 @@ const Nav = () => {
         <Link
           to={LANDING_URL}
           className="govuk-header__link govuk-header__link--homepage"
-          onClick={() => setActivePage(LANDING_URL)}
+          onClick={() => { setActivePage(LANDING_URL); removeFormData(); }}
         >
           <span className="govuk-header__logotype">
             <svg aria-hidden="true" focusable="false" className="govuk-header__logotype-crown" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 132 97" height="30" width="36">
@@ -79,13 +83,13 @@ const Nav = () => {
           to={LANDING_URL}
           className="govuk-header__link govuk-header__service-name"
           data-testid="serviceName"
-          onClick={() => setActivePage(LANDING_URL)}
+          onClick={() => { setActivePage(LANDING_URL); removeFormData(); }}
         >
           {SERVICE_NAME}
         </Link>
 
         {showNav && (
-          <nav aria-label="Menu" className="govuk-header__navigation ">
+          <nav aria-label="Menu" className="govuk-header__navigation" id="menu">
             <button
               type="button"
               onClick={(e) => menuToggle(e)}
@@ -121,7 +125,7 @@ const Nav = () => {
                     <Link
                       to={item.urlStem}
                       className="govuk-header__link"
-                      onClick={() => setActivePage(item.urlStem)}
+                      onClick={() => { setActivePage(item.urlStem); removeFormData(); }}
                     >
                       {item.text}
                     </Link>

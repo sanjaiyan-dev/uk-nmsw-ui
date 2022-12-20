@@ -12,6 +12,10 @@ jest.mock('../../hooks/useUserIsPermitted', () => {
 
 describe('Navigation within header tests', () => {
 
+  beforeEach(() => {
+    window.sessionStorage.clear();
+  });
+
   it('should render the header with GovUK logo text', () => {
     render(<MemoryRouter><Nav /></MemoryRouter>);
     expect(screen.getByText('GOV.UK')).toBeInTheDocument();
@@ -99,5 +103,18 @@ describe('Navigation within header tests', () => {
     // click to toggle it back to closed
     await user.click(screen.getByRole('button'));
     expect(screen.getByRole('button').outerHTML).toEqual('<button type="button" class="govuk-header__menu-button govuk-js-header-toggle" aria-controls="navigation" aria-label="Show or hide navigation menu" aria-expanded="false">Menu</button>');
+  });
+
+  it('should clear formData when a nav item is clicked', async () => {
+    mockedUserIsPermitted = true;
+    const user = userEvent.setup();
+    render(<MemoryRouter><App /></MemoryRouter>);
+    await user.click(screen.getByText('Second page'));
+    await user.type(screen.getByLabelText('First name'), 'Bob');
+    
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual('{"firstName":"Bob"}');
+
+    await user.click(screen.getByText('Dashboard'));
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual(null);
   });
 });

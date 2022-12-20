@@ -11,7 +11,7 @@ const Landing = () => {
     <>
       <h1 className="govuk-heading-l" data-testid="landing-h1">{SERVICE_NAME}</h1>
       <p className="govuk-body">Use this service to:</p>
-      <p className="govuk-body" data-testid="createAccountParagraph">You&apos;ll also need to sign in or <Link to ={REGISTER_ACCOUNT_URL}>create an account</Link> to use this service</p>
+      <p className="govuk-body" data-testid="createAccountParagraph">You&apos;ll also need to sign in or <Link to={REGISTER_ACCOUNT_URL}>create an account</Link> to use this service</p>
       <Link 
         to={isAuthenticated ? DASHBOARD_URL : SIGN_IN_URL}
         role="button"

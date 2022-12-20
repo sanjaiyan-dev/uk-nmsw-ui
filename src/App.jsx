@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+
 import AppRouter from './AppRouter';
 import CookieBanner from './layout/CookieBanner';
 import Footer from './layout/Footer';
@@ -7,11 +9,14 @@ import PhaseBanner from './layout/PhaseBanner';
 // utils
 import cookieToFind from './utils/cookieToFind';
 import setAnalyticCookie from './utils/setAnalyticCookie';
+import { TOP_LEVEL_PAGES } from './constants/AppUrlConstants';
 
 const App = () => {
 
   const cookiePreference = cookieToFind('cookiePreference');
   const [isCookieBannerShown, setIsCookieBannerShown] = useState(true);
+  const { pathname } = useLocation();
+  const topLevelPage = TOP_LEVEL_PAGES.includes(pathname);
 
   useEffect(() => {
     setAnalyticCookie(cookiePreference);
@@ -20,9 +25,16 @@ const App = () => {
     }
   }, [cookiePreference]);
 
+  useEffect(() => {
+    // Removes formData in sessionStorage when on a top level page
+    if (topLevelPage) {
+      sessionStorage.removeItem('formData');
+    }
+  }, [pathname]);
+
   return (
     <>
-      {isCookieBannerShown === true && <CookieBanner isCookieBannerShown={isCookieBannerShown} setIsCookieBannerShown={setIsCookieBannerShown} /> }
+      {isCookieBannerShown === true && <CookieBanner isCookieBannerShown={isCookieBannerShown} setIsCookieBannerShown={setIsCookieBannerShown} />}
       <Header />
       <div className="govuk-width-container">
         <PhaseBanner />

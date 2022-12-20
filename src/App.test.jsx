@@ -1,10 +1,15 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import { SERVICE_NAME } from './constants/AppConstants.js';
 import App from './App.jsx';
 
 describe('App tests', () => {
+
+  beforeEach(() => {
+    window.sessionStorage.clear();
+  });
+
   it('should render the heading on the page', () => {
     render(<BrowserRouter><App /></BrowserRouter>);
     expect(screen.getByText('GOV.UK')).toBeInTheDocument();
@@ -77,5 +82,46 @@ describe('App tests', () => {
     expect(rejectButton).not.toBeInTheDocument();
     expect(screen.queryByText('We use some essential cookies to make this service work.')).not.toBeInTheDocument();
     expect(screen.queryByText('We\'d also like to use analytics cookies so we can understand how you use the service and make improvements.')).not.toBeInTheDocument();
+  });
+
+  // Need to use <Memory Router> here to avoid test clicks on pages being pre-loaded in subsequent tests
+
+  it('should clear formData when a footer item is clicked', async () => {
+    const user = userEvent.setup();
+    render(<MemoryRouter><App /></MemoryRouter>);
+    const startButton = screen.getByRole('button', { name: 'Start now' });
+    await user.click(startButton);
+    await user.type(screen.getByLabelText('Email address'), 'test@test.com');
+    
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual('{"email":"test@test.com"}');
+
+    await user.click(screen.getByText('Accessibility'));
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual(null);
+  });
+
+  it('should clear formData when GOV logo is clicked', async () => {
+    const user = userEvent.setup();
+    render(<MemoryRouter><App /></MemoryRouter>);
+    const startButton = screen.getByRole('button', { name: 'Start now' });
+    await user.click(startButton);
+    await user.type(screen.getByLabelText('Email address'), 'test@test.com');
+    
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual('{"email":"test@test.com"}');
+
+    await user.click(screen.getByText('GOV.UK'));
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual(null);
+  });
+
+  it('should clear formData when service name is clicked', async () => {
+    const user = userEvent.setup();
+    render(<MemoryRouter><App /></MemoryRouter>);
+    const startButton = screen.getByRole('button', { name: 'Start now' });
+    await user.click(startButton);
+    await user.type(screen.getByLabelText('Email address'), 'test@test.com');
+    
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual('{"email":"test@test.com"}');
+
+    await user.click(screen.getByText(SERVICE_NAME));
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual(null);
   });
 });

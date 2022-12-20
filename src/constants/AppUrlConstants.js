@@ -25,3 +25,6 @@ export const REGISTER_PASSWORD_URL = '/create-account/your-password';
 // Test pages
 export const SECOND_PAGE_NAME = 'Second page';
 export const SECOND_PAGE_URL = '/second-page';
+
+// Pages were we should clear formData
+export const TOP_LEVEL_PAGES = [ACCESSIBILITY_URL, COOKIE_URL, DASHBOARD_URL, LANDING_URL, PRIVACY_URL];
