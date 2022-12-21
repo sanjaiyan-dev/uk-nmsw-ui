@@ -26,7 +26,6 @@ const SignIn = (userDetails) => {
     {
       type: FIELD_EMAIL,
       label: 'Email address',
-      hint: 'Enter the email address you used when you created your account',
       fieldName: 'email',
       validation: [
         {
