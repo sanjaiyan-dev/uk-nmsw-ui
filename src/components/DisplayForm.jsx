@@ -182,11 +182,13 @@ const DisplayForm = ({ fields, formId, formActions, formType, pageHeading, handl
       <div className="govuk-grid-row">
         <h1 className="govuk-heading-xl govuk-grid-column-full">{pageHeading}</h1>
       </div>
+      
       <div className="govuk-grid-row">
-        <div className="govuk-grid-column-three-quarters">
+        <div className="govuk-grid-column-three-quarters below-h1">
           {children}
         </div>
       </div>
+
       <div className="govuk-grid-row">
         <form id={formId} className="govuk-grid-column-one-half" autoComplete="off">
           {
@@ -238,7 +240,6 @@ const DisplayForm = ({ fields, formId, formActions, formType, pageHeading, handl
                 {formActions.cancel.label}
               </button>
             }
-
           </div>
         </form>
       </div>
