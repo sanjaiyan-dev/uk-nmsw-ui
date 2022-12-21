@@ -10,31 +10,43 @@ Feature: Cookie Page
     Then the cookie banner is not visible
     Then the confirmation banner is shown
     When I click on the 'change your cookie settings' link
-    Then I am shown the cookie page
-    Then I am provided a form to manage my preferences
+    Then I am shown the cookie page with a form to manage my preferences
     Then the form should be set to '<status>'
     When I change my cookie preference to '<changeStatus>' and click save
     Then my '<newPreference>' for analytics cookies should be saved
     Then I am shown a success banner
 
     Examples:
-      | cookie | preference   | status | changeStatus | newPreference
-      | Accept | track        | Yes    | No           | No
-      | Reject | do not track | No     | Yes          | Yes
+      | cookie | preference   | status | changeStatus | newPreference |
+      | Accept | track        | Yes    | No           | No            |
+      | Reject | do not track | No     | Yes          | Yes           |
 
 
-  Scenario: View the cookie link navigates to cookie page
+  Scenario Outline: View the cookie link navigates to cookie page
     When I click on the view cookies link
-    Then I am shown the cookie page
+    Then the confirmation banner is shown
+    Then I am shown the cookie page with a form to manage my preferences
     Then the form should be set to no
+    When I change my cookie preference to '<changeStatus>' and click save
+    Then an essential cookie is set to store my preference to '<preference>'
+    Then I am shown a success banner
+    Then the confirmation banner is not shown
+
+     Examples:
+       | changeStatus | preference |
+       | Yes          | track      |
 
   Scenario Outline: Accept or Reject and view cookie page
-    When I click '<cookie>' analytics cookies
     When I click on the view cookies link
+    When I click '<cookie>' analytics cookies
     When I click hide cookie message
+    Then the confirmation banner is not shown
     Then I can no longer see the cookie banner
+    Then an essential cookie is set to store my preference to '<preference>'
+    Then I refresh the page
     Then the form should be set to '<status>'
+
     Examples:
-      | cookie | status |
-      | Accept | Yes    |
-      | Reject | No     |
+      | cookie |preference    |status |
+      | Accept |track         |Yes    |
+      | Reject |do not track  |No     |
