@@ -1,5 +1,6 @@
 import { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { REGISTER_ACCOUNT_URL } from '../../constants/AppUrlConstants';
 import { UserContext } from '../../context/userContext';
 import {
   FIELD_EMAIL,
@@ -10,6 +11,16 @@ import {
 } from '../../constants/AppConstants';
 import { DASHBOARD_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
+
+const SupportingText = () => {
+  return (
+    <>
+      <div className="govuk-inset-text">
+        <p className="govuk-body">If you do not have an account, you can <Link to={REGISTER_ACCOUNT_URL}>create one now</Link>.</p>
+      </div>
+    </>
+  );
+};
 
 const SignIn = (userDetails) => {
   const tempHardCodedUser = Object.entries(userDetails).length > 0 ? userDetails.user : { name: 'MockedUser' };
@@ -65,7 +76,9 @@ const SignIn = (userDetails) => {
         formActions={formActions}
         formType={SINGLE_PAGE_FORM}
         handleSubmit={handleSubmit}
-      />
+      >
+        <SupportingText />
+      </DisplayForm>
     </>
   );
 };
