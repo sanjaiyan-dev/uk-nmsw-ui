@@ -1,4 +1,4 @@
-import { Given, When, Then } from '@badeball/cypress-cucumber-preprocessor';
+import { Given, When, Then, Before } from '@badeball/cypress-cucumber-preprocessor';
 import PasswordPage from '../../e2e/pages/registration/password.page.js';
 import LandingPage from '../../e2e/pages/landing.page';
 import YourDetailPage from '../../e2e/pages/registration/yourDetails.page.js';
@@ -7,9 +7,15 @@ import ConfirmationPage from '../../e2e/pages/registration/confirmation.page';
 import BasePage from '../../e2e/pages/base.page';
 import { faker } from '@faker-js/faker';
 
-const email = faker.internet.email();
-const password = faker.internet.password();
-const companyName = faker.company.name();
+let email;
+let password;
+let companyName;
+
+Before(()=> {
+  email = faker.internet.email();
+  password = faker.internet.password();
+  companyName = faker.company.name();
+});
 
 Given('I am on NMSW landing page', () => {
   cy.visit('/');
@@ -68,6 +74,33 @@ Then('my account is created and taken to confirmation page', () => {
   cy.contains('Sign in');
 });
 
-When('I click continue without providing the email address', () => {
+When('I click continue without providing any details', () => {
+  BasePage.clickContinue();
+});
+
+Then('I am shown form error message', (table) => {
+  const data = table.rowsHash();
+  BasePage.verifyFormErrorMessages(data['Error']);
+});
+
+Then('I am shown corresponding error message', (table) => {
+  const data = table.rowsHash();
+  BasePage.verifyFieldError(data['Field'], data['Error'])
+});
+
+When('I enter invalid email address and continue without confirm email address', () => {
+  EmailPage.enterEmailAddress('randomemail@mail');
+  BasePage.clickContinue();
+});
+
+When('I enter confirm email which is not same as email address', () => {
+  EmailPage.enterEmailAddress(faker.internet.email());
+  EmailPage.enterConfirmEmailAddress(faker.internet.email());
+  BasePage.clickContinue();
+});
+
+When('I enter password less than 10 characters', () => {
+  PasswordPage.typePassword('Test123');
+  PasswordPage.typeRepeatPassword('Test123');
   BasePage.clickContinue();
 });

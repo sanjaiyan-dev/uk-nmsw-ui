@@ -9,12 +9,12 @@ class BasePage {
   }
 
   //Error message validation
-  verifyFieldError(field, error) {
-    cy.get(`#${field}`).should('have.text', error);
+  verifyFormErrorMessages(error){
+    cy.get('.govuk-error-summary__body').should('have.text', error)
   }
 
-  validateFieldErrorMessage(error) {
-    cy.get('.govuk-error-message').should('contain.text', error);
+  verifyFieldError(field, error){
+    cy.get(`#${field}`).should('have.text', error);
   }
 }
 
