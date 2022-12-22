@@ -77,14 +77,17 @@ const RegisterEmailAddress = () => {
         }
       });
       if (response && response.status === 200) {
-        navigate(REGISTER_EMAIL_CHECK_URL, { state: { emailAddress: formData.formData.emailAddress }});
+        navigate(REGISTER_EMAIL_CHECK_URL, { state: { dataToSubmit: { emailAddress: formData.formData.emailAddress } } });
       } else {
-        navigate(ERROR_URL, { state: { 
-          message: response.message ? response.message : 'Something has gone wrong',
-          redirectURL: REGISTER_EMAIL_CHECK_URL }});
+        navigate(ERROR_URL, {
+          state: {
+            message: response.message ? response.message : 'Something has gone wrong',
+            redirectURL: REGISTER_EMAIL_CHECK_URL
+          }
+        });
       }
     } catch (err) {
-      navigate(ERROR_URL, { state: { message: 'Something has gone wrong', redirectURL: REGISTER_EMAIL_URL }});
+      navigate(ERROR_URL, { state: { message: 'Something has gone wrong', redirectURL: REGISTER_EMAIL_URL } });
     }
   };
 
