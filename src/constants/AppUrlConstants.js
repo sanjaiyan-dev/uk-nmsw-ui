@@ -18,6 +18,7 @@ export const SIGN_IN_URL = '/sign-in';
 export const REGISTER_ACCOUNT_URL = '/create-account/email-address';
 export const REGISTER_CONFIRMATION_URL = '/create-account/account-created';
 export const REGISTER_EMAIL_URL = '/create-account/email-address';
+export const REGISTER_EMAIL_CHECK_URL = '/create-account/email-check';
 export const REGISTER_EMAIL_VERIFIED_URL = '/create-account/email-verified';
 export const REGISTER_DETAILS_URL = '/create-account/your-details';
 export const REGISTER_PASSWORD_URL = '/create-account/your-password';
