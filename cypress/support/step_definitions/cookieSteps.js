@@ -40,17 +40,18 @@ When('I click on the \'change your cookie settings\' link', () => {
   CookieComp.clickCookieChangeLink();
 });
 
-Then('I am shown the cookie page', () => {
-  CookiePage.verifyUrl();
-  cy.checkAxe();
+Then('the confirmation banner is not shown', () => {
+  CookieComp.confirmNoCookiePanel();
 });
 
-Then('I am provided a form to manage my preferences', () => {
+Then('I am shown the cookie page with a form to manage my preferences', () => {
+  CookiePage.verifyUrl();
+  cy.checkAxe();
   CookiePage.checkFormManageCookie();
 });
 
 When('I click hide cookie message', () => {
-  CookieComp.clickBtnHideCookieMsg();
+  CookieComp.btnHideCookieMsg.click();
 });
 
 Then('I can no longer see the cookie banner', () => {
@@ -91,4 +92,7 @@ Then('I am shown a success banner', () => {
   CookiePage.verifyBnrSuccessMsg();
 });
 
+Then('I refresh the page', () =>{
+  cy.reload();
+});
 
