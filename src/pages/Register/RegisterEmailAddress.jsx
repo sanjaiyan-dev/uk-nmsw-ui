@@ -77,7 +77,7 @@ const RegisterEmailAddress = () => {
         }
       });
       if (response && response.status === 200) {
-        navigate(REGISTER_EMAIL_CHECK_URL);
+        navigate(REGISTER_EMAIL_CHECK_URL, { state: { emailAddress: formData.formData.emailAddress }});
       } else {
         navigate(ERROR_URL, { state: { 
           message: response.message ? response.message : 'Something has gone wrong',
