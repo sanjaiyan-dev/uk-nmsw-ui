@@ -30,7 +30,7 @@ const RegisterEmailAddress = () => {
       className: 'govuk-button',
       dataModule: 'govuk-button',
       dataTestid: 'submit-button',
-      label: 'Continue',
+      label: 'Send confirmation email',
       type: 'button',
     },
   };
