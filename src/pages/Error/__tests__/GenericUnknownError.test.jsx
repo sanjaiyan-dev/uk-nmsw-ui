@@ -22,9 +22,16 @@ describe('Error page tests', () => {
     mockUseLocationState.state = {};
   });
 
-  it('should render h1', () => {
+  it('should render h1 as the title that was passed in', () => {
+    mockUseLocationState.state = { title: 'Page title', redirectURL: SIGN_IN_URL };
     render(<MemoryRouter><GenericUnknownError /></MemoryRouter>);
-    expect(screen.getByText('Error')).toBeInTheDocument();
+    expect(screen.getByText('Page title')).toBeInTheDocument();
+  });
+
+  it('should render paragraph if a message was passed in', () => {
+    mockUseLocationState.state = { title: 'Page title', message: 'This is the page message', redirectURL: SIGN_IN_URL };
+    render(<MemoryRouter><GenericUnknownError /></MemoryRouter>);
+    expect(screen.getByText('This is the page message')).toBeInTheDocument();
   });
 
   it('should render a click here to continue link to the URL passed to this page', async () => {
