@@ -83,7 +83,7 @@ const RegisterEmailAddress = () => {
       });
       if (response && response.status === 200) {
         navigate(REGISTER_EMAIL_CHECK_URL, { state: { dataToSubmit: { emailAddress: formData.formData.emailAddress } } });
-      } else if (response.message === 'User is already registered') {
+      } else if (response && response.message === 'User is already registered') {
         navigate(ERROR_ACCOUNT_ALREADY_ACTIVE_URL, { state: { dataToSubmit: { emailAddress: formData.formData.emailAddress } } });
       } else {
         navigate(ERROR_URL, {
