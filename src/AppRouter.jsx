@@ -10,6 +10,7 @@ import {
   COOKIE_URL,
   DASHBOARD_URL,
   ERROR_URL,
+  ERROR_ACCOUNT_ALREADY_ACTIVE_URL,
   FORM_CONFIRMATION_URL,
   LANDING_URL,
   PRIVACY_URL,
@@ -39,8 +40,10 @@ import RegisterEmailVerified from './pages/Register/RegisterEmailVerified';
 import RegisterYourDetails from './pages/Register/RegisterYourDetails';
 import RegisterYourPassword from './pages/Register/RegisterYourPassword';
 import SignIn from './pages/SignIn/SignIn';
-// Other pages (could be protected or not)
+// Error/Message pages
 import GenericUnknownError from './pages/Error/GenericUnknownError';
+import AccountAlreadyActive from './pages/Error/AccountAlreadyActive';
+// Other pages (could be protected or not)
 import FormConfirmationPage from './pages/Confirmation/FormConfirmationPage';
 // Protected pages
 import Dashboard from './pages/Dashboard/Dashboard';
@@ -71,6 +74,8 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
         <Route path={SIGN_IN_URL} element={<SignIn />} />
 
         <Route path={ERROR_URL} element={<GenericUnknownError />} />
+        <Route path={ERROR_ACCOUNT_ALREADY_ACTIVE_URL} element={<AccountAlreadyActive />} />
+
         <Route path={FORM_CONFIRMATION_URL} element={<FormConfirmationPage />} />
 
         <Route element={<ProtectedRoutes isPermittedToView={isPermittedToView} />}>
