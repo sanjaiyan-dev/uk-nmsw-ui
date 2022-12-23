@@ -104,3 +104,8 @@ When('I enter password less than 10 characters', () => {
   PasswordPage.typeRepeatPassword('Test123');
   BasePage.clickContinue();
 });
+
+When('I enter password in invalid format', () => {
+  PasswordPage.typePassword('Password    ');
+  PasswordPage.typePassword(('Password    '));
+})

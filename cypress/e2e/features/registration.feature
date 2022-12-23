@@ -46,4 +46,7 @@ Feature: User Registration
     Then I am shown corresponding error message
       |Field  | requirePassword-error |
       |Error  | Error: Passwords must be at least 10 characters long |
+    When I enter password in invalid format
+      |Field  | requirePassword-error |
+      |Error  |Error: Enter a password that does not contain spaces |
 
