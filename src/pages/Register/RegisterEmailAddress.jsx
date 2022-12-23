@@ -82,7 +82,7 @@ const RegisterEmailAddress = () => {
         navigate(ERROR_URL, {
           state: {
             message: response.message ? response.message : 'Something has gone wrong',
-            redirectURL: REGISTER_EMAIL_CHECK_URL
+            redirectURL: REGISTER_EMAIL_URL
           }
         });
       }
