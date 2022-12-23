@@ -44,6 +44,9 @@ class EmailPage {
     this.emailHeading.should('have.text', 'Your email address has been verified​');
     this.verifyEmail.clear().type(email);
   }
+  EmailVerifyErrorMessage() {
+    cy.contains('User is already registered');
+  }
 
 }
 
