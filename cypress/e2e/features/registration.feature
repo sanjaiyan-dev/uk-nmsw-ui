@@ -14,6 +14,16 @@ Feature: User Registration
     When I provide my password
     Then my account is created and taken to confirmation page
 
+  Scenario: Should not register existing user
+    When I click create an account on the landing page
+    Then the registration page is displayed
+    When I can provide my email address
+    When I verify the email address
+    Then I am redirected to provide my other details
+    When I navigate back to landing page
+    When I create an account with same email previously registered
+    Then I am shown the error
+
   Scenario: user registration email page validation
     When I click create an account on the landing page
     Then the registration page is displayed
@@ -49,4 +59,5 @@ Feature: User Registration
     When I enter password in invalid format
       |Field  | requirePassword-error |
       |Error  |Error: Enter a password that does not contain spaces |
+
 

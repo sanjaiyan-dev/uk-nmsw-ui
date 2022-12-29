@@ -108,4 +108,19 @@ When('I enter password less than 10 characters', () => {
 When('I enter password in invalid format', () => {
   PasswordPage.typePassword('Password    ');
   PasswordPage.typePassword(('Password    '));
-})
+});
+
+When('I navigate back to landing page', () => {
+  cy.visit('/');
+});
+
+When('I create an account with same email previously registered', () => {
+  LandingPage.createAccount();
+  EmailPage.checkEmailHeading();
+  EmailPage.enterEmailAddress(email).enterConfirmEmailAddress(email);
+  BasePage.clickContinue();
+});
+
+Then('I am shown the error', () => {
+  EmailPage.EmailVerifyErrorMessage();
+});
