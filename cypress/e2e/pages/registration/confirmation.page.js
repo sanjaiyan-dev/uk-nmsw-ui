@@ -11,6 +11,10 @@ class ConfirmationPage {
   verifyCompanyName(companyName) {
     cy.get('.govuk-panel__body').should('have.text', companyName + ' has been setup.');
   }
+
+  verifyUserNotRegistered() {
+    cy.contains('User is not registered');
+  }
 }
 
 export default new ConfirmationPage();
