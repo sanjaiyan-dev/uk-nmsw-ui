@@ -10,7 +10,6 @@ import {faker} from '@faker-js/faker';
 let email;
 let password;
 let companyName;
-let apiServer = 'https://nmsw-api.dev.nmsw.homeoffice.gov.uk//v1/';
 
 Before(() => {
   email = faker.internet.email();
@@ -34,9 +33,9 @@ Then('the registration page is displayed', () => {
 When('I can provide my email address', () => {
   EmailPage.checkEmailHeading();
   EmailPage.enterEmailAddress(email).enterConfirmEmailAddress(email);
-  cy.intercept('POST', `${apiServer}registration`).as('xhr');
+  cy.intercept('POST', '*/registration').as('registration');
   BasePage.clickContinue();
-  cy.wait('@xhr').then(({response}) => {
+  cy.wait('@registration').then(({response}) => {
     expect(response.statusCode).to.equal(200);
   });
 });
@@ -69,9 +68,9 @@ When('I provide my password', () => {
   PasswordPage.verifyLink3RandomWords();
   PasswordPage.typePassword(password);
   PasswordPage.typeRepeatPassword(password);
-  cy.intercept('PATCH', `${apiServer}registration`).as('xhr');
+  cy.intercept('PATCH', '*/registration').as('registration');
   BasePage.clickContinue();
-  cy.wait('@xhr').then(({response}) => {
+  cy.wait('@registration').then(({response}) => {
     expect(response.statusCode).to.equal(200);
   });
 });
@@ -127,9 +126,9 @@ When('I create an account with same email previously registered', () => {
   LandingPage.createAccount();
   EmailPage.checkEmailHeading();
   EmailPage.enterEmailAddress(email).enterConfirmEmailAddress(email);
-  cy.intercept('POST', `${apiServer}registration`).as('xhr');
+  cy.intercept('POST', '*/registration').as('registration');
   BasePage.clickContinue();
-  cy.wait('@xhr').then(({response}) => {
+  cy.wait('@registration').then(({response}) => {
     expect(response.statusCode).to.equal(400);
   });
 });
@@ -142,9 +141,9 @@ When('I provide valid password and continue', () => {
   PasswordPage.verifyLink3RandomWords();
   PasswordPage.typePassword(password);
   PasswordPage.typeRepeatPassword(password);
-  cy.intercept('PATCH', `${apiServer}registration`).as('xhr');
+  cy.intercept('PATCH', '*/registration').as('registration');
   BasePage.clickContinue();
-  cy.wait('@xhr').then(({response}) => {
+  cy.wait('@registration').then(({response}) => {
     expect(response.statusCode).to.equal(400);
   });
 });
