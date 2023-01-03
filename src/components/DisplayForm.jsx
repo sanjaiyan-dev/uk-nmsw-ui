@@ -180,7 +180,7 @@ const DisplayForm = ({ fields, formId, formActions, formType, pageHeading, handl
         </div>
       </div>
       <div className="govuk-grid-row">
-        <h1 className="govuk-heading-xl govuk-grid-column-full">{pageHeading}</h1>
+        {pageHeading && <h1 className="govuk-heading-xl govuk-grid-column-full">{pageHeading}</h1>}
       </div>
       
       <div className="govuk-grid-row">
