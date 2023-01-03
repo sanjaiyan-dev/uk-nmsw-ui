@@ -40,9 +40,15 @@ body {
   }
 }
 
+
 // ===================
 // Form Overrides
 // ===================
+/* govuk-inset-text has a top margin that creates too much whitespace when combined with the h1 bottom-margin */
+.below-h1 .govuk-inset-text {
+  margin-top: 0px;
+}
+
 .autocomplete-input .autocomplete__wrapper input {
   border-color:  $govuk-input-border-colour;
 }
@@ -107,5 +113,3 @@ body {
   font-weight: 700;
   color: $govuk-focus-text-colour;
 }
-
-

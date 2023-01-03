@@ -182,65 +182,64 @@ const DisplayForm = ({ fields, formId, formActions, formType, pageHeading, handl
       <div className="govuk-grid-row">
         <h1 className="govuk-heading-xl govuk-grid-column-full">{pageHeading}</h1>
       </div>
+      
       <div className="govuk-grid-row">
-        <div className="govuk-grid-column-three-quarters">
+        <div className="govuk-grid-column-three-quarters below-h1">
           {children}
         </div>
       </div>
-      <div className="govuk-grid-row">
-        <form id={formId} className="govuk-grid-column-two-thirds" autoComplete="off">
-          <div className="govuk-grid-column-three-quarters">
-            {
-              fieldsWithValues.map((field) => {
-                const error = errors?.find(errorField => errorField.name === field.fieldName);
-                return (
-                  <div
-                    key={field.fieldName}
-                    id={field.fieldName}
-                    ref={(node) => {
-                      const map = getFieldMap();
-                      if (node) {
-                        map.set(field.fieldName, node); // on mount adds the refs
-                      } else {
-                        map.delete(field.fieldName); // on unmount removes the refs
-                      }
-                    }}
-                  >
-                    {
-                      determineFieldType({
-                        allErrors: errors,  // allows us to add the error handling logic for conditional fields
-                        error: error?.message,
-                        fieldDetails: field,
-                        parentHandleChange: handleChange,
-                      })
-                    }
-                  </div>
-                );
-              })
-            }
-            <div className="govuk-button-group">
-              <button
-                type='button'
-                className='govuk-button'
-                data-module='govuk-button'
-                data-testid='submit-button'
-                onClick={(e) => handleValidation(e, { formData })}
-              >
-                {formActions.submit.label}
-              </button>
-              {
-                formActions.cancel && <button
-                  type='button'
-                  className='govuk-button govuk-button--secondary'
-                  data-module='govuk-button'
-                  data-testid='cancel-button'
-                  onClick={() => handleCancel(formActions.cancel.redirectURL)}
-                >
-                  {formActions.cancel.label}
-                </button>
-              }
 
-            </div>
+      <div className="govuk-grid-row">
+        <form id={formId} className="govuk-grid-column-one-half" autoComplete="off">
+          {
+            fieldsWithValues.map((field) => {
+              const error = errors?.find(errorField => errorField.name === field.fieldName);
+              return (
+                <div
+                  key={field.fieldName}
+                  id={field.fieldName}
+                  ref={(node) => {
+                    const map = getFieldMap();
+                    if (node) {
+                      map.set(field.fieldName, node); // on mount adds the refs
+                    } else {
+                      map.delete(field.fieldName); // on unmount removes the refs
+                    }
+                  }}
+                >
+                  {
+                    determineFieldType({
+                      allErrors: errors,  // allows us to add the error handling logic for conditional fields
+                      error: error?.message,
+                      fieldDetails: field,
+                      parentHandleChange: handleChange,
+                    })
+                  }
+                </div>
+              );
+            })
+          }
+          <div className="govuk-button-group">
+            <button
+              type='button'
+              className='govuk-button'
+              data-module='govuk-button'
+              data-testid='submit-button'
+              onClick={(e) => handleValidation(e, { formData })}
+            >
+              {formActions.submit.label}
+            </button>
+            {
+              formActions.cancel && <button
+                type='button'
+                className='govuk-button govuk-button--secondary'
+                data-module='govuk-button'
+                data-testid='cancel-button'
+                onClick={() => handleCancel(formActions.cancel.redirectURL)}
+              >
+                {formActions.cancel.label}
+              </button>
+            }
           </div>
         </form>
       </div>
