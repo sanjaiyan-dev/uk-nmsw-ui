@@ -131,7 +131,6 @@ When('I create an account with same email previously registered', () => {
   cy.wait('@registration').then(({response}) => {
     expect(response.statusCode).to.equal(400);
   });
-});
 
 Then('I am shown the error', () => {
   EmailPage.EmailVerifyErrorMessage();
