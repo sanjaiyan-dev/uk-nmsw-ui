@@ -277,7 +277,6 @@ describe('Display Form', () => {
     }
   ];
   
-
   beforeEach(() => {
     window.sessionStorage.clear();
   });

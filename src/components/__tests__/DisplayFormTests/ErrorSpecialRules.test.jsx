@@ -4,6 +4,8 @@ import userEvent from '@testing-library/user-event';
 import {
   FIELD_TEXT,
   SINGLE_PAGE_FORM,
+  VALIDATE_FIELD_MATCH,
+  VALIDATE_FIELD_MATCH_CASE_SENSITIVE,
   VALIDATE_MIN_LENGTH,
   VALIDATE_REQUIRED,
 } from '../../../constants/AppConstants';
@@ -46,6 +48,44 @@ describe('Display Form', () => {
       ],
     }
   ];
+  const formCaseSensitiveMatching = [
+    {
+      type: FIELD_TEXT,
+      label: 'Text input',
+      fieldName: 'testField',
+    },
+    {
+      type: FIELD_TEXT,
+      label: 'Repeating text input',
+      fieldName: 'testFieldRepeating',
+      validation: [
+        {
+          type: VALIDATE_FIELD_MATCH_CASE_SENSITIVE,
+          message: 'Fields must match',
+          condition: 'testField',
+        },
+      ],
+    }
+  ];
+  const formFieldMatching = [
+    {
+      type: FIELD_TEXT,
+      label: 'Text input',
+      fieldName: 'testField',
+    },
+    {
+      type: FIELD_TEXT,
+      label: 'Repeating text input',
+      fieldName: 'testFieldRepeating',
+      validation: [
+        {
+          type: VALIDATE_FIELD_MATCH,
+          message: 'Fields must match',
+          condition: 'testField',
+        },
+      ],
+    }
+  ];
   const formMultipleValidationRules = [
     {
       type: FIELD_TEXT,
@@ -82,7 +122,7 @@ describe('Display Form', () => {
       ],
     }
   ];
-  
+
   beforeEach(() => {
     window.sessionStorage.clear();
   });
@@ -109,6 +149,52 @@ describe('Display Form', () => {
     expect(screen.getByRole('button', { name: 'Field must be a minimum of 8 characters' }).outerHTML).toEqual('<button class="govuk-button--text">Field must be a minimum of 8 characters</button>');
     // Input field has the error class attached
     expect(screen.getByRole('textbox', { name: 'Text input' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testField-input" name="testField" type="text" value="">');
+  });
+
+  it('should return an error if case sensitive match fields do not match', async () => {
+    const user = userEvent.setup();
+    render(
+      <MemoryRouter>
+        <DisplayForm
+          formId="testForm"
+          fields={formCaseSensitiveMatching}
+          formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
+          handleSubmit={handleSubmit}
+        />
+      </MemoryRouter>
+    );
+    await user.type(screen.getByLabelText('Text input'), 'Abcd');
+    await user.type(screen.getByLabelText('Repeating text input'), 'AbcD');
+    await user.click(screen.getByRole('button', { name: 'Submit test button' }));
+
+    expect(screen.getByText('There is a problem').outerHTML).toEqual('<h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>');
+    expect(screen.getAllByText('Fields must match')).toHaveLength(2);
+    // Error summary has the error message as a button and correct class
+    expect(screen.getByRole('button', { name: 'Fields must match' }).outerHTML).toEqual('<button class="govuk-button--text">Fields must match</button>');
+    // Input field has the error class attached
+    expect(screen.getByRole('textbox', { name: 'Repeating text input' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testFieldRepeating-input" name="testFieldRepeating" type="text" value="">');
+  });
+
+  it('should NOT return an error if NON case sensitive match fields do not match', async () => {
+    const user = userEvent.setup();
+    render(
+      <MemoryRouter>
+        <DisplayForm
+          formId="testForm"
+          fields={formFieldMatching}
+          formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
+          handleSubmit={handleSubmit}
+        />
+      </MemoryRouter>
+    );
+    await user.type(screen.getByLabelText('Text input'), 'Abcd');
+    await user.type(screen.getByLabelText('Repeating text input'), 'AbcD');
+    await user.click(screen.getByRole('button', { name: 'Submit test button' }));
+
+    expect(screen.queryByText('There is a problem')).not.toBeInTheDocument();
+    expect(screen.queryByText('Fields must match')).not.toBeInTheDocument();
   });
 
   it('should return the error for the first failing validation rule if there are multiple rules', async () => {
