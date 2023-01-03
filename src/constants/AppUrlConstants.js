@@ -7,7 +7,6 @@ export const ACCESSIBILITY_URL = '/accessibility-statement';
 export const COOKIE_URL = '/cookies';
 export const DASHBOARD_PAGE_NAME = 'Dashboard';
 export const DASHBOARD_URL = '/dashboard';
-export const ERROR_URL = '/error';
 export const FORM_CONFIRMATION_URL = '/confirmation';
 export const LANDING_URL = '/';
 export const PRIVACY_URL = '/privacy-notice';
@@ -23,6 +22,10 @@ export const REGISTER_EMAIL_RESEND_URL = '/create-account/request-new-verificati
 export const REGISTER_EMAIL_VERIFIED_URL = '/create-account/email-verified';
 export const REGISTER_DETAILS_URL = '/create-account/your-details';
 export const REGISTER_PASSWORD_URL = '/create-account/your-password';
+
+// Error/message pages
+export const ERROR_URL = '/error';
+export const ERROR_ACCOUNT_ALREADY_ACTIVE_URL = '/create-account/account-already-exists';
 
 // Test pages
 export const SECOND_PAGE_NAME = 'Second page';
