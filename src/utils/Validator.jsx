@@ -42,15 +42,11 @@ const validateField = ({ type, value, condition }) => {
       }
       break;
     case VALIDATE_FIELD_MATCH_CASE_SENSITIVE:
-      console.log('cs', value, condition.valueToMatch);
       if (value && value !== condition.valueToMatch) {
         return 'error';
       }
       break;
     case VALIDATE_FIELD_MATCH:
-      console.log('v', value?.toLowerCase());
-      console.log('tm', condition.valueToMatch?.toLowerCase());
-      console.log('m', value.toLowerCase() !== condition.valueToMatch.toLowerCase());
       if (value && value?.toLowerCase() !== condition.valueToMatch.toLowerCase()) {
         return 'error';
       }
