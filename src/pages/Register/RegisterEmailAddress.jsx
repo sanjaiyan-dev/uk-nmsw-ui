@@ -7,7 +7,7 @@ import {
   VALIDATE_FIELD_MATCH,
   VALIDATE_REQUIRED
 } from '../../constants/AppConstants';
-import { ERROR_URL, REGISTER_EMAIL_URL, REGISTER_DETAILS_URL } from '../../constants/AppUrlConstants';
+import { ERROR_URL, REGISTER_EMAIL_URL, REGISTER_EMAIL_CHECK_URL } from '../../constants/AppUrlConstants';
 import usePostData from '../../hooks/usePostData';
 import DisplayForm from '../../components/DisplayForm';
 
@@ -30,7 +30,7 @@ const RegisterEmailAddress = () => {
       className: 'govuk-button',
       dataModule: 'govuk-button',
       dataTestid: 'submit-button',
-      label: 'Continue',
+      label: 'Send confirmation email',
       type: 'button',
     },
   };
@@ -77,14 +77,17 @@ const RegisterEmailAddress = () => {
         }
       });
       if (response && response.status === 200) {
-        navigate(REGISTER_DETAILS_URL);
+        navigate(REGISTER_EMAIL_CHECK_URL, { state: { dataToSubmit: { emailAddress: formData.formData.emailAddress } } });
       } else {
-        navigate(ERROR_URL, { state: { 
-          message: response.message ? response.message : 'Something has gone wrong',
-          redirectURL: REGISTER_EMAIL_URL }});
+        navigate(ERROR_URL, {
+          state: {
+            message: response.message ? response.message : 'Something has gone wrong',
+            redirectURL: REGISTER_EMAIL_URL
+          }
+        });
       }
     } catch (err) {
-      navigate(ERROR_URL, { state: { message: 'Something has gone wrong', redirectURL: REGISTER_EMAIL_URL }});
+      navigate(ERROR_URL, { state: { message: 'Something has gone wrong', redirectURL: REGISTER_EMAIL_URL } });
     }
   };
 

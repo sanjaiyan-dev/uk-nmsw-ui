@@ -33,7 +33,7 @@ describe('Register email address tests', () => {
 
   it('should display a primary styled continue button', () => {
     render(<MemoryRouter><RegisterEmailAddres /></MemoryRouter>);
-    expect((screen.getByTestId('submit-button')).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Continue</button>');
+    expect((screen.getByTestId('submit-button')).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Send confirmation email</button>');
   });
 
   it('should NOT call the handleSubmit function on button click if there ARE errors', async () => {
