@@ -4,16 +4,20 @@ class BasePage {
     cy.contains('Continue').should('be.enabled').click({force: true});
   }
 
+  clickSendConfirmationEmail() {
+    cy.contains('Send confirmation email').should('be.enabled').click({force: true});
+  }
+
   clickSignIn() {
-    cy.contains('Sign in').should('have.attribute', 'href').click();
+    cy.contains('Sign in').click();
   }
 
   //Error message validation
-  verifyFormErrorMessages(error){
-    cy.get('.govuk-error-summary__body').should('have.text', error)
+  verifyFormErrorMessages(error) {
+    cy.get('.govuk-error-summary__body').should('have.text', error);
   }
 
-  verifyFieldError(field, error){
+  verifyFieldError(field, error) {
     cy.get(`#${field}`).should('have.text', error);
   }
 }

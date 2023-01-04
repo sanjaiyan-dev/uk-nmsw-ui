@@ -16,16 +16,13 @@ class EmailPage {
     return cy.get('#emailAddress-error');
   }
 
-  get confirmEmailErrorMsg() {
-    return cy.get('#repeatEmailAddress-error');
-  }
-
   get emailHeading() {
     return cy.get('h1');
   }
 
   //reusable methods
-  checkEmailHeading() {
+  checkEmailPage() {
+    cy.url().should('include','create-account/email-address');
     this.emailHeading.should('have.text', 'What is your email address');
   }
 
@@ -41,11 +38,11 @@ class EmailPage {
 
   //verify email page
   enterVerifyEmail(email) {
-    this.emailHeading.should('have.text', 'Your email address has been verified​');
+    this.emailHeading.should('have.text', 'Your email address has been verified');
     this.verifyEmail.clear().type(email);
   }
-  EmailVerifyErrorMessage() {
-    cy.contains('User is already registered');
+  emailVerifyMessage() {
+    cy.contains('You already have an account');
   }
 
 }
