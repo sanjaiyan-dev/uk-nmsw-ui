@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import AppRouter from './AppRouter';
 import CookieBanner from './layout/CookieBanner';
@@ -9,14 +9,16 @@ import PhaseBanner from './layout/PhaseBanner';
 // utils
 import cookieToFind from './utils/cookieToFind';
 import setAnalyticCookie from './utils/setAnalyticCookie';
-import { TOP_LEVEL_PAGES } from './constants/AppUrlConstants';
+import { NO_BACK_LINKS, TOP_LEVEL_PAGES } from './constants/AppUrlConstants';
 
 const App = () => {
 
   const cookiePreference = cookieToFind('cookiePreference');
   const [isCookieBannerShown, setIsCookieBannerShown] = useState(true);
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   const topLevelPage = TOP_LEVEL_PAGES.includes(pathname);
+  const pageWithoutBackLink = NO_BACK_LINKS.includes(pathname);
 
   useEffect(() => {
     setAnalyticCookie(cookiePreference);
@@ -38,9 +40,11 @@ const App = () => {
       <Header />
       <div className="govuk-width-container">
         <PhaseBanner />
-        {/* Back links will go in here and be visible on every page by default
-        If we don't want that we will add logic on the back link component as to when 
-        it should not show; */}
+        {/* Back link with logic as to when it should/should not show; */}
+        {!pageWithoutBackLink &&
+          <nav aria-label="Back link" id="backLink">
+            <a href="#back" className="govuk-back-link" onClick={() => { navigate(-1); }}>Back</a>
+          </nav>}
         <main className="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="content" role="main">
           <AppRouter setIsCookieBannerShown={setIsCookieBannerShown} />
         </main>
