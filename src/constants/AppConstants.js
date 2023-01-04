@@ -19,7 +19,8 @@ export const CHECKED_FALSE = false;
 // Forms: validation types
 export const VALIDATE_CONDITIONAL = 'conditional';
 export const VALIDATE_EMAIL_ADDRESS = 'emailAddress';
-export const VALIDATE_FIELD_MATCH = 'match';
+export const VALIDATE_FIELD_MATCH = 'match'; // not case sensitive e.g. `BaA` and `baa` will be a valid match
+export const VALIDATE_FIELD_MATCH_CASE_SENSITIVE = 'matchCaseSensitive'; // e.g. `BaA` and `baa` will fail
 export const VALIDATE_MAX_LENGTH = 'maxLength';
 export const VALIDATE_MIN_LENGTH = 'minLength';
 export const VALIDATE_PHONE_NUMBER = 'phoneNumber';
