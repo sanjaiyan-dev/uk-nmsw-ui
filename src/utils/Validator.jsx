@@ -2,6 +2,7 @@ import {
   VALIDATE_CONDITIONAL,
   VALIDATE_EMAIL_ADDRESS,
   VALIDATE_FIELD_MATCH,
+  VALIDATE_FIELD_MATCH_CASE_SENSITIVE,
   VALIDATE_MAX_LENGTH,
   VALIDATE_MIN_LENGTH,
   VALIDATE_NO_SPACES,
@@ -40,8 +41,13 @@ const validateField = ({ type, value, condition }) => {
         return 'error';
       }
       break;
-    case VALIDATE_FIELD_MATCH:
+    case VALIDATE_FIELD_MATCH_CASE_SENSITIVE:
       if (value && value !== condition.valueToMatch) {
+        return 'error';
+      }
+      break;
+    case VALIDATE_FIELD_MATCH:
+      if (value && value?.toLowerCase() !== condition.valueToMatch.toLowerCase()) {
         return 'error';
       }
       break;
@@ -71,7 +77,7 @@ const Validator = ({ formData, formFields }) => {
           if (conditionalFieldIsVisible) {
             result.push({ key: rule.condition.fieldName, value: foundValue, rule: ruleToTest });
           }
-        } else if (rule.type === VALIDATE_FIELD_MATCH) {
+        } else if (rule.type === VALIDATE_FIELD_MATCH || rule.type === VALIDATE_FIELD_MATCH_CASE_SENSITIVE) {
           result.push({
             key: key,
             value: value,

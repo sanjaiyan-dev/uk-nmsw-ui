@@ -114,6 +114,16 @@ describe('Register password tests', () => {
     expect(screen.getAllByText('Passwords must match')).toHaveLength(2);
   });
 
+  it('should display the error messages if password values do not match only due to capitalisation', async () => {
+    const user = userEvent.setup();
+    render(<MemoryRouter><RegisterYourPassword /></MemoryRouter>);
+    await user.type(screen.getByLabelText('Password'), 'mypasswordis');
+    await user.type(screen.getByLabelText('Confirm your password'), 'myPasswordIs');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(screen.getByText('There is a problem')).toBeInTheDocument();
+    expect(screen.getAllByText('Passwords must match')).toHaveLength(2);
+  });
+
   it('should display the error messages if password value has spaces', async () => {
     const user = userEvent.setup();
     render(<MemoryRouter><RegisterYourPassword state={{ dataToSubmit: { sampleField: 'field value', secondField: 'second value' }}} /></MemoryRouter>);

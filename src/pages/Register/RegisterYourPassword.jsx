@@ -3,7 +3,7 @@ import { REGISTER_ACCOUNT_ENDPOINT } from '../../constants/AppAPIConstants';
 import {
   FIELD_PASSWORD,
   MULTI_PAGE_FORM,
-  VALIDATE_FIELD_MATCH,
+  VALIDATE_FIELD_MATCH_CASE_SENSITIVE,
   VALIDATE_MIN_LENGTH,
   VALIDATE_NO_SPACES,
   VALIDATE_REQUIRED
@@ -67,7 +67,7 @@ const RegisterYourPassword = () => {
           message: 'Confirm your password'
         },
         {
-          type: VALIDATE_FIELD_MATCH,
+          type: VALIDATE_FIELD_MATCH_CASE_SENSITIVE,
           message: 'Passwords must match',
           condition: 'requirePassword',
         },
