@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { REGISTER_ACCOUNT_URL } from '../../constants/AppUrlConstants';
 import { UserContext } from '../../context/userContext';
 import {
@@ -26,6 +26,7 @@ const SignIn = (userDetails) => {
   const tempHardCodedUser = Object.entries(userDetails).length > 0 ? userDetails.user : { name: 'MockedUser' };
   const { signIn } = useContext(UserContext);
   const navigate = useNavigate();
+  const { state } = useLocation();
 
   // Form fields
   const formActions = {
@@ -64,7 +65,7 @@ const SignIn = (userDetails) => {
 
   const handleSubmit = () => {
     signIn({ ...tempHardCodedUser });
-    navigate(DASHBOARD_URL);
+    state?.redirectUrl ? navigate(state.redirectUrl) : navigate(DASHBOARD_URL);
   };
 
   return (
