@@ -9,7 +9,13 @@ import {
   VALIDATE_CONDITIONAL,
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
-import { DASHBOARD_PAGE_NAME, DASHBOARD_URL, FORM_CONFIRMATION_URL } from '../../constants/AppUrlConstants';
+import {
+  DASHBOARD_PAGE_NAME,
+  DASHBOARD_URL,
+  FORM_CONFIRMATION_URL,
+  SECOND_PAGE_URL,
+  SIGN_IN_URL
+} from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
 import { countries } from './TempMockList-countries';
 import { portList } from './TempMockList-portList';
@@ -202,19 +208,27 @@ const SecondPage = () => {
     );
   };
 
+  const forceSignIn = () => {
+    navigate(SIGN_IN_URL, { state: { redirectURL: SECOND_PAGE_URL }});
+  };
+
   return (
-    <div className="govuk-grid-row">
-      <div className="govuk-grid-column-three-quarters">
-        <DisplayForm
-          pageHeading="Second page"
-          formId='formSecondPage'
-          fields={formFields}
-          formActions={formActions}
-          formType={SINGLE_PAGE_FORM}
-          handleSubmit={handleSubmit}
-        />
-      </div >
-    </div>
+    <>
+      <h1>Second page</h1>
+      <p>Click this button to test going to sign in page with navigation state</p>
+      <button onClick={forceSignIn}>Force sign in</button>
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-three-quarters">
+          <DisplayForm
+            formId='formSecondPage'
+            fields={formFields}
+            formActions={formActions}
+            formType={SINGLE_PAGE_FORM}
+            handleSubmit={handleSubmit}
+          />
+        </div >
+      </div>
+    </>
   );
 };
 

@@ -65,7 +65,7 @@ const SignIn = (userDetails) => {
 
   const handleSubmit = () => {
     signIn({ ...tempHardCodedUser });
-    state?.redirectUrl ? navigate(state.redirectUrl) : navigate(DASHBOARD_URL);
+    state?.redirectURL ? navigate(state.redirectURL) : navigate(DASHBOARD_URL);
   };
 
   return (
