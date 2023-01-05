@@ -12,6 +12,10 @@ class BasePage {
     cy.contains('Sign in').click();
   }
 
+  clickBackButton() {
+    cy.get('.govuk-back-link').should('be.visible').click();
+  }
+
   //Error message validation
   verifyFormErrorMessages(error) {
     cy.get('.govuk-error-summary__body').should('have.text', error);

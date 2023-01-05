@@ -156,3 +156,11 @@ When('I click sign-in', () => {
 Then('I am taken to the sign-in page', () => {
   SignInPage.checkSignInPage();
 });
+
+When('I click back navigation button', () => {
+  BasePage.clickBackButton();
+});
+
+Then('I am taken back to create an account page', () => {
+  LandingPage.checkHeading();
+});

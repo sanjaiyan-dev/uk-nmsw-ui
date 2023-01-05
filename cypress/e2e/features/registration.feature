@@ -31,6 +31,9 @@ Feature: User Registration
   Scenario: user registration email page validation
     When I click create an account on the landing page
     Then the registration page is displayed
+    When I click back navigation button
+    Then I am taken back to create an account page
+    When I click create an account on the landing page
     When I click send verification email without providing any details
     Then I am shown form error message
       | Error | Enter an email address in the correct format, like name@example.comConfirm your email address |
@@ -51,6 +54,13 @@ Feature: User Registration
     When I click continue without providing any details
     Then I am shown form error message
       | Error | Enter your full nameEnter your company nameEnter your phone numberEnter countrySelect is your company a shipping agent |
+    When I click back navigation button
+    When I verify the email address
+    Then I am redirected to provide my other details
+    When I provide all my details
+    Then I am redirected to password page
+    When I click back navigation button
+    Then I am redirected to provide my other details
     When I provide all my details
     Then I am redirected to password page
     When I click continue without providing any details
