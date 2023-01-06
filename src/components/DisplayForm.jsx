@@ -5,6 +5,7 @@ import {
   EXPANDED_DETAILS,
   FIELD_CONDITIONAL,
   FIELD_PASSWORD,
+  SIGN_IN_FORM,
   SINGLE_PAGE_FORM
 } from '../constants/AppConstants';
 import { UserContext } from '../context/userContext';
@@ -43,8 +44,8 @@ const DisplayForm = ({ fields, formId, formActions, formType, pageHeading, handl
       [itemToClear?.target.name]: itemToClear?.target.value
     };
 
-    // we do not store passwords in session data
-    if (e.target.name !== FIELD_PASSWORD) {
+    // we do not store passwords or sign in details in session data
+    if (e.target.name !== FIELD_PASSWORD && formType !== SIGN_IN_FORM) {
       setSessionData({ ...sessionData, ...dataSet });
       sessionStorage.setItem('formData', JSON.stringify({ ...sessionData, ...dataSet }));
     }
