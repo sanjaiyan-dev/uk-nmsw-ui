@@ -12,12 +12,8 @@ class CookiePage {
     return cy.get('#changeYourCookieSettings');
   }
 
-  get btnSaveCookies() {
-    return cy.get('[data-testid="save-button"]');
-  }
-
   get btnSaveCookie() {
-    return cy.get('button[data-testid="save-button"]');
+    return cy.get('button[data-testid="submit-button"]');
   }
 
   get bannerSuccess() {

@@ -1,14 +1,26 @@
 import { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { REGISTER_ACCOUNT_URL } from '../../constants/AppUrlConstants';
 import { UserContext } from '../../context/userContext';
 import {
   FIELD_EMAIL,
   FIELD_PASSWORD,
+  SINGLE_PAGE_FORM,
   VALIDATE_EMAIL_ADDRESS,
   VALIDATE_REQUIRED,
-  } from '../../constants/AppConstants';
+} from '../../constants/AppConstants';
 import { DASHBOARD_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
+
+const SupportingText = () => {
+  return (
+    <>
+      <div className="govuk-inset-text">
+        <p className="govuk-body">If you do not have an account, you can <Link to={REGISTER_ACCOUNT_URL}>create one now</Link>.</p>
+      </div>
+    </>
+  );
+};
 
 const SignIn = (userDetails) => {
   const tempHardCodedUser = Object.entries(userDetails).length > 0 ? userDetails.user : { name: 'MockedUser' };
@@ -18,18 +30,13 @@ const SignIn = (userDetails) => {
   // Form fields
   const formActions = {
     submit: {
-      className: 'govuk-button',
-      dataModule: 'govuk-button',
-      dataTestid: 'submit-button',
       label: 'Sign in',
-      type: 'button',
     }
   };
   const formFields = [
     {
       type: FIELD_EMAIL,
       label: 'Email address',
-      hint: 'Enter the email address you used when you created your account',
       fieldName: 'email',
       validation: [
         {
@@ -61,17 +68,18 @@ const SignIn = (userDetails) => {
   };
 
   return (
-    <div className="govuk-grid-row">
-      <div className="govuk-grid-column-two-thirds">
-        <DisplayForm
-          pageHeading="Sign in"
-          formId='formSignIn'
-          fields={formFields}
-          formActions={formActions}
-          handleSubmit={handleSubmit}
-        />
-      </div>
-    </div>
+    <>
+      <DisplayForm
+        pageHeading="Sign in"
+        formId='formSignIn'
+        fields={formFields}
+        formActions={formActions}
+        formType={SINGLE_PAGE_FORM}
+        handleSubmit={handleSubmit}
+      >
+        <SupportingText />
+      </DisplayForm>
+    </>
   );
 };
 

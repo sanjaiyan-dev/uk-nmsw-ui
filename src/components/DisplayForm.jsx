@@ -1,14 +1,21 @@
 import { useContext, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { EXPANDED_DETAILS, FIELD_CONDITIONAL, FIELD_PASSWORD } from '../constants/AppConstants';
+import {
+  EXPANDED_DETAILS,
+  FIELD_CONDITIONAL,
+  FIELD_PASSWORD,
+  SINGLE_PAGE_FORM
+} from '../constants/AppConstants';
 import { UserContext } from '../context/userContext';
 import determineFieldType from './formFields/DetermineFieldType';
 import { scrollToTop } from '../utils/ScrollToElement';
 import Validator from '../utils/Validator';
 
-const DisplayForm = ({ fields, formId, formActions, pageHeading, handleSubmit }) => {
+const DisplayForm = ({ fields, formId, formActions, formType, pageHeading, handleSubmit, children }) => {
   const { user } = useContext(UserContext);
   const fieldsRef = useRef(null);
+  const navigate = useNavigate();
   const [errors, setErrors] = useState();
   const [fieldsWithValues, setFieldsWithValues] = useState();
   const [formData, setFormData] = useState({});
@@ -45,6 +52,11 @@ const DisplayForm = ({ fields, formId, formActions, pageHeading, handleSubmit })
     setFormData({ ...formData, ...dataSet });
   };
 
+  const handleCancel = (redirectURL) => {
+    sessionStorage.removeItem('formData');
+    navigate(redirectURL);
+  };
+
   const handleValidation = async (e, formData) => {
     e.preventDefault();
     const formErrors = await Validator({ formData: formData.formData, formFields: fields });
@@ -58,7 +70,13 @@ const DisplayForm = ({ fields, formId, formActions, pageHeading, handleSubmit })
        * so we always pass formData back
        */
       handleSubmit(formData);
-      sessionStorage.removeItem('formData');
+
+      /* If the form is a singlepage form we can clear the session 
+       * we do not clear the session for multipage forms
+      */
+      if (formType === SINGLE_PAGE_FORM) {
+        sessionStorage.removeItem('formData');
+      }
     } else {
       scrollToTop();
     }
@@ -135,80 +153,96 @@ const DisplayForm = ({ fields, formId, formActions, pageHeading, handleSubmit })
   if (!formActions || !fieldsWithValues) { return null; }
   return (
     <>
-      {errors?.length > 0 && (
-        <div className="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary">
-          <h2 className="govuk-error-summary__title" id="error-summary-title">
-            There is a problem
-          </h2>
-          <div className="govuk-error-summary__body">
-            <ul className="govuk-list govuk-error-summary__list">
-              {errors.map((error) => {
-                return (
-                  <li key={error.name}>
-                    <button className="govuk-button--text"
-                      onClick={(e) => { scrollToErrorField(e, error); }}
-                    >
-                      {error.message}
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        </div>
-      )}
-      <h1 className="govuk-heading-l">{pageHeading}</h1>
-      <form id={formId} autoComplete="off">
-        {
-          fieldsWithValues.map((field) => {
-            const error = errors?.find(errorField => errorField.name === field.fieldName);
-            return (
-              <div
-                key={field.fieldName}
-                id={field.fieldName}
-                ref={(node) => {
-                  const map = getFieldMap();
-                  if (node) {
-                    map.set(field.fieldName, node); // on mount adds the refs
-                  } else {
-                    map.delete(field.fieldName); // on unmount removes the refs
-                  }
-                }}
-              >
-                {
-                  determineFieldType({
-                    allErrors: errors,  // allows us to add the error handling logic for conditional fields
-                    error: error?.message,
-                    fieldDetails: field,
-                    parentHandleChange: handleChange,
-                  })
-                }
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-two-thirds">
+          {errors?.length > 0 && (
+            <div className="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary">
+              <h2 className="govuk-error-summary__title" id="error-summary-title">
+                There is a problem
+              </h2>
+              <div className="govuk-error-summary__body">
+                <ul className="govuk-list govuk-error-summary__list">
+                  {errors.map((error) => {
+                    return (
+                      <li key={error.name}>
+                        <button className="govuk-button--text"
+                          onClick={(e) => { scrollToErrorField(e, error); }}
+                        >
+                          {error.message}
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
               </div>
-            );
-          })
-        }
-        <div className="govuk-button-group">
-          <button
-            type={formActions.submit.type}
-            className={formActions.submit.className}
-            data-module={formActions.submit.dataModule}
-            data-testid={formActions.submit.dataTestid}
-            onClick={(e) => handleValidation(e, { formData })}
-          >
-            {formActions.submit.label}
-          </button>
-          {
-            formActions.cancel && <button
-              type={formActions.cancel.type}
-              className={formActions.cancel.className}
-              data-module={formActions.cancel.dataModule}
-              data-testid={formActions.cancel.dataTestid}
-            >
-              {formActions.cancel.label}
-            </button>
-          }
+            </div>
+          )}
         </div>
-      </form>
+      </div>
+      <div className="govuk-grid-row">
+        {pageHeading && <h1 className="govuk-heading-xl govuk-grid-column-full">{pageHeading}</h1>}
+      </div>
+      
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-three-quarters below-h1">
+          {children}
+        </div>
+      </div>
+
+      <div className="govuk-grid-row">
+        <form id={formId} className="govuk-grid-column-one-half" autoComplete="off">
+          {
+            fieldsWithValues.map((field) => {
+              const error = errors?.find(errorField => errorField.name === field.fieldName);
+              return (
+                <div
+                  key={field.fieldName}
+                  id={field.fieldName}
+                  ref={(node) => {
+                    const map = getFieldMap();
+                    if (node) {
+                      map.set(field.fieldName, node); // on mount adds the refs
+                    } else {
+                      map.delete(field.fieldName); // on unmount removes the refs
+                    }
+                  }}
+                >
+                  {
+                    determineFieldType({
+                      allErrors: errors,  // allows us to add the error handling logic for conditional fields
+                      error: error?.message,
+                      fieldDetails: field,
+                      parentHandleChange: handleChange,
+                    })
+                  }
+                </div>
+              );
+            })
+          }
+          <div className="govuk-button-group">
+            <button
+              type='button'
+              className='govuk-button'
+              data-module='govuk-button'
+              data-testid='submit-button'
+              onClick={(e) => handleValidation(e, { formData })}
+            >
+              {formActions.submit.label}
+            </button>
+            {
+              formActions.cancel && <button
+                type='button'
+                className='govuk-button govuk-button--secondary'
+                data-module='govuk-button'
+                data-testid='cancel-button'
+                onClick={() => handleCancel(formActions.cancel.redirectURL)}
+              >
+                {formActions.cancel.label}
+              </button>
+            }
+          </div>
+        </form>
+      </div>
     </>
   );
 };
@@ -216,6 +250,7 @@ const DisplayForm = ({ fields, formId, formActions, pageHeading, handleSubmit })
 export default DisplayForm;
 
 DisplayForm.propTypes = {
+  children: PropTypes.node, // allows any renderable object
   fields: PropTypes.arrayOf(
     PropTypes.shape({
       fieldName: PropTypes.string.isRequired,
@@ -226,15 +261,16 @@ DisplayForm.propTypes = {
     }),
   ).isRequired,
   formId: PropTypes.string.isRequired,
-  formActions: PropTypes.objectOf(
-    PropTypes.shape({
-      className: PropTypes.string.isRequired,
-      dataModule: PropTypes.string,
-      dataTestid: PropTypes.string,
+  formActions: PropTypes.shape({
+    submit: PropTypes.shape({
       label: PropTypes.string.isRequired,
-      type: PropTypes.string.isRequired,
+    }),
+    cancel: PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      redirectURL: PropTypes.string.isRequired
     })
-  ),
-  pageHeading: PropTypes.string.isRequired,
+  }),
+  formType: PropTypes.string.isRequired,
+  pageHeading: PropTypes.string,
   handleSubmit: PropTypes.func.isRequired,
 };

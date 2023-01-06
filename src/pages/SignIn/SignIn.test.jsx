@@ -35,8 +35,13 @@ describe('Sign in tests', () => {
   it('should display an input field for email', () => {
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     expect(screen.getByLabelText('Email address')).toBeInTheDocument();
-    expect(screen.getByText('Enter the email address you used when you created your account').outerHTML).toEqual('<div id="email-hint" class="govuk-hint">Enter the email address you used when you created your account</div>');
-    expect(screen.getByRole('textbox', {name: /email/i}).outerHTML).toEqual('<input class="govuk-input" id="email-input" name="email" type="email" autocomplete="email" aria-describedby="email-hint" value="">');
+    expect(screen.getByRole('textbox', {name: /email/i}).outerHTML).toEqual('<input class="govuk-input" id="email-input" name="email" type="email" autocomplete="email" value="">');
+  });
+
+  it('should display a link to create account', () => {
+    render(<MemoryRouter><SignIn /></MemoryRouter>);
+    expect(screen.getByText('create one now')).toBeInTheDocument();
+    expect(screen.getByText('create one now').outerHTML).toEqual('<a href="/create-account/email-address">create one now</a>');
   });
 
   it('should display an input field for password', () => {

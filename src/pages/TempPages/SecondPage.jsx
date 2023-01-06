@@ -5,6 +5,7 @@ import {
   FIELD_TEXT,
   FIELD_RADIO,
   CHECKED_FALSE,
+  SINGLE_PAGE_FORM,
   VALIDATE_CONDITIONAL,
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
@@ -18,11 +19,11 @@ const SecondPage = () => {
 
   const formActions = {
     submit: {
-      className: 'govuk-button',
-      dataModule: 'govuk-button',
-      dataTestid: 'submit-button',
       label: 'Save',
-      type: 'button',
+    },
+    cancel: {
+      label: 'Cancel',
+      redirectURL: DASHBOARD_URL
     }
   };
   const formFields = [
@@ -203,12 +204,13 @@ const SecondPage = () => {
 
   return (
     <div className="govuk-grid-row">
-      <div className="govuk-grid-column-two-thirds">
+      <div className="govuk-grid-column-three-quarters">
         <DisplayForm
           pageHeading="Second page"
           formId='formSecondPage'
           fields={formFields}
           formActions={formActions}
+          formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
       </div >

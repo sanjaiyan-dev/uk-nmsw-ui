@@ -23,7 +23,7 @@ class CookieComponent {
   }
 
   get cookiePanel() {
-    return cy.get('.govuk-cookie-banner__message ');
+    return cy.get('div[class="govuk-cookie-banner "]');
   }
 
   get lnkCookieSetting() {
@@ -52,6 +52,10 @@ class CookieComponent {
 
   confirmCookiePanel() {
     this.cookiePanel.should('be.visible');
+  }
+
+  confirmNoCookiePanel() {
+    this.cookiePanel.should('not.exist');
   }
 
   clickBtnHideCookieMsg() {

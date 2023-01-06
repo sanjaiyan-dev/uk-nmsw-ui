@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import DisplayForm from '../../components/DisplayForm';
-import { FIELD_RADIO, CHECKED_TRUE, CHECKED_FALSE } from '../../constants/AppConstants';
+import { FIELD_RADIO, CHECKED_TRUE, CHECKED_FALSE, SINGLE_PAGE_FORM } from '../../constants/AppConstants';
 import cookieToFind from '../../utils/cookieToFind';
 import { scrollToElementId } from '../../utils/ScrollToElement';
 import setAnalyticCookie from '../../utils/setAnalyticCookie';
@@ -17,11 +17,7 @@ const CookiePolicy = ({ setIsCookieBannerShown }) => {
 
   const formActions = {
     submit: {
-      className: 'govuk-button',
-      dataModule: 'govuk-button',
-      dataTestid: 'save-button',
       label: 'Save cookie settings',
-      type: 'button',
     }
   };
   const formFields = [
@@ -96,6 +92,7 @@ const CookiePolicy = ({ setIsCookieBannerShown }) => {
         formId='changeYourCookieSettings'
         fields={formFields}
         formActions={formActions}
+        formType={SINGLE_PAGE_FORM}
         handleSubmit={handleSubmit}
       />
     </>

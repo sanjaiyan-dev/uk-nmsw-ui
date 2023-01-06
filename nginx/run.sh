@@ -4,18 +4,17 @@ set -o errexit
 
 mkdir -p /run/nginx
 
-# BELOW IS FOR WHEN WE HAVE ENV VARIABLES
-# # --- Start Insert ENV to JS bundle ---
-# echo "== Inserting env variables =="
-# for file in /usr/share/nginx/html/*.js
-# do
-#   echo "== ENV sub for $file =="
-#   sed -i 's,REPLACE_NMSW_DATA_API_BASE_URL,'${NMSW_DATA_API_BASE_URL}',g' $file
-#   sed -i 's,REPLACE_NMSW_MAINTENANCE,'${NMSW_MAINTENANCE}',g' $file
-#   sed -i 's,REPLACE_GOV_NOTIFY_SUPPORT_EMAIL,'${GOV_NOTIFY_SUPPORT_EMAIL}',g' $file
-# done
-# echo "== Finished ENV sub =="
-# # --- End Insert ENV to JS bundle ---
+# --- Start Insert ENV to JS bundle ---
+echo "== Inserting env variables =="
+for file in /usr/share/nginx/html/*.js
+do
+  echo "== ENV sub for $file =="
+  sed -i 's,REPLACE_NMSW_DATA_API_BASE_URL,'${NMSW_DATA_API_BASE_URL}',g' $file
+  sed -i 's,REPLACE_NMSW_MAINTENANCE,'${NMSW_MAINTENANCE}',g' $file
+  sed -i 's,REPLACE_GOV_NOTIFY_SUPPORT_EMAIL,'${GOV_NOTIFY_SUPPORT_EMAIL}',g' $file
+done
+echo "== Finished ENV sub =="
+# --- End Insert ENV to JS bundle ---
 
 
 # config file takes precedence

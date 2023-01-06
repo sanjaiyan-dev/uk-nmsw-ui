@@ -4,11 +4,13 @@ import {
   FIELD_CONDITIONAL,
   FIELD_EMAIL,
   FIELD_PASSWORD,
+  FIELD_PHONE,
   FIELD_TEXT,
   FIELD_RADIO
 } from '../../constants/AppConstants';
 import InputAutocomplete from './InputAutocomplete';
 import InputConditional from './InputConditional';
+import InputPhoneNumber from './InputPhoneNumber';
 import InputRadio from './InputRadio';
 import InputText from './InputText';
 
@@ -16,7 +18,7 @@ const GroupedInputs = ({ error, fieldName, fieldToReturn, hint, label }) => {
   return (
     <div className={error ? 'govuk-form-group govuk-form-group--error' : 'govuk-form-group'}>
       <fieldset className="govuk-fieldset">
-        <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
+        <legend className="govuk-fieldset__legend">
           {label}
         </legend>
         <div id={`${fieldName}-hint`} className="govuk-hint">
@@ -86,6 +88,14 @@ const determineFieldType = ({ allErrors, error, fieldDetails, parentHandleChange
         handleChange={parentHandleChange}
         type='password'
         dataTestid={`${fieldDetails.fieldName}-passwordField`}
+      />;
+      break;
+
+    case FIELD_PHONE: fieldToReturn =
+      <InputPhoneNumber
+        error={error}
+        fieldDetails={fieldDetails}
+        handleChange={parentHandleChange}
       />;
       break;
 

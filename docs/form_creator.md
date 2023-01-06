@@ -2,32 +2,97 @@
 
 This app has an in built form creator with reusable components for if you wish to add more forms.
 
+## DisplayForm
+- [Display Form](#display-form)
+
 ## Field actions
-- [Form action options](#FormActionOptions)
+- [Form action options](#form-action-options)
 
 ## Field types
 Standard inputs
-- [Autocomplete](#Autocomplete)
-- [Radio buttons](#RadioButtons)
-- [Radio buttons with conditional text field(s)](#Conditionals)
-- [Text input](#TextInput)
+- [Autocomplete](#autocomplete)
+- [Radio buttons](#radio-buttons)
+- [Radio buttons with conditional text field(s)](#conditionals)
+- [Text input](#text-input)
 
 Specific inputs
-- TODO: [Date](#Date)
-- [Email](#Email)
-- [Password](#Password)
+- TODO: [Date](#date)
+- [Email](#email)
+- [Password](#password)
+- [Phone Number](#phone-number)
 
 Validating fields
-- [Required](#Required)
-- [Conditional](#Conditional)
-- [Email](#Email)
-- [Minimum Length](#MinimumLength)
+- [required](#required)
+- [Conditional](#conditional)
+- [Email Format](#email-format)
+- [Match](#match)
+- [Maximum Length](#maximum-length)
+- [Minimum Length](#minimum-length)
+- [No Spaces](#no-spaces)
+- [Phone Number Format](#phone-number-format)
+
+## MultiPage Forms
+- [Multi Page Form](#multi-page-forms)
 
 
 ## Other guides
 - <a href="https://github.com/UKHomeOffice/nmsw-ui/blob/main/docs/form_creator_example.md">Create a new form - step by step example</a>
 - <a href="https://github.com/UKHomeOffice/nmsw-ui/blob/main/docs/form_creator_new_input_type.md">Creating a new input type</a>
 - [Structure diagram for reference](#StructureDiagram) (updated November 2022)
+----
+
+## Display Form
+
+Structure:
+```javascript
+<DisplayForm
+  formId=<required>
+  fields={formFields}
+  formActions={formActions}
+  formType=<required>
+  pageHeading=<required>
+  handleSubmit={handleSubmit}
+/>
+```
+
+You can also pass children to the component
+e.g. if you have a SupportingText component you would pass as follows:
+```javascript
+<DisplayForm
+  formId=<required>
+  fields={formFields}
+  formActions={formActions}
+  formType=<required>
+  pageHeading=<required>
+  handleSubmit={handleSubmit}
+>
+  <SupportingText />
+</DisplayForm>
+```
+
+Parameters
+
+### formId
+An identifier for your form element
+
+### formFields
+Must always be {formFields} which you must define within the component that is calling the DisplayForm component. (see Field Types)
+
+### formAction
+Must always be {formAction} which you must define within the component that is calling the DisplayForm component. (see Form Action Options)
+
+### formType
+Can be SINGLE_PAGE_FORM - if the form has one page. This will clear any session data for the form when `submit` or `back` are clicked
+Or MULTI_PAGE_FORM - if the form has multiple pages. This will persist session data as the user moves through the form and only clear it when they go to another section of the site.
+
+When using MULTI_PAGE_FORM you should add a `sessionStorage.removeItem('formData')` within the handleSubmit of the last page of your form.
+
+### pageHeading
+What will be the h1 of your page. We have to pass it to the form to display as any error summary is shown ABOVE the h1
+
+### handleSubmit
+Your handleSubmit action from the page
+
 ----
 
 ## Form Action Options
@@ -48,9 +113,17 @@ Your `Page` must contain
 Object structure:
 
 ```
-[action]: {
-  className: [required],
-  label: [required],
+<action>: {
+  label: <required>,
+}
+```
+
+If cancel button include the redirectUrl:
+
+```
+<action>: {
+  label: <required>,
+  redirectURL: <required>,
 }
 ```
 
@@ -67,6 +140,9 @@ Parameters:
 ### label
 The words you wish to show on your button
 
+### redirectURL
+The page you want to redirect the user to if they click cancel
+
 ----
 
 ## Autocomplete
@@ -80,12 +156,12 @@ Object structure
 ```
 {
   type: FIELD_AUTOCOMPLETE,
-  dataAPIEndpoint: [required],
-  fieldName: [required],
-  hint: [optional]
-  label: [required],
-  responseKey: [required],
-  additionalKey: [OPTIONAL: additional data key],
+  dataAPIEndpoint: <required>,
+  fieldName: <required>,
+  hint: <optional>
+  label: <required>,
+  responseKey: <required>,
+  additionalKey: <OPTIONAL: additional data key>,
 }
 ```
 
@@ -131,17 +207,17 @@ Object structure
 ```
 {
   type: FIELD_RADIO,
-  className: [required],
-  fieldName: [required],
+  className: <required>,
+  fieldName: <required>,
   grouped: true,
-  hint: [optional]
-  label: [required],
+  hint: <optional>
+  label: <required>,
   radioOptions: [
     {
-      label: [required],
-      name: [required],
-      value: [required],
-      checked: [optional]
+      label: <required>,
+      name: <required>,
+      value: <required>,
+      checked: <optional>
     },
   ],
 },
@@ -194,24 +270,24 @@ Object structure
 ```
 {
   type: FIELD_CONDITIONAL,
-  className: [required],
-  fieldName: [required],
+  className: <required>,
+  fieldName: <required>,
   grouped: true,
-  hint: [optional],
-  label: [required],
+  hint: <optional>,
+  label: <required>,
   radioOptions: [
     {
-      radioField: [required],
-      label: [required],
-      name: [required],
-      value: [required],
+      radioField: <required>,
+      label: <required>,
+      name: <required>,
+      value: <required>,
     },
     {
-      radioField: [required],
-      parentFieldValue: [required],
-      hint: [optional],
-      label: [required],
-      name: [required],
+      radioField: <required>,
+      parentFieldValue: <required>,
+      hint: <optional>,
+      label: <required>,
+      name: <required>,
     },
   ],
 },
@@ -265,9 +341,9 @@ Object structure
 ```
 {
   type: FIELD_TEXT,
-  fieldName: [required],
-  hint: [optional],
-  label: [required]
+  fieldName: <required>,
+  hint: <optional>,
+  label: <required>
 }
 ```
 
@@ -298,9 +374,9 @@ Object structure
 ```
 {
   type: FIELD_EMAIL,
-  fieldName: [required],
-  hint: [optional],
-  label: [required]
+  fieldName: <required>,
+  hint: <optional>,
+  label: <required>
 }
 ```
 
@@ -331,9 +407,9 @@ Object structure
 ```
 {
   type: FIELD_PASSWORD,
-  fieldName: [required],
-  hint: [optional],
-  label: [required]
+  fieldName: <required>,
+  hint: <optional>,
+  label: <required>
 }
 ```
 
@@ -341,6 +417,46 @@ Parameters
 
 ### type
 Import and use `FIELD_PASSWORD` from `src/constants/AppConstants`
+
+### fieldName
+A string that will be used for `name` and to create `id` and other field references.
+
+### grouped
+Always specify this as `true` as phone number fields are grouped inputs and use a different fieldset/label html structure.
+This is defined within `src/components/formFields/DetermineFieldType` and at some point we will refactor this so that `grouped: true` does not need to be specified within the field object
+
+### hint (optional)
+An optional string
+
+### label
+A string that will be shown as the question/label text for the field
+
+----
+
+## Phone Number
+
+Requirements
+
+n/a
+
+Object structure
+
+```
+{
+  type: FIELD_PHONE,
+  fieldName: <required>,
+  hint: <optional>,
+  label: <required>
+}
+```
+
+Parameters
+
+### type
+Import and use `FIELD_PHONE` from `src/constants/AppConstants`
+We use FIELD_PHONE as it provides a specific layout and handles separating the Country phone code from the rest of the phone number, as well as reformatting the number for use within two inputs in the UI as the API will return a single string (with specific formatting)
+
+You should always include phone number validation with a phone number field
 
 ### fieldName
 A string that will be used for `name` and to create `id` and other field references.
@@ -358,7 +474,14 @@ If a field requires validation you add a validation array to the field object.
 A field can have no validation array (no rules), an array with one object (rule), or an array with multiple objects (rules)
 
 1. [Rules](#rules)
+- [Required](#required)
+- [Conditional](#conditional)
+- [Email Format](#email-format)
+- [Match](#match)
+- [Minimum Length](#minimum-length)
+- [Phone Number Format](#phone-number-format)
 2. [Examples](#examples)
+
 
 ### Rules
 
@@ -368,7 +491,7 @@ Field is a mandatory field and cannot be nul
 ```
 {
   type: VALIDATE_REQUIRED,
-  message: [error message to show in UI]
+  message: <error message to show in UI>
 }
 ```
 
@@ -380,35 +503,84 @@ The validation is run based on the rules entered in the nested `condition` objec
 {
   type: VALIDATE_CONDITIONAL,
   condition: {
-    parentValue: [value of parent field],
-    fieldName: [this conditional field's name],
-    ruleToTest: [rule constant],
-    message: [error message to show in UI]
+    parentValue: <value of parent field>,
+    fieldName: <this conditional field's name>,
+    ruleToTest: <rule constant>,
+    message: <error message to show in UI>
   },
 }
 ```
 
-#### Email
+#### Email Format
 Specifically tests if the value entered matches an email pattern.
 This test only runs if there is a value in the field and is ignored if field is null.
 
 ```
 {
   type: VALIDATE_EMAIL,
-  message: [error message to show in UI]
+  message: <error message to show in UI>
+  },
+}
+```
+
+#### Match
+Specifically tests if the value entered matches the value of another field.
+
+```
+{
+  type: VALIDATE_MATCH,
+  message: <error message to show in UI>,
+  condition: <field name to match>
+  },
+}
+```
+
+#### Maximum Length
+Specifically tests if the length of the value entered is > the number specified in the `condition` entry.
+This test only runs if there is a value in the field and is ignored if field is null. 
+
+```
+{
+  type: VALIDATE_MAX_LENGTH,
+  condition: <maximum length>
+  message: <error message to show in UI>
   },
 }
 ```
 
 #### Minimum Length
-Specifically tests if the length of the value entered is > the number specified in the `conditions` entry.
+Specifically tests if the length of the value entered is < the number specified in the `condition` entry.
 This test only runs if there is a value in the field and is ignored if field is null.
 
 ```
 {
   type: VALIDATE_MIN_LENGTH,
-  condition: [minimum length]
-  message: [error message to show in UI]
+  condition: <minimum length>
+  message: <error message to show in UI>
+  },
+}
+```
+
+
+#### No Spaces
+Used mainly for fields like passwords, it checks for a [space] and throws an error if any exist anywhere in the string
+
+```
+{
+  type: VALIDATE_NO_SPACES,
+  message: <error message to show in UI>
+  },
+}
+```
+
+#### Phone Number Format
+Specifically tests if the value entered matches the API required phone number pattern.
+This test only runs if there is a value in the field and is ignored if field is null.
+
+```
+{
+  type: VALIDATE_PHONE_NUMBER,
+  message: <error message to show in UI>
   },
 }
 ```
@@ -478,6 +650,32 @@ e.g.
   ],
 }
 ```
+
+----
+
+## Multi Page Forms
+If you are creating a multipage form your `handleSubmit` function must include the following:
+
+### First Page
+Create a `dataToSubmit` variable and populate it with this page's formData
+`const dataToSubmit = { ...formData.formData };`
+
+Within the `navigate` pass the dataToSubmit as state:
+`navigate(URL, { state: { dataToSubmit: dataToSubmit } });`
+
+### Step Pages
+Create a `dataToSubmit` variable and populate it with the data passed from the previous page, and this page's formData
+`const dataToSubmit = { ...state.dataToSubmit, ...formData.formData };`
+
+Within the `navigate` pass the dataToSubmit as state:
+`navigate(URL, { state: { dataToSubmit: dataToSubmit } });`
+
+### Final Page
+Create a `dataToSubmit` variable and populate it with the formData from state and the current page's formData:
+`const dataToSubmit = { ...state.dataToSubmit, ...formData.formData };`
+
+After submit remove all formData from sessionStorage
+`sessionStorage.removeItem('formData');`
 
 ----
 ## Structure Diagram
