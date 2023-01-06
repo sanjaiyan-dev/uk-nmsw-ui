@@ -11,8 +11,10 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "cypress:run:dev": "cypress run --config baseUrl=\"https://nmsw-ui.dev.nmsw.homeoffice.gov.uk/\"",
-    "cypress:open:dev": "cypress open --config baseUrl=\"https://nmsw-ui.dev.nmsw.homeoffice.gov.uk\""
+    "cypress:run:local": "cypress run --config-file cypress/config/local.config.js",
+    "cypress:open:local": "cypress open --config-file cypress/config/local.config.js",
+    "cypress:run:dev": "cypress run --config-file cypress/config/dev.config.js",
+    "cypress:open:dev": "cypress open --config-file cypress/config/dev.config.js"
   },
   "repository": {
     "type": "git",
