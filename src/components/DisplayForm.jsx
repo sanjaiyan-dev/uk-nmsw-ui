@@ -48,6 +48,7 @@ const DisplayForm = ({ fields, formId, formActions, formType, pageHeading, handl
       setSessionData({ ...sessionData, ...dataSet });
       sessionStorage.setItem('formData', JSON.stringify({ ...sessionData, ...dataSet }));
     }
+
     // we do store all values into form data
     setFormData({ ...formData, ...dataSet });
   };
@@ -72,7 +73,8 @@ const DisplayForm = ({ fields, formId, formActions, formType, pageHeading, handl
       handleSubmit(formData);
 
       /* If the form is a singlepage form we can clear the session 
-       * we do not clear the session for multipage forms
+       * we do not clear the session for multipage forms or sign in form 
+       * as they have different needs
       */
       if (formType === SINGLE_PAGE_FORM) {
         sessionStorage.removeItem('formData');

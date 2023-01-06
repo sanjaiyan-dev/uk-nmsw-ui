@@ -5,7 +5,7 @@ import { UserContext } from '../../context/userContext';
 import {
   FIELD_EMAIL,
   FIELD_PASSWORD,
-  SINGLE_PAGE_FORM,
+  SIGN_IN_FORM,
   VALIDATE_EMAIL_ADDRESS,
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
@@ -75,7 +75,8 @@ const SignIn = (userDetails) => {
         formId='formSignIn'
         fields={formFields}
         formActions={formActions}
-        formType={SINGLE_PAGE_FORM}
+        formType={SIGN_IN_FORM}
+        keepSessionOnSubmit={state?.redirectURL ? true : false}
         handleSubmit={handleSubmit}
       >
         <SupportingText />
