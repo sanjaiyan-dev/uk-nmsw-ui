@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { REGISTER_ACCOUNT_ENDPOINT } from '../../constants/AppAPIConstants';
 import {
   FIELD_EMAIL,
@@ -13,8 +14,8 @@ import {
   REGISTER_EMAIL_URL,
   REGISTER_EMAIL_CHECK_URL
 } from '../../constants/AppUrlConstants';
-import usePostData from '../../hooks/usePostData';
 import DisplayForm from '../../components/DisplayForm';
+import Auth from '../../utils/Auth';
 
 const SupportingText = () => {
   return (
@@ -74,28 +75,22 @@ const RegisterEmailAddress = () => {
   ];
 
   const handleSubmit = async (formData) => {
+    const dataToSubmit = {
+      email: formData.formData.emailAddress,
+    };
+
     try {
-      const response = await usePostData({
-        url: REGISTER_ACCOUNT_ENDPOINT,
-        dataToSubmit: {
-          email: formData.formData.emailAddress,
-        }
+      await axios.post(REGISTER_ACCOUNT_ENDPOINT, dataToSubmit, {
+        headers: { Authorization: `Bearer ${Auth.retrieveToken()}` },
       });
-      if (response && response.status === 200) {
-        navigate(REGISTER_EMAIL_CHECK_URL, { state: { dataToSubmit: { emailAddress: formData.formData.emailAddress } } });
-      } else if (response && response.message === 'User is already registered') {
+      navigate(REGISTER_EMAIL_CHECK_URL, { state: { dataToSubmit: { emailAddress: formData.formData.emailAddress } } });
+    } catch (err) {
+      // scenarios we need updated response for : 400: User is awaiting verification
+      if (err.response.data.message === 'User is already registered') {
         navigate(ERROR_ACCOUNT_ALREADY_ACTIVE_URL, { state: { dataToSubmit: { emailAddress: formData.formData.emailAddress } } });
       } else {
-        navigate(ERROR_URL, {
-          state: {
-            title: 'Something has gone wrong',
-            message: response.message,
-            redirectURL: REGISTER_EMAIL_URL
-          }
-        });
+        navigate(ERROR_URL, { state: { title: 'Something has gone wrong', redirectURL: REGISTER_EMAIL_URL } });
       }
-    } catch (err) {
-      navigate(ERROR_URL, { state: { title: 'Something has gone wrong', redirectURL: REGISTER_EMAIL_URL } });
     }
   };
 
