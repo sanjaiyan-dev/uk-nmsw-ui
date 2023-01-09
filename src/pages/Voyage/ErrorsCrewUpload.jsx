@@ -85,7 +85,7 @@ const ErrorsCrewUpload = () => {
         <h1 className="govuk-heading-xl govuk-!-margin-bottom-3">Errors found</h1>
         <p className="govuk-body-l govuk-!-font-weight-bold">Your file has errors. Check the file to fix any errors and re-upload your file.</p>
         <div className="govuk-form-group--error">
-          <table className="govuk-table responsive-table">
+          <table className="govuk-table">
             <caption className="govuk-table__caption govuk-table__caption--s govuk-border-bottom">{`${uploadErrors?.length} errors found in ${fileName}`}</caption>
             <thead className="govuk-table__head">
               <tr className="govuk-table__row" role="row">
