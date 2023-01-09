@@ -22,9 +22,8 @@ const SupportingText = () => {
   );
 };
 
-const SignIn = (userDetails) => {
-  const tempHardCodedUser = Object.entries(userDetails).length > 0 ? userDetails.user : { name: 'MockedUser' };
-  const { signIn } = useContext(UserContext);
+const SignIn = () => {
+  const { signIn, user } = useContext(UserContext);
   const navigate = useNavigate();
   const { state } = useLocation();
 
@@ -63,8 +62,11 @@ const SignIn = (userDetails) => {
     },
   ];
 
-  const handleSubmit = () => {
-    signIn({ ...tempHardCodedUser });
+  const handleSubmit = ({ formData }) => {
+    if (user.email !== formData.email) {
+      sessionStorage.removeItem('formData');
+    }
+    signIn({ formData });
     state?.redirectURL ? navigate(state.redirectURL) : navigate(DASHBOARD_URL);
   };
 
