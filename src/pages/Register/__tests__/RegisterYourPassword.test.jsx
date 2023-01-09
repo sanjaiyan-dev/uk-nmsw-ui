@@ -18,12 +18,6 @@ jest.mock('react-router', () => ({
   })
 }));
 
-// let mockedUserPatchData = {};
-// jest.mock('../../../hooks/usePatchData', () => {
-//   return jest.fn(() => (mockedUserPatchData));
-// });
-
-
 describe('Register password tests', () => {
   const handleSubmit = jest.fn();
   const mockAxios = new MockAdapter(axios);
