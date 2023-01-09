@@ -4,6 +4,7 @@ export const SERVICE_NAME = 'National Maritime Single Window';
 // Forms: identifiers
 export const EXPANDED_DETAILS = 'ExpandedDetails';
 export const MULTI_PAGE_FORM = 'multiPageForm';
+export const SIGN_IN_FORM = 'signInForm';
 export const SINGLE_PAGE_FORM = 'singlePageForm';
 // Forms: input types
 export const FIELD_AUTOCOMPLETE = 'autocomplete';
