@@ -10,6 +10,7 @@ import DisplayForm from '../../components/DisplayForm';
 
 const RegisterEmailVerified = () => {
   const navigate = useNavigate();
+  document.title = 'Your email address has been verified';
 
   const formActions = {
     submit: {

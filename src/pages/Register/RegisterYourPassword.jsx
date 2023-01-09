@@ -27,6 +27,7 @@ const SupportingText = () => {
 const RegisterYourPassword = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
+  document.title = 'Create a password';
 
   const formActions = {
     submit: {

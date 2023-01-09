@@ -7,6 +7,7 @@ import { scrollToElementId } from '../../utils/ScrollToElement';
 import setAnalyticCookie from '../../utils/setAnalyticCookie';
 
 const CookiePolicy = ({ setIsCookieBannerShown }) => {
+  document.title = 'Cookies';
   const COOKIE_PREFERENCE_YES = 'yes';
   const [isCookieConfirmationShown, setIsCookieConfirmationShown] = useState(false);
   const cookiePreference = cookieToFind('cookiePreference');

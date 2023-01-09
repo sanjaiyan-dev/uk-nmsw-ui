@@ -3,6 +3,7 @@ import { SIGN_IN_URL } from '../../constants/AppUrlConstants';
 
 const AccountAlreadyActive = () => {
   const { state } = useLocation();
+  document.title = 'You already have an account';
   return (
     <>
       <div className="govuk-grid-row">
