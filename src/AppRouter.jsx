@@ -50,8 +50,10 @@ import Dashboard from './pages/Dashboard/Dashboard';
 
 // Temp Pages
 import SecondPage from './pages/TempPages/SecondPage';
+import { SERVICE_NAME } from './constants/AppConstants';
 
 const AppRouter = ({ setIsCookieBannerShown }) => {
+  document.title = SERVICE_NAME;
   const isPermittedToView = useUserIsPermitted();
 
   return (
