@@ -4,7 +4,7 @@ import useUserIsPermitted from './hooks/useUserIsPermitted';
 import ProtectedRoutes from './utils/ProtectedRoutes';
 import ScrollToTopOnNewPage from './utils/ScrollToTopOnNewPage';
 
-// URLs
+// Constants
 import {
   ACCESSIBILITY_URL,
   COOKIE_URL,
@@ -24,7 +24,10 @@ import {
   REGISTER_PASSWORD_URL,
   SIGN_IN_URL,
   SECOND_PAGE_URL,
+  ERROR_CREW_DETAILS_UPLOAD,
 } from './constants/AppUrlConstants';
+
+import { SERVICE_NAME } from './constants/AppConstants';
 
 // Regulatory pages
 import AccessibilityStatement from './pages/Regulatory/AccessibilityStatement';
@@ -47,10 +50,10 @@ import AccountAlreadyActive from './pages/Error/AccountAlreadyActive';
 import FormConfirmationPage from './pages/Confirmation/FormConfirmationPage';
 // Protected pages
 import Dashboard from './pages/Dashboard/Dashboard';
+import ErrorsCrewUpload from './pages/Voyage/ErrorsCrewUpload';
 
 // Temp Pages
 import SecondPage from './pages/TempPages/SecondPage';
-import { SERVICE_NAME } from './constants/AppConstants';
 
 const AppRouter = ({ setIsCookieBannerShown }) => {
   document.title = SERVICE_NAME;
@@ -83,6 +86,7 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
         <Route element={<ProtectedRoutes isPermittedToView={isPermittedToView} />}>
           <Route path={DASHBOARD_URL} element={<Dashboard />} />
           <Route path={SECOND_PAGE_URL} element={<SecondPage />} />
+          <Route path={ERROR_CREW_DETAILS_UPLOAD} element={<ErrorsCrewUpload />} />
         </Route>
         <Route path='*' element={<Navigate to='/' replace />} />
       </Routes>
