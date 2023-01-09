@@ -118,6 +118,9 @@ const ErrorsCrewUpload = () => {
             </tbody>
           </table>
         </div>
+        <button className="govuk-button" data-module="govuk-button">
+          Re-upload file
+        </button>
       </div>
     </div>
   );
