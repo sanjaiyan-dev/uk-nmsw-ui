@@ -82,42 +82,42 @@ const ErrorsCrewUpload = () => {
   return (
     <div className="govuk-grid-row">
       <div className="govuk-grid-column-two-thirds">
-        <h1 className="govuk-heading-xl">There is a problem</h1>
-        <p className="govuk-body govuk-!-font-weight-bold">Your file has errors. Check the file to fix any errors and re upload your file.</p>
-        {/* <div className="govuk-form-group--error"> */}
-        <table className="govuk-table">
-          <caption className="govuk-table__caption govuk-table__caption--s govuk-border-bottom">{`${uploadErrors?.length} Errors found in ${fileName}`}</caption>
-          <thead className="govuk-table__head govuk-form-group--error">
-            <tr className="govuk-table__row">
-              <th scope="col" className="govuk-table__header govuk-!-width-one-third govuk-!-padding-left-3">Cell number</th>
-              <th scope="col" className="govuk-table__header">Error</th>
-            </tr>
-          </thead>
-          <tbody className="govuk-table__body govuk-form-group--error">
-            {uploadErrors?.map((error) => {
-              return (
-                <tr key={error.id} className="govuk-table__row">
-                  <td className="govuk-table__cell govuk-table__cell--bold">
-                    <span className="responsive-table__heading" aria-hidden="true">
-                      Cell number
-                    </span>
-                    {error.cell}
-                  </td>
-                  <td className="govuk-table__cell">
-                    <span className="responsive-table__heading" aria-hidden="true">
-                      Error
-                    </span>
-                    <div className="text-align-right">
-                      {`${error.cellValue} - `}
-                      <span className="govuk-error-message govuk-inline">{error.errorMessage}</span>
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-        {/* </div> */}
+        <h1 className="govuk-heading-xl govuk-!-margin-bottom-3">Errors found</h1>
+        <p className="govuk-body-l govuk-!-font-weight-bold">Your file has errors. Check the file to fix any errors and re-upload your file.</p>
+        <div className="govuk-form-group--error">
+          <table className="govuk-table responsive-table">
+            <caption className="govuk-table__caption govuk-table__caption--s govuk-border-bottom">{`${uploadErrors?.length} errors found in ${fileName}`}</caption>
+            <thead className="govuk-table__head">
+              <tr className="govuk-table__row" role="row">
+                <th scope="col" className="govuk-table__header govuk-!-width-one-third">Cell number</th>
+                <th scope="col" className="govuk-table__header">Error</th>
+              </tr>
+            </thead>
+            <tbody className="govuk-table__body">
+              {uploadErrors?.map((error) => {
+                return (
+                  <tr key={error.id} className="govuk-table__row" role="row">
+                    <td className="govuk-table__cell govuk-table__cell--bold">
+                      <span className="responsive-table__heading" aria-hidden="true">
+                        Cell number
+                      </span>
+                      {error.cell}
+                    </td>
+                    <td className="govuk-table__cell">
+                      <span className="responsive-table__heading" aria-hidden="true">
+                        Error
+                      </span>
+                      <div className="text-align-right">
+                        {`${error.cellValue} - `}
+                        <span className="govuk-error-message govuk-inline">{error.errorMessage}</span>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
