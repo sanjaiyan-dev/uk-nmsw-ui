@@ -15,6 +15,7 @@ import DisplayForm from '../../components/DisplayForm';
 const RegisterYourDetails = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
+  document.title = 'Your details';
 
   const formActions = {
     submit: {

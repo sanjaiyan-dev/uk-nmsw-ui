@@ -26,6 +26,7 @@ const SignIn = () => {
   const { signIn, user } = useContext(UserContext);
   const navigate = useNavigate();
   const { state } = useLocation();
+  document.title = 'Sign in';
 
   // Form fields
   const formActions = {

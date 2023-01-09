@@ -30,6 +30,7 @@ const SupportingText = () => {
 
 const RegisterEmailAddress = () => {
   const navigate = useNavigate();
+  document.title = 'What is your email address';
 
   const formActions = {
     submit: {
