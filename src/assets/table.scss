@@ -30,11 +30,6 @@ tbody tr td {
   width: 50%;
 }
 
-.text-align-right {
-  display: inline-block;
-  text-align: right;
-}
-
 @media (min-width: 769px) {
   tbody tr {
     display: table-row;
@@ -68,6 +63,10 @@ tbody tr td {
   }
   .responsive-table__cell {
     width: 100%;
+    text-align: right;
+  }
+  .text-align-right {
+    display: inline-block;
     text-align: right;
   }
 };
