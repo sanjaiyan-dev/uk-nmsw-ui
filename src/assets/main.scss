@@ -1,5 +1,6 @@
 @import '~govuk-frontend/govuk/all';
 @import "accessible-autocomplete";
+@import './table.scss';
 
 // ===================
 // Layout Overrides
@@ -112,4 +113,15 @@ body {
 .govuk-error-summary__list .govuk-button--text:focus {
   font-weight: 700;
   color: $govuk-focus-text-colour;
+}
+
+// Upload errors
+.govuk-inline {
+  display: inline
+}
+
+.govuk-border-bottom {
+  border-bottom: 1px solid #b1b4b6;
+  padding: 10px 20px 10px 0;
+  margin-bottom: 20px
 }

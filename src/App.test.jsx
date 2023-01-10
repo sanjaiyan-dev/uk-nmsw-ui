@@ -111,11 +111,11 @@ describe('App tests', () => {
   it('should clear formData when a footer item is clicked', async () => {
     const user = userEvent.setup();
     render(<MemoryRouter><App /></MemoryRouter>);
-    const startButton = screen.getByRole('button', { name: 'Start now' });
+    const startButton = screen.getByRole('link', { name: 'create an account' });
     await user.click(startButton);
     await user.type(screen.getByLabelText('Email address'), 'test@test.com');
     
-    expect(window.sessionStorage.getItem('formData')).toStrictEqual('{"email":"test@test.com"}');
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual('{"emailAddress":"test@test.com"}');
 
     await user.click(screen.getByText('Accessibility'));
     expect(window.sessionStorage.getItem('formData')).toStrictEqual(null);
@@ -124,11 +124,11 @@ describe('App tests', () => {
   it('should clear formData when GOV logo is clicked', async () => {
     const user = userEvent.setup();
     render(<MemoryRouter><App /></MemoryRouter>);
-    const startButton = screen.getByRole('button', { name: 'Start now' });
+    const startButton = screen.getByRole('link', { name: 'create an account' });
     await user.click(startButton);
     await user.type(screen.getByLabelText('Email address'), 'test@test.com');
     
-    expect(window.sessionStorage.getItem('formData')).toStrictEqual('{"email":"test@test.com"}');
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual('{"emailAddress":"test@test.com"}');
 
     await user.click(screen.getByText('GOV.UK'));
     expect(window.sessionStorage.getItem('formData')).toStrictEqual(null);
@@ -137,11 +137,11 @@ describe('App tests', () => {
   it('should clear formData when service name is clicked', async () => {
     const user = userEvent.setup();
     render(<MemoryRouter><App /></MemoryRouter>);
-    const startButton = screen.getByRole('button', { name: 'Start now' });
+    const startButton = screen.getByRole('link', { name: 'create an account' });
     await user.click(startButton);
     await user.type(screen.getByLabelText('Email address'), 'test@test.com');
     
-    expect(window.sessionStorage.getItem('formData')).toStrictEqual('{"email":"test@test.com"}');
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual('{"emailAddress":"test@test.com"}');
 
     await user.click(screen.getByText(SERVICE_NAME));
     expect(window.sessionStorage.getItem('formData')).toStrictEqual(null);

@@ -3,6 +3,7 @@ import { REGISTER_EMAIL_RESEND_URL } from '../../constants/AppUrlConstants';
 
 const RegisterEmailCheck = () => {
   const { state } = useLocation();
+  document.title = 'Check your email';
 
   return (
     <>

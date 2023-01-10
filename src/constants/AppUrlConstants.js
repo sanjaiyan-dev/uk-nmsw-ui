@@ -27,6 +27,9 @@ export const REGISTER_PASSWORD_URL = '/create-account/your-password';
 export const ERROR_URL = '/error';
 export const ERROR_ACCOUNT_ALREADY_ACTIVE_URL = '/create-account/account-already-exists';
 
+//Voyage error pages
+export const ERROR_CREW_DETAILS_UPLOAD= '/create-voyage/check-crew-details';
+
 // Test pages
 export const SECOND_PAGE_NAME = 'Second page';
 export const SECOND_PAGE_URL = '/second-page';

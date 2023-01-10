@@ -1,11 +1,11 @@
 import { useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { REGISTER_ACCOUNT_URL } from '../../constants/AppUrlConstants';
 import { UserContext } from '../../context/userContext';
 import {
   FIELD_EMAIL,
   FIELD_PASSWORD,
-  SINGLE_PAGE_FORM,
+  SIGN_IN_FORM,
   VALIDATE_EMAIL_ADDRESS,
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
@@ -22,10 +22,11 @@ const SupportingText = () => {
   );
 };
 
-const SignIn = (userDetails) => {
-  const tempHardCodedUser = Object.entries(userDetails).length > 0 ? userDetails.user : { name: 'MockedUser' };
-  const { signIn } = useContext(UserContext);
+const SignIn = () => {
+  const { signIn, user } = useContext(UserContext);
   const navigate = useNavigate();
+  const { state } = useLocation();
+  document.title = 'Sign in';
 
   // Form fields
   const formActions = {
@@ -62,9 +63,12 @@ const SignIn = (userDetails) => {
     },
   ];
 
-  const handleSubmit = () => {
-    signIn({ ...tempHardCodedUser });
-    navigate(DASHBOARD_URL);
+  const handleSubmit = ({ formData }) => {
+    if (user.email !== formData.email) {
+      sessionStorage.removeItem('formData');
+    }
+    signIn({ formData });
+    state?.redirectURL ? navigate(state.redirectURL) : navigate(DASHBOARD_URL);
   };
 
   return (
@@ -74,7 +78,8 @@ const SignIn = (userDetails) => {
         formId='formSignIn'
         fields={formFields}
         formActions={formActions}
-        formType={SINGLE_PAGE_FORM}
+        formType={SIGN_IN_FORM}
+        keepSessionOnSubmit={state?.redirectURL ? true : false}
         handleSubmit={handleSubmit}
       >
         <SupportingText />

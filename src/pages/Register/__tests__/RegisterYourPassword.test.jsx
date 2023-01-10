@@ -1,7 +1,10 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
-import { ERROR_URL, REGISTER_CONFIRMATION_URL, REGISTER_EMAIL_VERIFIED_URL } from '../../../constants/AppUrlConstants';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
+import { AXIOS_ERROR, REGISTER_ACCOUNT_ENDPOINT, TOKEN_INVALID } from '../../../constants/AppAPIConstants';
+import { ERROR_URL, REGISTER_CONFIRMATION_URL, REGISTER_EMAIL_VERIFIED_URL, REGISTER_PASSWORD_URL } from '../../../constants/AppUrlConstants';
 import RegisterYourPassword from '../RegisterYourPassword';
 
 let mockUseLocationState = { state: {} };
@@ -15,18 +18,14 @@ jest.mock('react-router', () => ({
   })
 }));
 
-let mockedUserPatchData = {};
-jest.mock('../../../hooks/usePatchData', () => {
-  return jest.fn(() => (mockedUserPatchData));
-});
-
-
 describe('Register password tests', () => {
   const handleSubmit = jest.fn();
+  const mockAxios = new MockAdapter(axios);
   let scrollIntoViewMock = jest.fn();
   window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
 
   beforeEach(() => {
+    mockAxios.reset();
     mockUseLocationState = { state: {} };
     window.sessionStorage.clear();
   });
@@ -126,7 +125,7 @@ describe('Register password tests', () => {
 
   it('should display the error messages if password value has spaces', async () => {
     const user = userEvent.setup();
-    render(<MemoryRouter><RegisterYourPassword state={{ dataToSubmit: { sampleField: 'field value', secondField: 'second value' }}} /></MemoryRouter>);
+    render(<MemoryRouter><RegisterYourPassword state={{ dataToSubmit: { sampleField: 'field value', secondField: 'second value' } }} /></MemoryRouter>);
     await user.type(screen.getByLabelText('Password'), 'my password');
     await user.click(screen.getByTestId('submit-button'));
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
@@ -135,7 +134,7 @@ describe('Register password tests', () => {
 
   it('should display the error messages if password value has spaces at the start', async () => {
     const user = userEvent.setup();
-    render(<MemoryRouter><RegisterYourPassword state={{ dataToSubmit: { sampleField: 'field value', secondField: 'second value' }}} /></MemoryRouter>);
+    render(<MemoryRouter><RegisterYourPassword state={{ dataToSubmit: { sampleField: 'field value', secondField: 'second value' } }} /></MemoryRouter>);
     await user.type(screen.getByLabelText('Password'), ' mypassword');
     await user.click(screen.getByTestId('submit-button'));
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
@@ -144,7 +143,7 @@ describe('Register password tests', () => {
 
   it('should display the error messages if password value has spaces at the end', async () => {
     const user = userEvent.setup();
-    render(<MemoryRouter><RegisterYourPassword state={{ dataToSubmit: { sampleField: 'field value', secondField: 'second value' }}} /></MemoryRouter>);
+    render(<MemoryRouter><RegisterYourPassword state={{ dataToSubmit: { sampleField: 'field value', secondField: 'second value' } }} /></MemoryRouter>);
     await user.type(screen.getByLabelText('Password'), 'mypassword ');
     await user.click(screen.getByTestId('submit-button'));
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
@@ -153,7 +152,7 @@ describe('Register password tests', () => {
 
   it('should display the required error messages if password value is only spaces', async () => {
     const user = userEvent.setup();
-    render(<MemoryRouter><RegisterYourPassword state={{ dataToSubmit: { sampleField: 'field value', secondField: 'second value' }}} /></MemoryRouter>);
+    render(<MemoryRouter><RegisterYourPassword state={{ dataToSubmit: { sampleField: 'field value', secondField: 'second value' } }} /></MemoryRouter>);
     await user.type(screen.getByLabelText('Password'), '          ');
     await user.click(screen.getByTestId('submit-button'));
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
@@ -163,7 +162,7 @@ describe('Register password tests', () => {
 
   it('should display the min length error message if password has spaces and is fewer than 10 characters', async () => {
     const user = userEvent.setup();
-    render(<MemoryRouter><RegisterYourPassword state={{ dataToSubmit: { sampleField: 'field value', secondField: 'second value' }}} /></MemoryRouter>);
+    render(<MemoryRouter><RegisterYourPassword state={{ dataToSubmit: { sampleField: 'field value', secondField: 'second value' } }} /></MemoryRouter>);
     await user.type(screen.getByLabelText('Password'), '   s');
     await user.click(screen.getByTestId('submit-button'));
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
@@ -173,6 +172,19 @@ describe('Register password tests', () => {
 
   it('should NOT display error messagess if fields are valid', async () => {
     const user = userEvent.setup();
+    mockAxios
+      .onPatch(REGISTER_ACCOUNT_ENDPOINT)
+      .reply(200, {
+        email: 'testemail@email.com',
+        fullName: 'Joe Bloggs',
+        country: 'GBR',
+        phoneNumber: '(44)123123123',
+        password: 'abc1234567',
+        groupName: 'My Corporation',
+        groupTypeName: 'Shipping Agency',
+        token: 'tokennumber'
+      });
+
     render(<MemoryRouter><RegisterYourPassword /></MemoryRouter>);
     await user.type(screen.getByLabelText('Password'), 'mypasswordis');
     await user.type(screen.getByLabelText('Confirm your password'), 'mypasswordis');
@@ -195,22 +207,23 @@ describe('Register password tests', () => {
         shippingAgent: 'yes'
       }
     };
-    mockedUserPatchData = {
-      status: 200,
-      data: {
+    mockAxios
+      .onPatch(REGISTER_ACCOUNT_ENDPOINT)
+      .reply(200, {
         email: 'testemail@email.com',
         fullName: 'Joe Bloggs',
-        country: 'AUS',
-        phoneNumber: '(123)12345',
-        groupName: 'My company',
+        country: 'GBR',
+        phoneNumber: '(44)123123123',
+        password: 'abc1234567',
+        groupName: 'My Corporation',
         groupTypeName: 'Shipping Agency',
+        token: 'tokennumber',
         id: '123',
         groupId: '456',
         verified: false,
         dateCreated: '2022-12-14T10:10:17.134835',
         lastUpdated: '2022-12-14T14:20:23.497658'
-      }
-    };
+      });
 
     // set what would be in the session prior to this page
     window.sessionStorage.setItem('formData', JSON.stringify({ fullName: 'Joe Bloggs', companyName: 'My company', phoneNumber: '(123)12345', country: 'AUS', shippingAgent: 'yes' }));
@@ -227,22 +240,23 @@ describe('Register password tests', () => {
 
   it('should navigate to confirmation page if successful PATCH response', async () => {
     const user = userEvent.setup();
-    mockedUserPatchData = {
-      status: 200,
-      data: {
+    mockAxios
+      .onPatch(REGISTER_ACCOUNT_ENDPOINT)
+      .reply(200, {
         email: 'testemail@email.com',
         fullName: 'Joe Bloggs',
-        country: 'AUS',
-        phoneNumber: '(123)12345',
+        country: 'GBR',
+        phoneNumber: '(44)123123123',
+        password: 'abc1234567',
         groupName: 'My company',
         groupTypeName: 'Shipping Agency',
+        token: 'tokennumber',
         id: '123',
         groupId: '456',
         verified: false,
         dateCreated: '2022-12-14T10:10:17.134835',
         lastUpdated: '2022-12-14T14:20:23.497658'
-      }
-    };
+      });
 
     render(<MemoryRouter><RegisterYourPassword /></MemoryRouter>);
     await user.type(screen.getByLabelText('Password'), 'mypasswordis');
@@ -253,32 +267,69 @@ describe('Register password tests', () => {
     });
   });
 
-  it('should navigate to error page if failed PATCH response', async () => {
+  it('should navigate to error page if PATCH response returns invalid token', async () => {
     const user = userEvent.setup();
-    mockedUserPatchData = {
-      message: 'error response',
-      status: '400'
-    };
+    mockAxios
+      .onPatch(REGISTER_ACCOUNT_ENDPOINT)
+      .reply(401, {
+        message: TOKEN_INVALID
+      });
 
     render(<MemoryRouter><RegisterYourPassword /></MemoryRouter>);
     await user.type(screen.getByLabelText('Password'), 'mypasswordis');
     await user.type(screen.getByLabelText('Confirm your password'), 'mypasswordis');
     await user.click(screen.getByTestId('submit-button'));
      await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_URL, {'state': {'message': 'error response', 'redirectURL': REGISTER_EMAIL_VERIFIED_URL}});
+      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_URL, {'state': {'title': 'Verification link has expired', 'redirectURL': REGISTER_EMAIL_VERIFIED_URL}});
     });
   });
 
-  it('should navigate to error page if id missing from PATCH response', async () => {
+  it('should navigate to error page if PATCH response returns axios error', async () => {
     const user = userEvent.setup();
-    mockedUserPatchData = undefined;
+    mockAxios
+      .onPatch(REGISTER_ACCOUNT_ENDPOINT)
+      .reply({
+        message: AXIOS_ERROR
+      });
 
     render(<MemoryRouter><RegisterYourPassword /></MemoryRouter>);
     await user.type(screen.getByLabelText('Password'), 'mypasswordis');
     await user.type(screen.getByLabelText('Confirm your password'), 'mypasswordis');
     await user.click(screen.getByTestId('submit-button'));
-    await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_URL, {'state': {'message': 'Something has gone wrong', 'redirectURL': REGISTER_EMAIL_VERIFIED_URL}});
+     await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_URL, {'state': {'title': 'Something has gone wrong', 'redirectURL': REGISTER_PASSWORD_URL}});
+    });
+  });
+
+  it('should navigate to error page if PATCH response returns 500 error', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onPatch(REGISTER_ACCOUNT_ENDPOINT)
+      .reply(500);
+
+    render(<MemoryRouter><RegisterYourPassword /></MemoryRouter>);
+    await user.type(screen.getByLabelText('Password'), 'mypasswordis');
+    await user.type(screen.getByLabelText('Confirm your password'), 'mypasswordis');
+    await user.click(screen.getByTestId('submit-button'));
+     await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_URL, {'state': {'title': 'Something has gone wrong', 'redirectURL': REGISTER_PASSWORD_URL}});
+    });
+  });
+
+  it('should navigate to error page if PATCH response returns unknown error', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onPatch(REGISTER_ACCOUNT_ENDPOINT)
+      .reply(400, {
+        message: 'an error we do not handle'
+      });
+
+    render(<MemoryRouter><RegisterYourPassword /></MemoryRouter>);
+    await user.type(screen.getByLabelText('Password'), 'mypasswordis');
+    await user.type(screen.getByLabelText('Confirm your password'), 'mypasswordis');
+    await user.click(screen.getByTestId('submit-button'));
+     await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_URL, {'state': {'title': 'Something has gone wrong', message: 'an error we do not handle', 'redirectURL': REGISTER_PASSWORD_URL}});
     });
   });
 });

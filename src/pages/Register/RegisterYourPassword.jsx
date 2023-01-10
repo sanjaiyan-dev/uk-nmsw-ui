@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { REGISTER_ACCOUNT_ENDPOINT } from '../../constants/AppAPIConstants';
+import axios from 'axios';
+import { AXIOS_ERROR, REGISTER_ACCOUNT_ENDPOINT, TOKEN_INVALID } from '../../constants/AppAPIConstants';
 import {
   FIELD_PASSWORD,
   MULTI_PAGE_FORM,
@@ -8,9 +9,9 @@ import {
   VALIDATE_NO_SPACES,
   VALIDATE_REQUIRED
 } from '../../constants/AppConstants';
-import { ERROR_URL, REGISTER_CONFIRMATION_URL, REGISTER_EMAIL_VERIFIED_URL } from '../../constants/AppUrlConstants';
+import { ERROR_URL, REGISTER_CONFIRMATION_URL, REGISTER_EMAIL_VERIFIED_URL, REGISTER_PASSWORD_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
-import usePatchData from '../../hooks/usePatchData';
+import Auth from '../../utils/Auth';
 
 const SupportingText = () => {
   return (
@@ -26,6 +27,7 @@ const SupportingText = () => {
 const RegisterYourPassword = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
+  document.title = 'Create a password';
 
   const formActions = {
     submit: {
@@ -77,37 +79,33 @@ const RegisterYourPassword = () => {
 
   const handleSubmit = async (formData) => {
     // combine data from previous page of form
-    const dataToSubmit = { ...state?.dataToSubmit, ...formData.formData };
+    const dataMerged = { ...state?.dataToSubmit, ...formData.formData };
+    const dataToSubmit = {
+      email: dataMerged.emailAddress,
+      fullName: dataMerged.fullName,
+      country: dataMerged.country, // max 3 characters (country code)
+      phoneNumber: dataMerged.phoneNumber,
+      password: dataMerged.requirePassword,
+      groupName: dataMerged.companyName,
+      groupTypeName: dataMerged.shippingAgent === 'yes' ? 'Shipping Agency' : 'Operator', // these are the only two valid public group types
+      token: 'tbd',
+    };
+
     try {
-      const response = await usePatchData({
-        url: REGISTER_ACCOUNT_ENDPOINT,
-        dataToSubmit: {
-          email: dataToSubmit.emailAddress,
-          fullName: dataToSubmit.fullName,
-          country: dataToSubmit.country, // max 3 characters (country code)
-          phoneNumber: dataToSubmit.phoneNumber,
-          password: dataToSubmit.requirePassword,
-          groupName: dataToSubmit.companyName,
-          groupTypeName: dataToSubmit.shippingAgent === 'yes' ? 'Shipping Agency' : 'Operator' // these are the only two valid public group types
-        }
+      const response = await axios.patch(REGISTER_ACCOUNT_ENDPOINT, dataToSubmit, {
+        headers: { Authorization: `Bearer ${Auth.retrieveToken()}` },
       });
-      if (response && response.status === 200) {
-        sessionStorage.removeItem('formData');
-        navigate(
-          REGISTER_CONFIRMATION_URL,
-          {
-            state: {
-              companyName: response.data.groupName
-            }
-          }
-        );
-      } else {
-        navigate(ERROR_URL, { state: { 
-          message: response.message ? response.message : 'Something has gone wrong',
-          redirectURL: REGISTER_EMAIL_VERIFIED_URL }});
-      }
+      navigate(REGISTER_CONFIRMATION_URL, { state: { companyName: response.data.groupName } });
+      sessionStorage.removeItem('formData');
     } catch (err) {
-      navigate(ERROR_URL, { state: { message: 'Something has gone wrong', redirectURL: REGISTER_EMAIL_VERIFIED_URL }});
+      // catch any axios errors and treat as a generic error
+      if (err.message === AXIOS_ERROR) {
+        navigate(ERROR_URL, { state: { title: 'Something has gone wrong', redirectURL: REGISTER_EMAIL_VERIFIED_URL } });
+      } else if (err.response?.data?.message === TOKEN_INVALID) {
+        navigate(ERROR_URL, { state: { title: 'Verification link has expired', redirectURL: REGISTER_EMAIL_VERIFIED_URL } });
+      } else {
+        navigate(ERROR_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: REGISTER_PASSWORD_URL } });
+      }
     }
   };
 

@@ -4,8 +4,8 @@ import { DASHBOARD_URL, REGISTER_ACCOUNT_URL, SIGN_IN_URL } from '../../constant
 import useUserIsPermitted from '../../hooks/useUserIsPermitted';
 
 const Landing = () => {
-
   const isAuthenticated = useUserIsPermitted();
+  document.title = SERVICE_NAME;
   
   return (
     <>
