@@ -4,7 +4,9 @@ import useUserIsPermitted from './hooks/useUserIsPermitted';
 import ProtectedRoutes from './utils/ProtectedRoutes';
 import ScrollToTopOnNewPage from './utils/ScrollToTopOnNewPage';
 
-// Constants
+import { SERVICE_NAME } from './constants/AppConstants';
+
+// URLs
 import {
   ACCESSIBILITY_URL,
   COOKIE_URL,
@@ -24,10 +26,8 @@ import {
   REGISTER_PASSWORD_URL,
   SIGN_IN_URL,
   SECOND_PAGE_URL,
-  ERROR_CREW_DETAILS_UPLOAD,
+  ERROR_CREW_DETAILS_UPLOAD_URL,
 } from './constants/AppUrlConstants';
-
-import { SERVICE_NAME } from './constants/AppConstants';
 
 // Regulatory pages
 import AccessibilityStatement from './pages/Regulatory/AccessibilityStatement';
@@ -44,8 +44,8 @@ import RegisterYourDetails from './pages/Register/RegisterYourDetails';
 import RegisterYourPassword from './pages/Register/RegisterYourPassword';
 import SignIn from './pages/SignIn/SignIn';
 // Error/Message pages
-import GenericUnknownError from './pages/Error/GenericUnknownError';
-import AccountAlreadyActive from './pages/Error/AccountAlreadyActive';
+import GenericUnknownError from './pages/Confirmation/GenericUnknownError';
+import AccountAlreadyActive from './pages/Confirmation/AccountAlreadyActive';
 // Other pages (could be protected or not)
 import FormConfirmationPage from './pages/Confirmation/FormConfirmationPage';
 // Protected pages
@@ -86,7 +86,7 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
         <Route element={<ProtectedRoutes isPermittedToView={isPermittedToView} />}>
           <Route path={DASHBOARD_URL} element={<Dashboard />} />
           <Route path={SECOND_PAGE_URL} element={<SecondPage />} />
-          <Route path={ERROR_CREW_DETAILS_UPLOAD} element={<ErrorsCrewUpload />} />
+          <Route path={ERROR_CREW_DETAILS_UPLOAD_URL} element={<ErrorsCrewUpload />} />
         </Route>
         <Route path='*' element={<Navigate to='/' replace />} />
       </Routes>

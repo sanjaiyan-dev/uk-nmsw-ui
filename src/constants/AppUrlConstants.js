@@ -28,7 +28,7 @@ export const ERROR_URL = '/error';
 export const ERROR_ACCOUNT_ALREADY_ACTIVE_URL = '/create-account/account-already-exists';
 
 //Voyage error pages
-export const ERROR_CREW_DETAILS_UPLOAD= '/create-voyage/check-crew-details';
+export const ERROR_CREW_DETAILS_UPLOAD_URL = '/create-voyage/check-crew-details';
 
 // Test pages
 export const SECOND_PAGE_NAME = 'Second page';
