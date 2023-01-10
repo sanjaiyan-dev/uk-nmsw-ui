@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { SERVICE_NAME } from '../../constants/AppConstants';
-import { DASHBOARD_URL, REGISTER_ACCOUNT_URL, SIGN_IN_URL } from '../../constants/AppUrlConstants';
+import { YOUR_VOYAGES_URL, REGISTER_ACCOUNT_URL, SIGN_IN_URL } from '../../constants/AppUrlConstants';
 import useUserIsPermitted from '../../hooks/useUserIsPermitted';
 
 const Landing = () => {
@@ -13,7 +13,7 @@ const Landing = () => {
       <p className="govuk-body">Use this service to:</p>
       <p className="govuk-body" data-testid="createAccountParagraph">You&apos;ll also need to sign in or <Link to={REGISTER_ACCOUNT_URL}>create an account</Link> to use this service</p>
       <Link 
-        to={isAuthenticated ? DASHBOARD_URL : SIGN_IN_URL}
+        to={isAuthenticated ? YOUR_VOYAGES_URL : SIGN_IN_URL}
         role="button"
         draggable="false"
         className="govuk-button govuk-button--start"

@@ -10,8 +10,8 @@ import {
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
 import {
-  DASHBOARD_PAGE_NAME,
-  DASHBOARD_URL,
+  YOUR_VOYAGES_PAGE_NAME,
+  YOUR_VOYAGES_URL,
   FORM_CONFIRMATION_URL,
   SECOND_PAGE_URL,
   SIGN_IN_URL
@@ -29,7 +29,7 @@ const SecondPage = () => {
     },
     cancel: {
       label: 'Cancel',
-      redirectURL: DASHBOARD_URL
+      redirectURL: YOUR_VOYAGES_URL
     }
   };
   const formFields = [
@@ -200,8 +200,8 @@ const SecondPage = () => {
       {
         state: {
           formName: 'Second page',
-          nextPageLink: DASHBOARD_URL,
-          nextPageName: DASHBOARD_PAGE_NAME,
+          nextPageLink: YOUR_VOYAGES_URL,
+          nextPageName: YOUR_VOYAGES_PAGE_NAME,
           referenceNumber: referenceNumber
         }
       }

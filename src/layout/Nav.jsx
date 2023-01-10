@@ -4,8 +4,8 @@ import { UserContext } from '../context/userContext';
 import { Link } from 'react-router-dom';
 import { SERVICE_NAME } from '../constants/AppConstants';
 import {
-  DASHBOARD_PAGE_NAME,
-  DASHBOARD_URL,
+  YOUR_VOYAGES_PAGE_NAME,
+  YOUR_VOYAGES_URL,
   LANDING_URL,
   SECOND_PAGE_NAME,
   SECOND_PAGE_URL,
@@ -19,8 +19,8 @@ const Nav = () => {
   const navData = [
     {
       id: 'Dashboard',
-      urlStem: DASHBOARD_URL,
-      text: DASHBOARD_PAGE_NAME,
+      urlStem: YOUR_VOYAGES_URL,
+      text: YOUR_VOYAGES_PAGE_NAME,
       active: false,
     },
     {
@@ -133,7 +133,7 @@ const Nav = () => {
                 );
               })}
               <li className="govuk-header__navigation-item">
-                <NavLink to={DASHBOARD_URL} className="govuk-header__link" onClick={() => signOut()}>Sign out</NavLink>
+                <NavLink to={YOUR_VOYAGES_URL} className="govuk-header__link" onClick={() => signOut()}>Sign out</NavLink>
                 {/* Link tag cannot be used as we do not have a signout route */}
               </li>
             </ul>
