@@ -44,10 +44,10 @@ import RegisterYourDetails from './pages/Register/RegisterYourDetails';
 import RegisterYourPassword from './pages/Register/RegisterYourPassword';
 import SignIn from './pages/SignIn/SignIn';
 // Error/Message pages
-import GenericUnknownError from './pages/Confirmation/GenericUnknownError';
-import AccountAlreadyActive from './pages/Confirmation/AccountAlreadyActive';
+import GenericUnknownError from './pages/Message/GenericUnknownError';
+import AccountAlreadyActive from './pages/Message/AccountAlreadyActive';
 // Other pages (could be protected or not)
-import FormConfirmationPage from './pages/Confirmation/FormConfirmationPage';
+import FormConfirmationPage from './pages/Message/FormConfirmationPage';
 // Protected pages
 import Dashboard from './pages/Dashboard/Dashboard';
 import ErrorsCrewUpload from './pages/Voyage/ErrorsCrewUpload';
