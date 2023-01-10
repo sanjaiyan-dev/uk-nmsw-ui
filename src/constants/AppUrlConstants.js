@@ -5,8 +5,8 @@ export const FEEDBACK_URL = '/';
 // Pages
 export const ACCESSIBILITY_URL = '/accessibility-statement';
 export const COOKIE_URL = '/cookies';
-export const DASHBOARD_PAGE_NAME = 'Dashboard';
-export const DASHBOARD_URL = '/dashboard';
+export const DASHBOARD_PAGE_NAME = 'Your voyages';
+export const DASHBOARD_URL = '/your-voyages';
 export const FORM_CONFIRMATION_URL = '/confirmation';
 export const LANDING_URL = '/';
 export const PRIVACY_URL = '/privacy-notice';
