@@ -17,7 +17,7 @@ import {
   VALIDATE_PHONE_NUMBER,
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
-import { DASHBOARD_URL } from '../../constants/AppUrlConstants';
+import { YOUR_VOYAGES_URL } from '../../constants/AppUrlConstants';
 
 /*
  * These tests check that we can pass a variety of
@@ -47,7 +47,7 @@ describe('Display Form', () => {
     },
     cancel: {
       label: 'Cancel test button',
-      redirectURL: DASHBOARD_URL,
+      redirectURL: YOUR_VOYAGES_URL,
     }
   };
   const formActionsSubmitOnly = {
@@ -668,7 +668,7 @@ describe('Display Form', () => {
     expect(window.sessionStorage.getItem('formData')).toStrictEqual(expectedStoredData);
 
     await user.click(screen.getByRole('button', { name: 'Cancel test button' }));
-    expect(mockedUseNavigate).toHaveBeenCalledWith(DASHBOARD_URL);
+    expect(mockedUseNavigate).toHaveBeenCalledWith(YOUR_VOYAGES_URL);
     expect(window.sessionStorage.getItem('formData')).toStrictEqual(null);
   });
 

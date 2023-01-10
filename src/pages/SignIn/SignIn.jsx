@@ -9,7 +9,7 @@ import {
   VALIDATE_EMAIL_ADDRESS,
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
-import { DASHBOARD_URL } from '../../constants/AppUrlConstants';
+import { YOUR_VOYAGES_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
 
 const SupportingText = () => {
@@ -68,7 +68,7 @@ const SignIn = () => {
       sessionStorage.removeItem('formData');
     }
     signIn({ formData });
-    state?.redirectURL ? navigate(state.redirectURL) : navigate(DASHBOARD_URL);
+    state?.redirectURL ? navigate(state.redirectURL) : navigate(YOUR_VOYAGES_URL);
   };
 
   return (
