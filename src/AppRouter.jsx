@@ -49,7 +49,7 @@ import AccountAlreadyActive from './pages/Error/AccountAlreadyActive';
 // Other pages (could be protected or not)
 import FormConfirmationPage from './pages/Confirmation/FormConfirmationPage';
 // Protected pages
-import Dashboard from './pages/YourVoyages/YourVoyages';
+import YourVoyages from './pages/YourVoyages/YourVoyages';
 import ErrorsCrewUpload from './pages/Voyage/ErrorsCrewUpload';
 
 // Temp Pages
@@ -84,7 +84,7 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
         <Route path={FORM_CONFIRMATION_URL} element={<FormConfirmationPage />} />
 
         <Route element={<ProtectedRoutes isPermittedToView={isPermittedToView} />}>
-          <Route path={YOUR_VOYAGES_URL} element={<Dashboard />} />
+          <Route path={YOUR_VOYAGES_URL} element={<YourVoyages />} />
           <Route path={SECOND_PAGE_URL} element={<SecondPage />} />
           <Route path={ERROR_CREW_DETAILS_UPLOAD} element={<ErrorsCrewUpload />} />
         </Route>

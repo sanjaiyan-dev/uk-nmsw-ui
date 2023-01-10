@@ -18,7 +18,7 @@ const Nav = () => {
   const showNav = useUserIsPermitted();
   const navData = [
     {
-      id: 'Dashboard',
+      id: 'YourVoyages',
       urlStem: YOUR_VOYAGES_URL,
       text: YOUR_VOYAGES_PAGE_NAME,
       active: false,

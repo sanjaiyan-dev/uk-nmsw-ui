@@ -51,7 +51,7 @@ describe('Navigation within header tests', () => {
     render(<MemoryRouter><App /></MemoryRouter>);
     await user.click(screen.getByText('Your voyages'));
     expect(screen.getAllByText('Your voyages')).toHaveLength(2); // h1 & nav item
-    expect(screen.getByTestId('listitem-Dashboard').outerHTML).toEqual('<li class="govuk-header__navigation-item govuk-header__navigation-item--active" data-testid="listitem-Dashboard"><a class="govuk-header__link" href="/your-voyages">Your voyages</a></li>');
+    expect(screen.getByTestId('listitem-YourVoyages').outerHTML).toEqual('<li class="govuk-header__navigation-item govuk-header__navigation-item--active" data-testid="listitem-YourVoyages"><a class="govuk-header__link" href="/your-voyages">Your voyages</a></li>');
     expect(screen.getByTestId('listitem-SecondPage').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-SecondPage"><a class="govuk-header__link" href="/second-page">Second page</a></li>');
   });
 
@@ -61,7 +61,7 @@ describe('Navigation within header tests', () => {
     render(<MemoryRouter><App /></MemoryRouter>);
     await user.click(screen.getByText('Second page'));
     expect(screen.getAllByText('Second page')).toHaveLength(2); // h1 & nav item
-    expect(screen.getByTestId('listitem-Dashboard').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-Dashboard"><a class="govuk-header__link" href="/your-voyages">Your voyages</a></li>');
+    expect(screen.getByTestId('listitem-YourVoyages').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-YourVoyages"><a class="govuk-header__link" href="/your-voyages">Your voyages</a></li>');
     expect(screen.getByTestId('listitem-SecondPage').outerHTML).toEqual('<li class="govuk-header__navigation-item govuk-header__navigation-item--active" data-testid="listitem-SecondPage"><a class="govuk-header__link" href="/second-page">Second page</a></li>');
   });
 
@@ -70,7 +70,7 @@ describe('Navigation within header tests', () => {
     const user = userEvent.setup();
     render(<MemoryRouter><App /></MemoryRouter>);
     await user.click(screen.getByTestId('serviceName'));
-    expect(screen.getByTestId('listitem-Dashboard').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-Dashboard"><a class="govuk-header__link" href="/your-voyages">Your voyages</a></li>');
+    expect(screen.getByTestId('listitem-YourVoyages').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-YourVoyages"><a class="govuk-header__link" href="/your-voyages">Your voyages</a></li>');
     expect(screen.getByTestId('listitem-SecondPage').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-SecondPage"><a class="govuk-header__link" href="/second-page">Second page</a></li>');
   });
 
@@ -79,14 +79,14 @@ describe('Navigation within header tests', () => {
     const user = userEvent.setup();
     render(<MemoryRouter><App /></MemoryRouter>);
     await user.click(screen.getByText('GOV.UK'));
-    expect(screen.getByTestId('listitem-Dashboard').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-Dashboard"><a class="govuk-header__link" href="/your-voyages">Your voyages</a></li>');
+    expect(screen.getByTestId('listitem-YourVoyages').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-YourVoyages"><a class="govuk-header__link" href="/your-voyages">Your voyages</a></li>');
     expect(screen.getByTestId('listitem-SecondPage').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-SecondPage"><a class="govuk-header__link" href="/second-page">Second page</a></li>');
   });
 
   it('should set highlight NO nav items if a new url is rendered and it does not relate to any of them', () => {
     mockedUserIsPermitted = true;
     render(<MemoryRouter><App /></MemoryRouter>);
-    expect(screen.getByTestId('listitem-Dashboard').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-Dashboard"><a class="govuk-header__link" href="/your-voyages">Your voyages</a></li>');
+    expect(screen.getByTestId('listitem-YourVoyages').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-YourVoyages"><a class="govuk-header__link" href="/your-voyages">Your voyages</a></li>');
     expect(screen.getByTestId('listitem-SecondPage').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-SecondPage"><a class="govuk-header__link" href="/second-page">Second page</a></li>');
   });
 
