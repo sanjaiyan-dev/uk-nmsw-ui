@@ -3,8 +3,8 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { REGISTER_ACCOUNT_ENDPOINT, TOKEN_INVALID } from '../../../constants/AppAPIConstants';
-import { ERROR_URL, REGISTER_CONFIRMATION_URL, REGISTER_EMAIL_VERIFIED_URL } from '../../../constants/AppUrlConstants';
+import { AXIOS_ERROR, REGISTER_ACCOUNT_ENDPOINT, TOKEN_INVALID } from '../../../constants/AppAPIConstants';
+import { ERROR_URL, REGISTER_CONFIRMATION_URL, REGISTER_EMAIL_VERIFIED_URL, REGISTER_PASSWORD_URL } from '../../../constants/AppUrlConstants';
 import RegisterYourPassword from '../RegisterYourPassword';
 
 let mockUseLocationState = { state: {} };
@@ -284,6 +284,38 @@ describe('Register password tests', () => {
     });
   });
 
+  it('should navigate to error page if PATCH response returns axios error', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onPatch(REGISTER_ACCOUNT_ENDPOINT)
+      .reply({
+        message: AXIOS_ERROR
+      });
+
+    render(<MemoryRouter><RegisterYourPassword /></MemoryRouter>);
+    await user.type(screen.getByLabelText('Password'), 'mypasswordis');
+    await user.type(screen.getByLabelText('Confirm your password'), 'mypasswordis');
+    await user.click(screen.getByTestId('submit-button'));
+     await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_URL, {'state': {'title': 'Something has gone wrong', 'redirectURL': REGISTER_PASSWORD_URL}});
+    });
+  });
+
+  it('should navigate to error page if PATCH response returns 500 error', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onPatch(REGISTER_ACCOUNT_ENDPOINT)
+      .reply(500);
+
+    render(<MemoryRouter><RegisterYourPassword /></MemoryRouter>);
+    await user.type(screen.getByLabelText('Password'), 'mypasswordis');
+    await user.type(screen.getByLabelText('Confirm your password'), 'mypasswordis');
+    await user.click(screen.getByTestId('submit-button'));
+     await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_URL, {'state': {'title': 'Something has gone wrong', 'redirectURL': REGISTER_PASSWORD_URL}});
+    });
+  });
+
   it('should navigate to error page if PATCH response returns unknown error', async () => {
     const user = userEvent.setup();
     mockAxios
@@ -297,7 +329,7 @@ describe('Register password tests', () => {
     await user.type(screen.getByLabelText('Confirm your password'), 'mypasswordis');
     await user.click(screen.getByTestId('submit-button'));
      await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_URL, {'state': {'title': 'Something has gone wrong', message: 'an error we do not handle', 'redirectURL': REGISTER_EMAIL_VERIFIED_URL}});
+      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_URL, {'state': {'title': 'Something has gone wrong', message: 'an error we do not handle', 'redirectURL': REGISTER_PASSWORD_URL}});
     });
   });
 });

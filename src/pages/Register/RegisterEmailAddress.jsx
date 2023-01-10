@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { REGISTER_ACCOUNT_ENDPOINT, USER_ALREADY_REGISTERED } from '../../constants/AppAPIConstants';
+import { AXIOS_ERROR, REGISTER_ACCOUNT_ENDPOINT, USER_ALREADY_REGISTERED } from '../../constants/AppAPIConstants';
 import {
   FIELD_EMAIL,
   SINGLE_PAGE_FORM,
@@ -87,10 +87,15 @@ const RegisterEmailAddress = () => {
       navigate(REGISTER_EMAIL_CHECK_URL, { state: { dataToSubmit: { emailAddress: response.data.email } } });
     } catch (err) {
       // scenarios we need updated response for : 400: User is awaiting verification
-      if (err.response.data.message === USER_ALREADY_REGISTERED) {
+
+      // catch any axios errors and treat as a generic error
+      if (err.message === AXIOS_ERROR) {
+        navigate(ERROR_URL, { state: { title: 'Something has gone wrong', redirectURL: REGISTER_EMAIL_URL } });
+      } else if (err.response?.data?.message === USER_ALREADY_REGISTERED) {
         navigate(ERROR_ACCOUNT_ALREADY_ACTIVE_URL, { state: { dataToSubmit: { emailAddress: formData.formData.emailAddress } } });
       } else {
-        navigate(ERROR_URL, { state: { title: 'Something has gone wrong', message: err.response.data.message, redirectURL: REGISTER_EMAIL_URL } });
+        // 500 errors will fall into this bucket
+        navigate(ERROR_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: REGISTER_EMAIL_URL } });
       }
     }
   };
