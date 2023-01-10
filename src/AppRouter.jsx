@@ -44,7 +44,7 @@ import RegisterYourDetails from './pages/Register/RegisterYourDetails';
 import RegisterYourPassword from './pages/Register/RegisterYourPassword';
 import SignIn from './pages/SignIn/SignIn';
 // Error/Message pages
-import GenericUnknownError from './pages/Message/GenericUnknownError';
+import GenericMessage from './pages/Message/GenericMessage';
 import AccountAlreadyActive from './pages/Message/AccountAlreadyActive';
 // Other pages (could be protected or not)
 import FormConfirmationPage from './pages/Message/FormConfirmationPage';
@@ -78,7 +78,7 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
         <Route path={REGISTER_PASSWORD_URL} element={<RegisterYourPassword />} />
         <Route path={SIGN_IN_URL} element={<SignIn />} />
 
-        <Route path={ERROR_URL} element={<GenericUnknownError />} />
+        <Route path={ERROR_URL} element={<GenericMessage />} />
         <Route path={ERROR_ACCOUNT_ALREADY_ACTIVE_URL} element={<AccountAlreadyActive />} />
 
         <Route path={FORM_CONFIRMATION_URL} element={<FormConfirmationPage />} />

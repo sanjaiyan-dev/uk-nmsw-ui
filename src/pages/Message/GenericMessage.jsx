@@ -2,7 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { SERVICE_NAME } from '../../constants/AppConstants';
 import { LANDING_URL } from '../../constants/AppUrlConstants';
 
-const GenericUnknownError = () => {
+const GenericMessage = () => {
   const { state } = useLocation();
   document.title = state?.title || SERVICE_NAME;
   return (
@@ -18,4 +18,4 @@ const GenericUnknownError = () => {
   );
 };
 
-export default GenericUnknownError;
+export default GenericMessage;
