@@ -1,6 +1,6 @@
 import { SERVICE_NAME } from '../../constants/AppConstants';
 
-const Dashboard = () => {
+const YourVoyages = () => {
   document.title = SERVICE_NAME;
   return (
     <>
@@ -15,4 +15,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default YourVoyages;
