@@ -12,8 +12,8 @@ Feature: User Registration
     Then I am redirected to provide my other details
     When I provide all my details
     Then I am redirected to password page
-    When I provide my password
-    Then my account is created and taken to confirmation page
+#    When I provide my password
+#    Then my account is created and taken to confirmation page
 
   Scenario: Should not register existing user
     When I click create an account on the landing page

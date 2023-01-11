@@ -11,12 +11,13 @@ import {
   FIELD_RADIO,
   FIELD_TEXT,
   MULTI_PAGE_FORM,
+  SIGN_IN_FORM,
   SINGLE_PAGE_FORM,
   VALIDATE_EMAIL_ADDRESS,
   VALIDATE_PHONE_NUMBER,
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
-import { DASHBOARD_URL } from '../../constants/AppUrlConstants';
+import { YOUR_VOYAGES_URL } from '../../constants/AppUrlConstants';
 
 /*
  * These tests check that we can pass a variety of
@@ -46,7 +47,7 @@ describe('Display Form', () => {
     },
     cancel: {
       label: 'Cancel test button',
-      redirectURL: DASHBOARD_URL,
+      redirectURL: YOUR_VOYAGES_URL,
     }
   };
   const formActionsSubmitOnly = {
@@ -153,6 +154,28 @@ describe('Display Form', () => {
         },
       ],
     },
+  ];
+  const formSignIn = [
+    {
+      type: FIELD_EMAIL,
+      label: 'Email',
+      fieldName: 'email',
+      validation: [
+        {
+          type: VALIDATE_REQUIRED,
+          message: 'Enter your email address',
+        },
+        {
+          type: VALIDATE_EMAIL_ADDRESS,
+          message: 'Enter your email address in the correct format, like name@example.com',
+        },
+      ],
+    },
+    {
+      type: FIELD_PASSWORD,
+      label: 'Password',
+      fieldName: 'password',
+    }
   ];
   const formSpecialInputs = [
     {
@@ -645,7 +668,25 @@ describe('Display Form', () => {
     expect(window.sessionStorage.getItem('formData')).toStrictEqual(expectedStoredData);
 
     await user.click(screen.getByRole('button', { name: 'Cancel test button' }));
-    expect(mockedUseNavigate).toHaveBeenCalledWith(DASHBOARD_URL);
+    expect(mockedUseNavigate).toHaveBeenCalledWith(YOUR_VOYAGES_URL);
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual(null);
+  });
+
+  it('should not store new session data if form is of type SIGN IN', async () => {
+    const user = userEvent.setup();
+    render(
+      <MemoryRouter>
+        <DisplayForm
+          formId="testForm"
+          fields={formSignIn}
+          formActions={formActionsSubmitOnly}
+          formType={SIGN_IN_FORM}
+          handleSubmit={handleSubmit}
+        />
+      </MemoryRouter>
+    );
+    await user.type(screen.getByRole('textbox', {name: /email/i}), 'testemail@email.com');
+    await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
     expect(window.sessionStorage.getItem('formData')).toStrictEqual(null);
   });
 });

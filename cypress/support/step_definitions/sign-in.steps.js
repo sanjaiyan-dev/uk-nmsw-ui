@@ -32,6 +32,6 @@ When('I enter valid credentials and sign-in', () => {
   SignInPage.clickSignIn();
 });
 
-Then('I am taken to dashboard page', () => {
-  cy.get('h1').should('have.text', 'Dashboard');
+Then('I am taken to your-voyages page', () => {
+  cy.get('h1').should('have.text', 'Your voyages');
 });

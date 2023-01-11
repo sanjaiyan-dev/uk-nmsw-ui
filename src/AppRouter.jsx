@@ -4,15 +4,18 @@ import useUserIsPermitted from './hooks/useUserIsPermitted';
 import ProtectedRoutes from './utils/ProtectedRoutes';
 import ScrollToTopOnNewPage from './utils/ScrollToTopOnNewPage';
 
+import { SERVICE_NAME } from './constants/AppConstants';
+
 // URLs
 import {
   ACCESSIBILITY_URL,
   COOKIE_URL,
-  DASHBOARD_URL,
-  ERROR_URL,
   ERROR_ACCOUNT_ALREADY_ACTIVE_URL,
+  ERROR_CREW_DETAILS_UPLOAD_URL,
+  ERROR_VERIFICATION_FAILED_URL,
   FORM_CONFIRMATION_URL,
   LANDING_URL,
+  MESSAGE_URL,
   PRIVACY_URL,
   REGISTER_ACCOUNT_URL,
   REGISTER_CONFIRMATION_URL,
@@ -24,6 +27,7 @@ import {
   REGISTER_PASSWORD_URL,
   SIGN_IN_URL,
   SECOND_PAGE_URL,
+  YOUR_VOYAGES_URL
 } from './constants/AppUrlConstants';
 
 // Regulatory pages
@@ -41,17 +45,20 @@ import RegisterYourDetails from './pages/Register/RegisterYourDetails';
 import RegisterYourPassword from './pages/Register/RegisterYourPassword';
 import SignIn from './pages/SignIn/SignIn';
 // Error/Message pages
-import GenericUnknownError from './pages/Error/GenericUnknownError';
-import AccountAlreadyActive from './pages/Error/AccountAlreadyActive';
+import GenericMessage from './pages/Message/GenericMessage';
+import AccountAlreadyActive from './pages/Message/AccountAlreadyActive';
+import VerificationLinkFailed from './pages/Message/VerificationLinkFailed';
 // Other pages (could be protected or not)
-import FormConfirmationPage from './pages/Confirmation/FormConfirmationPage';
+import FormConfirmationPage from './pages/Message/FormConfirmationPage';
 // Protected pages
-import Dashboard from './pages/Dashboard/Dashboard';
+import YourVoyages from './pages/YourVoyages/YourVoyages';
+import ErrorsCrewUpload from './pages/Voyage/ErrorsCrewUpload';
 
 // Temp Pages
 import SecondPage from './pages/TempPages/SecondPage';
 
 const AppRouter = ({ setIsCookieBannerShown }) => {
+  document.title = SERVICE_NAME;
   const isPermittedToView = useUserIsPermitted();
 
   return (
@@ -73,14 +80,16 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
         <Route path={REGISTER_PASSWORD_URL} element={<RegisterYourPassword />} />
         <Route path={SIGN_IN_URL} element={<SignIn />} />
 
-        <Route path={ERROR_URL} element={<GenericUnknownError />} />
+        <Route path={MESSAGE_URL} element={<GenericMessage />} />
         <Route path={ERROR_ACCOUNT_ALREADY_ACTIVE_URL} element={<AccountAlreadyActive />} />
+        <Route path={ERROR_VERIFICATION_FAILED_URL} element={<VerificationLinkFailed /> } />
 
         <Route path={FORM_CONFIRMATION_URL} element={<FormConfirmationPage />} />
 
         <Route element={<ProtectedRoutes isPermittedToView={isPermittedToView} />}>
-          <Route path={DASHBOARD_URL} element={<Dashboard />} />
+          <Route path={YOUR_VOYAGES_URL} element={<YourVoyages />} />
           <Route path={SECOND_PAGE_URL} element={<SecondPage />} />
+          <Route path={ERROR_CREW_DETAILS_UPLOAD_URL} element={<ErrorsCrewUpload />} />
         </Route>
         <Route path='*' element={<Navigate to='/' replace />} />
       </Routes>

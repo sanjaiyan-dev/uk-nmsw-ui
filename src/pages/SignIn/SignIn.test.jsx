@@ -4,6 +4,14 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import SignIn from '../../pages/SignIn/SignIn';
 
+const mockUseLocationState = { state: {} };
+jest.mock('react-router', () => ({
+  ...jest.requireActual('react-router'),
+  useLocation: jest.fn().mockImplementation(() => {
+    return mockUseLocationState;
+  })
+}));
+
 describe('Sign in tests', () => {
   const mockedLogin = jest.fn();
   const mockedLogout = jest.fn();
@@ -157,5 +165,38 @@ describe('Sign in tests', () => {
     expect(mockedLogin).toHaveBeenCalled();
   });
 
-  // TODO: Try to get test for 'should set userContext to session storage' to work
+  it('should not clear session storage if user is being redirected to sign in before completing their action AND the newly signed in user is the same as the previously signed in one', async () => {
+    mockUseLocationState.state = {
+      redirectURL: '/thisurl',
+    };
+    const user = userEvent.setup();
+    /* mock some sessionData that may exist if a user had clicked 'submit' on a form page but their AuthToken had expired */
+    window.sessionStorage.setItem('formData', JSON.stringify({ testField: 'Hello Test Field', radioButtonSet: 'radioOne'}));
+    const expectedStoredData = '{"testField":"Hello Test Field","radioButtonSet":"radioOne"}';
+    const userDetails = { name: 'MockedUser', token: '123', group: 'testGroup', email: 'testemail@email.com' };
+
+    renderWithUserContext(userDetails);
+    await user.type(screen.getByRole('textbox', {name: /email/i}), 'testemail@email.com');
+    await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(mockedLogin).toHaveBeenCalled();
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual(expectedStoredData);
+  });
+
+  it('should clear session storage if user is being redirected to sign in before completing their action AND the newly signed in user is NOT the same as the previously signed in one', async () => {
+    mockUseLocationState.state = {
+      redirectURL: '/thisurl',
+    };
+    const user = userEvent.setup();
+    /* mock some sessionData that may exist if a user had clicked 'submit' on a form page but their AuthToken had expired */
+    window.sessionStorage.setItem('formData', JSON.stringify({ testField: 'Hello Test Field', radioButtonSet: 'radioOne'}));
+    const userDetails = { name: 'MockedUser', token: '123', group: 'testGroup', email: 'testemail@email.com' };
+
+    renderWithUserContext(userDetails);
+    await user.type(screen.getByRole('textbox', {name: /email/i}), 'differentperson@email.com');
+    await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(mockedLogin).toHaveBeenCalled();
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual(null);
+  });
 });

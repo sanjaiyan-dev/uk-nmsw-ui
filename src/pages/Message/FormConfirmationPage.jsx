@@ -1,8 +1,10 @@
 import { useLocation, useNavigate } from 'react-router-dom';
+import { SERVICE_NAME } from '../../constants/AppConstants';
 
 const ConfirmFormSubmission = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
+  document.title = `${state.formName} submitted` || SERVICE_NAME;
 
   if (!state || Object.entries(state).length < 1) {
     return (

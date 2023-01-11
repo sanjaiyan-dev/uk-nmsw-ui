@@ -3,6 +3,7 @@ import { SIGN_IN_URL } from '../../constants/AppUrlConstants';
 
 const RegisterConfirmation = () => {
   const { state } = useLocation();
+  document.title = 'Account created';
 
   return (
     <div className="govuk-grid-row">
