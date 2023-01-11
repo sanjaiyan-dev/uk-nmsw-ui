@@ -2,7 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { LANDING_URL, SIGN_IN_URL } from '../../../constants/AppUrlConstants';
-import GenericUnknownError from '../GenericUnknownError';
+import GenericMessage from '../GenericMessage';
 
 const mockUseLocationState = { state: {} };
 const mockedUseNavigate = jest.fn();
@@ -24,20 +24,20 @@ describe('Error page tests', () => {
 
   it('should render h1 as the title that was passed in', () => {
     mockUseLocationState.state = { title: 'Page title', redirectURL: SIGN_IN_URL };
-    render(<MemoryRouter><GenericUnknownError /></MemoryRouter>);
+    render(<MemoryRouter><GenericMessage /></MemoryRouter>);
     expect(screen.getByText('Page title')).toBeInTheDocument();
   });
 
   it('should render paragraph if a message was passed in', () => {
     mockUseLocationState.state = { title: 'Page title', message: 'This is the page message', redirectURL: SIGN_IN_URL };
-    render(<MemoryRouter><GenericUnknownError /></MemoryRouter>);
+    render(<MemoryRouter><GenericMessage /></MemoryRouter>);
     expect(screen.getByText('This is the page message')).toBeInTheDocument();
   });
 
   it('should render a click here to continue link to the URL passed to this page', async () => {
     const user = userEvent.setup();
     mockUseLocationState.state = { redirectURL: SIGN_IN_URL };
-    render(<MemoryRouter><GenericUnknownError /></MemoryRouter>);
+    render(<MemoryRouter><GenericMessage /></MemoryRouter>);
     expect(screen.getByText('Click here to continue')).toBeInTheDocument();
     await user.click(screen.getByText('Click here to continue'));
 
@@ -50,7 +50,7 @@ describe('Error page tests', () => {
   it('should render a click here to continue link to the Landing page if no url passed to this page', async () => {
     const user = userEvent.setup();
     mockUseLocationState.state = {};
-    render(<MemoryRouter><GenericUnknownError /></MemoryRouter>);
+    render(<MemoryRouter><GenericMessage /></MemoryRouter>);
     expect(screen.getByText('Click here to continue')).toBeInTheDocument();
     await user.click(screen.getByText('Click here to continue'));
 

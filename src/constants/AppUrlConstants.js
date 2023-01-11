@@ -5,8 +5,8 @@ export const FEEDBACK_URL = '/';
 // Pages
 export const ACCESSIBILITY_URL = '/accessibility-statement';
 export const COOKIE_URL = '/cookies';
-export const DASHBOARD_PAGE_NAME = 'Dashboard';
-export const DASHBOARD_URL = '/dashboard';
+export const YOUR_VOYAGES_PAGE_NAME = 'Your voyages';
+export const YOUR_VOYAGES_URL = '/your-voyages';
 export const FORM_CONFIRMATION_URL = '/confirmation';
 export const LANDING_URL = '/';
 export const PRIVACY_URL = '/privacy-notice';
@@ -27,9 +27,22 @@ export const REGISTER_PASSWORD_URL = '/create-account/your-password';
 export const ERROR_URL = '/error';
 export const ERROR_ACCOUNT_ALREADY_ACTIVE_URL = '/create-account/account-already-exists';
 
+//Voyage error pages
+export const ERROR_CREW_DETAILS_UPLOAD_URL = '/create-voyage/check-crew-details';
+
 // Test pages
 export const SECOND_PAGE_NAME = 'Second page';
 export const SECOND_PAGE_URL = '/second-page';
 
 // Pages were we should clear formData
-export const TOP_LEVEL_PAGES = [ACCESSIBILITY_URL, COOKIE_URL, DASHBOARD_URL, LANDING_URL, PRIVACY_URL];
+export const TOP_LEVEL_PAGES = [ACCESSIBILITY_URL, COOKIE_URL, YOUR_VOYAGES_URL, LANDING_URL, PRIVACY_URL];
+
+// Pages without back links
+export const NO_BACK_LINKS = [
+  ...TOP_LEVEL_PAGES,
+  FORM_CONFIRMATION_URL,
+  REGISTER_CONFIRMATION_URL,
+  REGISTER_EMAIL_CHECK_URL,
+  REGISTER_EMAIL_VERIFIED_URL,
+  SIGN_IN_URL
+];
