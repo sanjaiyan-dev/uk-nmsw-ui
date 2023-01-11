@@ -11,7 +11,7 @@ import {
   ACCESSIBILITY_URL,
   COOKIE_URL,
   YOUR_VOYAGES_URL,
-  ERROR_URL,
+  MESSAGE_URL,
   ERROR_ACCOUNT_ALREADY_ACTIVE_URL,
   FORM_CONFIRMATION_URL,
   LANDING_URL,
@@ -78,7 +78,7 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
         <Route path={REGISTER_PASSWORD_URL} element={<RegisterYourPassword />} />
         <Route path={SIGN_IN_URL} element={<SignIn />} />
 
-        <Route path={ERROR_URL} element={<GenericMessage />} />
+        <Route path={MESSAGE_URL} element={<GenericMessage />} />
         <Route path={ERROR_ACCOUNT_ALREADY_ACTIVE_URL} element={<AccountAlreadyActive />} />
 
         <Route path={FORM_CONFIRMATION_URL} element={<FormConfirmationPage />} />

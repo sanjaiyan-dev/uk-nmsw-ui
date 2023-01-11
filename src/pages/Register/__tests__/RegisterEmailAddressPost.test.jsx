@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { AXIOS_ERROR, REGISTER_ACCOUNT_ENDPOINT, USER_ALREADY_REGISTERED } from '../../../constants/AppAPIConstants';
-import { ERROR_URL, ERROR_ACCOUNT_ALREADY_ACTIVE_URL, REGISTER_EMAIL_URL, REGISTER_EMAIL_CHECK_URL } from '../../../constants/AppUrlConstants';
+import { MESSAGE_URL, ERROR_ACCOUNT_ALREADY_ACTIVE_URL, REGISTER_EMAIL_URL, REGISTER_EMAIL_CHECK_URL } from '../../../constants/AppUrlConstants';
 import RegisterEmailAddress from '../RegisterEmailAddress';
 
 const mockedUseNavigate = jest.fn();
@@ -75,7 +75,7 @@ describe('Register email address POST tests', () => {
     await user.type(screen.getAllByRole('textbox', { name: /email/i })[1], 'testemail@email.com');
     await user.click(screen.getByTestId('submit-button'));
     await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_URL, { 'state': { 'title': 'Something has gone wrong', 'message': 'I am an unexpected error message', 'redirectURL': REGISTER_EMAIL_URL } }); // on error we redirect to error page
+      expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, { 'state': { 'title': 'Something has gone wrong', 'message': 'I am an unexpected error message', 'redirectURL': REGISTER_EMAIL_URL } }); // on error we redirect to error page
     });
   });
 
@@ -90,7 +90,7 @@ describe('Register email address POST tests', () => {
     await user.type(screen.getAllByRole('textbox', { name: /email/i })[1], 'testemail@email.com');
     await user.click(screen.getByTestId('submit-button'));
     await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_URL, { 'state': { 'title': 'Something has gone wrong', 'redirectURL': REGISTER_EMAIL_URL } }); // on error we redirect to error page
+      expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, { 'state': { 'title': 'Something has gone wrong', 'redirectURL': REGISTER_EMAIL_URL } }); // on error we redirect to error page
     });
   });
 
@@ -105,7 +105,7 @@ describe('Register email address POST tests', () => {
     await user.type(screen.getAllByRole('textbox', { name: /email/i })[1], 'testemail@email.com');
     await user.click(screen.getByTestId('submit-button'));
     await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_URL, { 'state': { 'title': 'Something has gone wrong', 'redirectURL': REGISTER_EMAIL_URL } }); // on error we redirect to error page
+      expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, { 'state': { 'title': 'Something has gone wrong', 'redirectURL': REGISTER_EMAIL_URL } }); // on error we redirect to error page
     });
   });
 
@@ -120,7 +120,7 @@ describe('Register email address POST tests', () => {
     await user.type(screen.getAllByRole('textbox', { name: /email/i })[1], 'testemail@email.com');
     await user.click(screen.getByTestId('submit-button'));
     await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_URL, { 'state': { 'title': 'Something has gone wrong', 'message': 'unknown error', 'redirectURL': REGISTER_EMAIL_URL } }); // on error we redirect to error page
+      expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, { 'state': { 'title': 'Something has gone wrong', 'message': 'unknown error', 'redirectURL': REGISTER_EMAIL_URL } }); // on error we redirect to error page
     });
   });
 });
