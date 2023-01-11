@@ -10,7 +10,9 @@
     "lint:fix": "eslint \"./src/**/*.{js,jsx}\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "cypress:run:dev": "cypress run --config baseUrl=\"https://nmsw-ui.dev.nmsw.homeoffice.gov.uk/\"",
+    "cypress:open:dev": "cypress open --config baseUrl=\"https://nmsw-ui.dev.nmsw.homeoffice.gov.uk\""
   },
   "repository": {
     "type": "git",
