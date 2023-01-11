@@ -10,4 +10,4 @@ Feature: User sign-in
 
     Scenario: User can sign-in successfully
       When I enter valid credentials and sign-in
-      Then I am taken to dashboard page
+      Then I am taken to your-voyages page
