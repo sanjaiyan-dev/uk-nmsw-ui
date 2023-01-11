@@ -9,7 +9,7 @@ import {
   VALIDATE_PHONE_NUMBER,
   VALIDATE_REQUIRED
 } from '../../constants/AppConstants';
-import { REGISTER_EMAIL_VERIFIED_URL, REGISTER_PASSWORD_URL } from '../../constants/AppUrlConstants';
+import { ERROR_VERIFICATION_FAILED_URL, REGISTER_PASSWORD_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
 
 const RegisterYourDetails = () => {
@@ -117,7 +117,7 @@ const RegisterYourDetails = () => {
    */
   useEffect(() => {
     if (!state || !state.dataToSubmit || !state.dataToSubmit.emailAddress) {
-      navigate(REGISTER_EMAIL_VERIFIED_URL);
+      navigate(ERROR_VERIFICATION_FAILED_URL);
     } 
   }, [state]);
 
