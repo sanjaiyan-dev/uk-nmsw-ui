@@ -10,11 +10,12 @@ import { SERVICE_NAME } from './constants/AppConstants';
 import {
   ACCESSIBILITY_URL,
   COOKIE_URL,
-  YOUR_VOYAGES_URL,
-  MESSAGE_URL,
   ERROR_ACCOUNT_ALREADY_ACTIVE_URL,
+  ERROR_CREW_DETAILS_UPLOAD_URL,
+  ERROR_VERIFICATION_FAILED_URL,
   FORM_CONFIRMATION_URL,
   LANDING_URL,
+  MESSAGE_URL,
   PRIVACY_URL,
   REGISTER_ACCOUNT_URL,
   REGISTER_CONFIRMATION_URL,
@@ -26,7 +27,7 @@ import {
   REGISTER_PASSWORD_URL,
   SIGN_IN_URL,
   SECOND_PAGE_URL,
-  ERROR_CREW_DETAILS_UPLOAD_URL,
+  YOUR_VOYAGES_URL
 } from './constants/AppUrlConstants';
 
 // Regulatory pages
@@ -46,6 +47,7 @@ import SignIn from './pages/SignIn/SignIn';
 // Error/Message pages
 import GenericMessage from './pages/Message/GenericMessage';
 import AccountAlreadyActive from './pages/Message/AccountAlreadyActive';
+import VerificationLinkFailed from './pages/Message/VerificationLinkFailed';
 // Other pages (could be protected or not)
 import FormConfirmationPage from './pages/Message/FormConfirmationPage';
 // Protected pages
@@ -80,6 +82,7 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
 
         <Route path={MESSAGE_URL} element={<GenericMessage />} />
         <Route path={ERROR_ACCOUNT_ALREADY_ACTIVE_URL} element={<AccountAlreadyActive />} />
+        <Route path={ERROR_VERIFICATION_FAILED_URL} element={<VerificationLinkFailed /> } />
 
         <Route path={FORM_CONFIRMATION_URL} element={<FormConfirmationPage />} />
 
