@@ -4,7 +4,9 @@ import useUserIsPermitted from './hooks/useUserIsPermitted';
 import ProtectedRoutes from './utils/ProtectedRoutes';
 import ScrollToTopOnNewPage from './utils/ScrollToTopOnNewPage';
 
-// Constants
+import { SERVICE_NAME } from './constants/AppConstants';
+
+// URLs
 import {
   ACCESSIBILITY_URL,
   COOKIE_URL,
@@ -24,10 +26,8 @@ import {
   REGISTER_PASSWORD_URL,
   SIGN_IN_URL,
   SECOND_PAGE_URL,
-  ERROR_CREW_DETAILS_UPLOAD,
+  ERROR_CREW_DETAILS_UPLOAD_URL,
 } from './constants/AppUrlConstants';
-
-import { SERVICE_NAME } from './constants/AppConstants';
 
 // Regulatory pages
 import AccessibilityStatement from './pages/Regulatory/AccessibilityStatement';
@@ -44,10 +44,10 @@ import RegisterYourDetails from './pages/Register/RegisterYourDetails';
 import RegisterYourPassword from './pages/Register/RegisterYourPassword';
 import SignIn from './pages/SignIn/SignIn';
 // Error/Message pages
-import GenericUnknownError from './pages/Error/GenericUnknownError';
-import AccountAlreadyActive from './pages/Error/AccountAlreadyActive';
+import GenericMessage from './pages/Message/GenericMessage';
+import AccountAlreadyActive from './pages/Message/AccountAlreadyActive';
 // Other pages (could be protected or not)
-import FormConfirmationPage from './pages/Confirmation/FormConfirmationPage';
+import FormConfirmationPage from './pages/Message/FormConfirmationPage';
 // Protected pages
 import YourVoyages from './pages/YourVoyages/YourVoyages';
 import ErrorsCrewUpload from './pages/Voyage/ErrorsCrewUpload';
@@ -78,7 +78,7 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
         <Route path={REGISTER_PASSWORD_URL} element={<RegisterYourPassword />} />
         <Route path={SIGN_IN_URL} element={<SignIn />} />
 
-        <Route path={ERROR_URL} element={<GenericUnknownError />} />
+        <Route path={ERROR_URL} element={<GenericMessage />} />
         <Route path={ERROR_ACCOUNT_ALREADY_ACTIVE_URL} element={<AccountAlreadyActive />} />
 
         <Route path={FORM_CONFIRMATION_URL} element={<FormConfirmationPage />} />
@@ -86,7 +86,7 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
         <Route element={<ProtectedRoutes isPermittedToView={isPermittedToView} />}>
           <Route path={YOUR_VOYAGES_URL} element={<YourVoyages />} />
           <Route path={SECOND_PAGE_URL} element={<SecondPage />} />
-          <Route path={ERROR_CREW_DETAILS_UPLOAD} element={<ErrorsCrewUpload />} />
+          <Route path={ERROR_CREW_DETAILS_UPLOAD_URL} element={<ErrorsCrewUpload />} />
         </Route>
         <Route path='*' element={<Navigate to='/' replace />} />
       </Routes>

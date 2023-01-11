@@ -31,6 +31,9 @@ Validating fields
 - [No Spaces](#no-spaces)
 - [Phone Number Format](#phone-number-format)
 
+## SinglePage Forms
+- [Single Page Form](#single-page-forms)
+
 ## MultiPage Forms
 - [Multi Page Form](#multi-page-forms)
 
@@ -649,6 +652,26 @@ e.g.
     }
   ],
 }
+```
+
+----
+
+## Single Page Forms
+By default single page forms will clear sessionStorage of formData on submit.
+
+For special cases such as when you redirect a user to sign in due to a token expiry and want the user to be able to return to the original form without losing their session data, you can add a `keepSessionOnSubmit` variable to the middle form (in this case sign-in) to tell the form to keep the session data in certain cases.
+
+e.g.
+```javascript
+ <DisplayForm
+  pageHeading="Sign in"
+  formId='formSignIn'
+  fields={formFields}
+  formActions={formActions}
+  formType={SINGLE_PAGE_FORM}
+  keepSessionOnSubmit={state?.redirectURL ? true : false}
+  handleSubmit={handleSubmit}
+>
 ```
 
 ----
