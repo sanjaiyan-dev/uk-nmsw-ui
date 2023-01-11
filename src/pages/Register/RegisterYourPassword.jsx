@@ -9,7 +9,7 @@ import {
   VALIDATE_NO_SPACES,
   VALIDATE_REQUIRED
 } from '../../constants/AppConstants';
-import { ERROR_URL, REGISTER_CONFIRMATION_URL, REGISTER_EMAIL_VERIFIED_URL, REGISTER_PASSWORD_URL } from '../../constants/AppUrlConstants';
+import { MESSAGE_URL, REGISTER_CONFIRMATION_URL, REGISTER_EMAIL_VERIFIED_URL, REGISTER_PASSWORD_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
 import Auth from '../../utils/Auth';
 
@@ -100,11 +100,11 @@ const RegisterYourPassword = () => {
     } catch (err) {
       // catch any axios errors and treat as a generic error
       if (err.message === AXIOS_ERROR) {
-        navigate(ERROR_URL, { state: { title: 'Something has gone wrong', redirectURL: REGISTER_EMAIL_VERIFIED_URL } });
+        navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', redirectURL: REGISTER_EMAIL_VERIFIED_URL } });
       } else if (err.response?.data?.message === TOKEN_INVALID) {
-        navigate(ERROR_URL, { state: { title: 'Verification link has expired', redirectURL: REGISTER_EMAIL_VERIFIED_URL } });
+        navigate(MESSAGE_URL, { state: { title: 'Verification link has expired', redirectURL: REGISTER_EMAIL_VERIFIED_URL } });
       } else {
-        navigate(ERROR_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: REGISTER_PASSWORD_URL } });
+        navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: REGISTER_PASSWORD_URL } });
       }
     }
   };

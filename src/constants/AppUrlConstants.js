@@ -24,8 +24,9 @@ export const REGISTER_DETAILS_URL = '/create-account/your-details';
 export const REGISTER_PASSWORD_URL = '/create-account/your-password';
 
 // Error/message pages
-export const ERROR_URL = '/error';
+export const MESSAGE_URL = '/message';
 export const ERROR_ACCOUNT_ALREADY_ACTIVE_URL = '/create-account/account-already-exists';
+export const ERROR_VERIFICATION_FAILED_URL = '/create-account/verification-failed';
 
 //Voyage error pages
 export const ERROR_CREW_DETAILS_UPLOAD_URL = '/create-voyage/check-crew-details';
@@ -40,6 +41,7 @@ export const TOP_LEVEL_PAGES = [ACCESSIBILITY_URL, COOKIE_URL, YOUR_VOYAGES_URL,
 // Pages without back links
 export const NO_BACK_LINKS = [
   ...TOP_LEVEL_PAGES,
+  ERROR_VERIFICATION_FAILED_URL,
   FORM_CONFIRMATION_URL,
   REGISTER_CONFIRMATION_URL,
   REGISTER_EMAIL_CHECK_URL,

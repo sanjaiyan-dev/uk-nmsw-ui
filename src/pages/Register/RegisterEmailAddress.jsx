@@ -9,7 +9,7 @@ import {
   VALIDATE_REQUIRED
 } from '../../constants/AppConstants';
 import {
-  ERROR_URL,
+  MESSAGE_URL,
   ERROR_ACCOUNT_ALREADY_ACTIVE_URL,
   REGISTER_EMAIL_URL,
   REGISTER_EMAIL_CHECK_URL
@@ -90,12 +90,12 @@ const RegisterEmailAddress = () => {
 
       // catch any axios errors and treat as a generic error
       if (err.message === AXIOS_ERROR) {
-        navigate(ERROR_URL, { state: { title: 'Something has gone wrong', redirectURL: REGISTER_EMAIL_URL } });
+        navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', redirectURL: REGISTER_EMAIL_URL } });
       } else if (err.response?.data?.message === USER_ALREADY_REGISTERED) {
         navigate(ERROR_ACCOUNT_ALREADY_ACTIVE_URL, { state: { dataToSubmit: { emailAddress: formData.formData.emailAddress } } });
       } else {
         // 500 errors will fall into this bucket
-        navigate(ERROR_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: REGISTER_EMAIL_URL } });
+        navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: REGISTER_EMAIL_URL } });
       }
     }
   };

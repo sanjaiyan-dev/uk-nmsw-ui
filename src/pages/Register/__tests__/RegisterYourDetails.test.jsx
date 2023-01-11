@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
-import { REGISTER_EMAIL_VERIFIED_URL } from '../../../constants/AppUrlConstants';
+import { ERROR_VERIFICATION_FAILED_URL } from '../../../constants/AppUrlConstants';
 import RegisterYourDetails from '../RegisterYourDetails';
 
 let mockUseLocationState = {};
@@ -28,7 +28,7 @@ describe('Your details tests', () => {
     mockUseLocationState = {};
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(REGISTER_EMAIL_VERIFIED_URL);
+      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_VERIFICATION_FAILED_URL);
     });
   });
 
@@ -36,7 +36,7 @@ describe('Your details tests', () => {
     mockUseLocationState = { state: {} };
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(REGISTER_EMAIL_VERIFIED_URL);
+      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_VERIFICATION_FAILED_URL);
     });
   });
 
@@ -44,7 +44,7 @@ describe('Your details tests', () => {
     mockUseLocationState = { state: { dataToSubmit: {} } };
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(REGISTER_EMAIL_VERIFIED_URL);
+      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_VERIFICATION_FAILED_URL);
     });
   });
 
