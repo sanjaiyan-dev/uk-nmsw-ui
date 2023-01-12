@@ -1,4 +1,9 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import {
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
@@ -6,14 +11,16 @@ import {
   FIELD_CONDITIONAL,
   FIELD_PASSWORD,
   SIGN_IN_FORM,
-  SINGLE_PAGE_FORM
+  SINGLE_PAGE_FORM,
 } from '../constants/AppConstants';
 import { UserContext } from '../context/userContext';
 import determineFieldType from './formFields/DetermineFieldType';
 import { scrollToTop } from '../utils/ScrollToElement';
 import Validator from '../utils/Validator';
 
-const DisplayForm = ({ fields, formId, formActions, formType, pageHeading, handleSubmit, children }) => {
+const DisplayForm = ({
+  fields, formId, formActions, formType, pageHeading, handleSubmit, children,
+}) => {
   const { user } = useContext(UserContext);
   const fieldsRef = useRef(null);
   const navigate = useNavigate();
@@ -29,7 +36,7 @@ const DisplayForm = ({ fields, formId, formActions, formType, pageHeading, handl
     if (errors) {
       // on change any error shown for that field should be cleared so find if field has an error & remove from error list
       const itemToCheck = itemToClear ? itemToClear.target.name : e.target.name;
-      const filteredErrors = errors?.filter(errorField => errorField.name !== itemToCheck);
+      const filteredErrors = errors?.filter((errorField) => errorField.name !== itemToCheck);
       setErrors(filteredErrors);
     }
 
@@ -41,7 +48,7 @@ const DisplayForm = ({ fields, formId, formActions, formType, pageHeading, handl
     const dataSet = {
       [e.target.name]: e.target.value,
       ...additionalDetails,
-      [itemToClear?.target.name]: itemToClear?.target.value
+      [itemToClear?.target.name]: itemToClear?.target.value,
     };
 
     // we do not store passwords or sign in details in session data
@@ -59,9 +66,9 @@ const DisplayForm = ({ fields, formId, formActions, formType, pageHeading, handl
     navigate(redirectURL);
   };
 
-  const handleValidation = async (e, formData) => {
+  const handleValidation = async (e, receivedFormData) => {
     e.preventDefault();
-    const formErrors = await Validator({ formData: formData.formData, formFields: fields });
+    const formErrors = await Validator({ formData: receivedFormData.formData, formFields: fields });
     setErrors(formErrors);
 
     if (formErrors.length < 1) {
@@ -71,10 +78,10 @@ const DisplayForm = ({ fields, formId, formActions, formType, pageHeading, handl
        * e.g. CookiePolicy form will set cookie states
        * so we always pass formData back
        */
-      handleSubmit(formData);
+      handleSubmit(receivedFormData);
 
-      /* If the form is a singlepage form we can clear the session 
-       * we do not clear the session for multipage forms or sign in form 
+      /* If the form is a singlepage form we can clear the session
+       * we do not clear the session for multipage forms or sign in form
        * as they have different needs
       */
       if (formType === SINGLE_PAGE_FORM) {
@@ -85,21 +92,11 @@ const DisplayForm = ({ fields, formId, formActions, formType, pageHeading, handl
     }
   };
 
-  const scrollToErrorField = (e, error) => {
-    e.preventDefault();
-    const fieldMap = getFieldMap();
-    const fieldLabelNode = fieldMap.get(error.name);
-    fieldLabelNode?.scrollIntoView();
-    // /* TODO: replace with useRef/forwardRef */
-    // radio buttons and checkbox lists add their index key to their id so we can find and focus on them
-    document.getElementById(`${error.name}-input`) ? document.getElementById(`${error.name}-input`).focus() : document.getElementById(`${error.name}-input[0]`).focus();
-  };
-
-  /* 
+  /*
    * For field level ref we use a ref callback, which passes a function to the ref attribute
-   * React calls the ref callback with the DOM node when it’s time to set the ref, & with null when it’s time to clear it. 
+   * React calls the ref callback with the DOM node when it’s time to set the ref, & with null when it’s time to clear it.
    * We can then access any ref within it by fieldMap.get(error.name) which relates to our field id.
-   * 
+   *
    * This works here as the DOM node is within this component, however we can't use this method in the same
    * way to pass a ref down to the input as the input is in a different component and we need to forward the ref down
    * TODO: work out how to set, forward, and access ref in input component on error click so we can set focus on input
@@ -112,13 +109,24 @@ const DisplayForm = ({ fields, formId, formActions, formType, pageHeading, handl
     return fieldsRef.current;
   };
 
+  const scrollToErrorField = (e, error) => {
+    e.preventDefault();
+    const fieldMap = getFieldMap();
+    const fieldLabelNode = fieldMap.get(error.name);
+    fieldLabelNode?.scrollIntoView();
+    // /* TODO: replace with useRef/forwardRef */
+    // radio buttons and checkbox lists add their index key to their id so we can find and focus on them
+    // eslint-disable-next-line no-unused-expressions
+    document.getElementById(`${error.name}-input`) ? document.getElementById(`${error.name}-input`).focus() : document.getElementById(`${error.name}-input[0]`).focus();
+  };
+
   /* When we introduce RBAC we expect to have fields that are
    * editable, disabled, or hidden based on user permissions.
    * This useEffect can be refactored to include a permission test
-   * (or to call a permission test hook) that determines if a field should be 
+   * (or to call a permission test hook) that determines if a field should be
    * editable, viewable disabled, or hidden and return only editable/visible fields
    * to the form render
-   * 
+   *
    * For now as we have no RBAC it just returns all fields as fields to include
    * It also checks session storage for stored values and applies them
    */
@@ -127,15 +135,15 @@ const DisplayForm = ({ fields, formId, formActions, formType, pageHeading, handl
   useEffect(() => {
     let sessionDataArray;
     if (sessionData) {
-      sessionDataArray = Object.entries(sessionData).map(item => { return { name: item[0], value: item[1] }; });
+      sessionDataArray = Object.entries(sessionData).map((item) => ({ name: item[0], value: item[1] }));
     }
 
     const mappedFormFields = fields.map((field) => {
       let valuesToAdd;
-      const sessionDataValue = sessionDataArray?.find(sessionDataField => sessionDataField.name === field.fieldName);
+      const sessionDataValue = sessionDataArray?.find((sessionDataField) => sessionDataField.name === field.fieldName);
       if (field.type === FIELD_CONDITIONAL) {
-        const conditionalField = field.radioOptions.find(field => field.parentFieldValue === sessionDataValue?.value);
-        const sessionConditionalValue = sessionDataArray?.find(sessionDataField => sessionDataField.name === conditionalField?.name);
+        const conditionalField = field.radioOptions.find((thisField) => thisField.parentFieldValue === sessionDataValue?.value);
+        const sessionConditionalValue = sessionDataArray?.find((sessionDataField) => sessionDataField.name === conditionalField?.name);
         valuesToAdd = { ...field, value: sessionDataValue?.value, conditionalValueToFill: sessionConditionalValue };
       } else {
         valuesToAdd = { ...field, value: sessionDataValue?.value };
@@ -146,10 +154,10 @@ const DisplayForm = ({ fields, formId, formActions, formType, pageHeading, handl
     setFieldsWithValues(mappedFormFields);
 
     const mappedFormData = fields.map((field) => {
-      const sessionDataValue = sessionDataArray?.find(sessionDataField => sessionDataField.name === field.fieldName);
+      const sessionDataValue = sessionDataArray?.find((sessionDataField) => sessionDataField.name === field.fieldName);
       return ({ fieldName: field.fieldName, value: sessionDataValue?.value });
     });
-    const objectOfMappedFields = Object.assign({}, ...mappedFormData.map(field => ({ [field.fieldName]: field.value })));
+    const objectOfMappedFields = Object.assign({}, ...mappedFormData.map((field) => ({ [field.fieldName]: field.value })));
     setFormData(objectOfMappedFields);
   }, [user, setFieldsWithValues, setFormData]);
 
@@ -165,17 +173,19 @@ const DisplayForm = ({ fields, formId, formActions, formType, pageHeading, handl
               </h2>
               <div className="govuk-error-summary__body">
                 <ul className="govuk-list govuk-error-summary__list">
-                  {errors.map((error) => {
-                    return (
-                      <li key={error.name}>
-                        <button className="govuk-button--text"
-                          onClick={(e) => { scrollToErrorField(e, error); }}
-                        >
-                          {error.message}
-                        </button>
-                      </li>
-                    );
-                  })}
+                  {errors.map((error) => (
+                    <li key={error.name}>
+                      <button
+                        className="govuk-button--text"
+                        type="button"
+                        onClick={(e) => {
+                          scrollToErrorField(e, error);
+                        }}
+                      >
+                        {error.message}
+                      </button>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -185,7 +195,7 @@ const DisplayForm = ({ fields, formId, formActions, formType, pageHeading, handl
       <div className="govuk-grid-row">
         {pageHeading && <h1 className="govuk-heading-xl govuk-grid-column-full">{pageHeading}</h1>}
       </div>
-      
+
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-three-quarters below-h1">
           {children}
@@ -196,7 +206,7 @@ const DisplayForm = ({ fields, formId, formActions, formType, pageHeading, handl
         <form id={formId} className="govuk-grid-column-one-half" autoComplete="off">
           {
             fieldsWithValues.map((field) => {
-              const error = errors?.find(errorField => errorField.name === field.fieldName);
+              const error = errors?.find((errorField) => errorField.name === field.fieldName);
               return (
                 <div
                   key={field.fieldName}
@@ -212,7 +222,7 @@ const DisplayForm = ({ fields, formId, formActions, formType, pageHeading, handl
                 >
                   {
                     determineFieldType({
-                      allErrors: errors,  // allows us to add the error handling logic for conditional fields
+                      allErrors: errors, // allows us to add the error handling logic for conditional fields
                       error: error?.message,
                       fieldDetails: field,
                       parentHandleChange: handleChange,
@@ -224,25 +234,25 @@ const DisplayForm = ({ fields, formId, formActions, formType, pageHeading, handl
           }
           <div className="govuk-button-group">
             <button
-              type='button'
-              className='govuk-button'
-              data-module='govuk-button'
-              data-testid='submit-button'
+              type="button"
+              className="govuk-button"
+              data-module="govuk-button"
+              data-testid="submit-button"
               onClick={(e) => handleValidation(e, { formData })}
             >
               {formActions.submit.label}
             </button>
-            {
-              formActions.cancel && <button
-                type='button'
-                className='govuk-button govuk-button--secondary'
-                data-module='govuk-button'
-                data-testid='cancel-button'
+            {formActions.cancel && (
+              <button
+                type="button"
+                className="govuk-button govuk-button--secondary"
+                data-module="govuk-button"
+                data-testid="cancel-button"
                 onClick={() => handleCancel(formActions.cancel.redirectURL)}
               >
                 {formActions.cancel.label}
               </button>
-            }
+            )}
           </div>
         </form>
       </div>
@@ -270,8 +280,8 @@ DisplayForm.propTypes = {
     }),
     cancel: PropTypes.shape({
       label: PropTypes.string.isRequired,
-      redirectURL: PropTypes.string.isRequired
-    })
+      redirectURL: PropTypes.string.isRequired,
+    }),
   }),
   formType: PropTypes.string.isRequired,
   pageHeading: PropTypes.string,
