@@ -7,7 +7,7 @@ module.exports = defineConfig({
       env: {
         'baseUrl': 'http://localhost:3000/',
         'envName': 'development',
-        'api_server': 'https://nmsw-api.dev.nmsw.homeoffice.gov.uk//v1'
+        'api_server': 'http://localhost:5000/v1'
       }
     }
 );

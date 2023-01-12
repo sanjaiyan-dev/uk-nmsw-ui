@@ -7,7 +7,7 @@ module.exports = defineConfig({
       env: {
         'baseUrl': 'https://nmsw-ui.dev.nmsw.homeoffice.gov.uk/',
         'envName': 'development',
-        'api_server': 'https://nmsw-api.dev.nmsw.homeoffice.gov.uk//v1'
+        'api_server': 'https://nmsw-api.dev.nmsw.homeoffice.gov.uk/v1'
       }
     }
 );
