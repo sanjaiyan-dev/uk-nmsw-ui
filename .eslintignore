@@ -3,3 +3,4 @@ kube/**
 coverage/**
 dist/**
 cypress/**
+setupTests.js
