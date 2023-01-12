@@ -27,7 +27,7 @@ jest.mock('react-router-dom', () => ({
 
 describe('Display Form', () => {
   const handleSubmit = jest.fn();
-  let scrollIntoViewMock = jest.fn();
+  const scrollIntoViewMock = jest.fn();
   window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
   const formActionsSubmitOnly = {
     submit: {
@@ -46,7 +46,7 @@ describe('Display Form', () => {
           condition: 8,
         },
       ],
-    }
+    },
   ];
   const formCaseSensitiveMatching = [
     {
@@ -65,7 +65,7 @@ describe('Display Form', () => {
           condition: 'testField',
         },
       ],
-    }
+    },
   ];
   const formFieldMatching = [
     {
@@ -84,7 +84,7 @@ describe('Display Form', () => {
           condition: 'testField',
         },
       ],
-    }
+    },
   ];
   const formMultipleValidationRules = [
     {
@@ -102,7 +102,7 @@ describe('Display Form', () => {
           condition: 8,
         },
       ],
-    }
+    },
   ];
   const formWithBackwardsValidationOrder = [
     {
@@ -120,7 +120,7 @@ describe('Display Form', () => {
           message: 'Enter your text input value',
         },
       ],
-    }
+    },
   ];
 
   beforeEach(() => {
@@ -138,7 +138,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     await user.type(screen.getByLabelText('Text input'), 'Ab');
     await user.click(screen.getByRole('button', { name: 'Submit test button' }));
@@ -162,7 +162,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     await user.type(screen.getByLabelText('Text input'), 'Abcd');
     await user.type(screen.getByLabelText('Repeating text input'), 'AbcD');
@@ -187,7 +187,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     await user.type(screen.getByLabelText('Text input'), 'Abcd');
     await user.type(screen.getByLabelText('Repeating text input'), 'AbcD');
@@ -208,7 +208,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     await user.click(screen.getByRole('button', { name: 'Submit test button' }));
 
@@ -231,7 +231,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     await user.click(screen.getByRole('button', { name: 'Submit test button' }));
 

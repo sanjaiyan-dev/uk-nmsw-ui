@@ -25,7 +25,7 @@ jest.mock('react-router-dom', () => ({
 
 describe('Display Form', () => {
   const handleSubmit = jest.fn();
-  let scrollIntoViewMock = jest.fn();
+  const scrollIntoViewMock = jest.fn();
   window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
   const formActionsSubmitOnly = {
     submit: {
@@ -48,7 +48,7 @@ describe('Display Form', () => {
           message: 'Enter your phone value',
         },
       ],
-    }
+    },
   ];
 
   beforeEach(() => {
@@ -66,7 +66,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     await user.click(screen.getByRole('button', { name: 'Submit test button' }));
     await screen.getByText('There is a problem');
@@ -90,7 +90,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     await user.type(screen.getByRole('textbox', { name: 'Country phone code field' }), '123');
@@ -114,7 +114,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     await user.type(screen.getByRole('textbox', { name: 'Phone number field' }), '123');
@@ -138,7 +138,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     await user.type(screen.getByRole('textbox', { name: 'Country phone code field' }), '123');

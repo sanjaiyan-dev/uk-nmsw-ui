@@ -27,7 +27,7 @@ jest.mock('react-router-dom', () => ({
 
 describe('Display Form', () => {
   const handleSubmit = jest.fn();
-  let scrollIntoViewMock = jest.fn();
+  const scrollIntoViewMock = jest.fn();
   window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
   const formActionsSubmitOnly = {
     submit: {
@@ -91,7 +91,7 @@ describe('Display Form', () => {
             parentValue: 'dog',
             fieldName: 'breedOfDog',
             ruleToTest: VALIDATE_REQUIRED,
-            message: 'Enter a breed of dog'
+            message: 'Enter a breed of dog',
           },
         },
         {
@@ -100,9 +100,9 @@ describe('Display Form', () => {
             parentValue: 'cat',
             fieldName: 'breedOfCat',
             ruleToTest: VALIDATE_REQUIRED,
-            message: 'Enter a breed of cat'
+            message: 'Enter a breed of cat',
           },
-        }
+        },
       ],
     },
   ];
@@ -118,7 +118,7 @@ describe('Display Form', () => {
           message: 'Enter your text input value',
         },
       ],
-    }
+    },
   ];
   const formRequiredRadioInput = [
     {
@@ -134,21 +134,21 @@ describe('Display Form', () => {
           name: 'radioButtonSet',
           id: 'radioOne',
           value: 'radioOne',
-          checked: true
+          checked: true,
         },
         {
           label: 'Radio two',
           name: 'radioButtonSet',
           id: 'radioTwo',
           value: 'radioTwo',
-          checked: false
+          checked: false,
         },
         {
           label: 'Radio three',
           name: 'radioButtonSet',
           id: 'radioThree',
           value: 'radioThree',
-          checked: false
+          checked: false,
         },
       ],
       validation: [
@@ -159,7 +159,6 @@ describe('Display Form', () => {
       ],
     },
   ];
-  
 
   beforeEach(() => {
     window.sessionStorage.clear();
@@ -176,7 +175,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     await user.click(screen.getByRole('button', { name: 'Submit test button' }));
     await screen.getByText('There is a problem');
@@ -200,7 +199,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     await user.click(screen.getByRole('radio', { name: 'Cat' }));
@@ -225,7 +224,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     await user.click(screen.getByRole('button', { name: 'Submit test button' }));
     await user.click(screen.getByRole('button', { name: 'Enter your text input value' }));
@@ -244,7 +243,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     await user.click(screen.getByRole('button', { name: 'Submit test button' }));
     await user.click(screen.getByRole('button', { name: 'Select your radio option' }));
