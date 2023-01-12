@@ -7,6 +7,7 @@
   },
   "extends": [
       "eslint:recommended",
+      "airbnb", "airbnb/hooks",
       "plugin:react/recommended",
       "plugin:react/jsx-runtime",
       "plugin:jsx-a11y/recommended",
@@ -28,7 +29,15 @@
       "quotes": [ "error",  "single"],
       "semi": ["error", "always"],
       "no-console": ["warn"],
-      "eol-last": ["error", "always"]
+      "eol-last": ["error", "always"],
+      "react/function-component-definition": [
+        2,
+        {
+            "namedComponents": "arrow-function",
+            "unnamedComponents": "arrow-function"
+        }
+      ],
+      "react-hooks/exhaustive-deps": "warn"
   },
   "overrides": [
     {
