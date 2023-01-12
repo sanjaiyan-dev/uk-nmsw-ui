@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { REGISTER_ACCOUNT_URL } from '../../constants/AppUrlConstants';
 import { UserContext } from '../../context/userContext';
 import {
   FIELD_EMAIL,
@@ -9,18 +8,19 @@ import {
   VALIDATE_EMAIL_ADDRESS,
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
-import { YOUR_VOYAGES_URL } from '../../constants/AppUrlConstants';
+import {
+  REGISTER_ACCOUNT_URL,
+  YOUR_VOYAGES_URL,
+} from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
 
-const SupportingText = () => {
-  return (
-    <>
-      <div className="govuk-inset-text">
-        <p className="govuk-body">If you do not have an account, you can <Link to={REGISTER_ACCOUNT_URL}>create one now</Link>.</p>
-      </div>
-    </>
-  );
-};
+const SupportingText = () => (
+  <div className="govuk-inset-text">
+    <p className="govuk-body">
+      If you do not have an account, you can <Link to={REGISTER_ACCOUNT_URL}>create one now</Link>.
+    </p>
+  </div>
+);
 
 const SignIn = () => {
   const { signIn, user } = useContext(UserContext);
@@ -32,7 +32,7 @@ const SignIn = () => {
   const formActions = {
     submit: {
       label: 'Sign in',
-    }
+    },
   };
   const formFields = [
     {
@@ -68,23 +68,25 @@ const SignIn = () => {
       sessionStorage.removeItem('formData');
     }
     signIn({ formData });
-    state?.redirectURL ? navigate(state.redirectURL) : navigate(YOUR_VOYAGES_URL);
+    if (state?.redirectURL) {
+      navigate(state.redirectURL);
+    } else {
+      navigate(YOUR_VOYAGES_URL);
+    }
   };
 
   return (
-    <>
-      <DisplayForm
-        pageHeading="Sign in"
-        formId='formSignIn'
-        fields={formFields}
-        formActions={formActions}
-        formType={SIGN_IN_FORM}
-        keepSessionOnSubmit={state?.redirectURL ? true : false}
-        handleSubmit={handleSubmit}
-      >
-        <SupportingText />
-      </DisplayForm>
-    </>
+    <DisplayForm
+      pageHeading="Sign in"
+      formId="formSignIn"
+      fields={formFields}
+      formActions={formActions}
+      formType={SIGN_IN_FORM}
+      keepSessionOnSubmit={state?.redirectURL}
+      handleSubmit={handleSubmit}
+    >
+      <SupportingText />
+    </DisplayForm>
   );
 };
 
