@@ -13,7 +13,7 @@ Before(() => {
 });
 
 Given('I am on the sign-in page', () => {
-  cy.visit('/');
+  cy.visitUrl();
   LandingPage.clickStartNow();
   SignInPage.checkSignInPage();
 });

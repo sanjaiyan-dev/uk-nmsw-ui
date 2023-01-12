@@ -19,7 +19,7 @@ Before(() => {
 });
 
 Given('I am on NMSW landing page', () => {
-  cy.visit('/');
+  cy.visitUrl();
   LandingPage.checkHeading();
 });
 
@@ -123,7 +123,7 @@ When('I enter password in invalid format', () => {
 });
 
 When('I navigate back to landing page', () => {
-  cy.visit('/');
+  cy.visitUrl();
 });
 
 When('I create an account with same email previously registered', () => {

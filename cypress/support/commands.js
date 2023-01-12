@@ -27,3 +27,7 @@ const { terminalLog } = require('../utils/axeTableLog.js');
 Cypress.Commands.add('checkAxe', () => {
   cy.checkA11y(null, null, terminalLog, true);
 });
+
+Cypress.Commands.add('visitUrl', () => {
+  cy.visit(Cypress.env('baseUrl'));
+});
