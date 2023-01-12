@@ -109,14 +109,14 @@ const RegisterYourDetails = () => {
   };
 
   /*
-   * Without an email address we can't submit the PATCH to update the user account
+   * Without an email address & token we can't submit the PATCH to update the user account
    * So if a user arrives to this page and we do not have an email address in state
    * we need to direct them to a place where they can deal with that
    * TODO: once we have email verification flow journey replace REGISTER_EMAIL_URL_VERIFIED
    * with a more appropriate page
    */
   useEffect(() => {
-    if (!state || !state.dataToSubmit || !state.dataToSubmit.emailAddress) {
+    if (!state || !state.dataToSubmit || !state.dataToSubmit.emailAddress || !state.dataToSubmit.token) {
       navigate(ERROR_VERIFICATION_FAILED_URL);
     }
   }, [state]);
