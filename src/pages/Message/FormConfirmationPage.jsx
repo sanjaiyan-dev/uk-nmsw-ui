@@ -26,11 +26,12 @@ const ConfirmFormSubmission = () => {
           <h1 className="govuk-panel__title">
             {`${state.formName} submitted`}
           </h1>
-          {state.referenceNumber &&
-            <div className="govuk-panel__body">
-              Your reference number<br /><strong>{state.referenceNumber}</strong>
-            </div>
-          }
+          {state.referenceNumber
+            && (
+              <div className="govuk-panel__body">
+                Your reference number<br /><strong>{state.referenceNumber}</strong>
+              </div>
+            )}
         </div>
         <p className="govuk-body">We have sent you a confirmation email.</p>
 
