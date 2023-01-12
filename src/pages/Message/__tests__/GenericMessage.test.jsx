@@ -10,13 +10,10 @@ const mockedUseNavigate = jest.fn();
 jest.mock('react-router', () => ({
   ...jest.requireActual('react-router'),
   useNavigate: () => mockedUseNavigate,
-  useLocation: jest.fn().mockImplementation(() => {
-    return mockUseLocationState;
-  })
+  useLocation: jest.fn().mockImplementation(() => mockUseLocationState),
 }));
 
 describe('Error page tests', () => {
-
   beforeEach(() => {
     window.sessionStorage.clear();
     mockUseLocationState.state = {};
@@ -42,10 +39,11 @@ describe('Error page tests', () => {
     await user.click(screen.getByText('Click here to continue'));
 
     await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(SIGN_IN_URL,  {'preventScrollReset': undefined, 'relative': undefined, 'replace': false, 'state': undefined}); // params on Link generated links by default
+      expect(mockedUseNavigate).toHaveBeenCalledWith(SIGN_IN_URL, {
+        preventScrollReset: undefined, relative: undefined, replace: false, state: undefined,
+      }); // params on Link generated links by default
     });
   });
-
 
   it('should render a click here to continue link to the Landing page if no url passed to this page', async () => {
     const user = userEvent.setup();
@@ -55,8 +53,9 @@ describe('Error page tests', () => {
     await user.click(screen.getByText('Click here to continue'));
 
     await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(LANDING_URL, {'preventScrollReset': undefined, 'relative': undefined, 'replace': true, 'state': undefined}); // params on Link generated links by default
+      expect(mockedUseNavigate).toHaveBeenCalledWith(LANDING_URL, {
+        preventScrollReset: undefined, relative: undefined, replace: true, state: undefined,
+      }); // params on Link generated links by default
     });
   });
-
 });

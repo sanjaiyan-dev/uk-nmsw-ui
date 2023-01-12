@@ -9,9 +9,7 @@ const mockedUsedNavigate = jest.fn();
 jest.mock('react-router', () => ({
   ...jest.requireActual('react-router'),
   useNavigate: () => mockedUsedNavigate,
-  useLocation: jest.fn().mockImplementation(() => {
-    return mockUseLocationState;
-  })
+  useLocation: jest.fn().mockImplementation(() => mockUseLocationState),
 }));
 
 describe('Form confirmation page', () => {
@@ -19,7 +17,7 @@ describe('Form confirmation page', () => {
     mockUseLocationState.state = {
       formName: 'Your form name',
       nextPageLink: '/next-page',
-      referenceNumber: '123'
+      referenceNumber: '123',
     };
     render(<MemoryRouter><FormConfirmationPage /></MemoryRouter>);
     expect(screen.getByText('Your form name submitted')).toBeInTheDocument();
@@ -45,7 +43,7 @@ describe('Form confirmation page', () => {
     mockUseLocationState.state = {
       formName: 'Your form name',
       nextPageLink: '/next-page',
-      referenceNumber: '123'
+      referenceNumber: '123',
     };
     render(<MemoryRouter><FormConfirmationPage /></MemoryRouter>);
     expect(screen.getByText('Your reference number')).toBeInTheDocument();
@@ -66,7 +64,7 @@ describe('Form confirmation page', () => {
     mockUseLocationState.state = {
       formName: 'Your form name',
       nextPageLink: '/next-page',
-      referenceNumber: '123'
+      referenceNumber: '123',
     };
     render(<MemoryRouter><FormConfirmationPage /></MemoryRouter>);
     expect(screen.getByRole('heading', { name: 'Your form name submitted' })).toBeInTheDocument();
@@ -77,7 +75,7 @@ describe('Form confirmation page', () => {
     mockUseLocationState.state = {
       formName: 'Your form name',
       nextPageLink: '/next-page',
-      referenceNumber: '123'
+      referenceNumber: '123',
     };
     render(<MemoryRouter><FormConfirmationPage /></MemoryRouter>);
     expect(screen.getByRole('heading', { name: 'What happens next' })).toBeInTheDocument();
@@ -89,7 +87,7 @@ describe('Form confirmation page', () => {
       formName: 'Your form name',
       nextPageLink: '/next-page',
       nextPageName: 'next page',
-      referenceNumber: '123'
+      referenceNumber: '123',
     };
     const user = userEvent.setup();
 
