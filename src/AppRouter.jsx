@@ -27,7 +27,7 @@ import {
   REGISTER_PASSWORD_URL,
   SIGN_IN_URL,
   SECOND_PAGE_URL,
-  YOUR_VOYAGES_URL
+  YOUR_VOYAGES_URL,
 } from './constants/AppUrlConstants';
 
 // Regulatory pages
@@ -64,7 +64,7 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
   return (
     <ScrollToTopOnNewPage>
       <Routes>
-        <Route path='/' element={<Landing />} />
+        <Route path="/" element={<Landing />} />
         <Route path={ACCESSIBILITY_URL} element={<AccessibilityStatement />} />
         <Route path={COOKIE_URL} element={<CookiePolicy setIsCookieBannerShown={setIsCookieBannerShown} />} />
         <Route path={LANDING_URL} element={<Landing />} />
@@ -82,7 +82,7 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
 
         <Route path={MESSAGE_URL} element={<GenericMessage />} />
         <Route path={ERROR_ACCOUNT_ALREADY_ACTIVE_URL} element={<AccountAlreadyActive />} />
-        <Route path={ERROR_VERIFICATION_FAILED_URL} element={<VerificationLinkFailed /> } />
+        <Route path={ERROR_VERIFICATION_FAILED_URL} element={<VerificationLinkFailed />} />
 
         <Route path={FORM_CONFIRMATION_URL} element={<FormConfirmationPage />} />
 
@@ -91,7 +91,7 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
           <Route path={SECOND_PAGE_URL} element={<SecondPage />} />
           <Route path={ERROR_CREW_DETAILS_UPLOAD_URL} element={<ErrorsCrewUpload />} />
         </Route>
-        <Route path='*' element={<Navigate to='/' replace />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </ScrollToTopOnNewPage>
   );
