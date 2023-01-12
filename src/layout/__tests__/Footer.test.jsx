@@ -3,7 +3,6 @@ import { MemoryRouter } from 'react-router-dom';
 import Footer from '../Footer';
 
 describe('Footer tests', () => {
-
   it('should render the footer with Crown Copyright text', async () => {
     await waitFor(() => { render(<MemoryRouter><Footer /></MemoryRouter>); });
     expect(screen.getByText('© Crown copyright')).toBeInTheDocument();
@@ -27,8 +26,6 @@ describe('Footer tests', () => {
     const AccessibilityStatementLink = screen.getByText('Accessibility');
     expect(AccessibilityStatementLink).toBeInTheDocument();
     expect(AccessibilityStatementLink.outerHTML).toEqual('<a class="govuk-footer__link" href="/accessibility-statement">Accessibility</a>');
-
-
   });
 
   it('should render the Privacy link', async () => {
