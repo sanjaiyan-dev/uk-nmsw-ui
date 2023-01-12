@@ -7,17 +7,20 @@ import { REGISTER_DETAILS_URL } from '../../constants/AppUrlConstants';
 const RegisterEmailVerified = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const emailAddress = searchParams.get('email');
+  const token = searchParams.get('token');
   const [pageContent, setPageContent] = useState({});
   document.title = 'Your email address has been verified';
 
   // sample URL
   // http://localhost:3000/activate-account?email=jentestemail@email.com&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImM4OWY0MjlhLTMxOGQtNDhiZC1iODE3LWZkMWJjOTYyMWYyM0BtYWlsc2x1cnAuY29tIiwiZXhwIjoxNjczMzg0NzgyLCJqaXQiOiJiMGJiOWZlNi0yMzhiLTRiNzgtYjA1Zi0wODc3NDAxNTc3YWQifQ.FiUsaU4Mqth4cnQl4a6YZMOVn2OEQ5I6JjI1T2c1WYc
 
-  // make call to /check-token to check token validity
-  const checkTokenIsValid = async () => {
+  useEffect(() => {
     try {
+      // const controller = new AbortController();
       // const response = await axios.get(REGISTER_CHECK_TOKEN_ENDPOINT, {
-      //   headers: { token: searchParams.get('token')}
+      //   headers: { token: searchParams.get('token') },
+      //   signal: controller.signal,
       // });
       const response = '209';
 
@@ -27,19 +30,14 @@ const RegisterEmailVerified = () => {
           blurb: 'You can continue creating your account',
           buttonLabel: 'Continue',
           buttonNavigateTo: REGISTER_DETAILS_URL,
-          buttonState: { 'state': { 'dataToSubmit': { 'emailAddress': searchParams.get('email') } } },
+          buttonState: { state: { dataToSubmit: { emailAddress } } },
         });
       }
     } catch (err) {
       console.log('error', err);
+      // name === 'AbortError' will be if the fetch is aborted with the AbortController
     }
-  };
-  // assume call returns 204 valid response
-  // show user 'email validated, click here to go to your-details' page
-
-  useEffect(() => {
-    checkTokenIsValid();
-  }, []);
+  }, [token, emailAddress]);
 
   // if (Object.entries(pageContent).length === 0) { console.log('loading'); }
   return (

@@ -8,13 +8,16 @@ import { REGISTER_DETAILS_URL } from '../../../constants/AppUrlConstants';
 import RegisterEmailVerified from '../RegisterEmailVerified';
 
 const mockedUseNavigate = jest.fn();
-jest.mock('react-router-dom', () => {
-  return {
-    ...jest.requireActual('react-router-dom'),
-    useSearchParams: () => [new URLSearchParams({ email: 'testemail@email.com', token: '123' })],
-    useNavigate: () => mockedUseNavigate,
-  };
-});
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useSearchParams: () => [new URLSearchParams({ email: 'testemail@email.com', token: '123' })],
+  useNavigate: () => mockedUseNavigate,
+}));
+
+// jest.mock('react-router-dom', () => ({
+//   ...jest.requireActual('react-router-dom'),
+//   useNavigate: () => mockedUseNavigate,
+// }));
 
 describe('Verify email address tests', () => {
   const mockAxios = new MockAdapter(axios);
@@ -33,7 +36,7 @@ describe('Verify email address tests', () => {
     mockAxios
       .onGet(REGISTER_CHECK_TOKEN_ENDPOINT)
       .reply(209, {
-        email: 'testemail@email.com'
+        email: 'testemail@email.com',
       });
 
     render(<MemoryRouter><RegisterEmailVerified /></MemoryRouter>);
@@ -46,7 +49,7 @@ describe('Verify email address tests', () => {
     mockAxios
       .onGet(REGISTER_CHECK_TOKEN_ENDPOINT)
       .reply(209, {
-        email: 'testemail@email.com'
+        email: 'testemail@email.com',
       });
 
     render(<MemoryRouter><RegisterEmailVerified /></MemoryRouter>);
@@ -55,7 +58,7 @@ describe('Verify email address tests', () => {
     expect(nextButton.outerHTML).toEqual('<button class="govuk-button" data-module="govuk-button" type="button">Continue</button>');
     await user.click(nextButton);
     await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(REGISTER_DETAILS_URL, { 'state': { 'dataToSubmit': { 'emailAddress': 'testemail@email.com' } } });
+      expect(mockedUseNavigate).toHaveBeenCalledWith(REGISTER_DETAILS_URL, { state: { dataToSubmit: { emailAddress: 'testemail@email.com' } } });
     });
   });
 });
