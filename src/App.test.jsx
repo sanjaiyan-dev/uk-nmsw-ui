@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
-import { SERVICE_NAME } from './constants/AppConstants.js';
-import App from './App.jsx';
+import { SERVICE_NAME } from './constants/AppConstants';
+import App from './App';
 
 describe('App tests', () => {
 
