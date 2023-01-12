@@ -12,7 +12,6 @@ import setAnalyticCookie from './utils/setAnalyticCookie';
 import { NO_BACK_LINKS, TOP_LEVEL_PAGES } from './constants/AppUrlConstants';
 
 const App = () => {
-
   const cookiePreference = cookieToFind('cookiePreference');
   const [isCookieBannerShown, setIsCookieBannerShown] = useState(true);
   const { pathname } = useLocation();
