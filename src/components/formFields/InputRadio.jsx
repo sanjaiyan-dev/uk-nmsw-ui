@@ -6,11 +6,12 @@ const InputRadio = ({
   <div className={fieldDetails.className} data-module="govuk-radios">
     {(fieldDetails.radioOptions).map((option, index) => {
       const checkedState = fieldDetails.value === option.value ? true : option.checked;
+      const id = `${option.name}-input[${index}]`;
       return (
-        <div className="govuk-radios__item" key={`${option.name}-input[${index}]`}>
+        <div className="govuk-radios__item" key={id}>
           <input
             className="govuk-radios__input"
-            id={`${option.name}-input[${index}]`}
+            id={id}
             autoComplete={autoComplete}
             name={option.name}
             value={option.value}
