@@ -4,10 +4,9 @@ import { SERVICE_NAME } from '../../constants/AppConstants';
 import Landing from './Landing';
 
 describe('Landing page tests', () => {
-
   it('should render the page with the service name as a H1', async () => {
     render(<MemoryRouter><Landing /></MemoryRouter>);
-      expect(screen.getByText('National Maritime Single Window')).toBeInTheDocument();
+    expect(screen.getByText('National Maritime Single Window')).toBeInTheDocument();
   });
 
   it('should render the service name text from the constants file', async () => {
@@ -22,6 +21,7 @@ describe('Landing page tests', () => {
 
   it('should include a link to create an account', async () => {
     render(<MemoryRouter><Landing /></MemoryRouter>);
+    // eslint-disable-next-line max-len
     expect(screen.getByTestId('createAccountParagraph').outerHTML).toEqual('<p class="govuk-body" data-testid="createAccountParagraph">You\'ll also need to sign in or <a href="/create-account/email-address">create an account</a> to use this service</p>');
   });
 
@@ -29,7 +29,7 @@ describe('Landing page tests', () => {
     render(<MemoryRouter><Landing /></MemoryRouter>);
     const checkStartNowButton = screen.getByRole('button');
     expect(checkStartNowButton).toBeInTheDocument();
+    // eslint-disable-next-line max-len
     expect(checkStartNowButton.outerHTML).toEqual('<a role="button" draggable="false" class="govuk-button govuk-button--start" data-module="govuk-button" href="/sign-in">Start now<svg class="govuk-button__start-icon" xmlns="http://www.w3.org/2000/svg" width="17.5" height="19" viewBox="0 0 33 40" aria-hidden="true" focusable="false"><path fill="currentColor" d="M0 0h13l20 20-20 20H0l20-20z"></path></svg></a>');
   });
-
 });
