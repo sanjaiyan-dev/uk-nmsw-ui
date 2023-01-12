@@ -7,13 +7,10 @@ const mockedUseNavigate = jest.fn();
 jest.mock('react-router', () => ({
   ...jest.requireActual('react-router'),
   useNavigate: () => mockedUseNavigate,
-  useLocation: jest.fn().mockImplementation(() => {
-    return mockUseLocationState;
-  })
+  useLocation: jest.fn().mockImplementation(() => mockUseLocationState),
 }));
 
 describe('Resend registration email verification email', () => {
-
   beforeEach(() => {
     mockUseLocationState = {};
   });
@@ -29,5 +26,4 @@ describe('Resend registration email verification email', () => {
     render(<MemoryRouter><RegisterEmailResend /></MemoryRouter>);
     expect(screen.getByText('testemail@email.com')).toBeInTheDocument();
   });
-
 });

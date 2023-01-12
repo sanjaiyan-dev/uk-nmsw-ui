@@ -10,13 +10,10 @@ const mockedUseNavigate = jest.fn();
 jest.mock('react-router', () => ({
   ...jest.requireActual('react-router'),
   useNavigate: () => mockedUseNavigate,
-  useLocation: jest.fn().mockImplementation(() => {
-    return mockUseLocationState;
-  })
+  useLocation: jest.fn().mockImplementation(() => mockUseLocationState),
 }));
 
 describe('Registration confirmation page tests', () => {
-
   beforeEach(() => {
     window.sessionStorage.clear();
     mockUseLocationState.state = {};
@@ -47,7 +44,9 @@ describe('Registration confirmation page tests', () => {
     await user.click(screen.getByText('Sign in'));
 
     await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(SIGN_IN_URL,  {'preventScrollReset': undefined, 'relative': undefined, 'replace': false, 'state': undefined}); // params on Link generated links by default
+      expect(mockedUseNavigate).toHaveBeenCalledWith(SIGN_IN_URL, {
+        preventScrollReset: undefined, relative: undefined, replace: false, state: undefined,
+      }); // params on Link generated links by default
     });
   });
 });
