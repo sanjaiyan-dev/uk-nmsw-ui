@@ -17,8 +17,3 @@ export default ScrollToTopOnNewPage;
 ScrollToTopOnNewPage.propTypes = {
   children: PropTypes.node, // allows any renderable object
 };
-
-// Specifies the default values for props:
-ScrollToTopOnNewPage.defaultProps = {
-  children: 'Sample',
-};

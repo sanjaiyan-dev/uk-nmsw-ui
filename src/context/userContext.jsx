@@ -53,7 +53,3 @@ export { UserContext, UserProvider };
 UserProvider.propTypes = {
   children: PropTypes.node, // allows any renderable object
 };
-
-UserProvider.defaultProps = {
-  children: 'Sample',
-};
