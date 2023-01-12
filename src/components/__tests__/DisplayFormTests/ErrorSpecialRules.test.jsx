@@ -146,7 +146,7 @@ describe('Display Form', () => {
     expect(screen.getByText('There is a problem').outerHTML).toEqual('<h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>');
     expect(screen.getAllByText('Field must be a minimum of 8 characters')).toHaveLength(2);
     // Error summary has the error message as a button and correct class
-    expect(screen.getByRole('button', { name: 'Field must be a minimum of 8 characters' }).outerHTML).toEqual('<button class="govuk-button--text">Field must be a minimum of 8 characters</button>');
+    expect(screen.getByRole('button', { name: 'Field must be a minimum of 8 characters' }).outerHTML).toEqual('<button class="govuk-button--text" type="button">Field must be a minimum of 8 characters</button>');
     // Input field has the error class attached
     expect(screen.getByRole('textbox', { name: 'Text input' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testField-input" name="testField" type="text" value="">');
   });
@@ -171,7 +171,7 @@ describe('Display Form', () => {
     expect(screen.getByText('There is a problem').outerHTML).toEqual('<h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>');
     expect(screen.getAllByText('Fields must match')).toHaveLength(2);
     // Error summary has the error message as a button and correct class
-    expect(screen.getByRole('button', { name: 'Fields must match' }).outerHTML).toEqual('<button class="govuk-button--text">Fields must match</button>');
+    expect(screen.getByRole('button', { name: 'Fields must match' }).outerHTML).toEqual('<button class="govuk-button--text" type="button">Fields must match</button>');
     // Input field has the error class attached
     expect(screen.getByRole('textbox', { name: 'Repeating text input' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testFieldRepeating-input" name="testFieldRepeating" type="text" value="">');
   });
@@ -215,7 +215,7 @@ describe('Display Form', () => {
     expect(screen.getByText('There is a problem').outerHTML).toEqual('<h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>');
     expect(screen.getAllByText('Enter your text input value')).toHaveLength(2);
     // Error summary has the error message as a button and correct class
-    expect(screen.getByRole('button', { name: 'Enter your text input value' }).outerHTML).toEqual('<button class="govuk-button--text">Enter your text input value</button>');
+    expect(screen.getByRole('button', { name: 'Enter your text input value' }).outerHTML).toEqual('<button class="govuk-button--text" type="button">Enter your text input value</button>');
     // Input field has the error class attached
     expect(screen.getByRole('textbox', { name: 'Text input' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testField-input" name="testField" type="text" value="">');
   });
@@ -238,7 +238,7 @@ describe('Display Form', () => {
     expect(screen.getByText('There is a problem').outerHTML).toEqual('<h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>');
     expect(screen.getAllByText('Enter your text input value')).toHaveLength(2);
     // Error summary has the error message as a button and correct class
-    expect(screen.getByRole('button', { name: 'Enter your text input value' }).outerHTML).toEqual('<button class="govuk-button--text">Enter your text input value</button>');
+    expect(screen.getByRole('button', { name: 'Enter your text input value' }).outerHTML).toEqual('<button class="govuk-button--text" type="button">Enter your text input value</button>');
     // Input field has the error class attached
     expect(screen.getByRole('textbox', { name: 'Text input' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testField-input" name="testField" type="text" value="">');
   });
