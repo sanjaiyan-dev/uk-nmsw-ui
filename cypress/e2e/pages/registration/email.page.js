@@ -44,6 +44,9 @@ class EmailPage {
   emailVerifyMessage() {
     cy.contains('You already have an account');
   }
+  clickResendConfirmationEmail() {
+    cy.contains('Resend confirmation email').click();
+  }
 
 }
 

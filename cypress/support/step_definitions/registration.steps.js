@@ -165,7 +165,24 @@ Then('I am taken back to create an account page', () => {
   LandingPage.checkHeading();
 });
 
-When('I am taken to your-details page', () => {
+When('the user has reached your-details page', () => {
   cy.visitUrl("/create-account/your-details");
   cy.url().should('include', '/your-details');
-})
+});
+
+When('the application cannot identify user email address', () => {
+
+});
+
+Then('the application redirect user to the verification failed page', () => {
+cy.url().should('include', '/verification-failed');
+});
+
+When('I click the resend verification email button', () => {
+EmailPage.clickResendConfirmationEmail();
+});
+
+Then('the user is redirected to request-new-verification-link', () => {
+  cy.url().should('include','request-new-verification-link')
+});
+
