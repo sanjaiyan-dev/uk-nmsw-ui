@@ -18,10 +18,10 @@ describe('Radio input field generation', () => {
         label: 'Radio option one label',
         name: 'simpleFieldName',
         id: 'radioOptionOneLabel',
-        value: 'radioOptionOneLabel'
-      }
+        value: 'radioOptionOneLabel',
+      },
     ],
-    type: 'radio'
+    type: 'radio',
   };
   const fieldDetailsAllProps = {
     className: 'govuk-radios govuk-radios--inline',
@@ -36,17 +36,17 @@ describe('Radio input field generation', () => {
         name: 'fullFieldName',
         id: 'radioOptionOneLabel',
         value: 'radioOptionOneLabel',
-        checked: false
+        checked: false,
       },
       {
         label: 'Radio option two label',
         name: 'fullFieldName',
         id: 'radioOptionTwoLabel',
         value: 'radioOptionTwoLabel',
-        checked: true
-      }
+        checked: true,
+      },
     ],
-    type: 'radio'
+    type: 'radio',
   };
   const fieldDetailsWithValueSelected = {
     fieldName: 'simpleFieldName',
@@ -57,17 +57,17 @@ describe('Radio input field generation', () => {
         label: 'Radio option one label',
         name: 'simpleFieldName',
         id: 'radioOptionOneLabel',
-        value: 'radioOptionOneLabel'
+        value: 'radioOptionOneLabel',
       },
       {
         label: 'Radio option two label',
         name: 'simpleFieldName',
         id: 'radioOptionTwoLabel',
-        value: 'radioOptionTwoLabel'
-      }
+        value: 'radioOptionTwoLabel',
+      },
     ],
     type: 'radio',
-    value: 'radioOptionOneLabel'
+    value: 'radioOptionOneLabel',
   };
 
   it('should render the radio input field with only the required props', () => {
@@ -75,8 +75,8 @@ describe('Radio input field generation', () => {
       <InputRadio
         fieldDetails={fieldDetailsBasic}
         handleChange={parentHandleChange}
-        type='radio'
-      />
+        type="radio"
+      />,
     );
     expect(screen.getByRole('radio', { name: 'Radio option one label' })).toBeInTheDocument();
     expect(screen.getByRole('radio', { name: 'Radio option one label' }).outerHTML).toEqual('<input class="govuk-radios__input" id="simpleFieldName-input[0]" name="simpleFieldName" type="radio" value="radioOptionOneLabel">');
@@ -87,8 +87,8 @@ describe('Radio input field generation', () => {
       <InputRadio
         fieldDetails={fieldDetailsAllProps}
         handleChange={parentHandleChange}
-        type='radio'
-      />
+        type="radio"
+      />,
     );
     expect(screen.getByRole('radio', { name: 'Radio option one label' }).outerHTML).toEqual('<input class="govuk-radios__input" id="fullFieldName-input[0]" name="fullFieldName" type="radio" value="radioOptionOneLabel">');
     expect(screen.getByRole('radio', { name: 'Radio option two label' }).outerHTML).toEqual('<input class="govuk-radios__input" id="fullFieldName-input[1]" name="fullFieldName" type="radio" value="radioOptionTwoLabel" checked="">');
@@ -101,11 +101,10 @@ describe('Radio input field generation', () => {
       <InputRadio
         fieldDetails={fieldDetailsWithValueSelected}
         handleChange={parentHandleChange}
-        type='radio'
-      />
+        type="radio"
+      />,
     );
     expect(screen.getByRole('radio', { name: 'Radio option one label' })).toBeChecked();
     expect(screen.getByRole('radio', { name: 'Radio option two label' })).not.toBeChecked();
   });
-
 });

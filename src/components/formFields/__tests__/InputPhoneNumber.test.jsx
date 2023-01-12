@@ -23,7 +23,7 @@ describe('Phone input field generation', () => {
       <InputPhoneNumber
         fieldDetails={fieldDetailsBasic}
         handleChange={parentHandleChange}
-      />
+      />,
     );
     expect(screen.getByLabelText('Country phone code field')).toBeInTheDocument();
     expect(screen.getByRole('textbox', { name: 'Country phone code field' })).toBeInTheDocument();
@@ -38,7 +38,7 @@ describe('Phone input field generation', () => {
       <InputPhoneNumber
         fieldDetails={fieldDetailsAllProps}
         handleChange={parentHandleChange}
-      />
+      />,
     );
     expect(screen.getByLabelText('Country phone code field')).toBeInTheDocument();
     expect(screen.getByRole('textbox', { name: 'Country phone code field' })).toBeInTheDocument();
@@ -53,7 +53,7 @@ describe('Phone input field generation', () => {
       <InputPhoneNumber
         fieldDetails={fieldDetailsBasic}
         handleChange={parentHandleChange}
-      />
+      />,
     );
     expect(screen.getByText('Country phone code field').outerHTML).toEqual('<label class="govuk-visually-hidden" for="fieldName-input[0]">Country phone code field</label>');
     expect(screen.getByText('Phone number field').outerHTML).toEqual('<label class="govuk-visually-hidden" for="fieldName-input[1]">Phone number field</label>');
@@ -64,7 +64,7 @@ describe('Phone input field generation', () => {
       <InputPhoneNumber
         fieldDetails={fieldDetailsAllProps}
         handleChange={parentHandleChange}
-      />
+      />,
     );
     expect(screen.getByRole('textbox', { name: 'Country phone code field' })).toHaveValue('123');
     expect(screen.getByRole('textbox', { name: 'Phone number field' })).toHaveValue('12345');
@@ -73,10 +73,10 @@ describe('Phone input field generation', () => {
   it('should render the class as the error class if an error is passed', () => {
     render(
       <InputPhoneNumber
-        error='This field has an error'
+        error="This field has an error"
         fieldDetails={fieldDetailsAllProps}
         handleChange={parentHandleChange}
-      />
+      />,
     );
     expect(screen.getByRole('textbox', { name: 'Country phone code field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code govuk-input--error" id="fullFieldName-input[0]" name="fullFieldNameCountryPhoneCode" type="text" inputmode="numeric" aria-describedby="fullFieldName-hint" value="123">');
     expect(screen.getByRole('textbox', { name: 'Phone number field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="fullFieldName-input[1]" name="fullFieldNamePhoneNumber" type="tel" autocomplete="tel" aria-describedby="fullFieldName-hint" value="12345">');
@@ -87,7 +87,7 @@ describe('Phone input field generation', () => {
       <InputPhoneNumber
         fieldDetails={fieldDetailsAllProps}
         handleChange={parentHandleChange}
-      />
+      />,
     );
     expect(screen.getByRole('textbox', { name: 'Country phone code field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code" id="fullFieldName-input[0]" name="fullFieldNameCountryPhoneCode" type="text" inputmode="numeric" aria-describedby="fullFieldName-hint" value="123">');
     expect(screen.getByRole('textbox', { name: 'Phone number field' }).outerHTML).toEqual('<input class="govuk-input" id="fullFieldName-input[1]" name="fullFieldNamePhoneNumber" type="tel" autocomplete="tel" aria-describedby="fullFieldName-hint" value="12345">');
