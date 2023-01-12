@@ -58,7 +58,7 @@ describe('Verify email address tests', () => {
     expect(nextButton.outerHTML).toEqual('<button class="govuk-button" data-module="govuk-button" type="button">Continue</button>');
     await user.click(nextButton);
     await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(REGISTER_DETAILS_URL, { state: { dataToSubmit: { emailAddress: 'testemail@email.com' } } });
+      expect(mockedUseNavigate).toHaveBeenCalledWith(REGISTER_DETAILS_URL, { state: { dataToSubmit: { emailAddress: 'testemail@email.com', token: '123' } } });
     });
   });
 });
