@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useLocation } from 'react-router';
+import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 const ScrollToTopOnNewPage = ({ children }) => {
@@ -16,4 +16,9 @@ export default ScrollToTopOnNewPage;
 
 ScrollToTopOnNewPage.propTypes = {
   children: PropTypes.node, // allows any renderable object
+};
+
+// Specifies the default values for props:
+ScrollToTopOnNewPage.defaultProps = {
+  children: 'Sample',
 };
