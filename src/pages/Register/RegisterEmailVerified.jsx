@@ -30,7 +30,7 @@ const RegisterEmailVerified = () => {
           blurb: 'You can continue creating your account',
           buttonLabel: 'Continue',
           buttonNavigateTo: REGISTER_DETAILS_URL,
-          buttonState: { state: { dataToSubmit: { emailAddress } } },
+          buttonState: { state: { dataToSubmit: { emailAddress, token } } },
         });
       }
     } catch (err) {

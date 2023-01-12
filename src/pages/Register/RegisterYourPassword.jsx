@@ -88,7 +88,7 @@ const RegisterYourPassword = () => {
       password: dataMerged.requirePassword,
       groupName: dataMerged.companyName,
       groupTypeName: dataMerged.shippingAgent === 'yes' ? 'Shipping Agency' : 'Operator', // these are the only two valid public group types
-      token: 'tbd',
+      token: dataMerged.token,
     };
 
     try {
