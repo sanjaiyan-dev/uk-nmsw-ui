@@ -40,10 +40,12 @@ const App = () => {
       <div className="govuk-width-container">
         <PhaseBanner />
         {/* Back link with logic as to when it should/should not show; */}
-        {!pageWithoutBackLink &&
-          <nav aria-label="Back link" id="backLink">
-            <a href="#back" className="govuk-back-link" onClick={() => { navigate(-1); }}>Back</a>
-          </nav>}
+        {!pageWithoutBackLink
+          && (
+            <nav aria-label="Back link" id="backLink">
+              <a href="#back" className="govuk-back-link" onClick={() => { navigate(-1); }}>Back</a>
+            </nav>
+          )}
         <main className="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="content" role="main">
           <AppRouter setIsCookieBannerShown={setIsCookieBannerShown} />
         </main>
