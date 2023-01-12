@@ -1,4 +1,4 @@
-import { apiUrl } from '../constants/Config';
+import { apiUrl } from './Config';
 
 // Create account/register pages
 export const REGISTER_ACCOUNT_ENDPOINT = `${apiUrl}/registration`;
