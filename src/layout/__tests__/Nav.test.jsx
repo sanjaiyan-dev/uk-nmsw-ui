@@ -6,9 +6,7 @@ import App from '../../App';
 import Nav from '../Nav';
 
 let mockedUserIsPermitted = false;
-jest.mock('../../hooks/useUserIsPermitted', () => {
-  return jest.fn(() => (mockedUserIsPermitted));
-});
+jest.mock('../../hooks/useUserIsPermitted', () => jest.fn(() => (mockedUserIsPermitted)));
 
 describe('Navigation within header tests', () => {
 
