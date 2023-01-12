@@ -7,9 +7,7 @@ import { REGISTER_DETAILS_URL } from '../../constants/AppUrlConstants';
 const RegisterEmailVerified = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [title, setTitle] = useState();
-  const [blurb, setBlurb] = useState();
-  const [button, setButton] = useState({});
+  const [pageContent, setPageContent] = useState({});
   document.title = 'Your email address has been verified';
 
   // sample URL
@@ -21,15 +19,15 @@ const RegisterEmailVerified = () => {
       // const response = await axios.get(REGISTER_CHECK_TOKEN_ENDPOINT, {
       //   headers: { token: searchParams.get('token')}
       // });
-      const response = '204';
+      const response = '209';
 
-      if (response === '204') { // I think may not need the if statement here as 204 is the success response
-        setTitle('Your email address has been verified');
-        setBlurb('You can continue creating your account');
-        setButton({
-          label: 'Continue',
-          navigateTo: REGISTER_DETAILS_URL,
-          state: { 'state': { 'dataToSubmit': { 'emailAddress': 'testemail@email.com' } } }
+      if (response === '209') { // I think may not need the if statement here as 204 is the success response
+        setPageContent({
+          title: 'Your email address has been verified',
+          blurb: 'You can continue creating your account',
+          buttonLabel: 'Continue',
+          buttonNavigateTo: REGISTER_DETAILS_URL,
+          buttonState: { 'state': { 'dataToSubmit': { 'emailAddress': searchParams.get('email') } } },
         });
       }
     } catch (err) {
@@ -41,25 +39,26 @@ const RegisterEmailVerified = () => {
 
   useEffect(() => {
     checkTokenIsValid();
-  }, [searchParams]);
+  }, []);
 
+  // if (Object.entries(pageContent).length === 0) { console.log('loading'); }
   return (
     <>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">
-          <h1 className="govuk-heading-xl">{title}</h1>
+          <h1 className="govuk-heading-xl">{pageContent.title}</h1>
         </div>
       </div>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">
-          <p className="govuk-body">{blurb}</p>
+          <p className="govuk-body">{pageContent.blurb}</p>
           <button
             className="govuk-button"
             data-module="govuk-button"
             type="button"
-            onClick={() => { navigate(button.navigateTo, button.state); }}
+            onClick={() => { navigate(pageContent.buttonNavigateTo, pageContent.buttonState); }}
           >
-            Continue
+            {pageContent.buttonLabel}
           </button>
         </div>
       </div>
