@@ -14,11 +14,6 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockedUseNavigate,
 }));
 
-// jest.mock('react-router-dom', () => ({
-//   ...jest.requireActual('react-router-dom'),
-//   useNavigate: () => mockedUseNavigate,
-// }));
-
 describe('Verify email address tests', () => {
   const mockAxios = new MockAdapter(axios);
 
@@ -27,36 +22,38 @@ describe('Verify email address tests', () => {
     window.sessionStorage.clear();
   });
 
-  it('should render the page', () => {
-    render(<MemoryRouter><RegisterEmailVerified /></MemoryRouter>);
-    expect(screen.getByText('Your email address has been verified')).toBeInTheDocument();
-  });
-
   it('should load the email verified successfully message if token is valid', async () => {
+    // const token = { token: '123' };
     mockAxios
-      .onGet(REGISTER_CHECK_TOKEN_ENDPOINT)
-      .reply(209, {
-        email: 'testemail@email.com',
-      });
+      .onPost(REGISTER_CHECK_TOKEN_ENDPOINT)
+      .reply(204);
 
     render(<MemoryRouter><RegisterEmailVerified /></MemoryRouter>);
-    expect(screen.getByRole('heading', { name: 'Your email address has been verified' })).toBeInTheDocument();
-    expect(screen.getByText('You can continue creating your account')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByRole('heading', { name: 'Your email address has been verified' })).toBeInTheDocument();
+      expect(screen.getByText('You can continue creating your account')).toBeInTheDocument();
+      const nextButton = screen.getByRole('button', { name: 'Continue' });
+      expect(nextButton).toBeInTheDocument();
+      expect(nextButton.outerHTML).toEqual('<button class="govuk-button" data-module="govuk-button" type="button">Continue</button>');
+    });
   });
 
+  // NEED TO WAIT FOR BUTTON TO LOAD WITH URL
+  // THE WAIT FOR USER TO CLICK IT
+  // THEN CHECK PAGE WAS CALLED
   it('should link user to your details page if token is valid', async () => {
     const user = userEvent.setup();
     mockAxios
-      .onGet(REGISTER_CHECK_TOKEN_ENDPOINT)
-      .reply(209, {
-        email: 'testemail@email.com',
-      });
+      .onPost(REGISTER_CHECK_TOKEN_ENDPOINT, {
+        token: '123',
+      })
+      .reply(204);
 
     render(<MemoryRouter><RegisterEmailVerified /></MemoryRouter>);
-    const nextButton = screen.getByRole('button', { name: 'Continue' });
-    expect(nextButton).toBeInTheDocument();
-    expect(nextButton.outerHTML).toEqual('<button class="govuk-button" data-module="govuk-button" type="button">Continue</button>');
-    await user.click(nextButton);
+    await waitFor(() => {
+      expect(screen.getByRole('heading', { name: 'Your email address has been verified' })).toBeInTheDocument();
+    });
+    user.click(screen.getByRole('button', { name: 'Continue' }));
     await waitFor(() => {
       expect(mockedUseNavigate).toHaveBeenCalledWith(REGISTER_DETAILS_URL, { state: { dataToSubmit: { emailAddress: 'testemail@email.com', token: '123' } } });
     });
