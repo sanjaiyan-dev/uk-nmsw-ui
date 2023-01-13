@@ -1,43 +1,48 @@
-// import axios from 'axios';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-// import { REGISTER_CHECK_TOKEN_ENDPOINT } from '../../constants/AppAPIConstants';
+import { REGISTER_CHECK_TOKEN_ENDPOINT } from '../../constants/AppAPIConstants';
 import { REGISTER_DETAILS_URL } from '../../constants/AppUrlConstants';
+import Auth from '../../utils/Auth';
 
 const RegisterEmailVerified = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const emailAddress = searchParams.get('email');
-  const token = searchParams.get('token');
+  const tokenToCheck = searchParams.get('token');
   const [pageContent, setPageContent] = useState({});
   document.title = 'Your email address has been verified';
 
   // sample URL
-  // http://localhost:3000/activate-account?email=jentestemail@email.com&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImM4OWY0MjlhLTMxOGQtNDhiZC1iODE3LWZkMWJjOTYyMWYyM0BtYWlsc2x1cnAuY29tIiwiZXhwIjoxNjczMzg0NzgyLCJqaXQiOiJiMGJiOWZlNi0yMzhiLTRiNzgtYjA1Zi0wODc3NDAxNTc3YWQifQ.FiUsaU4Mqth4cnQl4a6YZMOVn2OEQ5I6JjI1T2c1WYc
+  // http://localhost:3000/activate-account?email=jentestingemailsforwork%2B20230113%40gmail.com&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImplbnRlc3RpbmdlbWFpbHNmb3J3b3JrKzIwMjMwMTEzQGdtYWlsLmNvbSIsImV4cCI6MTY3MzYzMjYzNiwiaml0IjoiNDE4NTliMzQtMzI2ZC00MjUxLTgyNDQtMjgwMTg4YjJiZDU4In0.1bdZ2X7rxMX9wTD2Kwkx7VqktUuE3IzPJzxEVO3hNCw
 
-  useEffect(() => {
+  const fetchData = async () => {
     try {
-      // const controller = new AbortController();
-      // const response = await axios.get(REGISTER_CHECK_TOKEN_ENDPOINT, {
-      //   headers: { token: searchParams.get('token') },
-      //   signal: controller.signal,
-      // });
-      const response = '209';
+      const controller = new AbortController();
+      const response = await axios.post(REGISTER_CHECK_TOKEN_ENDPOINT, {
+        token: tokenToCheck,
+      }, {
+        signal: controller.signal,
+      });
 
-      if (response === '209') { // I think may not need the if statement here as 204 is the success response
+      if (response.status === 204) {
         setPageContent({
           title: 'Your email address has been verified',
           blurb: 'You can continue creating your account',
           buttonLabel: 'Continue',
           buttonNavigateTo: REGISTER_DETAILS_URL,
-          buttonState: { state: { dataToSubmit: { emailAddress, token } } },
+          buttonState: { state: { dataToSubmit: { emailAddress, token: tokenToCheck } } },
         });
       }
     } catch (err) {
       console.log('error', err);
       // name === 'AbortError' will be if the fetch is aborted with the AbortController
     }
-  }, [token, emailAddress]);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [tokenToCheck, emailAddress]);
 
   if (Object.entries(pageContent).length === 0) { setPageContent({ blurb: '...Loading' }); }
   return (
