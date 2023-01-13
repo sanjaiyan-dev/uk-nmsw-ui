@@ -39,7 +39,7 @@ const RegisterEmailVerified = () => {
     }
   }, [token, emailAddress]);
 
-  // if (Object.entries(pageContent).length === 0) { console.log('loading'); }
+  if (Object.entries(pageContent).length === 0) { setPageContent({ blurb: '...Loading' }); }
   return (
     <>
       <div className="govuk-grid-row">
@@ -50,14 +50,16 @@ const RegisterEmailVerified = () => {
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">
           <p className="govuk-body">{pageContent.blurb}</p>
-          <button
-            className="govuk-button"
-            data-module="govuk-button"
-            type="button"
-            onClick={() => { navigate(pageContent.buttonNavigateTo, pageContent.buttonState); }}
-          >
-            {pageContent.buttonLabel}
-          </button>
+          {pageContent.buttonLabel && (
+            <button
+              className="govuk-button"
+              data-module="govuk-button"
+              type="button"
+              onClick={() => { navigate(pageContent.buttonNavigateTo, pageContent.buttonState); }}
+            >
+              {pageContent.buttonLabel}
+            </button>
+          )}
         </div>
       </div>
     </>
