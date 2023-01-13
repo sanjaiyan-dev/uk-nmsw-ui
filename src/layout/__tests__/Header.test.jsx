@@ -6,7 +6,6 @@ import { UserProvider } from '../../context/userContext';
 import Header from '../Header';
 
 describe('Header tests', () => {
-
   it('should render the header with GovUK logo text', () => {
     render(<UserProvider><MemoryRouter><Header /></MemoryRouter></UserProvider>);
     expect(screen.getByText('GOV.UK')).toBeInTheDocument();

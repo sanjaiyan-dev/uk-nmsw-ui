@@ -14,7 +14,7 @@ describe('Routing tests', () => {
             <Route path="/test" element={<TestComponent />} />
           </Route>
         </Routes>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     expect(screen.queryByText('test text')).toBeInTheDocument();
@@ -29,10 +29,9 @@ describe('Routing tests', () => {
             <Route path="/test" element={<TestComponent />} />
           </Route>
         </Routes>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     expect(screen.queryByText('test text')).not.toBeInTheDocument();
   });
-
 });

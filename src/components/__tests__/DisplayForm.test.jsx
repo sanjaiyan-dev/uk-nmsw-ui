@@ -39,7 +39,7 @@ jest.mock('react-router-dom', () => ({
 
 describe('Display Form', () => {
   const handleSubmit = jest.fn();
-  let scrollIntoViewMock = jest.fn();
+  const scrollIntoViewMock = jest.fn();
   window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
   const formActions = {
     submit: {
@@ -48,7 +48,7 @@ describe('Display Form', () => {
     cancel: {
       label: 'Cancel test button',
       redirectURL: YOUR_VOYAGES_URL,
-    }
+    },
   };
   const formActionsSubmitOnly = {
     submit: {
@@ -64,15 +64,15 @@ describe('Display Form', () => {
       dataAPIEndpoint: [
         {
           name: 'ObjectOne',
-          identifier: 'one'
+          identifier: 'one',
         },
         {
           name: 'ObjectTwo',
-          identifier: 'two'
+          identifier: 'two',
         },
         {
           name: 'ObjectThree',
-          identifier: 'three'
+          identifier: 'three',
         },
       ], // for while we're passing in a mocked array of data
       responseKey: 'name',
@@ -100,7 +100,7 @@ describe('Display Form', () => {
           message: 'Enter your phone value',
         },
       ],
-    }
+    },
   ];
   const formRequiredTextInput = [
     {
@@ -114,7 +114,7 @@ describe('Display Form', () => {
           message: 'Enter your text input value',
         },
       ],
-    }
+    },
   ];
   const formRequiredRadioInput = [
     {
@@ -130,21 +130,21 @@ describe('Display Form', () => {
           name: 'radioButtonSet',
           id: 'radioOne',
           value: 'radioOne',
-          checked: true
+          checked: true,
         },
         {
           label: 'Radio two',
           name: 'radioButtonSet',
           id: 'radioTwo',
           value: 'radioTwo',
-          checked: false
+          checked: false,
         },
         {
           label: 'Radio three',
           name: 'radioButtonSet',
           id: 'radioThree',
           value: 'radioThree',
-          checked: false
+          checked: false,
         },
       ],
       validation: [
@@ -175,7 +175,7 @@ describe('Display Form', () => {
       type: FIELD_PASSWORD,
       label: 'Password',
       fieldName: 'password',
-    }
+    },
   ];
   const formSpecialInputs = [
     {
@@ -205,7 +205,7 @@ describe('Display Form', () => {
       label: 'Password input',
       hint: 'This is a hint for a password input',
       fieldName: 'password',
-    }
+    },
   ];
   const formWithMultipleFields = [
     {
@@ -216,15 +216,15 @@ describe('Display Form', () => {
       dataAPIEndpoint: [
         {
           name: 'ObjectOne',
-          identifier: 'one'
+          identifier: 'one',
         },
         {
           name: 'ObjectTwo',
-          identifier: 'two'
+          identifier: 'two',
         },
         {
           name: 'ObjectThree',
-          identifier: 'three'
+          identifier: 'three',
         },
       ], // for while we're passing in a mocked array of data
       responseKey: 'name',
@@ -259,16 +259,16 @@ describe('Display Form', () => {
           name: 'radioButtonSet',
           id: 'radioOne',
           value: 'radioOne',
-          checked: false
+          checked: false,
         },
         {
           label: 'Radio two',
           name: 'radioButtonSet',
           id: 'radioTwo',
           value: 'radioTwo',
-          checked: false
+          checked: false,
         },
-      ]
+      ],
     },
     {
       type: FIELD_CONDITIONAL,
@@ -297,9 +297,9 @@ describe('Display Form', () => {
           value: 'optionNoConditional',
         },
       ],
-    }
+    },
   ];
-  
+
   beforeEach(() => {
     window.sessionStorage.clear();
   });
@@ -315,7 +315,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     expect((screen.getByTestId('submit-button')).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Submit test button</button>');
     expect((screen.getByTestId('cancel-button')).outerHTML).toEqual('<button type="button" class="govuk-button govuk-button--secondary" data-module="govuk-button" data-testid="cancel-button">Cancel test button</button>');
@@ -331,7 +331,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     expect(screen.getByTestId('submit-button').outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Submit test button</button>');
     expect(screen.getAllByRole('button')).toHaveLength(1);
@@ -348,7 +348,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     await user.type(screen.getByLabelText('Text input'), 'Hello');
@@ -369,7 +369,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     expect(screen.getByLabelText('Autocomplete input')).toBeInTheDocument();
     expect(screen.getByText('Hint for Autocomplete input').outerHTML).toEqual('<div id="items-hint" class="govuk-hint">Hint for Autocomplete input</div>');
@@ -387,7 +387,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     expect(screen.getByLabelText('Country phone code field')).toBeInTheDocument();
     expect(screen.getByRole('textbox', { name: 'Country phone code field' })).toBeInTheDocument();
@@ -406,7 +406,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     expect(screen.getByText('This is a radio button set')).toBeInTheDocument();
     expect(screen.getByText('radio hint').outerHTML).toEqual('<div id="radioButtonSet-hint" class="govuk-hint">radio hint</div>');
@@ -428,7 +428,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     expect(screen.getByText('This is a radio set with a conditional field')).toBeInTheDocument();
     expect(screen.getByText('Hint for conditional set').outerHTML).toEqual('<div id="radioWithConditional-hint" class="govuk-hint">Hint for conditional set</div>');
@@ -450,7 +450,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     expect(screen.getByLabelText('Text input')).toBeInTheDocument();
     expect(screen.getByText('This is a hint for a text input').outerHTML).toEqual('<div id="testField-hint" class="govuk-hint">This is a hint for a text input</div>');
@@ -467,7 +467,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     /* standard text field */
     expect(screen.getByLabelText('Text input')).toBeInTheDocument();
@@ -495,7 +495,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     await user.type(screen.getByLabelText('Text input'), 'Hello');
     expect(screen.getByLabelText('Text input')).toHaveValue('Hello');
@@ -521,7 +521,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     await user.type(screen.getByLabelText('Text input'), 'Hello');
     expect(screen.getByLabelText('Text input')).toHaveValue('Hello');
@@ -546,7 +546,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     await user.type(screen.getByLabelText('Password'), 'MyPassword');
     expect(screen.getByLabelText('Password')).toHaveValue('MyPassword');
@@ -557,7 +557,9 @@ describe('Display Form', () => {
 
   it('should prefill form with data from session if it exists', async () => {
     const expectedStoredData = '{"testField":"Hello Test Field","radioButtonSet":"radioOne","radioWithConditional":"optionWithConditional","conditionalTextInput":"world","testPhoneField":"(123)12345"}';
-    window.sessionStorage.setItem('formData', JSON.stringify({ testField: 'Hello Test Field', radioButtonSet: 'radioOne', radioWithConditional: 'optionWithConditional', conditionalTextInput: 'world', testPhoneField: '(123)12345' }));
+    window.sessionStorage.setItem('formData', JSON.stringify({
+      testField: 'Hello Test Field', radioButtonSet: 'radioOne', radioWithConditional: 'optionWithConditional', conditionalTextInput: 'world', testPhoneField: '(123)12345',
+    }));
     render(
       <MemoryRouter>
         <DisplayForm
@@ -567,7 +569,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     expect(screen.getByLabelText('Text input')).toHaveValue('Hello Test Field');
     expect(screen.getByRole('radio', { name: 'Radio one' })).toBeChecked();
@@ -590,7 +592,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     await user.click(screen.getByRole('radio', { name: 'Option that has a conditional' }));
@@ -613,7 +615,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     expect(screen.getByLabelText('Text input')).toHaveValue('Hello Test Field');
     expect(screen.getByRole('radio', { name: 'Radio one' })).toBeChecked();
@@ -637,7 +639,7 @@ describe('Display Form', () => {
           formType={MULTI_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     expect(screen.getByLabelText('Text input')).toHaveValue('Hello Test Field');
     expect(screen.getByRole('radio', { name: 'Radio one' })).toBeChecked();
@@ -661,7 +663,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     expect(screen.getByLabelText('Text input')).toHaveValue('Hello Test Field');
     expect(screen.getByRole('radio', { name: 'Radio one' })).toBeChecked();
@@ -683,9 +685,9 @@ describe('Display Form', () => {
           formType={SIGN_IN_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
-    await user.type(screen.getByRole('textbox', {name: /email/i}), 'testemail@email.com');
+    await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
     await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
     expect(window.sessionStorage.getItem('formData')).toStrictEqual(null);
   });

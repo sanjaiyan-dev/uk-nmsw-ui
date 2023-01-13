@@ -7,7 +7,7 @@ import {
   MULTI_PAGE_FORM,
   VALIDATE_MAX_LENGTH,
   VALIDATE_PHONE_NUMBER,
-  VALIDATE_REQUIRED
+  VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
 import { ERROR_VERIFICATION_FAILED_URL, REGISTER_PASSWORD_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
@@ -30,9 +30,9 @@ const RegisterYourDetails = () => {
       validation: [
         {
           type: VALIDATE_REQUIRED,
-          message: 'Enter your full name'
+          message: 'Enter your full name',
         },
-      ]
+      ],
     },
     {
       type: FIELD_TEXT,
@@ -41,9 +41,9 @@ const RegisterYourDetails = () => {
       validation: [
         {
           type: VALIDATE_REQUIRED,
-          message: 'Enter your company name'
+          message: 'Enter your company name',
         },
-      ]
+      ],
     },
     {
       type: FIELD_PHONE,
@@ -52,13 +52,13 @@ const RegisterYourDetails = () => {
       validation: [
         {
           type: VALIDATE_REQUIRED,
-          message: 'Enter your phone number'
+          message: 'Enter your phone number',
         },
         {
           type: VALIDATE_PHONE_NUMBER,
-          message: 'Enter your country code and phone number'
-        }
-      ]
+          message: 'Enter your country code and phone number',
+        },
+      ],
     },
     {
       type: FIELD_TEXT,
@@ -67,14 +67,14 @@ const RegisterYourDetails = () => {
       validation: [
         {
           type: VALIDATE_REQUIRED,
-          message: 'Enter country'
+          message: 'Enter country',
         },
         {
           type: VALIDATE_MAX_LENGTH,
           message: 'Enter 3 digit country code',
-          condition: 3
+          condition: 3,
         },
-      ]
+      ],
     },
     {
       type: FIELD_RADIO,
@@ -97,18 +97,18 @@ const RegisterYourDetails = () => {
       validation: [
         {
           type: VALIDATE_REQUIRED,
-          message: 'Select is your company a shipping agent'
+          message: 'Select is your company a shipping agent',
         },
-      ]
+      ],
     },
   ];
 
   const handleSubmit = async (formData) => {
     const dataToSubmit = { ...state?.dataToSubmit, ...formData.formData };
-    navigate(REGISTER_PASSWORD_URL, { state: { dataToSubmit: dataToSubmit } });
+    navigate(REGISTER_PASSWORD_URL, { state: { dataToSubmit } });
   };
 
-  /* 
+  /*
    * Without an email address we can't submit the PATCH to update the user account
    * So if a user arrives to this page and we do not have an email address in state
    * we need to direct them to a place where they can deal with that
@@ -118,20 +118,18 @@ const RegisterYourDetails = () => {
   useEffect(() => {
     if (!state || !state.dataToSubmit || !state.dataToSubmit.emailAddress) {
       navigate(ERROR_VERIFICATION_FAILED_URL);
-    } 
+    }
   }, [state]);
 
   return (
-    <>
-      <DisplayForm
-        formId='formRegisterYourDetails'
-        fields={formFields}
-        formActions={formActions}
-        formType={MULTI_PAGE_FORM}
-        pageHeading='Your details'
-        handleSubmit={handleSubmit}
-      />
-    </>
+    <DisplayForm
+      formId="formRegisterYourDetails"
+      fields={formFields}
+      formActions={formActions}
+      formType={MULTI_PAGE_FORM}
+      pageHeading="Your details"
+      handleSubmit={handleSubmit}
+    />
   );
 };
 

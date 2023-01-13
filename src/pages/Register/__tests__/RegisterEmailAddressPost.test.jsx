@@ -4,7 +4,9 @@ import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { AXIOS_ERROR, REGISTER_ACCOUNT_ENDPOINT, USER_ALREADY_REGISTERED } from '../../../constants/AppAPIConstants';
-import { MESSAGE_URL, ERROR_ACCOUNT_ALREADY_ACTIVE_URL, REGISTER_EMAIL_URL, REGISTER_EMAIL_CHECK_URL } from '../../../constants/AppUrlConstants';
+import {
+  MESSAGE_URL, ERROR_ACCOUNT_ALREADY_ACTIVE_URL, REGISTER_EMAIL_URL, REGISTER_EMAIL_CHECK_URL,
+} from '../../../constants/AppUrlConstants';
 import RegisterEmailAddress from '../RegisterEmailAddress';
 
 const mockedUseNavigate = jest.fn();
@@ -32,25 +34,25 @@ describe('Register email address POST tests', () => {
       .onPost(REGISTER_ACCOUNT_ENDPOINT)
       .reply(200, {
         email: 'testemail@email.com',
-        id: 'e799cd36-9863-495b-9d6d-60132ea5abf5'
+        id: 'e799cd36-9863-495b-9d6d-60132ea5abf5',
       });
 
-  render(<MemoryRouter><RegisterEmailAddress /></MemoryRouter>);
-  await user.type(screen.getAllByRole('textbox', { name: /email/i })[0], 'testemail@email.com');
-  await user.type(screen.getAllByRole('textbox', { name: /email/i })[1], 'testemail@email.com');
-  await user.click(screen.getByTestId('submit-button'));
+    render(<MemoryRouter><RegisterEmailAddress /></MemoryRouter>);
+    await user.type(screen.getAllByRole('textbox', { name: /email/i })[0], 'testemail@email.com');
+    await user.type(screen.getAllByRole('textbox', { name: /email/i })[1], 'testemail@email.com');
+    await user.click(screen.getByTestId('submit-button'));
 
-  await waitFor(() => {
-    expect(mockedUseNavigate).toHaveBeenCalledWith(REGISTER_EMAIL_CHECK_URL, { 'state': { 'dataToSubmit': { 'emailAddress': 'testemail@email.com' } } });
+    await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith(REGISTER_EMAIL_CHECK_URL, { state: { dataToSubmit: { emailAddress: 'testemail@email.com' } } });
+    });
   });
-});
 
   it('should redirect to account already active page if account active response received', async () => {
     const user = userEvent.setup();
     mockAxios
       .onPost(REGISTER_ACCOUNT_ENDPOINT)
       .reply(400, {
-        message: USER_ALREADY_REGISTERED
+        message: USER_ALREADY_REGISTERED,
       });
 
     render(<MemoryRouter><RegisterEmailAddress /></MemoryRouter>);
@@ -58,7 +60,7 @@ describe('Register email address POST tests', () => {
     await user.type(screen.getAllByRole('textbox', { name: /email/i })[1], 'testemail@email.com');
     await user.click(screen.getByTestId('submit-button'));
     await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_ACCOUNT_ALREADY_ACTIVE_URL, { 'state': { 'dataToSubmit': { 'emailAddress': 'testemail@email.com'} } });
+      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_ACCOUNT_ALREADY_ACTIVE_URL, { state: { dataToSubmit: { emailAddress: 'testemail@email.com' } } });
     });
   });
 
@@ -67,7 +69,7 @@ describe('Register email address POST tests', () => {
     mockAxios
       .onPost(REGISTER_ACCOUNT_ENDPOINT)
       .reply(400, {
-        message: 'I am an unexpected error message'
+        message: 'I am an unexpected error message',
       });
 
     render(<MemoryRouter><RegisterEmailAddress /></MemoryRouter>);
@@ -75,7 +77,7 @@ describe('Register email address POST tests', () => {
     await user.type(screen.getAllByRole('textbox', { name: /email/i })[1], 'testemail@email.com');
     await user.click(screen.getByTestId('submit-button'));
     await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, { 'state': { 'title': 'Something has gone wrong', 'message': 'I am an unexpected error message', 'redirectURL': REGISTER_EMAIL_URL } }); // on error we redirect to error page
+      expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: 'I am an unexpected error message', redirectURL: REGISTER_EMAIL_URL } }); // on error we redirect to error page
     });
   });
 
@@ -90,7 +92,7 @@ describe('Register email address POST tests', () => {
     await user.type(screen.getAllByRole('textbox', { name: /email/i })[1], 'testemail@email.com');
     await user.click(screen.getByTestId('submit-button'));
     await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, { 'state': { 'title': 'Something has gone wrong', 'redirectURL': REGISTER_EMAIL_URL } }); // on error we redirect to error page
+      expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, { state: { title: 'Something has gone wrong', redirectURL: REGISTER_EMAIL_URL } }); // on error we redirect to error page
     });
   });
 
@@ -105,7 +107,7 @@ describe('Register email address POST tests', () => {
     await user.type(screen.getAllByRole('textbox', { name: /email/i })[1], 'testemail@email.com');
     await user.click(screen.getByTestId('submit-button'));
     await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, { 'state': { 'title': 'Something has gone wrong', 'redirectURL': REGISTER_EMAIL_URL } }); // on error we redirect to error page
+      expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, { state: { title: 'Something has gone wrong', redirectURL: REGISTER_EMAIL_URL } }); // on error we redirect to error page
     });
   });
 
@@ -120,7 +122,7 @@ describe('Register email address POST tests', () => {
     await user.type(screen.getAllByRole('textbox', { name: /email/i })[1], 'testemail@email.com');
     await user.click(screen.getByTestId('submit-button'));
     await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, { 'state': { 'title': 'Something has gone wrong', 'message': 'unknown error', 'redirectURL': REGISTER_EMAIL_URL } }); // on error we redirect to error page
+      expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: 'unknown error', redirectURL: REGISTER_EMAIL_URL } }); // on error we redirect to error page
     });
   });
 });

@@ -1,6 +1,7 @@
 // External links
 export const CROWN_COPYRIGHT_URL = 'https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/';
 export const FEEDBACK_URL = '/';
+export const PASSWORD_GUIDENCE_URL = 'https://www.ncsc.gov.uk/collection/top-tips-for-staying-secure-online/three-random-words#:~:text=Why%20does%20the%20NCSC%20recommend,enough%20for%20you%20to%20remember';
 
 // Pages
 export const ACCESSIBILITY_URL = '/accessibility-statement';
@@ -28,7 +29,7 @@ export const MESSAGE_URL = '/message';
 export const ERROR_ACCOUNT_ALREADY_ACTIVE_URL = '/create-account/account-already-exists';
 export const ERROR_VERIFICATION_FAILED_URL = '/create-account/verification-failed';
 
-//Voyage error pages
+// Voyage error pages
 export const ERROR_CREW_DETAILS_UPLOAD_URL = '/create-voyage/check-crew-details';
 
 // Test pages
@@ -46,5 +47,5 @@ export const NO_BACK_LINKS = [
   REGISTER_CONFIRMATION_URL,
   REGISTER_EMAIL_CHECK_URL,
   REGISTER_EMAIL_VERIFIED_URL,
-  SIGN_IN_URL
+  SIGN_IN_URL,
 ];

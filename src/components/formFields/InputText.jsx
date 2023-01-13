@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 
-const InputText = ({ autoComplete, dataTestid, error, fieldDetails, handleChange, type }) => {
+const InputText = ({
+  autoComplete, dataTestid, error, fieldDetails, handleChange, type,
+}) => {
   const classToApply = error ? 'govuk-input govuk-input--error' : 'govuk-input';
   return (
     <input

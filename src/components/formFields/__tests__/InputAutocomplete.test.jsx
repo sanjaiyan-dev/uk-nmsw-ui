@@ -15,15 +15,15 @@ describe('Text input field generation', () => {
     dataAPIEndpoint: [
       {
         name: 'ObjectOne',
-        identifier: 'one'
+        identifier: 'one',
       },
       {
         name: 'ObjectTwo',
-        identifier: 'two'
+        identifier: 'two',
       },
       {
         name: 'ObjectThree',
-        identifier: 'three'
+        identifier: 'three',
       },
     ], // for while we're passing in a mocked array of data
     fieldName: 'fullFieldName',
@@ -34,15 +34,15 @@ describe('Text input field generation', () => {
     dataAPIEndpoint: [
       {
         name: 'ObjectOne',
-        identifier: 'one'
+        identifier: 'one',
       },
       {
         name: 'ObjectTwo',
-        identifier: 'two'
+        identifier: 'two',
       },
       {
         name: 'ObjectThree',
-        identifier: 'three'
+        identifier: 'three',
       },
     ], // for while we're passing in a mocked array of data
     fieldName: 'fullFieldName',
@@ -55,15 +55,15 @@ describe('Text input field generation', () => {
     dataAPIEndpoint: [
       {
         name: 'ObjectOne',
-        identifier: 'one'
+        identifier: 'one',
       },
       {
         name: 'ObjectTwo',
-        identifier: 'two'
+        identifier: 'two',
       },
       {
         name: 'ObjectThree',
-        identifier: 'three'
+        identifier: 'three',
       },
     ], // for while we're passing in a mocked array of data
     fieldName: 'fullFieldName',
@@ -74,20 +74,20 @@ describe('Text input field generation', () => {
     dataAPIEndpoint: [
       {
         name: 'ObjectOne',
-        identifier: 'one'
+        identifier: 'one',
       },
       {
         name: 'ObjectTwo',
-        identifier: 'two'
+        identifier: 'two',
       },
       {
         name: 'ObjectThree',
-        identifier: 'three'
+        identifier: 'three',
       },
     ], // for while we're passing in a mocked array of data
     fieldName: 'fullFieldName',
     responseKey: 'name',
-    additionalKey: 'identifier'
+    additionalKey: 'identifier',
   };
 
   beforeEach(() => {
@@ -99,7 +99,7 @@ describe('Text input field generation', () => {
       <InputAutocomplete
         fieldDetails={fieldDetailsBasic}
         handleChange={parentHandleChange}
-      />
+      />,
     );
     expect(screen.getByRole('combobox', { name: '' })).toBeInTheDocument();
     expect(screen.getByRole('listbox', { name: '' })).toBeInTheDocument();
@@ -112,7 +112,7 @@ describe('Text input field generation', () => {
       <InputAutocomplete
         fieldDetails={fieldDetailsAllProps}
         handleChange={parentHandleChange}
-      />
+      />,
     );
     expect(screen.getByRole('combobox', { name: '' })).toBeInTheDocument();
     expect(screen.getByRole('listbox', { name: '' })).toBeInTheDocument();
@@ -126,7 +126,7 @@ describe('Text input field generation', () => {
       <InputAutocomplete
         fieldDetails={fieldDetailsOneResponseKey}
         handleChange={parentHandleChange}
-      />
+      />,
     );
     expect(screen.getByRole('combobox', { name: '' })).toBeInTheDocument();
     expect(screen.getByRole('listbox', { name: '' })).toBeInTheDocument();
@@ -144,7 +144,7 @@ describe('Text input field generation', () => {
       <InputAutocomplete
         fieldDetails={fieldDetailsTwoResponseKeys}
         handleChange={parentHandleChange}
-      />
+      />,
     );
     expect(screen.getByRole('combobox', { name: '' })).toBeInTheDocument();
     expect(screen.getByRole('listbox', { name: '' })).toBeInTheDocument();
@@ -161,7 +161,7 @@ describe('Text input field generation', () => {
       <InputAutocomplete
         fieldDetails={fieldDetailsTwoResponseKeys}
         handleChange={parentHandleChange}
-      />
+      />,
     );
     expect(screen.getByRole('combobox', { name: '' })).toBeInTheDocument();
     expect(screen.getByRole('listbox', { name: '' })).toBeInTheDocument();
@@ -177,7 +177,7 @@ describe('Text input field generation', () => {
       <InputAutocomplete
         fieldDetails={fieldDetailsTwoResponseKeys}
         handleChange={parentHandleChange}
-      />
+      />,
     );
     expect(screen.getByRole('combobox', { name: '' })).toBeInTheDocument();
     expect(screen.getByRole('listbox', { name: '' })).toBeInTheDocument();
@@ -200,7 +200,7 @@ describe('Text input field generation', () => {
       <InputAutocomplete
         fieldDetails={fieldDetailsTwoResponseKeys}
         handleChange={parentHandleChange}
-      />
+      />,
     );
     expect(screen.getByRole('combobox', { name: '' })).toBeInTheDocument();
     expect(screen.getByRole('listbox', { name: '' })).toBeInTheDocument();
@@ -216,5 +216,4 @@ describe('Text input field generation', () => {
     expect(input).toHaveValue('');
     expect(parentHandleChange).toHaveBeenCalled();
   });
-
 });

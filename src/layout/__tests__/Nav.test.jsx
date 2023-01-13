@@ -6,12 +6,9 @@ import App from '../../App';
 import Nav from '../Nav';
 
 let mockedUserIsPermitted = false;
-jest.mock('../../hooks/useUserIsPermitted', () => {
-  return jest.fn(() => (mockedUserIsPermitted));
-});
+jest.mock('../../hooks/useUserIsPermitted', () => jest.fn(() => (mockedUserIsPermitted)));
 
 describe('Navigation within header tests', () => {
-
   beforeEach(() => {
     window.sessionStorage.clear();
   });
@@ -111,7 +108,7 @@ describe('Navigation within header tests', () => {
     render(<MemoryRouter><App /></MemoryRouter>);
     await user.click(screen.getByText('Second page'));
     await user.type(screen.getByLabelText('First name'), 'Bob');
-    
+
     expect(window.sessionStorage.getItem('formData')).toStrictEqual('{"firstName":"Bob"}');
 
     await user.click(screen.getByText('Your voyages'));

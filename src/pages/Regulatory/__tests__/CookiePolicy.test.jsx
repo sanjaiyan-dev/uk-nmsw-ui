@@ -3,24 +3,24 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import CookiePolicy from '../CookiePolicy';
 
+// TODO: review this fuction
+// eslint-disable-next-line consistent-return
 const extractPreferenceCookie = (cookieName) => {
   const cookieArray = document.cookie.split(';');
-
   for (let i = 0; i < cookieArray.length; i++) {
-    let cookiePair = cookieArray[i].split('=');
-    if (cookieName == cookiePair[0].trim()) {
+    const cookiePair = cookieArray[i].split('=');
+    if (cookieName === cookiePair[0].trim()) {
       return cookieArray[i];
     }
   }
 };
 
-let scrollIntoViewMock = jest.fn();
+const scrollIntoViewMock = jest.fn();
 window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
 
 const setIsCookieBannerShown = jest.fn();
 
 describe('Cookie policy tests', () => {
-
   beforeEach(() => {
     document.cookie = 'cookiePreference=; Max-Age=0;';
   });

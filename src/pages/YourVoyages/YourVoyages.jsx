@@ -8,7 +8,10 @@ const YourVoyages = () => {
       <div className="govuk-inset-text">
         <p className="govuk-body">You have not reported any voyages yet</p>
       </div>
-      <button className="govuk-button">
+      <button
+        className="govuk-button"
+        type="button"
+      >
         Report a voyage
       </button>
     </>

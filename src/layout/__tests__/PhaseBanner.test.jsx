@@ -3,7 +3,6 @@ import { FEEDBACK_URL } from '../../constants/AppUrlConstants';
 import PhaseBanner from '../PhaseBanner';
 
 describe('Phase Banner tests', () => {
-
   it('should render the PhaseBanner with the feedback sentence', async () => {
     await waitFor(() => { render(<PhaseBanner />); });
     const checkPhaseBannerText = screen.getByTestId('phaseBannerText');

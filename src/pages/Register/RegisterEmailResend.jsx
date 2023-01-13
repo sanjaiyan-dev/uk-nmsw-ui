@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom';
 
-export const RegisterEmailResend = () => {
+const RegisterEmailResend = () => {
   const { state } = useLocation();
   document.title = 'Resend verification email';
 

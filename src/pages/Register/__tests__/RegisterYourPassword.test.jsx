@@ -4,7 +4,9 @@ import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { AXIOS_ERROR, REGISTER_ACCOUNT_ENDPOINT, TOKEN_INVALID } from '../../../constants/AppAPIConstants';
-import { MESSAGE_URL, REGISTER_CONFIRMATION_URL, REGISTER_EMAIL_VERIFIED_URL, REGISTER_PASSWORD_URL } from '../../../constants/AppUrlConstants';
+import {
+  MESSAGE_URL, REGISTER_CONFIRMATION_URL, REGISTER_EMAIL_VERIFIED_URL, REGISTER_PASSWORD_URL,
+} from '../../../constants/AppUrlConstants';
 import RegisterYourPassword from '../RegisterYourPassword';
 
 let mockUseLocationState = { state: {} };
@@ -13,15 +15,13 @@ const mockedUseNavigate = jest.fn();
 jest.mock('react-router', () => ({
   ...jest.requireActual('react-router'),
   useNavigate: () => mockedUseNavigate,
-  useLocation: jest.fn().mockImplementation(() => {
-    return mockUseLocationState;
-  })
+  useLocation: jest.fn().mockImplementation(() => mockUseLocationState),
 }));
 
 describe('Register password tests', () => {
   const handleSubmit = jest.fn();
   const mockAxios = new MockAdapter(axios);
-  let scrollIntoViewMock = jest.fn();
+  const scrollIntoViewMock = jest.fn();
   window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
 
   beforeEach(() => {
@@ -182,7 +182,7 @@ describe('Register password tests', () => {
         password: 'abc1234567',
         groupName: 'My Corporation',
         groupTypeName: 'Shipping Agency',
-        token: 'tokennumber'
+        token: 'tokennumber',
       });
 
     render(<MemoryRouter><RegisterYourPassword /></MemoryRouter>);
@@ -204,8 +204,8 @@ describe('Register password tests', () => {
         emailAddress: 'testemail@email.com',
         fullName: 'Joe Bloggs',
         phoneNumber: '(123)12345',
-        shippingAgent: 'yes'
-      }
+        shippingAgent: 'yes',
+      },
     };
     mockAxios
       .onPatch(REGISTER_ACCOUNT_ENDPOINT)
@@ -222,11 +222,13 @@ describe('Register password tests', () => {
         groupId: '456',
         verified: false,
         dateCreated: '2022-12-14T10:10:17.134835',
-        lastUpdated: '2022-12-14T14:20:23.497658'
+        lastUpdated: '2022-12-14T14:20:23.497658',
       });
 
     // set what would be in the session prior to this page
-    window.sessionStorage.setItem('formData', JSON.stringify({ fullName: 'Joe Bloggs', companyName: 'My company', phoneNumber: '(123)12345', country: 'AUS', shippingAgent: 'yes' }));
+    window.sessionStorage.setItem('formData', JSON.stringify({
+      fullName: 'Joe Bloggs', companyName: 'My company', phoneNumber: '(123)12345', country: 'AUS', shippingAgent: 'yes',
+    }));
     render(<MemoryRouter><RegisterYourPassword /></MemoryRouter>);
     await user.type(screen.getByLabelText('Password'), 'mypasswordis');
     await user.type(screen.getByLabelText('Confirm your password'), 'mypasswordis');
@@ -255,7 +257,7 @@ describe('Register password tests', () => {
         groupId: '456',
         verified: false,
         dateCreated: '2022-12-14T10:10:17.134835',
-        lastUpdated: '2022-12-14T14:20:23.497658'
+        lastUpdated: '2022-12-14T14:20:23.497658',
       });
 
     render(<MemoryRouter><RegisterYourPassword /></MemoryRouter>);
@@ -263,7 +265,7 @@ describe('Register password tests', () => {
     await user.type(screen.getByLabelText('Confirm your password'), 'mypasswordis');
     await user.click(screen.getByTestId('submit-button'));
     await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(REGISTER_CONFIRMATION_URL, { 'state': { 'companyName': 'My company' } });
+      expect(mockedUseNavigate).toHaveBeenCalledWith(REGISTER_CONFIRMATION_URL, { state: { companyName: 'My company' } });
     });
   });
 
@@ -272,15 +274,15 @@ describe('Register password tests', () => {
     mockAxios
       .onPatch(REGISTER_ACCOUNT_ENDPOINT)
       .reply(401, {
-        message: TOKEN_INVALID
+        message: TOKEN_INVALID,
       });
 
     render(<MemoryRouter><RegisterYourPassword /></MemoryRouter>);
     await user.type(screen.getByLabelText('Password'), 'mypasswordis');
     await user.type(screen.getByLabelText('Confirm your password'), 'mypasswordis');
     await user.click(screen.getByTestId('submit-button'));
-     await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, {'state': {'title': 'Verification link has expired', 'redirectURL': REGISTER_EMAIL_VERIFIED_URL}});
+    await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, { state: { title: 'Verification link has expired', redirectURL: REGISTER_EMAIL_VERIFIED_URL } });
     });
   });
 
@@ -289,15 +291,15 @@ describe('Register password tests', () => {
     mockAxios
       .onPatch(REGISTER_ACCOUNT_ENDPOINT)
       .reply({
-        message: AXIOS_ERROR
+        message: AXIOS_ERROR,
       });
 
     render(<MemoryRouter><RegisterYourPassword /></MemoryRouter>);
     await user.type(screen.getByLabelText('Password'), 'mypasswordis');
     await user.type(screen.getByLabelText('Confirm your password'), 'mypasswordis');
     await user.click(screen.getByTestId('submit-button'));
-     await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, {'state': {'title': 'Something has gone wrong', 'redirectURL': REGISTER_PASSWORD_URL}});
+    await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, { state: { title: 'Something has gone wrong', redirectURL: REGISTER_PASSWORD_URL } });
     });
   });
 
@@ -311,8 +313,8 @@ describe('Register password tests', () => {
     await user.type(screen.getByLabelText('Password'), 'mypasswordis');
     await user.type(screen.getByLabelText('Confirm your password'), 'mypasswordis');
     await user.click(screen.getByTestId('submit-button'));
-     await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, {'state': {'title': 'Something has gone wrong', 'redirectURL': REGISTER_PASSWORD_URL}});
+    await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, { state: { title: 'Something has gone wrong', redirectURL: REGISTER_PASSWORD_URL } });
     });
   });
 
@@ -321,15 +323,15 @@ describe('Register password tests', () => {
     mockAxios
       .onPatch(REGISTER_ACCOUNT_ENDPOINT)
       .reply(400, {
-        message: 'an error we do not handle'
+        message: 'an error we do not handle',
       });
 
     render(<MemoryRouter><RegisterYourPassword /></MemoryRouter>);
     await user.type(screen.getByLabelText('Password'), 'mypasswordis');
     await user.type(screen.getByLabelText('Confirm your password'), 'mypasswordis');
     await user.click(screen.getByTestId('submit-button'));
-     await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, {'state': {'title': 'Something has gone wrong', message: 'an error we do not handle', 'redirectURL': REGISTER_PASSWORD_URL}});
+    await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: 'an error we do not handle', redirectURL: REGISTER_PASSWORD_URL } });
     });
   });
 });
