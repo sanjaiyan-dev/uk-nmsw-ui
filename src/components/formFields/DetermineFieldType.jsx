@@ -1,5 +1,8 @@
 import PropTypes from 'prop-types';
 import {
+  DISPLAY_DETAILS,
+  DISPLAY_GROUPED,
+  DISPLAY_SINGLE,
   FIELD_AUTOCOMPLETE,
   FIELD_CONDITIONAL,
   FIELD_EMAIL,
@@ -7,14 +10,38 @@ import {
   FIELD_PHONE,
   FIELD_TEXT,
   FIELD_RADIO,
-  DISPLAY_SINGLE,
-  DISPLAY_GROUPED,
 } from '../../constants/AppConstants';
 import InputAutocomplete from './InputAutocomplete';
 import InputConditional from './InputConditional';
 import InputPhoneNumber from './InputPhoneNumber';
 import InputRadio from './InputRadio';
 import InputText from './InputText';
+
+const DetailsInput = ({
+  error, fieldName, fieldToReturn, hint, label, linkText,
+}) => (
+  <div className={error ? 'govuk-form-group govuk-form-group--error' : 'govuk-form-group'}>
+    <details className="govuk-details" data-module="govuk-details">
+      <summary className="govuk-details__summary">
+        <span className="govuk-details__summary-text">
+          {linkText}
+        </span>
+      </summary>
+      <div className="govuk-details__text">
+        <label className="govuk-label" htmlFor={`${fieldName}-input`}>
+          {label}
+        </label>
+        <div id={`${fieldName}-hint`} className="govuk-hint">
+          {hint}
+        </div>
+        <p id={`${fieldName}-error`} className="govuk-error-message">
+          <span className="govuk-visually-hidden">Error:</span> {error}
+        </p>
+        {fieldToReturn}
+      </div>
+    </details>
+  </div>
+);
 
 const GroupedInputs = ({
   error, fieldName, fieldToReturn, hint, label,
@@ -133,6 +160,18 @@ const determineFieldType = ({
 
   return (
     <>
+      {displayType === DISPLAY_DETAILS
+        && (
+          <DetailsInput
+            allErrors={allErrors}
+            error={error}
+            fieldName={fieldDetails.fieldName}
+            fieldToReturn={fieldToReturn}
+            hint={fieldDetails.hint}
+            label={fieldDetails.label}
+            linkText={fieldDetails.linkText}
+          />
+        )}
       {displayType === DISPLAY_GROUPED
         && (
           <GroupedInputs
@@ -168,11 +207,21 @@ determineFieldType.propTypes = {
       fieldName: PropTypes.string.isRequired,
       hint: PropTypes.string,
       label: PropTypes.string.isRequired,
+      linkText: PropTypes.string,
       type: PropTypes.string.isRequired,
       value: PropTypes.string,
     }),
   ),
   parentHandleChange: PropTypes.func.isRequired,
+};
+
+DetailsInput.propTypes = {
+  error: PropTypes.string,
+  fieldName: PropTypes.string.isRequired,
+  fieldToReturn: PropTypes.object.isRequired,
+  hint: PropTypes.string,
+  label: PropTypes.string.isRequired,
+  linkText: PropTypes.string.isRequired,
 };
 
 GroupedInputs.propTypes = {

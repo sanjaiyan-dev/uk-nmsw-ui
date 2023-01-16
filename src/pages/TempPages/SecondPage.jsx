@@ -41,6 +41,7 @@ const SecondPage = () => {
       type: FIELD_EMAIL,
       displayType: DISPLAY_DETAILS,
       label: 'Email',
+      linkText: 'Click on this link',
       hint: 'Enter your resend email',
       fieldName: 'emailAddress',
       validation: [
@@ -247,6 +248,7 @@ const SecondPage = () => {
       <h1>Second page</h1>
       <p>Click this button to test going to sign in page with navigation state</p>
       <button onClick={forceSignIn} type="button">Force sign in</button>
+      <hr />
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-three-quarters">
           <DisplayForm
