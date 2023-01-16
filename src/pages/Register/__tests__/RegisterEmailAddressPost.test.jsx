@@ -85,7 +85,7 @@ describe('Register email address POST tests', () => {
     const user = userEvent.setup();
     mockAxios
       .onPost(REGISTER_ACCOUNT_ENDPOINT)
-      .reply({ message: AXIOS_ERROR });
+      .reply({ message: 'Network Error' });
 
     render(<MemoryRouter><RegisterEmailAddress /></MemoryRouter>);
     await user.type(screen.getAllByRole('textbox', { name: /email/i })[0], 'testemail@email.com');

@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { AXIOS_ERROR, REGISTER_ACCOUNT_ENDPOINT, TOKEN_INVALID } from '../../../constants/AppAPIConstants';
+import { REGISTER_ACCOUNT_ENDPOINT, TOKEN_INVALID } from '../../../constants/AppAPIConstants';
 import {
   MESSAGE_URL, REGISTER_CONFIRMATION_URL, REGISTER_EMAIL_VERIFIED_URL, REGISTER_PASSWORD_URL,
 } from '../../../constants/AppUrlConstants';
@@ -291,7 +291,7 @@ describe('Register password tests', () => {
     mockAxios
       .onPatch(REGISTER_ACCOUNT_ENDPOINT)
       .reply({
-        message: AXIOS_ERROR,
+        message: 'Network Error',
       });
 
     render(<MemoryRouter><RegisterYourPassword /></MemoryRouter>);
