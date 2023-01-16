@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { DISPLAY_GROUPED } from '../../../constants/AppConstants';
 import InputRadio from '../InputRadio';
 
 /*
@@ -11,7 +12,7 @@ describe('Radio input field generation', () => {
   const parentHandleChange = jest.fn();
   const fieldDetailsBasic = {
     fieldName: 'simpleFieldName',
-    grouped: true,
+    displayType: DISPLAY_GROUPED,
     label: 'Basic props field radio label',
     radioOptions: [
       {
@@ -26,7 +27,7 @@ describe('Radio input field generation', () => {
   const fieldDetailsAllProps = {
     className: 'govuk-radios govuk-radios--inline',
     fieldName: 'fullFieldName',
-    grouped: true,
+    displayType: DISPLAY_GROUPED,
     label: 'Full props field radio label',
     hint: 'The hint text',
     value: 'radioOne',
@@ -50,7 +51,7 @@ describe('Radio input field generation', () => {
   };
   const fieldDetailsWithValueSelected = {
     fieldName: 'simpleFieldName',
-    grouped: true,
+    displayType: DISPLAY_GROUPED,
     label: 'Basic props field radio label',
     radioOptions: [
       {

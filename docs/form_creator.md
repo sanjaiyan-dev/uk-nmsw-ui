@@ -212,7 +212,7 @@ Object structure
   type: FIELD_RADIO,
   className: <required>,
   fieldName: <required>,
-  grouped: true,
+  displayType: DISPLAY_GROUPED,
   hint: <optional>
   label: <required>,
   radioOptions: [
@@ -239,7 +239,7 @@ A string that will be used for `name` and to create `id` and other field referen
 
 ### grouped
 Always specify this as `true` as radio buttons are grouped inputs and use a different fieldset/label html structure.
-This is defined within `src/components/formFields/DetermineFieldType` and at some point we will refactor this so that `grouped: true` does not need to be specified within the field object
+This is defined within `src/components/formFields/DetermineFieldType` and at some point we will refactor this so that `displayType: DISPLAY_GROUPED,` does not need to be specified within the field object
 
 ### hint (optional)
 An optional string
@@ -275,7 +275,7 @@ Object structure
   type: FIELD_CONDITIONAL,
   className: <required>,
   fieldName: <required>,
-  grouped: true,
+  displayType: DISPLAY_GROUPED,
   hint: <optional>,
   label: <required>,
   radioOptions: [
@@ -309,7 +309,7 @@ A string that will be used for `name` and to create `id` and other field referen
 
 ### grouped
 Always specify this as `true` as radio buttons are grouped inputs and use a different fieldset/label html structure.
-This is defined within `src/components/formFields/DetermineFieldType` and at some point we will refactor this so that `grouped: true` does not need to be specified within the field object
+This is defined within `src/components/formFields/DetermineFieldType` and at some point we will refactor this so that `displayType: DISPLAY_GROUPED,` does not need to be specified within the field object
 
 ### hint (optional)
 An optional string
@@ -426,7 +426,7 @@ A string that will be used for `name` and to create `id` and other field referen
 
 ### grouped
 Always specify this as `true` as phone number fields are grouped inputs and use a different fieldset/label html structure.
-This is defined within `src/components/formFields/DetermineFieldType` and at some point we will refactor this so that `grouped: true` does not need to be specified within the field object
+This is defined within `src/components/formFields/DetermineFieldType` and at some point we will refactor this so that `displayType: DISPLAY_GROUPED,` does not need to be specified within the field object
 
 ### hint (optional)
 An optional string
@@ -615,7 +615,7 @@ e.g.
   label: 'What is your favourite animal',
   fieldName: 'favAnimal',
   className: 'govuk-radios',
-  grouped: true,
+  displayType: DISPLAY_GROUPED,
   radioOptions: [
     {
       radioField: true,

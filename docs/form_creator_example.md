@@ -59,7 +59,7 @@ const formFields = [
       label: 'What is your favourite colour',
       fieldName: 'favouriteColour',
       className: 'govuk-radios',
-      grouped: true,
+      displayType: DISPLAY_GROUPED,
       radioOptions: [
         {
           label: 'Red',
@@ -96,7 +96,7 @@ const formFields = [
       label: 'Sample date field',
       hint: 'Enter a date',
       fieldName: 'myDate',
-      grouped: true,
+      displayType: DISPLAY_GROUPED,
     },
   ];
 
@@ -143,7 +143,7 @@ const formFields = [
       label: 'What is your favourite colour',
       fieldName: 'favouriteColour',
       className: 'govuk-radios',
-      grouped: true,
+      displayType: DISPLAY_GROUPED,
       radioOptions: [
         {
           label: 'Red',
@@ -180,7 +180,7 @@ const formFields = [
       label: 'Sample date field',
       hint: 'Enter a date',
       fieldName: 'myDate',
-      grouped: true,
+      displayType: DISPLAY_GROUPED,
       validation: [
         {
           type: VALIDATE_REQUIRED,
@@ -305,7 +305,7 @@ const SecondPage = () => {
       label: 'What is your favourite colour',
       fieldName: 'favouriteColour',
       className: 'govuk-radios',
-      grouped: true,
+      displayType: DISPLAY_GROUPED,
       radioOptions: [
         {
           label: 'Red',
@@ -342,7 +342,7 @@ const SecondPage = () => {
       label: 'Sample date field',
       hint: 'Enter a date',
       fieldName: 'myDate',
-      grouped: true,
+      displayType: DISPLAY_GROUPED,
       validation: [
         {
           type: VALIDATE_REQUIRED,
