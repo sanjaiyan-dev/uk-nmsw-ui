@@ -55,7 +55,7 @@ const SecondPage = () => {
       type: FIELD_TEXT,
       label: 'First name missing display type test',
       hint: 'Enter your first name',
-      fieldName: 'firstName',
+      fieldName: 'firstNameMissing',
       validation: [
         {
           type: VALIDATE_REQUIRED,
