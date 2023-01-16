@@ -1,9 +1,8 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { REGISTER_CHECK_TOKEN_ENDPOINT } from '../../constants/AppAPIConstants';
-import { REGISTER_DETAILS_URL } from '../../constants/AppUrlConstants';
-import Auth from '../../utils/Auth';
+import { REGISTER_CHECK_TOKEN_ENDPOINT, TOKEN_USED_TO_REGISTER } from '../../constants/AppAPIConstants';
+import { ERROR_ACCOUNT_ALREADY_ACTIVE_URL, REGISTER_DETAILS_URL } from '../../constants/AppUrlConstants';
 
 const RegisterEmailVerified = () => {
   const navigate = useNavigate();
@@ -14,7 +13,7 @@ const RegisterEmailVerified = () => {
   document.title = 'Your email address has been verified';
 
   // sample URL
-  // http://localhost:3000/activate-account?email=jentestingemailsforwork%2B20230113%40gmail.com&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImplbnRlc3RpbmdlbWFpbHNmb3J3b3JrKzIwMjMwMTEzQGdtYWlsLmNvbSIsImV4cCI6MTY3MzYzMjYzNiwiaml0IjoiNDE4NTliMzQtMzI2ZC00MjUxLTgyNDQtMjgwMTg4YjJiZDU4In0.1bdZ2X7rxMX9wTD2Kwkx7VqktUuE3IzPJzxEVO3hNCw
+  // http://localhost:3000/activate-account?email=jentestingemailsforwork%2B202301160900%40gmail.com&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImplbnRlc3RpbmdlbWFpbHNmb3J3b3JrKzIwMjMwMTE2MDkwMEBnbWFpbC5jb20iLCJleHAiOjE2NzM4NzExNTcsImppdCI6IjcyNDFkNzcyLWYzZWYtNGU3OC1iMDZkLTU3ZWMxM2VkMTE4YiJ9.ZoPD-u3T10B-YEc2I0lD2BsT6KMYSGhie7PMtnycNHc
 
   const fetchData = async () => {
     try {
@@ -35,8 +34,9 @@ const RegisterEmailVerified = () => {
         });
       }
     } catch (err) {
-      console.log('error', err);
-      // name === 'AbortError' will be if the fetch is aborted with the AbortController
+      if (err.response.data.message === TOKEN_USED_TO_REGISTER) {
+        navigate(ERROR_ACCOUNT_ALREADY_ACTIVE_URL, { state: { dataToSubmit: { emailAddress } } });
+      }
     }
   };
 
