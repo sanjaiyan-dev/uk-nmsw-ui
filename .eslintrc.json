@@ -28,7 +28,7 @@
   "rules": {
     "eol-last": ["error", "always"],
     "import/prefer-default-export": ["off"],
-    "max-len": ["error", { "code": 250, "ignoreStrings": true, "ignorePattern": "^path " }],
+    "max-len": ["error", { "code": 250, "ignoreStrings": true, "ignoreComments": true, "ignorePattern": "^path " }],
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
     "quotes": [ "error",  "single"],
     "react-hooks/exhaustive-deps": "off",

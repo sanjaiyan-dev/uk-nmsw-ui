@@ -38,8 +38,24 @@ describe('Your details tests', () => {
     });
   });
 
-  it('should redirect user to other page if there is no emailAddress in state', async () => {
+  it('should redirect user to other page if there is an empty dataToSubmit object in state', async () => {
     mockUseLocationState = { state: { dataToSubmit: {} } };
+    render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
+    await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_VERIFICATION_FAILED_URL);
+    });
+  });
+
+  it('should redirect user to other page if there is no emailAddress in state', async () => {
+    mockUseLocationState = { state: { dataToSubmit: { toke: '123' } } };
+    render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
+    await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_VERIFICATION_FAILED_URL);
+    });
+  });
+
+  it('should redirect user to other page if there is no token in state', async () => {
+    mockUseLocationState = { state: { dataToSubmit: { emailAddress: 'testemail@email.com' } } };
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     await waitFor(() => {
       expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_VERIFICATION_FAILED_URL);

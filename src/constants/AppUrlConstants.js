@@ -20,7 +20,7 @@ export const REGISTER_CONFIRMATION_URL = '/create-account/account-created';
 export const REGISTER_EMAIL_URL = '/create-account/email-address';
 export const REGISTER_EMAIL_CHECK_URL = '/create-account/check-your-email';
 export const REGISTER_EMAIL_RESEND_URL = '/create-account/request-new-verification-link';
-export const REGISTER_EMAIL_VERIFIED_URL = '/create-account/email-verified';
+export const REGISTER_EMAIL_VERIFIED_URL = '/activate-account';
 export const REGISTER_DETAILS_URL = '/create-account/your-details';
 export const REGISTER_PASSWORD_URL = '/create-account/your-password';
 
