@@ -13,6 +13,8 @@ export const LANDING_URL = '/';
 export const PRIVACY_URL = '/privacy-notice';
 export const SIGN_IN_PAGE_NAME = 'Sign in';
 export const SIGN_IN_URL = '/sign-in';
+export const TEMPLATE_PAGE_NAME = 'Templates';
+export const TEMPLATE_PAGE_URL = '/templates';
 
 // Create account/register pages
 export const REGISTER_ACCOUNT_URL = '/create-account/email-address';
