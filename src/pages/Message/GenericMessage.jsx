@@ -11,17 +11,17 @@ const GenericMessage = () => {
       <div className="govuk-grid-column-two-thirds">
         <h1 className="govuk-heading-xl">{state?.title}</h1>
         {state?.message && <p className="govuk-body">{state?.message}</p>}
-        {state?.pageContent.buttonLabel && (
+        {state?.button && (
           <button
             className="govuk-button"
             data-module="govuk-button"
             type="button"
-            onClick={() => { navigate(state?.pageContent.buttonNavigateTo, state?.pageContent.buttonState); }}
+            onClick={() => { navigate(state?.button.buttonNavigateTo, state?.button.buttonState); }}
           >
-            {state?.pageContent.buttonLabel}
+            {state?.button.buttonLabel}
           </button>
         )}
-        {!state.pageContent.buttonLabel && (
+        {!state.button && (
           <Link to={state?.redirectURL || LANDING_URL}>Click here to continue</Link>
         )}
       </div>
