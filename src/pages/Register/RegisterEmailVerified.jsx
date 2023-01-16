@@ -1,8 +1,13 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { REGISTER_CHECK_TOKEN_ENDPOINT, TOKEN_USED_TO_REGISTER } from '../../constants/AppAPIConstants';
-import { ERROR_ACCOUNT_ALREADY_ACTIVE_URL, REGISTER_DETAILS_URL } from '../../constants/AppUrlConstants';
+import { REGISTER_CHECK_TOKEN_ENDPOINT, TOKEN_INVALID, TOKEN_USED_TO_REGISTER } from '../../constants/AppAPIConstants';
+import {
+  ERROR_ACCOUNT_ALREADY_ACTIVE_URL,
+  MESSAGE_URL,
+  REGISTER_DETAILS_URL,
+  REGISTER_EMAIL_RESEND_URL,
+} from '../../constants/AppUrlConstants';
 
 const RegisterEmailVerified = () => {
   const navigate = useNavigate();
@@ -11,9 +16,6 @@ const RegisterEmailVerified = () => {
   const tokenToCheck = searchParams.get('token');
   const [pageContent, setPageContent] = useState({});
   document.title = 'Your email address has been verified';
-
-  // sample URL
-  // http://localhost:3000/activate-account?email=jentestingemailsforwork%2B202301160900%40gmail.com&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImplbnRlc3RpbmdlbWFpbHNmb3J3b3JrKzIwMjMwMTE2MDkwMEBnbWFpbC5jb20iLCJleHAiOjE2NzM4NzExNTcsImppdCI6IjcyNDFkNzcyLWYzZWYtNGU3OC1iMDZkLTU3ZWMxM2VkMTE4YiJ9.ZoPD-u3T10B-YEc2I0lD2BsT6KMYSGhie7PMtnycNHc
 
   const fetchData = async () => {
     try {
@@ -34,8 +36,26 @@ const RegisterEmailVerified = () => {
         });
       }
     } catch (err) {
-      if (err.response.data.message === TOKEN_USED_TO_REGISTER) {
+      if (err.response?.data?.message === TOKEN_USED_TO_REGISTER) {
         navigate(ERROR_ACCOUNT_ALREADY_ACTIVE_URL, { state: { dataToSubmit: { emailAddress } } });
+      } else if (err.response?.data?.message === TOKEN_INVALID) {
+        // TODO: once /registration endpoint updated to return user status
+        // we extend this to check user status once TOKEN_INVALID received
+        // and then if user status is user activated direct them to ERROR_ACCOUNT_ALREADY_ACTIVE_URL
+        // otherwise direct to REGISTER_EMAIL_RESEND_URL
+        navigate(MESSAGE_URL, {
+          state: {
+            title: 'Verification link has expired',
+            button: {
+              buttonLabel: 'Request a new link',
+              buttonNavigateTo: REGISTER_EMAIL_RESEND_URL,
+              buttonState: { state: { dataToSubmit: { emailAddress } } },
+            },
+          },
+        });
+      } else {
+        // 500 errors will fall into this bucket
+        navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message } });
       }
     }
   };

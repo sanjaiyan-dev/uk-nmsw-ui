@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { AXIOS_ERROR, REGISTER_ACCOUNT_ENDPOINT, TOKEN_INVALID } from '../../constants/AppAPIConstants';
+import { REGISTER_ACCOUNT_ENDPOINT, TOKEN_INVALID } from '../../constants/AppAPIConstants';
 import {
   FIELD_PASSWORD,
   MULTI_PAGE_FORM,
@@ -10,7 +10,7 @@ import {
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
 import {
-  MESSAGE_URL, PASSWORD_GUIDENCE_URL, REGISTER_CONFIRMATION_URL, REGISTER_EMAIL_VERIFIED_URL, REGISTER_PASSWORD_URL,
+  MESSAGE_URL, PASSWORD_GUIDENCE_URL, REGISTER_CONFIRMATION_URL, REGISTER_EMAIL_RESEND_URL, REGISTER_PASSWORD_URL,
 } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
 import Auth from '../../utils/Auth';
@@ -98,11 +98,16 @@ const RegisterYourPassword = () => {
       navigate(REGISTER_CONFIRMATION_URL, { state: { companyName: response.data.groupName } });
       sessionStorage.removeItem('formData');
     } catch (err) {
-      // catch any axios errors and treat as a generic error
-      if (err.message === AXIOS_ERROR) {
-        navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', redirectURL: REGISTER_EMAIL_VERIFIED_URL } });
-      } else if (err.response?.data?.message === TOKEN_INVALID) {
-        navigate(MESSAGE_URL, { state: { title: 'Verification link has expired', redirectURL: REGISTER_EMAIL_VERIFIED_URL } });
+      if (err.response?.data?.message === TOKEN_INVALID) {
+        navigate(MESSAGE_URL, {
+          state: {
+            title: 'Verification link has expired',
+            button: {
+              buttonLabel: 'Request a new link',
+              buttonNavigateTo: REGISTER_EMAIL_RESEND_URL,
+            },
+          },
+        });
       } else {
         navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: REGISTER_PASSWORD_URL } });
       }

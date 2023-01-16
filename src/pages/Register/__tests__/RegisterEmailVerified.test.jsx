@@ -3,8 +3,13 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { REGISTER_CHECK_TOKEN_ENDPOINT, TOKEN_USED_TO_REGISTER } from '../../../constants/AppAPIConstants';
-import { ERROR_ACCOUNT_ALREADY_ACTIVE_URL, REGISTER_DETAILS_URL } from '../../../constants/AppUrlConstants';
+import { REGISTER_CHECK_TOKEN_ENDPOINT, TOKEN_INVALID, TOKEN_USED_TO_REGISTER } from '../../../constants/AppAPIConstants';
+import {
+  ERROR_ACCOUNT_ALREADY_ACTIVE_URL,
+  MESSAGE_URL,
+  REGISTER_DETAILS_URL,
+  REGISTER_EMAIL_RESEND_URL,
+} from '../../../constants/AppUrlConstants';
 import RegisterEmailVerified from '../RegisterEmailVerified';
 
 const mockedUseNavigate = jest.fn();
@@ -40,9 +45,7 @@ describe('Verify email address tests', () => {
   it('should link user to your details page if token is valid', async () => {
     const user = userEvent.setup();
     mockAxios
-      .onPost(REGISTER_CHECK_TOKEN_ENDPOINT, {
-        token: '123',
-      })
+      .onPost(REGISTER_CHECK_TOKEN_ENDPOINT, { token: '123' })
       .reply(204);
 
     render(<MemoryRouter><RegisterEmailVerified /></MemoryRouter>);
@@ -57,9 +60,7 @@ describe('Verify email address tests', () => {
 
   it('should link user to sign in page if token blacklisted (aka account activated)', async () => {
     mockAxios
-      .onPost(REGISTER_CHECK_TOKEN_ENDPOINT, {
-        token: '123',
-      })
+      .onPost(REGISTER_CHECK_TOKEN_ENDPOINT, { token: '123' })
       .reply(401, {
         message: TOKEN_USED_TO_REGISTER,
       });
@@ -67,6 +68,37 @@ describe('Verify email address tests', () => {
     render(<MemoryRouter><RegisterEmailVerified /></MemoryRouter>);
     await waitFor(() => {
       expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_ACCOUNT_ALREADY_ACTIVE_URL, { state: { dataToSubmit: { emailAddress: 'testemail@email.com' } } });
+    });
+  });
+
+  it('should link user to resend verification page if token expired', async () => {
+    mockAxios
+      .onPost(REGISTER_CHECK_TOKEN_ENDPOINT, { token: '123' })
+      .reply(401, { message: TOKEN_INVALID });
+
+    render(<MemoryRouter><RegisterEmailVerified /></MemoryRouter>);
+    await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, {
+        state: {
+          title: 'Verification link has expired',
+          button: {
+            buttonLabel: 'Request a new link',
+            buttonNavigateTo: REGISTER_EMAIL_RESEND_URL,
+            buttonState: { state: { dataToSubmit: { emailAddress: 'testemail@email.com' } } },
+          },
+        },
+      });
+    });
+  });
+
+  it('should show generic error if 500 returned', async () => {
+    mockAxios
+      .onPost(REGISTER_CHECK_TOKEN_ENDPOINT, { token: '123' })
+      .reply(500);
+
+    render(<MemoryRouter><RegisterEmailVerified /></MemoryRouter>);
+    await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, { state: { title: 'Something has gone wrong' } });
     });
   });
 });
