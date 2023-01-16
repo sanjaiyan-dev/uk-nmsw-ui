@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import {
+  DISPLAY_DETAILS,
   DISPLAY_GROUPED,
+  DISPLAY_SINGLE,
   FIELD_AUTOCOMPLETE,
   FIELD_CONDITIONAL,
   FIELD_EMAIL,
@@ -37,7 +39,7 @@ const SecondPage = () => {
   const formFields = [
     {
       type: FIELD_EMAIL,
-      displayType: 'details',
+      displayType: DISPLAY_DETAILS,
       label: 'Email',
       hint: 'Enter your resend email',
       fieldName: 'emailAddress',
@@ -50,6 +52,19 @@ const SecondPage = () => {
     },
     {
       type: FIELD_TEXT,
+      label: 'First name missing display type test',
+      hint: 'Enter your first name',
+      fieldName: 'firstName',
+      validation: [
+        {
+          type: VALIDATE_REQUIRED,
+          message: 'Enter your first name',
+        },
+      ],
+    },
+    {
+      type: FIELD_TEXT,
+      displayType: DISPLAY_SINGLE,
       label: 'First name',
       hint: 'Enter your first name',
       fieldName: 'firstName',
