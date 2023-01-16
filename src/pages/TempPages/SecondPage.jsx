@@ -1,7 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import {
+  DISPLAY_GROUPED,
   FIELD_AUTOCOMPLETE,
   FIELD_CONDITIONAL,
+  FIELD_EMAIL,
   FIELD_TEXT,
   FIELD_RADIO,
   CHECKED_FALSE,
@@ -34,6 +36,19 @@ const SecondPage = () => {
   };
   const formFields = [
     {
+      type: FIELD_EMAIL,
+      displayType: 'details',
+      label: 'Email',
+      hint: 'Enter your resend email',
+      fieldName: 'emailAddress',
+      validation: [
+        {
+          type: VALIDATE_REQUIRED,
+          message: 'Enter your email address',
+        },
+      ],
+    },
+    {
       type: FIELD_TEXT,
       label: 'First name',
       hint: 'Enter your first name',
@@ -50,7 +65,7 @@ const SecondPage = () => {
       label: 'What is your favourite colour',
       fieldName: 'favouriteColour',
       className: 'govuk-radios',
-      grouped: true,
+      displayType: DISPLAY_GROUPED,
       radioOptions: [
         {
           label: 'Red',
@@ -93,7 +108,7 @@ const SecondPage = () => {
       label: 'What is your favourite animal',
       fieldName: 'favAnimal',
       className: 'govuk-radios',
-      grouped: true,
+      displayType: DISPLAY_GROUPED,
       radioOptions: [
         {
           radioField: true,

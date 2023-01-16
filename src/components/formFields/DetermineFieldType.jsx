@@ -130,7 +130,7 @@ const determineFieldType = ({
 
   return (
     <>
-      {fieldDetails.grouped ? (
+      {fieldDetails.displayType === 'grouped' ? (
         <GroupedInputs
           allErrors={allErrors}
           error={error}

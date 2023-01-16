@@ -8,6 +8,7 @@ import {
   VALIDATE_MAX_LENGTH,
   VALIDATE_PHONE_NUMBER,
   VALIDATE_REQUIRED,
+  DISPLAY_GROUPED,
 } from '../../constants/AppConstants';
 import { ERROR_VERIFICATION_FAILED_URL, REGISTER_PASSWORD_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
@@ -79,8 +80,8 @@ const RegisterYourDetails = () => {
     {
       type: FIELD_RADIO,
       className: 'govuk-radios govuk-radios--inline',
+      displayType: DISPLAY_GROUPED,
       fieldName: 'shippingAgent',
-      grouped: true,
       label: 'Is your company a shipping agent?',
       radioOptions: [
         {
