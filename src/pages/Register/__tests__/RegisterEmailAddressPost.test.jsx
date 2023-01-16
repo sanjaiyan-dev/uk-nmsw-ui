@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { AXIOS_ERROR, REGISTER_ACCOUNT_ENDPOINT, USER_ALREADY_REGISTERED } from '../../../constants/AppAPIConstants';
+import { REGISTER_ACCOUNT_ENDPOINT, USER_ALREADY_REGISTERED } from '../../../constants/AppAPIConstants';
 import {
   MESSAGE_URL, ERROR_ACCOUNT_ALREADY_ACTIVE_URL, REGISTER_EMAIL_URL, REGISTER_EMAIL_CHECK_URL,
 } from '../../../constants/AppUrlConstants';

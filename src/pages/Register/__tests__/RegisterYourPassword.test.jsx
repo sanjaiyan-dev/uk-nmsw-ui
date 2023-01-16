@@ -5,7 +5,7 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { REGISTER_ACCOUNT_ENDPOINT, TOKEN_INVALID } from '../../../constants/AppAPIConstants';
 import {
-  MESSAGE_URL, REGISTER_CONFIRMATION_URL, REGISTER_EMAIL_VERIFIED_URL, REGISTER_PASSWORD_URL,
+  MESSAGE_URL, REGISTER_CONFIRMATION_URL, REGISTER_EMAIL_RESEND_URL, REGISTER_PASSWORD_URL,
 } from '../../../constants/AppUrlConstants';
 import RegisterYourPassword from '../RegisterYourPassword';
 
@@ -282,7 +282,15 @@ describe('Register password tests', () => {
     await user.type(screen.getByLabelText('Confirm your password'), 'mypasswordis');
     await user.click(screen.getByTestId('submit-button'));
     await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, { state: { title: 'Verification link has expired', redirectURL: REGISTER_EMAIL_VERIFIED_URL } });
+      expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, {
+        state: {
+          title: 'Verification link has expired',
+          button: {
+            buttonLabel: 'Request a new link',
+            buttonNavigateTo: REGISTER_EMAIL_RESEND_URL,
+          },
+        },
+      });
     });
   });
 
