@@ -74,3 +74,8 @@ Feature: User Registration
       | Field | requirePassword-error                                |
       | Error | Error: Enter a password that does not contain spaces |
 
+  Scenario: User redirected to request-new-verification-link when email address not identified
+    When the user has reached your-details page and the application cannot identify user email address
+    Then the application redirect user to the verification failed page
+    When I click the resend verification email button
+    Then the user is redirected to request-new-verification-link

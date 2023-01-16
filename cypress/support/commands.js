@@ -28,6 +28,6 @@ Cypress.Commands.add('checkAxe', () => {
   cy.checkA11y(null, null, terminalLog, true);
 });
 
-Cypress.Commands.add('visitUrl', () => {
-  cy.visit(Cypress.env('baseUrl'));
+Cypress.Commands.add('visitUrl', (path) => {
+  cy.visit(Cypress.env('baseUrl')+path);
 });

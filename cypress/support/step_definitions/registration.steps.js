@@ -19,7 +19,7 @@ Before(() => {
 });
 
 Given('I am on NMSW landing page', () => {
-  cy.visitUrl();
+  cy.visitUrl('/');
   LandingPage.checkHeading();
 });
 
@@ -123,7 +123,7 @@ When('I enter password in invalid format', () => {
 });
 
 When('I navigate back to landing page', () => {
-  cy.visitUrl();
+  cy.visitUrl('/');
 });
 
 When('I create an account with same email previously registered', () => {
@@ -164,3 +164,20 @@ When('I click back navigation button', () => {
 Then('I am taken back to create an account page', () => {
   LandingPage.checkHeading();
 });
+
+When('the user has reached your-details page and the application cannot identify user email address', () => {
+  cy.visitUrl('/create-account/your-details');
+});
+
+Then('the application redirect user to the verification failed page', () => {
+  cy.url().should('include', '/verification-failed');
+});
+
+When('I click the resend verification email button', () => {
+  EmailPage.clickResendConfirmationEmail();
+});
+
+Then('the user is redirected to request-new-verification-link', () => {
+  cy.url().should('include', 'request-new-verification-link');
+});
+
