@@ -21,7 +21,7 @@ const DetailsInput = ({
   error, fieldName, fieldToReturn, hint, label, linkText,
 }) => (
   <div className={error ? 'govuk-form-group govuk-form-group--error' : 'govuk-form-group'}>
-    <details className="govuk-details" data-module="govuk-details">
+    <details className="govuk-details" data-module="govuk-details" data-testid="details-component">
       <summary className="govuk-details__summary">
         <span className="govuk-details__summary-text">
           {linkText}
