@@ -3,8 +3,8 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { REGISTER_CHECK_TOKEN_ENDPOINT } from '../../../constants/AppAPIConstants';
-import { REGISTER_DETAILS_URL } from '../../../constants/AppUrlConstants';
+import { REGISTER_CHECK_TOKEN_ENDPOINT, TOKEN_USED_TO_REGISTER } from '../../../constants/AppAPIConstants';
+import { ERROR_ACCOUNT_ALREADY_ACTIVE_URL, REGISTER_DETAILS_URL } from '../../../constants/AppUrlConstants';
 import RegisterEmailVerified from '../RegisterEmailVerified';
 
 const mockedUseNavigate = jest.fn();
@@ -23,7 +23,6 @@ describe('Verify email address tests', () => {
   });
 
   it('should load the email verified successfully message if token is valid', async () => {
-    // const token = { token: '123' };
     mockAxios
       .onPost(REGISTER_CHECK_TOKEN_ENDPOINT)
       .reply(204);
@@ -38,9 +37,6 @@ describe('Verify email address tests', () => {
     });
   });
 
-  // NEED TO WAIT FOR BUTTON TO LOAD WITH URL
-  // THE WAIT FOR USER TO CLICK IT
-  // THEN CHECK PAGE WAS CALLED
   it('should link user to your details page if token is valid', async () => {
     const user = userEvent.setup();
     mockAxios
@@ -56,6 +52,21 @@ describe('Verify email address tests', () => {
     user.click(screen.getByRole('button', { name: 'Continue' }));
     await waitFor(() => {
       expect(mockedUseNavigate).toHaveBeenCalledWith(REGISTER_DETAILS_URL, { state: { dataToSubmit: { emailAddress: 'testemail@email.com', token: '123' } } });
+    });
+  });
+
+  it('should link user to sign in page if token blacklisted (aka account activated)', async () => {
+    mockAxios
+      .onPost(REGISTER_CHECK_TOKEN_ENDPOINT, {
+        token: '123',
+      })
+      .reply(401, {
+        message: TOKEN_USED_TO_REGISTER,
+      });
+
+    render(<MemoryRouter><RegisterEmailVerified /></MemoryRouter>);
+    await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_ACCOUNT_ALREADY_ACTIVE_URL, { state: { dataToSubmit: { emailAddress: 'testemail@email.com' } } });
     });
   });
 });
