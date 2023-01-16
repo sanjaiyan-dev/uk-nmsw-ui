@@ -17,9 +17,6 @@ const RegisterEmailVerified = () => {
   const [pageContent, setPageContent] = useState({});
   document.title = 'Your email address has been verified';
 
-  // sample exired URL
-  // http://localhost:3000/activate-account?email=jentestingemailsforwork%2B20230113%40gmail.com&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImplbnRlc3RpbmdlbWFpbHNmb3J3b3JrKzIwMjMwMTEzQGdtYWlsLmNvbSIsImV4cCI6MTY3MzYzMjYzNiwiaml0IjoiNDE4NTliMzQtMzI2ZC00MjUxLTgyNDQtMjgwMTg4YjJiZDU4In0.1bdZ2X7rxMX9wTD2Kwkx7VqktUuE3IzPJzxEVO3hNCw
-
   const fetchData = async () => {
     try {
       const controller = new AbortController();
