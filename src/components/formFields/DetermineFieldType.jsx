@@ -7,6 +7,8 @@ import {
   FIELD_PHONE,
   FIELD_TEXT,
   FIELD_RADIO,
+  DISPLAY_SINGLE,
+  DISPLAY_GROUPED,
 } from '../../constants/AppConstants';
 import InputAutocomplete from './InputAutocomplete';
 import InputConditional from './InputConditional';
@@ -53,6 +55,7 @@ const SingleInput = ({
 const determineFieldType = ({
   allErrors, error, fieldDetails, parentHandleChange,
 }) => {
+  const displayType = fieldDetails.displayType ? fieldDetails.displayType : DISPLAY_SINGLE;
   let fieldToReturn;
   switch (fieldDetails.type) {
     case FIELD_AUTOCOMPLETE: fieldToReturn = (
@@ -130,17 +133,19 @@ const determineFieldType = ({
 
   return (
     <>
-      {fieldDetails.displayType === 'grouped' ? (
-        <GroupedInputs
-          allErrors={allErrors}
-          error={error}
-          fieldName={fieldDetails.fieldName}
-          fieldToReturn={fieldToReturn}
-          hint={fieldDetails.hint}
-          label={fieldDetails.label}
-        />
-      )
-        : (
+      {displayType === DISPLAY_GROUPED
+        && (
+          <GroupedInputs
+            allErrors={allErrors}
+            error={error}
+            fieldName={fieldDetails.fieldName}
+            fieldToReturn={fieldToReturn}
+            hint={fieldDetails.hint}
+            label={fieldDetails.label}
+          />
+        )}
+      {displayType === DISPLAY_SINGLE
+        && (
           <SingleInput
             error={error}
             fieldName={fieldDetails.fieldName}
