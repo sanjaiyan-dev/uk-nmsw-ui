@@ -167,7 +167,6 @@ Then('I am taken back to create an account page', () => {
 
 When('the user has reached your-details page and the application cannot identify user email address', () => {
   cy.visitUrl('/create-account/your-details');
-  cy.url().should('include', '/your-details');
 });
 
 Then('the application redirect user to the verification failed page', () => {
