@@ -146,7 +146,10 @@ const DisplayForm = ({
         const sessionConditionalValue = sessionDataArray?.find((sessionDataField) => sessionDataField.name === conditionalField?.name);
         valuesToAdd = { ...field, value: sessionDataValue?.value, conditionalValueToFill: sessionConditionalValue };
       } else {
-        valuesToAdd = { ...field, value: sessionDataValue?.value ? sessionDataValue?.value : field.value };
+        valuesToAdd = {
+          ...field,
+          value: sessionDataValue?.value ? sessionDataValue?.value : field.value,
+        };
       }
       return (valuesToAdd);
     });
@@ -155,7 +158,10 @@ const DisplayForm = ({
 
     const mappedFormData = fields.map((field) => {
       const sessionDataValue = sessionDataArray?.find((sessionDataField) => sessionDataField.name === field.fieldName);
-      return ({ fieldName: field.fieldName, value: sessionDataValue?.value });
+      return ({
+        fieldName: field.fieldName,
+        value: sessionDataValue?.value ? sessionDataValue?.value : field.value,
+      });
     });
     const objectOfMappedFields = Object.assign({}, ...mappedFormData.map((field) => ({ [field.fieldName]: field.value })));
     setFormData(objectOfMappedFields);
