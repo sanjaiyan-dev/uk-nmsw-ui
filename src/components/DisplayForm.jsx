@@ -146,7 +146,7 @@ const DisplayForm = ({
         const sessionConditionalValue = sessionDataArray?.find((sessionDataField) => sessionDataField.name === conditionalField?.name);
         valuesToAdd = { ...field, value: sessionDataValue?.value, conditionalValueToFill: sessionConditionalValue };
       } else {
-        valuesToAdd = { ...field, value: sessionDataValue?.value };
+        valuesToAdd = { ...field, value: sessionDataValue?.value ? sessionDataValue?.value : field.value };
       }
       return (valuesToAdd);
     });
