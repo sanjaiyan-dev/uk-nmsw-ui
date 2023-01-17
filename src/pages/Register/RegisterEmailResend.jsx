@@ -1,7 +1,9 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {
+  REGISTER_ACCOUNT_ENDPOINT,
   REGISTER_RESEND_VERIFICATION_EMAIL_ENDPOINT,
+  USER_ALREADY_REGISTERED,
   USER_ALREADY_VERIFIED,
   USER_NOT_REGISTERED,
 } from '../../constants/AppAPIConstants';
@@ -59,6 +61,22 @@ const RegisterEmailResend = () => {
     },
   ];
 
+  const registerNewEmail = async (newEmailAddress) => {
+    try {
+      await axios.post(REGISTER_ACCOUNT_ENDPOINT, {
+        email: newEmailAddress,
+      });
+      navigate(REGISTER_EMAIL_CHECK_URL, { state: { dataToSubmit: { emailAddress: newEmailAddress } } });
+    } catch (err) {
+      if (err.response?.data?.message === USER_ALREADY_REGISTERED) {
+        navigate(ERROR_ACCOUNT_ALREADY_ACTIVE_URL, { state: { dataToSubmit: { emailAddress: newEmailAddress } } });
+      } else {
+        // 500 errors will fall into this bucket
+        navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: REGISTER_EMAIL_URL } });
+      }
+    }
+  };
+
   const handleSubmit = async (formData) => {
     try {
       const controller = new AbortController();
@@ -75,7 +93,7 @@ const RegisterEmailResend = () => {
       if (err?.response?.data?.message === USER_ALREADY_VERIFIED) {
         navigate(ERROR_ACCOUNT_ALREADY_ACTIVE_URL, { state: { dataToSubmit: { emailAddress: formData.formData.emailAddress } } });
       } else if (err?.response?.data?.message === USER_NOT_REGISTERED) {
-        console.log('not registered we need to POST to register user');
+        registerNewEmail(formData.formData.emailAddress);
       } else {
         // 500 errors will fall into this bucket
         navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: REGISTER_EMAIL_URL } });
