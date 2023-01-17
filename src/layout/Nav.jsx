@@ -8,6 +8,8 @@ import {
   LANDING_URL,
   SECOND_PAGE_NAME,
   SECOND_PAGE_URL,
+  TEMPLATE_PAGE_URL,
+  TEMPLATE_PAGE_NAME,
 } from '../constants/AppUrlConstants';
 import useUserIsPermitted from '../hooks/useUserIsPermitted';
 
@@ -26,6 +28,12 @@ const Nav = () => {
       id: 'SecondPage',
       urlStem: SECOND_PAGE_URL,
       text: SECOND_PAGE_NAME,
+      active: false,
+    },
+    {
+      id: 'Templates',
+      urlStem: TEMPLATE_PAGE_URL,
+      text: TEMPLATE_PAGE_NAME,
       active: false,
     },
   ];

@@ -3,6 +3,7 @@
 .env.test
 .vscode
  .idea/
+.DS_Store
 # Directories
 coverage/
 dist/

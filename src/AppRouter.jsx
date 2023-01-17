@@ -28,6 +28,7 @@ import {
   SIGN_IN_URL,
   SECOND_PAGE_URL,
   YOUR_VOYAGES_URL,
+  TEMPLATE_PAGE_URL,
 } from './constants/AppUrlConstants';
 
 // Regulatory pages
@@ -51,11 +52,12 @@ import VerificationLinkFailed from './pages/Message/VerificationLinkFailed';
 // Other pages (could be protected or not)
 import FormConfirmationPage from './pages/Message/FormConfirmationPage';
 // Protected pages
-import YourVoyages from './pages/YourVoyages/YourVoyages';
+import YourVoyages from './pages/NavPages/YourVoyages';
 import ErrorsCrewUpload from './pages/Voyage/ErrorsCrewUpload';
 
 // Temp Pages
 import SecondPage from './pages/TempPages/SecondPage';
+import Templates from './pages/NavPages/Templates';
 
 const AppRouter = ({ setIsCookieBannerShown }) => {
   document.title = SERVICE_NAME;
@@ -89,6 +91,7 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
         <Route element={<ProtectedRoutes isPermittedToView={isPermittedToView} />}>
           <Route path={YOUR_VOYAGES_URL} element={<YourVoyages />} />
           <Route path={SECOND_PAGE_URL} element={<SecondPage />} />
+          <Route path={TEMPLATE_PAGE_URL} element={<Templates />} />
           <Route path={ERROR_CREW_DETAILS_UPLOAD_URL} element={<ErrorsCrewUpload />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
