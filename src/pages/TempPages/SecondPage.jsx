@@ -1,7 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import {
+  DISPLAY_DETAILS,
+  DISPLAY_GROUPED,
+  DISPLAY_SINGLE,
   FIELD_AUTOCOMPLETE,
   FIELD_CONDITIONAL,
+  FIELD_EMAIL,
   FIELD_TEXT,
   FIELD_RADIO,
   CHECKED_FALSE,
@@ -34,7 +38,34 @@ const SecondPage = () => {
   };
   const formFields = [
     {
+      type: FIELD_EMAIL,
+      displayType: DISPLAY_DETAILS,
+      label: 'Email',
+      linkText: 'Click on this link',
+      hint: 'Enter your resend email',
+      fieldName: 'emailAddress',
+      validation: [
+        {
+          type: VALIDATE_REQUIRED,
+          message: 'Enter your email address',
+        },
+      ],
+    },
+    {
       type: FIELD_TEXT,
+      label: 'First name missing display type test',
+      hint: 'Enter your first name',
+      fieldName: 'firstNameMissing',
+      validation: [
+        {
+          type: VALIDATE_REQUIRED,
+          message: 'Enter your first name',
+        },
+      ],
+    },
+    {
+      type: FIELD_TEXT,
+      displayType: DISPLAY_SINGLE,
       label: 'First name',
       hint: 'Enter your first name',
       fieldName: 'firstName',
@@ -50,7 +81,7 @@ const SecondPage = () => {
       label: 'What is your favourite colour',
       fieldName: 'favouriteColour',
       className: 'govuk-radios',
-      grouped: true,
+      displayType: DISPLAY_GROUPED,
       radioOptions: [
         {
           label: 'Red',
@@ -93,7 +124,7 @@ const SecondPage = () => {
       label: 'What is your favourite animal',
       fieldName: 'favAnimal',
       className: 'govuk-radios',
-      grouped: true,
+      displayType: DISPLAY_GROUPED,
       radioOptions: [
         {
           radioField: true,
@@ -217,6 +248,7 @@ const SecondPage = () => {
       <h1>Second page</h1>
       <p>Click this button to test going to sign in page with navigation state</p>
       <button onClick={forceSignIn} type="button">Force sign in</button>
+      <hr />
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-three-quarters">
           <DisplayForm

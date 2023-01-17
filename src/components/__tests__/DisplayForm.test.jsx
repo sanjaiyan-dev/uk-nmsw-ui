@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import DisplayForm from '../DisplayForm';
 import {
+  DISPLAY_GROUPED,
   FIELD_AUTOCOMPLETE,
   FIELD_CONDITIONAL,
   FIELD_EMAIL,
@@ -122,7 +123,7 @@ describe('Display Form', () => {
       label: 'This is a radio button set',
       fieldName: 'radioButtonSet',
       className: 'govuk-radios',
-      grouped: true,
+      displayType: DISPLAY_GROUPED,
       hint: 'radio hint',
       radioOptions: [
         {
@@ -251,7 +252,7 @@ describe('Display Form', () => {
       label: 'This is a radio button set',
       fieldName: 'radioButtonSet',
       className: 'govuk-radios',
-      grouped: true,
+      displayType: DISPLAY_GROUPED,
       hint: 'radio hint',
       radioOptions: [
         {
@@ -276,7 +277,7 @@ describe('Display Form', () => {
       label: 'This is a radio set with a conditional field',
       fieldName: 'radioWithConditional',
       hint: 'Hint for conditional set',
-      grouped: true,
+      displayType: DISPLAY_GROUPED,
       radioOptions: [
         {
           radioField: true,

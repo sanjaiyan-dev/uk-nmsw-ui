@@ -2,6 +2,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
+  DISPLAY_GROUPED,
   FIELD_CONDITIONAL,
   FIELD_RADIO,
   FIELD_TEXT,
@@ -40,7 +41,7 @@ describe('Display Form', () => {
       label: 'What is your favourite animal',
       fieldName: 'favAnimal',
       className: 'govuk-radios',
-      grouped: true,
+      displayType: DISPLAY_GROUPED,
       radioOptions: [
         {
           radioField: true,
@@ -126,7 +127,7 @@ describe('Display Form', () => {
       label: 'This is a radio button set',
       fieldName: 'radioButtonSet',
       className: 'govuk-radios',
-      grouped: true,
+      displayType: DISPLAY_GROUPED,
       hint: 'radio hint',
       radioOptions: [
         {

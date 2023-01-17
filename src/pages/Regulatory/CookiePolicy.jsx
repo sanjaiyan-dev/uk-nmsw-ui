@@ -6,6 +6,7 @@ import {
   CHECKED_TRUE,
   CHECKED_FALSE,
   SINGLE_PAGE_FORM,
+  DISPLAY_GROUPED,
 } from '../../constants/AppConstants';
 import cookieToFind from '../../utils/cookieToFind';
 import { scrollToElementId } from '../../utils/ScrollToElement';
@@ -32,7 +33,7 @@ const CookiePolicy = ({ setIsCookieBannerShown }) => {
       label: 'Do you want to accept analytics cookies?',
       fieldName: 'cookieSettings',
       className: 'govuk-radios',
-      grouped: true,
+      displayType: DISPLAY_GROUPED,
       radioOptions: [
         {
           label: 'Yes',

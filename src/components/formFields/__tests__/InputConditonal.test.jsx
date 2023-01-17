@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { FIELD_CONDITIONAL } from '../../../constants/AppConstants';
+import { DISPLAY_GROUPED, FIELD_CONDITIONAL } from '../../../constants/AppConstants';
 import InputConditional from '../InputConditional';
 
 /*
@@ -16,7 +16,7 @@ describe('Conditional input field generation', () => {
     className: 'govuk-radios',
     label: 'What is your favourite animal',
     fieldName: 'favAnimal',
-    grouped: true,
+    displayType: DISPLAY_GROUPED,
     radioOptions: [
       {
         radioField: true,
@@ -62,7 +62,7 @@ describe('Conditional input field generation', () => {
     hint: 'A hint on choosing a colour',
     label: 'What is your favourite colour',
     fieldName: 'favColour',
-    grouped: true,
+    displayType: DISPLAY_GROUPED,
     radioOptions: [
       {
         radioField: true,
@@ -91,7 +91,7 @@ describe('Conditional input field generation', () => {
     hint: 'A hint on choosing a colour',
     label: 'What is your favourite colour',
     fieldName: 'favColour',
-    grouped: true,
+    displayType: DISPLAY_GROUPED,
     radioOptions: [
       {
         radioField: true,
