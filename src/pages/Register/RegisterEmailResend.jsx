@@ -4,6 +4,7 @@ import {
   FIELD_EMAIL,
   SINGLE_PAGE_FORM,
   VALIDATE_EMAIL_ADDRESS,
+  VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
 import DisplayForm from '../../components/DisplayForm';
 
@@ -30,8 +31,13 @@ const RegisterEmailResend = () => {
       displayType: DISPLAY_DETAILS,
       fieldName: 'emailAddress',
       label: 'Email address',
+      value: state?.dataToSubmit?.emailAddress,
       linkText: 'Change where the email was sent',
       validation: [
+        {
+          type: VALIDATE_REQUIRED,
+          message: 'Enter your email address',
+        },
         {
           type: VALIDATE_EMAIL_ADDRESS,
           message: 'Enter an email address in the correct format, like name@example.com',
