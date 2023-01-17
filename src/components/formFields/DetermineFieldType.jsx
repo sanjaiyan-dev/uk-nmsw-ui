@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   DISPLAY_DETAILS,
@@ -19,29 +20,39 @@ import InputText from './InputText';
 
 const DetailsInput = ({
   error, fieldName, fieldToReturn, hint, label, linkText,
-}) => (
-  <div className={error ? 'govuk-form-group govuk-form-group--error' : 'govuk-form-group'}>
-    <details className="govuk-details" data-module="govuk-details" data-testid="details-component">
-      <summary className="govuk-details__summary">
-        <span className="govuk-details__summary-text">
-          {linkText}
-        </span>
-      </summary>
-      <div className="govuk-details__text">
-        <label className="govuk-label" htmlFor={`${fieldName}-input`}>
-          {label}
-        </label>
-        <div id={`${fieldName}-hint`} className="govuk-hint">
-          {hint}
+}) => {
+  const [isOpen, setIsOpen] = useState();
+
+  useEffect(() => {
+    if (error) {
+      setIsOpen(true);
+    }
+  }, [error]);
+
+  return (
+    <div className={error ? 'govuk-form-group govuk-form-group--error' : 'govuk-form-group'}>
+      <details className="govuk-details" data-module="govuk-details" data-testid="details-component" open={isOpen}>
+        <summary className="govuk-details__summary">
+          <span className="govuk-details__summary-text">
+            {linkText}
+          </span>
+        </summary>
+        <div className="govuk-details__text">
+          <label className="govuk-label" htmlFor={`${fieldName}-input`}>
+            {label}
+          </label>
+          <div id={`${fieldName}-hint`} className="govuk-hint">
+            {hint}
+          </div>
+          <p id={`${fieldName}-error`} className="govuk-error-message">
+            <span className="govuk-visually-hidden">Error:</span> {error}
+          </p>
+          {fieldToReturn}
         </div>
-        <p id={`${fieldName}-error`} className="govuk-error-message">
-          <span className="govuk-visually-hidden">Error:</span> {error}
-        </p>
-        {fieldToReturn}
-      </div>
-    </details>
-  </div>
-);
+      </details>
+    </div>
+  );
+};
 
 const GroupedInputs = ({
   error, fieldName, fieldToReturn, hint, label,

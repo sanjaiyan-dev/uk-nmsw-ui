@@ -47,8 +47,7 @@ const RegisterEmailResend = () => {
   ];
 
   const handleSubmit = (formData) => {
-    console.log('state', state);
-    console.log('formData', formData);
+    console.log('formData', formData?.formData.emailAddress);
   };
 
   return (
