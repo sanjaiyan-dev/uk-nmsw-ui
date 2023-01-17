@@ -39,7 +39,7 @@ export const SECOND_PAGE_NAME = 'Second page';
 export const SECOND_PAGE_URL = '/second-page';
 
 // Pages were we should clear formData
-export const TOP_LEVEL_PAGES = [ACCESSIBILITY_URL, COOKIE_URL, YOUR_VOYAGES_URL, LANDING_URL, PRIVACY_URL];
+export const TOP_LEVEL_PAGES = [ACCESSIBILITY_URL, COOKIE_URL, YOUR_VOYAGES_URL, LANDING_URL, PRIVACY_URL, TEMPLATE_PAGE_URL];
 
 // Pages without back links
 export const NO_BACK_LINKS = [
