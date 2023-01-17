@@ -77,7 +77,6 @@ describe('Display Form', () => {
       fieldName: 'password',
     },
   ];
-
   const formWithMultipleFields = [
     {
       type: FIELD_AUTOCOMPLETE,
@@ -170,9 +169,55 @@ describe('Display Form', () => {
       ],
     },
   ];
+  const formWithDefaultValues = [
+    {
+      type: FIELD_TEXT,
+      label: 'Text input',
+      hint: 'This is a hint for a text input',
+      fieldName: 'testField',
+      value: 'test value',
+      validation: [
+        {
+          type: VALIDATE_REQUIRED,
+          message: 'Enter your text input value',
+        },
+      ],
+    },
+  ];
 
   beforeEach(() => {
     window.sessionStorage.clear();
+  });
+
+  it('should prefill values from formField data if they exist and no session data exists', async () => {
+    render(
+      <MemoryRouter>
+        <DisplayForm
+          formId="testForm"
+          fields={formWithDefaultValues}
+          formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
+          handleSubmit={handleSubmit}
+        />
+      </MemoryRouter>,
+    );
+    expect(screen.getByLabelText('Text input')).toHaveValue('test value');
+  });
+
+  it('should prefill values from session first if both formField data and session data exists', async () => {
+    window.sessionStorage.setItem('formData', JSON.stringify({ testField: 'sessionvalue' }));
+    render(
+      <MemoryRouter>
+        <DisplayForm
+          formId="testForm"
+          fields={formWithDefaultValues}
+          formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
+          handleSubmit={handleSubmit}
+        />
+      </MemoryRouter>,
+    );
+    expect(screen.getByLabelText('Text input')).toHaveValue('sessionvalue');
   });
 
   it('should store form data in the session for use on refresh', async () => {
