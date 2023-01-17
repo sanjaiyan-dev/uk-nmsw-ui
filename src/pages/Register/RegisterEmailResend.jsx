@@ -15,6 +15,7 @@ import {
 import {
   MESSAGE_URL,
   REGISTER_EMAIL_URL,
+  REGISTER_EMAIL_CHECK_URL,
 } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
 
@@ -67,7 +68,7 @@ const RegisterEmailResend = () => {
       });
 
       if (response.status === 204) {
-        console.log(response);
+        navigate(REGISTER_EMAIL_CHECK_URL, { state: { dataToSubmit: { emailAddress: formData.formData.emailAddress } } });
       }
     } catch (err) {
       if (err?.response?.data?.message === USER_ALREADY_VERIFIED) {
