@@ -13,6 +13,7 @@ import {
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
 import {
+  ERROR_ACCOUNT_ALREADY_ACTIVE_URL,
   MESSAGE_URL,
   REGISTER_EMAIL_URL,
   REGISTER_EMAIL_CHECK_URL,
@@ -72,7 +73,7 @@ const RegisterEmailResend = () => {
       }
     } catch (err) {
       if (err?.response?.data?.message === USER_ALREADY_VERIFIED) {
-        console.log('already verified direct to sign in');
+        navigate(ERROR_ACCOUNT_ALREADY_ACTIVE_URL, { state: { dataToSubmit: { emailAddress: formData.formData.emailAddress } } });
       } else if (err?.response?.data?.message === USER_NOT_REGISTERED) {
         console.log('not registered we need to POST to register user');
       } else {
