@@ -21,6 +21,14 @@ import InputText from './InputText';
 const DetailsInput = ({
   error, fieldName, fieldToReturn, hint, label, linkText,
 }) => {
+  /*
+   * isOpen needs to be set to state so that it persists
+   * the open state even when errors clear
+   * If we did open={!!error} within the details tag
+   * then when the user starts typing in the field and the
+   * error clears, it would become open=false
+   * and the details component would close
+   */
   const [isOpen, setIsOpen] = useState();
 
   useEffect(() => {
