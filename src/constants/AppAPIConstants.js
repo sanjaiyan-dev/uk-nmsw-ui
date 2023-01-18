@@ -10,4 +10,5 @@ export const TOKEN_INVALID = 'Token is invalid or it has expired';
 export const TOKEN_USED_TO_REGISTER = 'Token was already used';
 export const USER_ALREADY_REGISTERED = 'User is already registered';
 export const USER_ALREADY_VERIFIED = 'User already verified, please login';
+export const USER_AWAITING_VERIFICATION = 'User is awaiting verification';
 export const USER_NOT_REGISTERED = 'User is not registered';
