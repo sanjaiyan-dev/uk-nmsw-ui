@@ -1,6 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { REGISTER_ACCOUNT_ENDPOINT, USER_ALREADY_REGISTERED } from '../../constants/AppAPIConstants';
+import {
+  REGISTER_ACCOUNT_ENDPOINT,
+  REGISTER_RESEND_VERIFICATION_EMAIL_ENDPOINT,
+  USER_ALREADY_REGISTERED,
+  USER_ALREADY_VERIFIED,
+  USER_AWAITING_VERIFICATION,
+} from '../../constants/AppAPIConstants';
 import {
   FIELD_EMAIL,
   SINGLE_PAGE_FORM,
@@ -71,6 +77,29 @@ const RegisterEmailAddress = () => {
     },
   ];
 
+  const resendVerificationEmail = async (emailToSendTo) => {
+    try {
+      const controller = new AbortController();
+      const response = await axios.post(REGISTER_RESEND_VERIFICATION_EMAIL_ENDPOINT, {
+        email: emailToSendTo,
+      }, {
+        signal: controller.signal,
+      });
+
+      if (response.status === 204) {
+        navigate(REGISTER_EMAIL_CHECK_URL, { state: { dataToSubmit: { emailAddress: emailToSendTo } } });
+      }
+    } catch (err) {
+      if (err?.response?.data?.message === USER_ALREADY_VERIFIED) {
+        // Edgecase where somehow user activates their account while we're processing a resend verification email
+        navigate(ERROR_ACCOUNT_ALREADY_ACTIVE_URL, { state: { dataToSubmit: { emailAddress: emailToSendTo } } });
+      } else {
+        // USER_NOT_REGISTERED & 500 errors will fall into this bucket (error out on USER_NOT_REGISTERED as it shouldn't occur here and we don't want to cause a loop of register/resend running)
+        navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: REGISTER_EMAIL_URL } });
+      }
+    }
+  };
+
   const handleSubmit = async (formData) => {
     const dataToSubmit = {
       email: formData.formData.emailAddress,
@@ -84,6 +113,8 @@ const RegisterEmailAddress = () => {
     } catch (err) {
       if (err.response?.data?.message === USER_ALREADY_REGISTERED) {
         navigate(ERROR_ACCOUNT_ALREADY_ACTIVE_URL, { state: { dataToSubmit: { emailAddress: formData.formData.emailAddress } } });
+      } else if (err.response?.data?.message === USER_AWAITING_VERIFICATION) {
+        resendVerificationEmail(formData.formData.emailAddress);
       } else {
         // 500 errors will fall into this bucket
         navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: REGISTER_EMAIL_URL } });
