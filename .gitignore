@@ -13,7 +13,7 @@ node_modules/
 .npm
 # Files
 *.log*
-cypress-extract-env.sh
+cypress-env.sh
 cypress/screenshots
 cypress/videos
 cypress/report
