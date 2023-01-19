@@ -155,8 +155,9 @@ When('I create an account with same email previously registered', () => {
 
 Then('I am shown the message user already registered', () => {
   EmailPage.emailVerifyMessage();
-  cy.get('[data-testid="insetText"]').should('have.text', `Your email address ${email} is already registered with this service.`);
-  BasePage.clickSignIn();
+  cy.fixture('registration.json').then((registration) => {
+    cy.get('[data-testid="insetText"]').should('have.text', `Your email address ${registration.email} is already registered with this service.`);
+  });
 });
 
 When('I verify the email address that is not valid', () => {
@@ -232,4 +233,44 @@ Then('I am shown \'link expired\' and the link to \'request new link\'', () => {
 
 Then('I am taken to check your email page', () => {
   EmailPage.verifyCheckYourEmailPage();
+});
+
+When('I am on request-new-verification-link', () => {
+  cy.visitUrl('/create-account/request-new-verification-link');
+});
+
+Then('I click `send confirmation email` button', () => {
+  BasePage.clickSendConfirmationEmail();
+});
+
+When('I enter the email address', () => {
+  cy.fixture('registration.json').then((registration) => {
+    EmailPage.enterEmailAddress(registration.email);
+  });
+});
+
+When('I click on \'change email details link\'', () => {
+  EmailPage.clickChangeWhereEmailSent();
+});
+
+When('click on request new email', () => {
+  cy.contains('Not received an email?').click();
+});
+
+When('I click on not received an email', () => {
+  EmailPage.linkEmailNotReceived();
+});
+
+Then('I provide new email address', () => {
+  let email2 = '117461e3-7e0a-45ec-96f1-3fb2701e9801@mailslurp.com';
+  EmailPage.enterEmailAddress(email2).enterConfirmEmailAddress(email2);
+  BasePage.clickSendConfirmationEmail();
+});
+
+Then('I click change the email sent and  change to different email', () => {
+  cy.get('#emailAddress').contains('Change where the email was sent').click();
+  cy.fixture('registration.json').then((registration) => {
+    cy.get('#emailAddress-input').clear();
+    EmailPage.enterEmailAddress(registration.email)
+  });
 });

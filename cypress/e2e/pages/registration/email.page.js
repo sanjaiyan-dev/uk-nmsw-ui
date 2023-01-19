@@ -74,6 +74,10 @@ class EmailPage {
     cy.contains('Request a new link').click();
   }
 
+  clickChangeWhereEmailSent() {
+    cy.contains('Change where the email was sent').click();
+  }
+
 }
 
 export default new EmailPage();

@@ -8,7 +8,7 @@ module.exports = defineConfig({
         'baseUrl': 'https://nmsw-ui.dev.nmsw.homeoffice.gov.uk',
         'envName': 'development',
         'api_server': 'https://nmsw-api.dev.nmsw.homeoffice.gov.uk/v1',
-        'inboxId': '5d56f2e0-396a-4cca-a00e-88fbc584a643'
+        'inboxId': '486e3675-f1ce-49ae-ac1c-ce47f0b058d0'
       }
     }
 );
