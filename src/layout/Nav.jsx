@@ -6,8 +6,6 @@ import {
   YOUR_VOYAGES_PAGE_NAME,
   YOUR_VOYAGES_URL,
   LANDING_URL,
-  SECOND_PAGE_NAME,
-  SECOND_PAGE_URL,
   TEMPLATE_PAGE_URL,
   TEMPLATE_PAGE_NAME,
 } from '../constants/AppUrlConstants';
@@ -22,12 +20,6 @@ const Nav = () => {
       id: 'YourVoyages',
       urlStem: YOUR_VOYAGES_URL,
       text: YOUR_VOYAGES_PAGE_NAME,
-      active: false,
-    },
-    {
-      id: 'SecondPage',
-      urlStem: SECOND_PAGE_URL,
-      text: SECOND_PAGE_NAME,
       active: false,
     },
     {
