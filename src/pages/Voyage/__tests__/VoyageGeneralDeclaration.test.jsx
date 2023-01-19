@@ -34,4 +34,6 @@ describe('File upload success confirmation page', () => {
     await user.click(screen.getByRole('button', { name: 'Save and continue' }));
     expect(mockedUseNavigate).toHaveBeenCalledWith(VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL, { state: { fileType: 'General Declaration' } });
   });
+
+  // TODO: add test for file download
 });
