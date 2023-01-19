@@ -23,9 +23,9 @@ export const PRIVACY_URL = '/privacy-notice';
 
 // Voyage pages
 export const ERROR_CREW_DETAILS_UPLOAD_URL = '/create-voyage/check-crew-details';
-export const GENERAL_DECLARATION_UPLOAD_URL = '/report-voyage/upload-general-declaration';
-export const GENERAL_DECLARATION_CONFIRMATION_URL = '/report-voyage/general-declaration-uploaded';
-export const REPORT_VOYAGE_TASK_LIST = '/report-voyage';
+export const VOYAGE_GENERAL_DECLARATION_UPLOAD_URL = '/report-voyage/upload-general-declaration';
+export const VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL = '/report-voyage/general-declaration-uploaded';
+export const VOYAGE_TASK_LIST_URL = '/report-voyage';
 export const YOUR_VOYAGES_PAGE_NAME = 'Your voyages';
 export const YOUR_VOYAGES_URL = '/your-voyages';
 
