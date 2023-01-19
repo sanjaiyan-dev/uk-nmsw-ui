@@ -28,22 +28,21 @@ When('I click create an account on the landing page', () => {
 });
 
 Then('the registration page is displayed', () => {
-  cy.url().should('include', 'create-account/email-address');
+  EmailPage.verifyEmailPage();
 });
 
 When('I can provide my email address', () => {
-  EmailPage.checkEmailPage();
-  EmailPage.enterEmailAddress(email).enterConfirmEmailAddress(email);
-  cy.intercept('POST', '*/registration').as('registration');
-  BasePage.clickSendConfirmationEmail();
-  cy.wait('@registration').then(({response}) => {
-    expect(response.statusCode).to.equal(200);
-  });
+  cy.registerUser();
 });
 
 When('I verify the email address', () => {
-  cy.url().should('include', 'check-your-email');
-  cy.get(':nth-child(6) > a').click();
+  EmailPage.verifyCheckYourEmailPage();
+  cy.activateAccount();
+});
+
+Then('the email address verified page is loaded with a continue button', () => {
+  EmailPage.checkActivateAccountPage();
+  cy.contains('Continue').click();
 });
 
 Then('I am redirected to provide my other details', () => {
