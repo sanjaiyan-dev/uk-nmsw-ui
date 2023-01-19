@@ -17,6 +17,8 @@ Feature: User Registration
     Then my account is created and taken to confirmation page
     When I verify my email address again
     Then I am shown - You already have an account
+    When I click the verification link that is expired
+    Then I am shown 'link expired' and the link to 'request new link'
 
 #  Scenario: Should not register existing user
 #    When I click create an account on the landing page

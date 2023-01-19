@@ -200,4 +200,21 @@ When('I verify my email address again', () => {
   });
 });
 
+When('I click the verification link that is expired', () => {
+  cy.waitForLatestEmail('fbeda492-3225-4cf2-84a1-846ad1149c10').then((mail) => {
+    assert.isDefined(mail);
+    const token = /token=([A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*)/.exec(mail.body)[1];
+    const email = /email=([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})/i.exec(mail.body)[1];
+    const activateUrl = `${Cypress.env('baseUrl')}/activate-account?email=${email}&token=${token}`;
+    cy.intercept('POST', '**/v1/check*').as('verifyRegistration');
+    cy.visit(activateUrl);
+    cy.wait('@verifyRegistration').then(({response}) => {
+      expect(response.statusCode).to.eq(401);
+    });
+  });
+});
 
+Then('I am shown \'link expired\' and the link to \'request new link\'', () => {
+  cy.get('h1').should('have.text', 'Verification link has expired');
+  cy.contains('Request a new link');
+});
