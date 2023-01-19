@@ -1,7 +1,9 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { VOYAGE_TASK_LIST_URL } from '../../constants/AppUrlConstants';
 
 const FileUploadConfirmation = () => {
   const { state } = useLocation();
+  const navigate = useNavigate();
   document.title = 'No errors found';
 
   return (
@@ -21,10 +23,18 @@ const FileUploadConfirmation = () => {
             </div>
             <div className="govuk-notification-banner__content">
               <h3 className="govuk-notification-banner__heading">
-                {`${state.fileType ? state.fileType : ''} uploaded`}
+                {`${state?.fileType ? state?.fileType : ''} uploaded`}
               </h3>
             </div>
           </div>
+          <button
+            type="button"
+            className="govuk-button"
+            data-module="govuk-button"
+            onClick={() => navigate(VOYAGE_TASK_LIST_URL)}
+          >
+            Save and continue
+          </button>
         </div>
       </div>
     </>
