@@ -46,9 +46,6 @@ Cypress.Commands.add('registerUser', () => {
     EmailPage.enterEmailAddress(registration.email).enterConfirmEmailAddress(registration.email);
     cy.intercept('POST', '*/registration').as('registration');
     BasePage.clickSendConfirmationEmail();
-    cy.wait('@registration').then(({response}) => {
-      expect(response.statusCode).to.equal(200);
-    });
   });
 });
 
@@ -62,9 +59,6 @@ Cypress.Commands.add('activateAccount', () => {
     const activateUrl = `${Cypress.env('baseUrl')}/activate-account?email=${email}&token=${token}`
     cy.intercept('POST', '**/v1/check*').as('verifyRegistration');
     cy.visit(activateUrl);
-    cy.wait('@verifyRegistration').then(({response}) => {
-      expect(response.statusCode).to.eq(204);
-    });
   });
 });
 

@@ -33,11 +33,17 @@ Then('the registration page is displayed', () => {
 
 When('I can provide my email address', () => {
   cy.registerUser();
+  cy.wait('@registration').then(({response}) => {
+    expect(response.statusCode).to.equal(200);
+  });
 });
 
 When('I verify the email address', () => {
   EmailPage.verifyCheckYourEmailPage();
   cy.activateAccount();
+  cy.wait('@verifyRegistration').then(({response}) => {
+    expect(response.statusCode).to.eq(204);
+  });
 });
 
 Then('the email address verified page is loaded with a continue button', () => {
@@ -132,7 +138,7 @@ When('I create an account with same email previously registered', () => {
   cy.intercept('POST', '*/registration').as('registration');
   BasePage.clickSendConfirmationEmail();
   cy.wait('@registration').then(({response}) => {
-    expect(response.statusCode).to.equal(400);
+    expect(response.statusCode).to.equal(409);
   });
 });
 
@@ -179,4 +185,19 @@ When('I click the resend verification email button', () => {
 Then('the user is redirected to request-new-verification-link', () => {
   cy.url().should('include', 'request-new-verification-link');
 });
+
+Then('I am shown - You already have an account', () => {
+  cy.url().should('include', 'account-already-exists');
+  cy.get('h1').should('have.text', 'You already have an account');
+  BasePage.clickSignIn();
+  SignInPage.checkSignInPage();
+});
+
+When('I verify my email address again', () => {
+  cy.activateAccount();
+  cy.wait('@verifyRegistration').then(({response}) => {
+    expect(response.statusCode).to.eq(401);
+  });
+});
+
 
