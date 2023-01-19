@@ -27,6 +27,8 @@ import {
   SIGN_IN_URL,
   TEMPLATE_PAGE_URL,
   YOUR_VOYAGES_URL,
+  GENERAL_DECLARATION_UPLOAD_URL,
+  GENERAL_DECLARATION_CONFIRMATION_URL,
 } from './constants/AppUrlConstants';
 
 // Error/Message pages
@@ -50,6 +52,8 @@ import PrivacyNotice from './pages/Regulatory/PrivacyNotice';
 
 // PROTECTED PAGES
 // Voyage pages
+import FileUploadConfirmation from './pages/Voyage/FileUploadConfirmation';
+import ReportUploadGeneralDeclaration from './pages/Voyage/ReportUploadGeneralDeclaration';
 import YourVoyages from './pages/NavPages/YourVoyages';
 import ErrorsCrewUpload from './pages/Voyage/ErrorsCrewUpload';
 // Other pages
@@ -88,6 +92,8 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
           <Route path={TEMPLATE_PAGE_URL} element={<Templates />} />
 
           <Route path={YOUR_VOYAGES_URL} element={<YourVoyages />} />
+          <Route path={GENERAL_DECLARATION_UPLOAD_URL} element={<ReportUploadGeneralDeclaration />} />
+          <Route path={GENERAL_DECLARATION_CONFIRMATION_URL} element={<FileUploadConfirmation />} />
           <Route path={ERROR_CREW_DETAILS_UPLOAD_URL} element={<ErrorsCrewUpload />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
