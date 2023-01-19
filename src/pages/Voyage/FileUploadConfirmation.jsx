@@ -1,7 +1,10 @@
-import PropTypes from 'prop-types';
+import { useLocation } from 'react-router-dom';
 
-const FileUploadConfirmation = ({ title }) => {
-  document.title = title;
+const FileUploadConfirmation = () => {
+  const { state } = useLocation();
+  document.title = state.title;
+
+  console.log(state);
 
   return (
     <h1 className="govuk-heading-xl">No errors found</h1>
@@ -9,7 +12,3 @@ const FileUploadConfirmation = ({ title }) => {
 };
 
 export default FileUploadConfirmation;
-
-FileUploadConfirmation.propTypes = {
-  title: PropTypes.string.isRequired,
-};
