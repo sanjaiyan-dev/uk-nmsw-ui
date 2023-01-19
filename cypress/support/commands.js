@@ -40,8 +40,6 @@ Cypress.Commands.add('visitUrl', (path) => {
 
 //mailslurp
 Cypress.Commands.add('registerUser', () => {
-  const inboxId = Cypress.env('inboxId');
-  cy.deleteAllEmails(inboxId);
   cy.fixture('registration.json').then((registration) => {
     EmailPage.enterEmailAddress(registration.email).enterConfirmEmailAddress(registration.email);
     cy.intercept('POST', '*/registration').as('registration');
@@ -51,7 +49,6 @@ Cypress.Commands.add('registerUser', () => {
 
 Cypress.Commands.add('activateAccount', () => {
   const inboxId = Cypress.env('inboxId');
-
   cy.waitForLatestEmail(inboxId).then((mail) => {
     assert.isDefined(mail);
     const token = /token=([A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*)/.exec(mail.body)[1];

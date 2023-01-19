@@ -11,6 +11,7 @@ import SignInPage from '../../e2e/pages/sign-in.page.js';
 let email;
 let password;
 let companyName;
+const inboxId = Cypress.env('inboxId');
 
 Before(() => {
   email = faker.internet.email();
@@ -31,7 +32,8 @@ Then('the registration page is displayed', () => {
   EmailPage.verifyEmailPage();
 });
 
-When('I can provide my email address', () => {
+When('I provide my email address', () => {
+  cy.deleteAllEmails(inboxId);
   cy.registerUser();
   cy.wait('@registration').then(({response}) => {
     expect(response.statusCode).to.equal(200);
@@ -77,6 +79,17 @@ When('I provide my password', () => {
   BasePage.clickContinue();
   cy.wait('@registration').then(({response}) => {
     expect(response.statusCode).to.equal(200);
+  });
+});
+
+When('I provide my new password', () => {
+  PasswordPage.verifyLink3RandomWords();
+  PasswordPage.typePassword(password);
+  PasswordPage.typeRepeatPassword(password);
+  cy.intercept('PATCH', '*/registration').as('registration');
+  BasePage.clickContinue();
+  cy.wait('@registration').then(({response}) => {
+    expect(response.statusCode).to.equal(409);
   });
 });
 
@@ -133,10 +146,8 @@ When('I navigate back to landing page', () => {
 
 When('I create an account with same email previously registered', () => {
   LandingPage.createAccount();
-  EmailPage.checkEmailPage();
-  EmailPage.enterEmailAddress(email).enterConfirmEmailAddress(email);
-  cy.intercept('POST', '*/registration').as('registration');
-  BasePage.clickSendConfirmationEmail();
+  EmailPage.verifyEmailPage();
+  cy.registerUser();
   cy.wait('@registration').then(({response}) => {
     expect(response.statusCode).to.equal(409);
   });
@@ -217,4 +228,8 @@ When('I click the verification link that is expired', () => {
 Then('I am shown \'link expired\' and the link to \'request new link\'', () => {
   cy.get('h1').should('have.text', 'Verification link has expired');
   cy.contains('Request a new link');
+});
+
+Then('I am taken to check your email page', () => {
+  EmailPage.verifyCheckYourEmailPage();
 });

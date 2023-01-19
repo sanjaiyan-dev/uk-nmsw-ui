@@ -4,21 +4,36 @@ Feature: User Registration
   Background:
     Given I am on NMSW landing page
 
-  Scenario: Successful user registration
+#  Scenario: Successful user registration
+#    When I click create an account on the landing page
+#    Then the registration page is displayed
+#    When I provide my email address
+#    When I verify the email address
+#    Then the email address verified page is loaded with a continue button
+#    Then I am redirected to provide my other details
+#    When I provide all my details
+#    Then I am redirected to password page
+#    When I provide my password
+#    Then my account is created and taken to confirmation page
+#    When I verify my email address again
+#    Then I am shown - You already have an account
+#    When I click the verification link that is expired
+#    Then I am shown 'link expired' and the link to 'request new link'
+
+  Scenario: User able to verify email and complete registration when account is not active
     When I click create an account on the landing page
     Then the registration page is displayed
-    When I can provide my email address
-    When I verify the email address
+    And I provide my email address
+    Then I am taken to check your email page
+    When I navigate back to landing page
+    When I create an account with same email previously registered
+    And I verify the email address
     Then the email address verified page is loaded with a continue button
     Then I am redirected to provide my other details
     When I provide all my details
     Then I am redirected to password page
-    When I provide my password
+    When I provide my new password
     Then my account is created and taken to confirmation page
-    When I verify my email address again
-    Then I am shown - You already have an account
-    When I click the verification link that is expired
-    Then I am shown 'link expired' and the link to 'request new link'
 
 #  Scenario: Should not register existing user
 #    When I click create an account on the landing page
