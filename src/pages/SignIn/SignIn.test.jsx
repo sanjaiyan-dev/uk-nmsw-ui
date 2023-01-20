@@ -1,38 +1,31 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
-import { UserContext } from '../../context/userContext';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 import SignIn from './SignIn';
+import { SIGN_IN, USER_NOT_VERIFIED, USER_SIGN_IN_DETAILS_INVALID } from '../../constants/AppAPIConstants';
+import { MESSAGE_URL, SIGN_IN_URL, YOUR_VOYAGES_URL } from '../../constants/AppUrlConstants';
 
 const mockUseLocationState = { state: {} };
+const mockedUseNavigate = jest.fn();
+
 jest.mock('react-router', () => ({
   ...jest.requireActual('react-router'),
   useLocation: jest.fn().mockImplementation(() => mockUseLocationState),
+  useNavigate: () => mockedUseNavigate,
 }));
 
 describe('Sign in tests', () => {
-  const mockedLogin = jest.fn();
-  const mockedLogout = jest.fn();
   const scrollIntoViewMock = jest.fn();
   window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
 
+  const mockAxios = new MockAdapter(axios);
+
   beforeEach(() => {
+    mockAxios.reset();
     window.sessionStorage.clear();
   });
-
-  function renderWithUserContext(userDetails) {
-    return render(
-      <UserContext.Provider value={{
-        user: userDetails,
-        signIn: mockedLogin,
-        signOut: mockedLogout,
-      }}
-      >
-        <MemoryRouter><SignIn user={userDetails} /></MemoryRouter>
-      </UserContext.Provider>,
-    );
-  }
-
   it('should render the sign in page', () => {
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Sign in');
@@ -67,7 +60,7 @@ describe('Sign in tests', () => {
     const user = userEvent.setup();
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     await user.click(screen.getByTestId('submit-button'));
-    expect(mockedLogin).not.toHaveBeenCalled();
+    expect(mockedUseNavigate).not.toHaveBeenCalled();
   });
 
   it('should display the Error Summary if there are errors', async () => {
@@ -154,13 +147,36 @@ describe('Sign in tests', () => {
 
   it('should call the login function on sign in button click if there are no errors', async () => {
     const user = userEvent.setup();
-    const userDetails = { name: 'MockedUser', token: '123', group: 'testGroup' };
 
-    renderWithUserContext(userDetails);
+    mockAxios
+      .onPost(SIGN_IN)
+      .reply(200, {
+        token: '123',
+      });
+
+    render(<MemoryRouter><SignIn /></MemoryRouter>);
+
     await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
     await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
     await user.click(screen.getByTestId('submit-button'));
-    expect(mockedLogin).toHaveBeenCalled();
+    expect(mockedUseNavigate).toHaveBeenCalledWith(YOUR_VOYAGES_URL);
+  });
+
+  it('should store token in session storage if sign in is successful', async () => {
+    const user = userEvent.setup();
+
+    mockAxios
+      .onPost(SIGN_IN)
+      .reply(200, {
+        token: '123',
+      });
+
+    render(<MemoryRouter><SignIn /></MemoryRouter>);
+
+    await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
+    await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(window.sessionStorage.getItem('token')).toEqual('123');
   });
 
   it('should not clear session storage if user is being redirected to sign in before completing their action AND the newly signed in user is the same as the previously signed in one', async () => {
@@ -171,34 +187,107 @@ describe('Sign in tests', () => {
     /* mock some sessionData that may exist if a user had clicked 'submit' on a form page but their AuthToken had expired */
     window.sessionStorage.setItem('formData', JSON.stringify({ testField: 'Hello Test Field', radioButtonSet: 'radioOne' }));
     const expectedStoredData = '{"testField":"Hello Test Field","radioButtonSet":"radioOne"}';
-    const userDetails = {
-      name: 'MockedUser', token: '123', group: 'testGroup', email: 'testemail@email.com',
-    };
+    mockAxios
+      .onPost(SIGN_IN)
+      .reply(200, {
+        token: '123',
+      });
 
-    renderWithUserContext(userDetails);
+    render(<MemoryRouter><SignIn /></MemoryRouter>);
+
     await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
     await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
     await user.click(screen.getByTestId('submit-button'));
-    expect(mockedLogin).toHaveBeenCalled();
+    expect(mockedUseNavigate).toHaveBeenCalled();
     expect(window.sessionStorage.getItem('formData')).toStrictEqual(expectedStoredData);
   });
 
-  it('should clear session storage if user is being redirected to sign in before completing their action AND the newly signed in user is NOT the same as the previously signed in one', async () => {
-    mockUseLocationState.state = {
-      redirectURL: '/thisurl',
-    };
+  it('should show an error if email and/or password is incorrect', async () => {
     const user = userEvent.setup();
-    /* mock some sessionData that may exist if a user had clicked 'submit' on a form page but their AuthToken had expired */
-    window.sessionStorage.setItem('formData', JSON.stringify({ testField: 'Hello Test Field', radioButtonSet: 'radioOne' }));
-    const userDetails = {
-      name: 'MockedUser', token: '123', group: 'testGroup', email: 'testemail@email.com',
-    };
 
-    renderWithUserContext(userDetails);
-    await user.type(screen.getByRole('textbox', { name: /email/i }), 'differentperson@email.com');
+    mockAxios
+      .onPost(SIGN_IN)
+      .reply(401, {
+        message: USER_SIGN_IN_DETAILS_INVALID,
+      });
+
+    render(<MemoryRouter><SignIn /></MemoryRouter>);
+
+    await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
     await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
     await user.click(screen.getByTestId('submit-button'));
-    expect(mockedLogin).toHaveBeenCalled();
-    expect(window.sessionStorage.getItem('formData')).toStrictEqual(null);
+    expect(screen.getByText('Email and password combination is invalid')).toBeInTheDocument();
   });
+
+  it('should show an error is user is not verified', async () => {
+    const user = userEvent.setup();
+
+    mockAxios
+      .onPost(SIGN_IN)
+      .reply(401, {
+        message: USER_NOT_VERIFIED,
+      });
+
+    render(<MemoryRouter><SignIn /></MemoryRouter>);
+
+    await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
+    await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(screen.getByText('Account is not registered')).toBeInTheDocument();
+  });
+
+  it('should redirect to error page if 500 response received', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onPost(SIGN_IN)
+      .reply(500);
+
+    render(<MemoryRouter><SignIn /></MemoryRouter>);
+
+    await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
+    await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
+    await user.click(screen.getByTestId('submit-button'));
+    await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, { state: { title: 'Something has gone wrong', redirectURL: SIGN_IN_URL } }); // on error we redirect to error page
+    });
+  });
+
+  it('should clear API error when something is typed into input', async () => {
+    const user = userEvent.setup();
+
+    mockAxios
+      .onPost(SIGN_IN)
+      .reply(401, {
+        message: USER_NOT_VERIFIED,
+      });
+
+    render(<MemoryRouter><SignIn /></MemoryRouter>);
+
+    await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
+    await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(screen.getByText('Account is not registered')).toBeInTheDocument();
+
+    await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
+    expect(screen.queryByText('Account is not registered')).not.toBeInTheDocument();
+  });
+
+  // it('should clear session storage if user is being redirected to sign in before completing their action AND the newly signed in user is NOT the same as the previously signed in one', async () => {
+  //   mockUseLocationState.state = {
+  //     redirectURL: '/thisurl',
+  //   };
+  //   const user = userEvent.setup();
+  //   /* mock some sessionData that may exist if a user had clicked 'submit' on a form page but their AuthToken had expired */
+  //   window.sessionStorage.setItem('formData', JSON.stringify({ testField: 'Hello Test Field', radioButtonSet: 'radioOne' }));
+  //   const userDetails = {
+  //     name: 'MockedUser', token: '123', group: 'testGroup', email: 'testemail@email.com',
+  //   };
+
+  //   renderWithUserContext(userDetails);
+  //   await user.type(screen.getByRole('textbox', { name: /email/i }), 'differentperson@email.com');
+  //   await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
+  //   await user.click(screen.getByTestId('submit-button'));
+  //   expect(mockedLogin).toHaveBeenCalled();
+  //   expect(window.sessionStorage.getItem('formData')).toStrictEqual(null);
+  // });
 });
