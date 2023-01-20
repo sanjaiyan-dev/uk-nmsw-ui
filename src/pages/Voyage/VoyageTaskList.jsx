@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import {
+  VOYAGE_CHECK_YOUR_ANSWERS,
   VOYAGE_CREW_UPLOAD_URL,
   VOYAGE_GENERAL_DECLARATION_UPLOAD_URL,
   VOYAGE_PASSENGERS_URL,
@@ -60,25 +61,25 @@ const VoyageTaskList = () => {
               <ul className="app-task-list__items">
                 <li className="app-task-list__item">
                   <Link to={VOYAGE_GENERAL_DECLARATION_UPLOAD_URL} aria-describedby="generalDeclaration">
-                    General Declaration (FAL 1)
+                    <span>General Declaration (FAL 1)</span>
                     <strong className={classCompleted} id="eligibility-status">{statusGeneralDeclaration}</strong>
                   </Link>
                 </li>
                 <li className="app-task-list__item">
                   <Link to={VOYAGE_CREW_UPLOAD_URL} aria-describedby="generalDeclaration">
-                    Crew details including supernumeraries (FAL 5)
+                    <span>Crew details including supernumeraries (FAL 5)</span>
                     <strong className={classRequired} id="eligibility-status">{statusCrewDetails}</strong>
                   </Link>
                 </li>
                 <li className="app-task-list__item">
                   <Link to={VOYAGE_PASSENGERS_URL} aria-describedby="generalDeclaration">
-                    Any passenger details (FAL 6)
+                    <span>Any passenger details (FAL 6)</span>
                     <strong className={classRequired} id="eligibility-status">{statusPassengerDetails}</strong>
                   </Link>
                 </li>
                 <li className="app-task-list__item">
                   <Link to={VOYAGE_SUPPORTING_DOCS_UPLOAD_URL} aria-describedby="generalDeclaration">
-                    Supporting documents
+                    <span>Supporting documents</span>
                     <strong className={classOptional} id="eligibility-status">{statusSupportingDocuments}</strong>
                   </Link>
                 </li>
@@ -88,13 +89,13 @@ const VoyageTaskList = () => {
               <h2 className="app-task-list__section"><span className="app-task-list__section-number">2. </span>Submit the report</h2>
               <ul className="app-task-list__items">
                 <li className="app-task-list__item">
-                  <Link to="/" aria-describedby="generalDeclaration">
-                    Check answers and submit
+                  <Link to={VOYAGE_CHECK_YOUR_ANSWERS} aria-describedby="generalDeclaration">
+                    <span>Check answers and submit</span>
                     <strong className={classCannotStartYet} id="eligibility-status">{statusCheckYourAnswers}</strong>
                   </Link>
                 </li>
                 <li className="app-task-list__item">
-                  <Link to="/" aria-describedby="generalDeclaration">
+                  <Link to={VOYAGE_CHECK_YOUR_ANSWERS} aria-describedby="generalDeclaration">
                     Example not yet started
                     <strong className={classNotStarted} id="eligibility-status">{testStatus}</strong>
                   </Link>
@@ -105,6 +106,7 @@ const VoyageTaskList = () => {
           <button
             type="button"
             className="govuk-button govuk-button--warning"
+            data-module="govuk-button"
             onClick={() => handleDelete()}
           >
             Delete draft
