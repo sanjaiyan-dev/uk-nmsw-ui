@@ -63,13 +63,23 @@ const DetailsInput = ({
 };
 
 const GroupedInputs = ({
-  error, fieldName, fieldToReturn, hint, label,
+  error, fieldName, fieldToReturn, hint, label, legend,
 }) => (
   <div className={error ? 'govuk-form-group govuk-form-group--error' : 'govuk-form-group'}>
     <fieldset className="govuk-fieldset">
-      <legend className="govuk-fieldset__legend">
-        {label}
-      </legend>
+      {legend
+        ? (
+          <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
+            <h1 className="govuk-fieldset__heading">
+              {label}
+            </h1>
+          </legend>
+        )
+        : (
+          <legend className="govuk-fieldset__legend">
+            {label}
+          </legend>
+        )}
       <div id={`${fieldName}-hint`} className="govuk-hint">
         {hint}
       </div>
@@ -200,6 +210,7 @@ const determineFieldType = ({
             fieldToReturn={fieldToReturn}
             hint={fieldDetails.hint}
             label={fieldDetails.label}
+            legend={fieldDetails.labelAsH1}
           />
         )}
       {displayType === DISPLAY_SINGLE
@@ -249,6 +260,7 @@ GroupedInputs.propTypes = {
   fieldToReturn: PropTypes.object.isRequired,
   hint: PropTypes.string,
   label: PropTypes.string.isRequired,
+  legend: PropTypes.bool,
 };
 
 SingleInput.propTypes = {
