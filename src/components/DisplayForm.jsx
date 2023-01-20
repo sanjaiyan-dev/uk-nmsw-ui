@@ -19,7 +19,7 @@ import { scrollToTop } from '../utils/ScrollToElement';
 import Validator from '../utils/Validator';
 
 const DisplayForm = ({
-  fields, formId, formActions, formType, pageHeading, handleSubmit, children,
+  fields, formId, formActions, formType, pageHeading, handleSubmit, children, removeApiErrors,
 }) => {
   const { user } = useContext(UserContext);
   const fieldsRef = useRef(null);
@@ -38,6 +38,10 @@ const DisplayForm = ({
       const itemToCheck = itemToClear ? itemToClear.target.name : e.target.name;
       const filteredErrors = errors?.filter((errorField) => errorField.name !== itemToCheck);
       setErrors(filteredErrors);
+    }
+
+    if (formType === SIGN_IN_FORM) {
+      removeApiErrors();
     }
 
     // create the dataset to store, accounting for objects coming from autocomplete
@@ -292,4 +296,5 @@ DisplayForm.propTypes = {
   formType: PropTypes.string.isRequired,
   pageHeading: PropTypes.string,
   handleSubmit: PropTypes.func.isRequired,
+  removeApiErrors: PropTypes.func,
 };
