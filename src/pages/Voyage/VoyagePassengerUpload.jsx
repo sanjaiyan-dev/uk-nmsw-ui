@@ -3,13 +3,13 @@ import { VOYAGE_PASSENGER_CONFIRMATION_URL } from '../../constants/AppUrlConstan
 
 const VoyagePassengerUpload = () => {
   const navigate = useNavigate();
-  document.title = 'Upload the crew details including supernumeraries (FAL 5)';
+  document.title = 'Upload the passenger details (FAL 6)';
 
   return (
     <>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">
-          <h1 className="govuk-heading-xl">Upload the crew details including supernumeraries (FAL 5)</h1>
+          <h1 className="govuk-heading-xl">Upload the passenger details (FAL 6)</h1>
         </div>
       </div>
       <div className="govuk-grid-row">
@@ -18,7 +18,7 @@ const VoyagePassengerUpload = () => {
             type="button"
             className="govuk-button"
             data-module="govuk-button"
-            onClick={() => navigate(VOYAGE_PASSENGER_CONFIRMATION_URL, { state: { fileType: 'Crew details' } })}
+            onClick={() => navigate(VOYAGE_PASSENGER_CONFIRMATION_URL, { state: { fileType: 'Passenger details' } })}
           >
             Save and continue
           </button>
