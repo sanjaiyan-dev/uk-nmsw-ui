@@ -1,4 +1,4 @@
-const VoyagePassengerDetails = () => {
+const VoyagePassengers = () => {
   document.title = 'Is the ship carrying any passengers?';
 
   return (
@@ -13,4 +13,4 @@ const VoyagePassengerDetails = () => {
   );
 };
 
-export default VoyagePassengerDetails;
+export default VoyagePassengers;

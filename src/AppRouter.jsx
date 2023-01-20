@@ -28,7 +28,7 @@ import {
   TEMPLATE_PAGE_URL,
   VOYAGE_CREW_UPLOAD_URL,
   VOYAGE_CREW_CONFIRMATION_URL,
-  VOYAGE_PASSENGER_DETAILS_URL,
+  VOYAGE_PASSENGERS_URL,
   VOYAGE_PASSENGER_UPLOAD_URL,
   VOYAGE_PASSENGER_CONFIRMATION_URL,
   VOYAGE_GENERAL_DECLARATION_UPLOAD_URL,
@@ -60,7 +60,7 @@ import PrivacyNotice from './pages/Regulatory/PrivacyNotice';
 // Voyage pages
 import FileUploadConfirmation from './pages/Voyage/FileUploadConfirmation';
 import VoyageCrew from './pages/Voyage/VoyageCrew';
-import VoyagePassengerDetails from './pages/Voyage/VoyagePassengerDetails';
+import VoyagePassengers from './pages/Voyage/VoyagePassengers';
 import VoyagePassengerUpload from './pages/Voyage/VoyagePassengerUpload';
 import VoyageTaskList from './pages/Voyage/VoyageTaskList';
 import VoyageUploadGeneralDeclaration from './pages/Voyage/VoyageGeneralDeclaration';
@@ -104,7 +104,7 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
           <Route path={YOUR_VOYAGES_URL} element={<YourVoyages />} />
           <Route path={VOYAGE_CREW_UPLOAD_URL} element={<VoyageCrew />} />
           <Route path={VOYAGE_CREW_CONFIRMATION_URL} element={<FileUploadConfirmation />} />
-          <Route path={VOYAGE_PASSENGER_DETAILS_URL} element={<VoyagePassengerDetails />} />
+          <Route path={VOYAGE_PASSENGERS_URL} element={<VoyagePassengers />} />
           <Route path={VOYAGE_PASSENGER_UPLOAD_URL} element={<VoyagePassengerUpload />} />
           <Route path={VOYAGE_PASSENGER_CONFIRMATION_URL} element={<FileUploadConfirmation />} />
           <Route path={VOYAGE_GENERAL_DECLARATION_UPLOAD_URL} element={<VoyageUploadGeneralDeclaration />} />
