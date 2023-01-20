@@ -32,14 +32,14 @@ describe('Navigation within header tests', () => {
     mockedUserIsPermitted = false;
     render(<MemoryRouter><Nav /></MemoryRouter>);
     expect(screen.queryByText('Your voyages')).not.toBeInTheDocument();
-    expect(screen.queryByText('Second page')).not.toBeInTheDocument();
+    expect(screen.queryByText('Templates')).not.toBeInTheDocument();
   });
 
   it('should render nav items when user has permission to view them', () => {
     mockedUserIsPermitted = true;
     render(<MemoryRouter><Nav /></MemoryRouter>);
     expect(screen.getByText('Your voyages')).toBeInTheDocument();
-    expect(screen.getByText('Second page')).toBeInTheDocument();
+    expect(screen.getByText('Templates')).toBeInTheDocument();
   });
 
   it('should load the Your voyages component and set its nav item to active when nav item clicked, and other nav items to not have active class', async () => {
@@ -49,17 +49,17 @@ describe('Navigation within header tests', () => {
     await user.click(screen.getByText('Your voyages'));
     expect(screen.getAllByText('Your voyages')).toHaveLength(2); // h1 & nav item
     expect(screen.getByTestId('listitem-YourVoyages').outerHTML).toEqual('<li class="govuk-header__navigation-item govuk-header__navigation-item--active" data-testid="listitem-YourVoyages"><a class="govuk-header__link" href="/your-voyages">Your voyages</a></li>');
-    expect(screen.getByTestId('listitem-SecondPage').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-SecondPage"><a class="govuk-header__link" href="/second-page">Second page</a></li>');
+    expect(screen.getByTestId('listitem-Templates').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-Templates"><a class="govuk-header__link" href="/templates">Templates</a></li>');
   });
 
-  it('should load the Second page component and set its nav item to active when nav item clicked, and other nav items to not have active class', async () => {
+  it('should load the Templates component and set its nav item to active when nav item clicked, and other nav items to not have active class', async () => {
     mockedUserIsPermitted = true;
     const user = userEvent.setup();
     render(<MemoryRouter><App /></MemoryRouter>);
-    await user.click(screen.getByText('Second page'));
-    expect(screen.getAllByText('Second page')).toHaveLength(2); // h1 & nav item
+    await user.click(screen.getByText('Templates'));
+    expect(screen.getAllByText('Templates')).toHaveLength(2); // h1 & nav item
     expect(screen.getByTestId('listitem-YourVoyages').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-YourVoyages"><a class="govuk-header__link" href="/your-voyages">Your voyages</a></li>');
-    expect(screen.getByTestId('listitem-SecondPage').outerHTML).toEqual('<li class="govuk-header__navigation-item govuk-header__navigation-item--active" data-testid="listitem-SecondPage"><a class="govuk-header__link" href="/second-page">Second page</a></li>');
+    expect(screen.getByTestId('listitem-Templates').outerHTML).toEqual('<li class="govuk-header__navigation-item govuk-header__navigation-item--active" data-testid="listitem-Templates"><a class="govuk-header__link" href="/templates">Templates</a></li>');
   });
 
   it('should set all nav items to inactive class when service name is clicked', async () => {
@@ -68,7 +68,7 @@ describe('Navigation within header tests', () => {
     render(<MemoryRouter><App /></MemoryRouter>);
     await user.click(screen.getByTestId('serviceName'));
     expect(screen.getByTestId('listitem-YourVoyages').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-YourVoyages"><a class="govuk-header__link" href="/your-voyages">Your voyages</a></li>');
-    expect(screen.getByTestId('listitem-SecondPage').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-SecondPage"><a class="govuk-header__link" href="/second-page">Second page</a></li>');
+    expect(screen.getByTestId('listitem-Templates').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-Templates"><a class="govuk-header__link" href="/templates">Templates</a></li>');
   });
 
   it('should set all nav items to inactive class when logo is clicked', async () => {
@@ -77,14 +77,14 @@ describe('Navigation within header tests', () => {
     render(<MemoryRouter><App /></MemoryRouter>);
     await user.click(screen.getByText('GOV.UK'));
     expect(screen.getByTestId('listitem-YourVoyages').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-YourVoyages"><a class="govuk-header__link" href="/your-voyages">Your voyages</a></li>');
-    expect(screen.getByTestId('listitem-SecondPage').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-SecondPage"><a class="govuk-header__link" href="/second-page">Second page</a></li>');
+    expect(screen.getByTestId('listitem-Templates').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-Templates"><a class="govuk-header__link" href="/templates">Templates</a></li>');
   });
 
   it('should set highlight NO nav items if a new url is rendered and it does not relate to any of them', () => {
     mockedUserIsPermitted = true;
     render(<MemoryRouter><App /></MemoryRouter>);
     expect(screen.getByTestId('listitem-YourVoyages').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-YourVoyages"><a class="govuk-header__link" href="/your-voyages">Your voyages</a></li>');
-    expect(screen.getByTestId('listitem-SecondPage').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-SecondPage"><a class="govuk-header__link" href="/second-page">Second page</a></li>');
+    expect(screen.getByTestId('listitem-Templates').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-Templates"><a class="govuk-header__link" href="/templates">Templates</a></li>');
   });
 
   it('should toggle menu state when menu button is clicked (small screen functionality)', async () => {
@@ -103,15 +103,13 @@ describe('Navigation within header tests', () => {
   });
 
   it('should clear formData when a nav item is clicked', async () => {
+    window.sessionStorage.setItem('formData', JSON.stringify({
+      testField: 'Hello Test Field', radioButtonSet: 'radioOne', radioWithConditional: 'optionWithConditional', conditionalTextInput: 'world', testPhoneField: '(123)12345',
+    }));
     mockedUserIsPermitted = true;
     const user = userEvent.setup();
     render(<MemoryRouter><App /></MemoryRouter>);
-    await user.click(screen.getByText('Second page'));
-    await user.type(screen.getByLabelText('First name'), 'Bob');
-
-    expect(window.sessionStorage.getItem('formData')).toStrictEqual('{"firstName":"Bob"}');
-
-    await user.click(screen.getByText('Your voyages'));
+    await user.click(screen.getByText('Templates'));
     expect(window.sessionStorage.getItem('formData')).toStrictEqual(null);
   });
 });
