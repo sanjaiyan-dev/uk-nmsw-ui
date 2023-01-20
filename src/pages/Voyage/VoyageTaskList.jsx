@@ -1,4 +1,4 @@
-const ReportTaskList = () => {
+const VoyageTaskList = () => {
   document.title = 'Task List';
 
   return (
@@ -6,4 +6,4 @@ const ReportTaskList = () => {
   );
 };
 
-export default ReportTaskList;
+export default VoyageTaskList;

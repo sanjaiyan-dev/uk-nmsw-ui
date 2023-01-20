@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { DownloadFile } from '../../utils/DownloadFile';
 import { VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL } from '../../constants/AppUrlConstants';
 
-const ReportUploadGeneralDeclaration = () => {
+const VoyageUploadGeneralDeclaration = () => {
   const navigate = useNavigate();
   document.title = 'Upload the General Declaration (FAL 1)';
 
@@ -30,4 +30,4 @@ const ReportUploadGeneralDeclaration = () => {
   );
 };
 
-export default ReportUploadGeneralDeclaration;
+export default VoyageUploadGeneralDeclaration;
