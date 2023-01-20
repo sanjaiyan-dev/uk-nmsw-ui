@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   VOYAGE_CREW_UPLOAD_URL,
   VOYAGE_GENERAL_DECLARATION_UPLOAD_URL,
@@ -7,6 +7,7 @@ import {
 } from '../../constants/AppUrlConstants';
 
 const VoyageTaskList = () => {
+  const navigate = useNavigate();
   document.title = 'Report a voyage';
 
   // temp data until we can populate programatically
@@ -29,6 +30,14 @@ const VoyageTaskList = () => {
   const classOptional = 'govuk-tag govuk-tag--blue app-task-list__tag';
   const classNotStarted = 'govuk-tag govuk-tag--grey app-task-list__tag';
   const classCannotStartYet = 'govuk-tag govuk-tag--grey app-task-list__tag';
+
+  const handleDelete = () => {
+    /* TODO: this will direct to an are you sure you want to delete page
+     * which will then return to your voyages
+     * with a confirmation banner
+     */
+    navigate('/');
+  };
 
   return (
     <>
@@ -93,6 +102,13 @@ const VoyageTaskList = () => {
               </ul>
             </li>
           </ol>
+          <button
+            type="button"
+            className="govuk-button govuk-button--warning"
+            onClick={() => handleDelete()}
+          >
+            Delete draft
+          </button>
         </div>
       </div>
     </>
