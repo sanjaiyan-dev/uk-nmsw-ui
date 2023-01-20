@@ -1,13 +1,19 @@
-import { UserContext } from '../../context/userContext';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
-import SignIn from '../../pages/SignIn/SignIn';
+import { UserContext } from '../../context/userContext';
+import SignIn from './SignIn';
+
+const mockUseLocationState = { state: {} };
+jest.mock('react-router', () => ({
+  ...jest.requireActual('react-router'),
+  useLocation: jest.fn().mockImplementation(() => mockUseLocationState),
+}));
 
 describe('Sign in tests', () => {
   const mockedLogin = jest.fn();
   const mockedLogout = jest.fn();
-  let scrollIntoViewMock = jest.fn();
+  const scrollIntoViewMock = jest.fn();
   window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
 
   beforeEach(() => {
@@ -16,13 +22,14 @@ describe('Sign in tests', () => {
 
   function renderWithUserContext(userDetails) {
     return render(
-      <UserContext.Provider value={{ 
-        user: userDetails, 
-        signIn: mockedLogin, 
+      <UserContext.Provider value={{
+        user: userDetails,
+        signIn: mockedLogin,
         signOut: mockedLogout,
-       }}>
+      }}
+      >
         <MemoryRouter><SignIn user={userDetails} /></MemoryRouter>
-      </UserContext.Provider>
+      </UserContext.Provider>,
     );
   }
 
@@ -35,7 +42,7 @@ describe('Sign in tests', () => {
   it('should display an input field for email', () => {
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     expect(screen.getByLabelText('Email address')).toBeInTheDocument();
-    expect(screen.getByRole('textbox', {name: /email/i}).outerHTML).toEqual('<input class="govuk-input" id="email-input" name="email" type="email" autocomplete="email" value="">');
+    expect(screen.getByRole('textbox', { name: /email/i }).outerHTML).toEqual('<input class="govuk-input" id="email-input" name="email" type="email" autocomplete="email" value="">');
   });
 
   it('should display a link to create account', () => {
@@ -54,7 +61,6 @@ describe('Sign in tests', () => {
   it('should display a primary styled sign in button', () => {
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     expect((screen.getByTestId('submit-button')).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Sign in</button>');
-    
   });
 
   it('should NOT call the login function on sign in button click if there ARE errors', async () => {
@@ -82,15 +88,15 @@ describe('Sign in tests', () => {
     const user = userEvent.setup();
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     await user.click(screen.getByTestId('submit-button'));
-    await user.click(screen.getByRole('button', { name: 'Enter your email address'}));
+    await user.click(screen.getByRole('button', { name: 'Enter your email address' }));
     expect(scrollIntoViewMock).toHaveBeenCalled();
-    expect(screen.getByRole('textbox', {name: /email/i})).toHaveFocus();
+    expect(screen.getByRole('textbox', { name: /email/i })).toHaveFocus();
   });
 
   it('should display the email invalid error if the email address has no @', async () => {
     const user = userEvent.setup();
     render(<MemoryRouter><SignIn /></MemoryRouter>);
-    await user.type(screen.getByRole('textbox', {name: /email/i}), 'testemail');
+    await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail');
     await user.click(screen.getByTestId('submit-button'));
     expect(screen.getAllByText('Enter your email address in the correct format, like name@example.com')).toHaveLength(2);
   });
@@ -98,7 +104,7 @@ describe('Sign in tests', () => {
   it('should display the email invalid error if the email address has no .xx', async () => {
     const user = userEvent.setup();
     render(<MemoryRouter><SignIn /></MemoryRouter>);
-    await user.type(screen.getByRole('textbox', {name: /email/i}), 'testemail@boo');
+    await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@boo');
     await user.click(screen.getByTestId('submit-button'));
     expect(screen.getAllByText('Enter your email address in the correct format, like name@example.com')).toHaveLength(2);
   });
@@ -106,17 +112,17 @@ describe('Sign in tests', () => {
   it('should scroll to email field and set focus on email input if user clicks on email invalid format error link', async () => {
     const user = userEvent.setup();
     render(<MemoryRouter><SignIn /></MemoryRouter>);
-    await user.type(screen.getByRole('textbox', {name: /email/i}), 'testemail@boo');
+    await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@boo');
     await user.click(screen.getByTestId('submit-button'));
-    await user.click(screen.getByRole('button', { name: 'Enter your email address in the correct format, like name@example.com'}));
+    await user.click(screen.getByRole('button', { name: 'Enter your email address in the correct format, like name@example.com' }));
     expect(scrollIntoViewMock).toHaveBeenCalled();
-    expect(screen.getByRole('textbox', {name: /email/i})).toHaveFocus();
+    expect(screen.getByRole('textbox', { name: /email/i })).toHaveFocus();
   });
 
   it('should NOT display the email errors if the email address is a valid format', async () => {
     const user = userEvent.setup();
     render(<MemoryRouter><SignIn /></MemoryRouter>);
-    await user.type(screen.getByRole('textbox', {name: /email/i}), 'testemail@email.com');
+    await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
     await user.click(screen.getByTestId('submit-button'));
     expect(screen.queryByText('Enter your email address')).not.toBeInTheDocument();
     expect(screen.queryByText('Enter your email address in the correct format, like name@example.com')).not.toBeInTheDocument();
@@ -133,7 +139,7 @@ describe('Sign in tests', () => {
     const user = userEvent.setup();
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     await user.click(screen.getByTestId('submit-button'));
-    await user.click(screen.getByRole('button', { name: 'Enter your password'}));
+    await user.click(screen.getByRole('button', { name: 'Enter your password' }));
     expect(scrollIntoViewMock).toHaveBeenCalled();
     expect(screen.getByTestId('password-passwordField')).toHaveFocus();
   });
@@ -151,11 +157,48 @@ describe('Sign in tests', () => {
     const userDetails = { name: 'MockedUser', token: '123', group: 'testGroup' };
 
     renderWithUserContext(userDetails);
-    await user.type(screen.getByRole('textbox', {name: /email/i}), 'testemail@email.com');
+    await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
     await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
     await user.click(screen.getByTestId('submit-button'));
     expect(mockedLogin).toHaveBeenCalled();
   });
 
-  // TODO: Try to get test for 'should set userContext to session storage' to work
+  it('should not clear session storage if user is being redirected to sign in before completing their action AND the newly signed in user is the same as the previously signed in one', async () => {
+    mockUseLocationState.state = {
+      redirectURL: '/thisurl',
+    };
+    const user = userEvent.setup();
+    /* mock some sessionData that may exist if a user had clicked 'submit' on a form page but their AuthToken had expired */
+    window.sessionStorage.setItem('formData', JSON.stringify({ testField: 'Hello Test Field', radioButtonSet: 'radioOne' }));
+    const expectedStoredData = '{"testField":"Hello Test Field","radioButtonSet":"radioOne"}';
+    const userDetails = {
+      name: 'MockedUser', token: '123', group: 'testGroup', email: 'testemail@email.com',
+    };
+
+    renderWithUserContext(userDetails);
+    await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
+    await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(mockedLogin).toHaveBeenCalled();
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual(expectedStoredData);
+  });
+
+  it('should clear session storage if user is being redirected to sign in before completing their action AND the newly signed in user is NOT the same as the previously signed in one', async () => {
+    mockUseLocationState.state = {
+      redirectURL: '/thisurl',
+    };
+    const user = userEvent.setup();
+    /* mock some sessionData that may exist if a user had clicked 'submit' on a form page but their AuthToken had expired */
+    window.sessionStorage.setItem('formData', JSON.stringify({ testField: 'Hello Test Field', radioButtonSet: 'radioOne' }));
+    const userDetails = {
+      name: 'MockedUser', token: '123', group: 'testGroup', email: 'testemail@email.com',
+    };
+
+    renderWithUserContext(userDetails);
+    await user.type(screen.getByRole('textbox', { name: /email/i }), 'differentperson@email.com');
+    await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(mockedLogin).toHaveBeenCalled();
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual(null);
+  });
 });

@@ -11,7 +11,7 @@ import InputText from '../InputText';
 describe('Text input field generation', () => {
   const parentHandleChange = jest.fn();
   const fieldDetailsBasic = {
-    fieldName: 'simpleFieldName'
+    fieldName: 'simpleFieldName',
   };
   const fieldDetailsAllProps = {
     fieldName: 'fullFieldName',
@@ -24,8 +24,8 @@ describe('Text input field generation', () => {
       <InputText
         fieldDetails={fieldDetailsBasic}
         handleChange={parentHandleChange}
-        type='text'
-      />
+        type="text"
+      />,
     );
     expect(screen.getByRole('textbox', { name: '' })).toBeInTheDocument();
     expect(screen.getByRole('textbox', { name: '' }).outerHTML).toEqual('<input class="govuk-input" id="simpleFieldName-input" name="simpleFieldName" type="text" value="">');
@@ -34,13 +34,13 @@ describe('Text input field generation', () => {
   it('should render a text input field with all props passed', () => {
     render(
       <InputText
-        autoComplete='email'
-        dataTestid='test-id'
-        error='this field has an error'
+        autoComplete="email"
+        dataTestid="test-id"
+        error="this field has an error"
         fieldDetails={fieldDetailsAllProps}
         handleChange={parentHandleChange}
-        type='text'
-      />
+        type="text"
+      />,
     );
     expect(screen.getByRole('textbox', { name: '' })).toBeInTheDocument();
     expect(screen.getByRole('textbox', { name: '' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="fullFieldName-input" data-testid="test-id" name="fullFieldName" type="text" autocomplete="email" aria-describedby="fullFieldName-hint" value="The full field value">');
@@ -52,7 +52,7 @@ describe('Text input field generation', () => {
         fieldDetails={fieldDetailsAllProps}
         handleChange={parentHandleChange}
         type={FIELD_TEXT}
-      />
+      />,
     );
     expect(screen.getByRole('textbox', { name: '' })).toBeInTheDocument();
     expect(screen.getByRole('textbox', { name: '' })).toHaveAttribute('type', 'text');
@@ -64,7 +64,7 @@ describe('Text input field generation', () => {
         fieldDetails={fieldDetailsAllProps}
         handleChange={parentHandleChange}
         type={FIELD_EMAIL}
-      />
+      />,
     );
     expect(screen.getByRole('textbox', { name: '' })).toBeInTheDocument();
     expect(screen.getByRole('textbox', { name: '' })).toHaveAttribute('type', 'email');
@@ -73,11 +73,11 @@ describe('Text input field generation', () => {
   it('should render the input with type of password if password passed', () => {
     render(
       <InputText
-        dataTestid='passwordField'
+        dataTestid="passwordField"
         fieldDetails={fieldDetailsAllProps}
         handleChange={parentHandleChange}
         type={FIELD_PASSWORD}
-      />
+      />,
     );
 
     expect(screen.getByTestId('passwordField')).toHaveAttribute('type', 'password');
@@ -88,8 +88,8 @@ describe('Text input field generation', () => {
       <InputText
         fieldDetails={fieldDetailsAllProps}
         handleChange={parentHandleChange}
-        type='text'
-      />
+        type="text"
+      />,
     );
     expect(screen.getByRole('textbox', { name: '' })).toBeInTheDocument();
     expect(screen.getByRole('textbox', { name: '' })).toHaveValue('The full field value');
@@ -98,11 +98,11 @@ describe('Text input field generation', () => {
   it('should render the class as the error class if an error is passed', () => {
     render(
       <InputText
-        error='This field has an error'
+        error="This field has an error"
         fieldDetails={fieldDetailsAllProps}
         handleChange={parentHandleChange}
-        type='text'
-      />
+        type="text"
+      />,
     );
     expect(screen.getByRole('textbox', { name: '' })).toBeInTheDocument();
     expect(screen.getByRole('textbox', { name: '' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="fullFieldName-input" name="fullFieldName" type="text" aria-describedby="fullFieldName-hint" value="The full field value">');
@@ -113,11 +113,10 @@ describe('Text input field generation', () => {
       <InputText
         fieldDetails={fieldDetailsAllProps}
         handleChange={parentHandleChange}
-        type='text'
-      />
+        type="text"
+      />,
     );
     expect(screen.getByRole('textbox', { name: '' })).toBeInTheDocument();
     expect(screen.getByRole('textbox', { name: '' }).outerHTML).toEqual('<input class="govuk-input" id="fullFieldName-input" name="fullFieldName" type="text" aria-describedby="fullFieldName-hint" value="The full field value">');
   });
-
 });

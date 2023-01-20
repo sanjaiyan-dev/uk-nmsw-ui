@@ -1,11 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
-import { SERVICE_NAME } from './constants/AppConstants.js';
-import App from './App.jsx';
+import { SERVICE_NAME } from './constants/AppConstants';
+import App from './App';
 
 describe('App tests', () => {
-
   beforeEach(() => {
     window.sessionStorage.clear();
   });
@@ -45,20 +44,20 @@ describe('App tests', () => {
   });
 
   it('should hide the cookie confirmation banner once hide cookie message is clicked after user accepts or rejects cookies', async () => {
-      const user = userEvent.setup();
-      render(<BrowserRouter><App /></BrowserRouter>);
-  
-      const acceptButton = screen.getByRole('button', { name: 'Accept analytics cookies' });
-      await user.click(acceptButton);
-  
-      const hideButton = screen.getByRole('button', { name: 'Hide cookie message'});
-      await user.click(hideButton);
-  
-      expect(screen.queryByText('We use some essential cookies to make this service work.')).not.toBeInTheDocument();
-      expect(screen.queryByRole('button', { name: 'Accept analytics cookies' })).not.toBeInTheDocument();
-      expect(screen.queryByTestId('cookieMessage')).not.toBeInTheDocument();
-      expect(screen.queryByRole('button', { name: 'Hide cookie message'})).not.toBeInTheDocument();
-    });
+    const user = userEvent.setup();
+    render(<BrowserRouter><App /></BrowserRouter>);
+
+    const acceptButton = screen.getByRole('button', { name: 'Accept analytics cookies' });
+    await user.click(acceptButton);
+
+    const hideButton = screen.getByRole('button', { name: 'Hide cookie message' });
+    await user.click(hideButton);
+
+    expect(screen.queryByText('We use some essential cookies to make this service work.')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Accept analytics cookies' })).not.toBeInTheDocument();
+    expect(screen.queryByTestId('cookieMessage')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Hide cookie message' })).not.toBeInTheDocument();
+  });
 
   it('should not render cookie banner when cookiePreference is true', () => {
     document.cookie = 'cookiePreference=true';
@@ -90,32 +89,32 @@ describe('App tests', () => {
   it('should not render a back button on the / page or /sign-in page', async () => {
     const user = userEvent.setup();
     render(<MemoryRouter><App /></MemoryRouter>);
-    
+
     expect(screen.queryByText('Back')).not.toBeInTheDocument();
 
     const startButton = screen.getByRole('button', { name: 'Start now' });
     await user.click(startButton);
 
     expect(screen.getAllByText('Sign in')).toHaveLength(2);
-    expect(screen.queryByText('Back')).not.toBeInTheDocument();  
+    expect(screen.queryByText('Back')).not.toBeInTheDocument();
   });
 
   it('should render a back button on /email-address page', async () => {
     const user = userEvent.setup();
     render(<MemoryRouter><App /></MemoryRouter>);
 
-    await user.click(screen.getByRole('link', {name: 'create an account'}));
+    await user.click(screen.getByRole('link', { name: 'create an account' }));
     expect(screen.queryByText('Back')).toBeInTheDocument();
   });
 
   it('should clear formData when a footer item is clicked', async () => {
     const user = userEvent.setup();
     render(<MemoryRouter><App /></MemoryRouter>);
-    const startButton = screen.getByRole('button', { name: 'Start now' });
+    const startButton = screen.getByRole('link', { name: 'create an account' });
     await user.click(startButton);
     await user.type(screen.getByLabelText('Email address'), 'test@test.com');
-    
-    expect(window.sessionStorage.getItem('formData')).toStrictEqual('{"email":"test@test.com"}');
+
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual('{"emailAddress":"test@test.com"}');
 
     await user.click(screen.getByText('Accessibility'));
     expect(window.sessionStorage.getItem('formData')).toStrictEqual(null);
@@ -124,11 +123,11 @@ describe('App tests', () => {
   it('should clear formData when GOV logo is clicked', async () => {
     const user = userEvent.setup();
     render(<MemoryRouter><App /></MemoryRouter>);
-    const startButton = screen.getByRole('button', { name: 'Start now' });
+    const startButton = screen.getByRole('link', { name: 'create an account' });
     await user.click(startButton);
     await user.type(screen.getByLabelText('Email address'), 'test@test.com');
-    
-    expect(window.sessionStorage.getItem('formData')).toStrictEqual('{"email":"test@test.com"}');
+
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual('{"emailAddress":"test@test.com"}');
 
     await user.click(screen.getByText('GOV.UK'));
     expect(window.sessionStorage.getItem('formData')).toStrictEqual(null);
@@ -137,11 +136,11 @@ describe('App tests', () => {
   it('should clear formData when service name is clicked', async () => {
     const user = userEvent.setup();
     render(<MemoryRouter><App /></MemoryRouter>);
-    const startButton = screen.getByRole('button', { name: 'Start now' });
+    const startButton = screen.getByRole('link', { name: 'create an account' });
     await user.click(startButton);
     await user.type(screen.getByLabelText('Email address'), 'test@test.com');
-    
-    expect(window.sessionStorage.getItem('formData')).toStrictEqual('{"email":"test@test.com"}');
+
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual('{"emailAddress":"test@test.com"}');
 
     await user.click(screen.getByText(SERVICE_NAME));
     expect(window.sessionStorage.getItem('formData')).toStrictEqual(null);

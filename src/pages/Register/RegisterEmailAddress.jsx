@@ -1,34 +1,38 @@
 import { useNavigate } from 'react-router-dom';
-import { REGISTER_ACCOUNT_ENDPOINT } from '../../constants/AppAPIConstants';
+import axios from 'axios';
+import {
+  REGISTER_ACCOUNT_ENDPOINT,
+  REGISTER_RESEND_VERIFICATION_EMAIL_ENDPOINT,
+  USER_ALREADY_REGISTERED,
+  USER_ALREADY_VERIFIED,
+  USER_AWAITING_VERIFICATION,
+} from '../../constants/AppAPIConstants';
 import {
   FIELD_EMAIL,
   SINGLE_PAGE_FORM,
   VALIDATE_EMAIL_ADDRESS,
   VALIDATE_FIELD_MATCH,
-  VALIDATE_REQUIRED
+  VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
 import {
-  ERROR_URL,
+  MESSAGE_URL,
   ERROR_ACCOUNT_ALREADY_ACTIVE_URL,
   REGISTER_EMAIL_URL,
-  REGISTER_EMAIL_CHECK_URL
+  REGISTER_EMAIL_CHECK_URL,
 } from '../../constants/AppUrlConstants';
-import usePostData from '../../hooks/usePostData';
 import DisplayForm from '../../components/DisplayForm';
+import Auth from '../../utils/Auth';
 
-const SupportingText = () => {
-  return (
-    <>
-      <div className="govuk-inset-text">
-        <p className="govuk-body">This will only be used if you need to recover your sign in details.</p>
-        <p className="govuk-body">To confirm it is your email address we will send you a verification link.</p>
-      </div>
-    </>
-  );
-};
+const SupportingText = () => (
+  <div className="govuk-inset-text">
+    <p className="govuk-body">This will only be used if you need to recover your sign in details.</p>
+    <p className="govuk-body">To confirm it is your email address we will send you a verification link.</p>
+  </div>
+);
 
 const RegisterEmailAddress = () => {
   const navigate = useNavigate();
+  document.title = 'What is your email address';
 
   const formActions = {
     submit: {
@@ -47,13 +51,13 @@ const RegisterEmailAddress = () => {
       validation: [
         {
           type: VALIDATE_REQUIRED,
-          message: 'Enter an email address in the correct format, like name@example.com'
+          message: 'Enter an email address in the correct format, like name@example.com',
         },
         {
           type: VALIDATE_EMAIL_ADDRESS,
-          message: 'Enter an email address in the correct format, like name@example.com'
+          message: 'Enter an email address in the correct format, like name@example.com',
         },
-      ]
+      ],
     },
     {
       type: FIELD_EMAIL,
@@ -62,56 +66,73 @@ const RegisterEmailAddress = () => {
       validation: [
         {
           type: VALIDATE_REQUIRED,
-          message: 'Confirm your email address'
+          message: 'Confirm your email address',
         },
         {
           type: VALIDATE_FIELD_MATCH,
           message: 'Your email addresses must match',
           condition: 'emailAddress',
         },
-      ]
-    }
+      ],
+    },
   ];
 
-  const handleSubmit = async (formData) => {
+  const resendVerificationEmail = async (emailToSendTo) => {
     try {
-      const response = await usePostData({
-        url: REGISTER_ACCOUNT_ENDPOINT,
-        dataToSubmit: {
-          email: formData.formData.emailAddress,
-        }
+      const controller = new AbortController();
+      const response = await axios.post(REGISTER_RESEND_VERIFICATION_EMAIL_ENDPOINT, {
+        email: emailToSendTo,
+      }, {
+        signal: controller.signal,
       });
-      if (response && response.status === 200) {
-        navigate(REGISTER_EMAIL_CHECK_URL, { state: { dataToSubmit: { emailAddress: formData.formData.emailAddress } } });
-      } else if (response && response.message === 'User is already registered') {
-        navigate(ERROR_ACCOUNT_ALREADY_ACTIVE_URL, { state: { dataToSubmit: { emailAddress: formData.formData.emailAddress } } });
-      } else {
-        navigate(ERROR_URL, {
-          state: {
-            title: 'Something has gone wrong',
-            message: response.message,
-            redirectURL: REGISTER_EMAIL_URL
-          }
-        });
+
+      if (response.status === 204) {
+        navigate(REGISTER_EMAIL_CHECK_URL, { state: { dataToSubmit: { emailAddress: emailToSendTo } } });
       }
     } catch (err) {
-      navigate(ERROR_URL, { state: { title: 'Something has gone wrong', redirectURL: REGISTER_EMAIL_URL } });
+      if (err?.response?.data?.message === USER_ALREADY_VERIFIED) {
+        // Edgecase where somehow user activates their account while we're processing a resend verification email
+        navigate(ERROR_ACCOUNT_ALREADY_ACTIVE_URL, { state: { dataToSubmit: { emailAddress: emailToSendTo } } });
+      } else {
+        // USER_NOT_REGISTERED & 500 errors will fall into this bucket (error out on USER_NOT_REGISTERED as it shouldn't occur here and we don't want to cause a loop of register/resend running)
+        navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: REGISTER_EMAIL_URL } });
+      }
+    }
+  };
+
+  const handleSubmit = async (formData) => {
+    const dataToSubmit = {
+      email: formData.formData.emailAddress,
+    };
+
+    try {
+      const response = await axios.post(REGISTER_ACCOUNT_ENDPOINT, dataToSubmit, {
+        headers: { Authorization: `Bearer ${Auth.retrieveToken()}` },
+      });
+      navigate(REGISTER_EMAIL_CHECK_URL, { state: { dataToSubmit: { emailAddress: response.data.email } } });
+    } catch (err) {
+      if (err.response?.data?.message === USER_ALREADY_REGISTERED) {
+        navigate(ERROR_ACCOUNT_ALREADY_ACTIVE_URL, { state: { dataToSubmit: { emailAddress: formData.formData.emailAddress } } });
+      } else if (err.response?.data?.message === USER_AWAITING_VERIFICATION) {
+        resendVerificationEmail(formData.formData.emailAddress);
+      } else {
+        // 500 errors will fall into this bucket
+        navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: REGISTER_EMAIL_URL } });
+      }
     }
   };
 
   return (
-    <>
-      <DisplayForm
-        formId='formRegisterEmailAddress'
-        fields={formFields}
-        formActions={formActions}
-        formType={SINGLE_PAGE_FORM}
-        pageHeading='What is your email address'
-        handleSubmit={handleSubmit}
-      >
-        <SupportingText />
-      </DisplayForm>
-    </>
+    <DisplayForm
+      formId="formRegisterEmailAddress"
+      fields={formFields}
+      formActions={formActions}
+      formType={SINGLE_PAGE_FORM}
+      pageHeading="What is your email address"
+      handleSubmit={handleSubmit}
+    >
+      <SupportingText />
+    </DisplayForm>
   );
 };
 

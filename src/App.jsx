@@ -12,7 +12,6 @@ import setAnalyticCookie from './utils/setAnalyticCookie';
 import { NO_BACK_LINKS, TOP_LEVEL_PAGES } from './constants/AppUrlConstants';
 
 const App = () => {
-
   const cookiePreference = cookieToFind('cookiePreference');
   const [isCookieBannerShown, setIsCookieBannerShown] = useState(true);
   const { pathname } = useLocation();
@@ -41,10 +40,12 @@ const App = () => {
       <div className="govuk-width-container">
         <PhaseBanner />
         {/* Back link with logic as to when it should/should not show; */}
-        {!pageWithoutBackLink &&
-          <nav aria-label="Back link" id="backLink">
-            <a href="#back" className="govuk-back-link" onClick={() => { navigate(-1); }}>Back</a>
-          </nav>}
+        {!pageWithoutBackLink
+          && (
+            <nav aria-label="Back link" id="backLink">
+              <a href="#back" className="govuk-back-link" onClick={() => { navigate(-1); }}>Back</a>
+            </nav>
+          )}
         <main className="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="content" role="main">
           <AppRouter setIsCookieBannerShown={setIsCookieBannerShown} />
         </main>

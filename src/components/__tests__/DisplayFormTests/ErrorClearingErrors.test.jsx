@@ -2,6 +2,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
+  DISPLAY_GROUPED,
   FIELD_CONDITIONAL,
   FIELD_PHONE,
   FIELD_TEXT,
@@ -27,7 +28,7 @@ jest.mock('react-router-dom', () => ({
 
 describe('Display Form', () => {
   const handleSubmit = jest.fn();
-  let scrollIntoViewMock = jest.fn();
+  const scrollIntoViewMock = jest.fn();
   window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
   const formActionsSubmitOnly = {
     submit: {
@@ -40,7 +41,7 @@ describe('Display Form', () => {
       label: 'What is your favourite animal',
       fieldName: 'favAnimal',
       className: 'govuk-radios',
-      grouped: true,
+      displayType: DISPLAY_GROUPED,
       radioOptions: [
         {
           radioField: true,
@@ -91,7 +92,7 @@ describe('Display Form', () => {
             parentValue: 'dog',
             fieldName: 'breedOfDog',
             ruleToTest: VALIDATE_REQUIRED,
-            message: 'Enter a breed of dog'
+            message: 'Enter a breed of dog',
           },
         },
         {
@@ -100,9 +101,9 @@ describe('Display Form', () => {
             parentValue: 'cat',
             fieldName: 'breedOfCat',
             ruleToTest: VALIDATE_REQUIRED,
-            message: 'Enter a breed of cat'
+            message: 'Enter a breed of cat',
           },
-        }
+        },
       ],
     },
   ];
@@ -122,7 +123,7 @@ describe('Display Form', () => {
           message: 'Enter your phone value',
         },
       ],
-    }
+    },
   ];
   const formRequiredTextInput = [
     {
@@ -136,13 +137,13 @@ describe('Display Form', () => {
           message: 'Enter your text input value',
         },
       ],
-    }
+    },
   ];
-  
+
   beforeEach(() => {
     window.sessionStorage.clear();
   });
-  
+
   it('should clear the error message when user interacts with the field', async () => {
     // the setErrors function should clear the error message from the field when it is called from this scenario
     // we will test that it does clear in Cypress tests
@@ -156,7 +157,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     await user.click(screen.getByRole('button', { name: 'Submit test button' }));
@@ -179,7 +180,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     await user.click(screen.getByRole('radio', { name: 'Cat' }));
@@ -188,7 +189,7 @@ describe('Display Form', () => {
     expect(screen.getByText('There is a problem').outerHTML).toEqual('<h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>');
     expect(screen.getAllByText('Enter a breed of cat')).toHaveLength(2);
     // // Error summary has the error message as a button and correct class
-    expect(screen.getByRole('button', { name: 'Enter a breed of cat' }).outerHTML).toEqual('<button class="govuk-button--text">Enter a breed of cat</button>');
+    expect(screen.getByRole('button', { name: 'Enter a breed of cat' }).outerHTML).toEqual('<button class="govuk-button--text" type="button">Enter a breed of cat</button>');
     // // Input field has the error class attached
     expect(screen.getByTestId('breedOfCat-container').outerHTML).toEqual('<div data-testid="breedOfCat-container" class="govuk-radios__conditional"><div class="govuk-form-group govuk-form-group--error"><label class="govuk-label" for="breedOfCat-input">Breed of cat</label><div id="breedOfCat-hint" class="govuk-hint"></div><p id="breedOfCat-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> Enter a breed of cat</p><input class="govuk-input govuk-!-width-one-third govuk-input--error" id="breedOfCat-input" name="breedOfCat" type="text" value=""></div></div>');
 
@@ -209,13 +210,13 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     // trigger error
     await user.click(screen.getByRole('button', { name: 'Submit test button' }));
     expect(screen.getAllByText('Enter your phone value')).toHaveLength(2);
-    expect(screen.getByRole('button', { name: 'Enter your phone value' }).outerHTML).toEqual('<button class="govuk-button--text">Enter your phone value</button>');
+    expect(screen.getByRole('button', { name: 'Enter your phone value' }).outerHTML).toEqual('<button class="govuk-button--text" type="button">Enter your phone value</button>');
     expect(screen.getByRole('textbox', { name: 'Country phone code field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code govuk-input--error" id="testPhoneField-input[0]" name="testPhoneFieldCountryPhoneCode" type="text" inputmode="numeric" aria-describedby="testPhoneField-hint" value="">');
     expect(screen.getByRole('textbox', { name: 'Phone number field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testPhoneField-input[1]" name="testPhoneFieldPhoneNumber" type="tel" autocomplete="tel" aria-describedby="testPhoneField-hint" value="">');
 
@@ -224,13 +225,13 @@ describe('Display Form', () => {
     expect(screen.queryByText('Enter your phone value')).not.toBeInTheDocument();
     expect(screen.getByRole('textbox', { name: 'Country phone code field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code" id="testPhoneField-input[0]" name="testPhoneFieldCountryPhoneCode" type="text" inputmode="numeric" aria-describedby="testPhoneField-hint" value="">');
     expect(screen.getByRole('textbox', { name: 'Phone number field' }).outerHTML).toEqual('<input class="govuk-input" id="testPhoneField-input[1]" name="testPhoneFieldPhoneNumber" type="tel" autocomplete="tel" aria-describedby="testPhoneField-hint" value="1">');
-    
+
     // trigger error again
     screen.getByRole('textbox', { name: 'Phone number field' }).setSelectionRange(0, 14);
     await user.keyboard('{delete}');
     await user.click(screen.getByRole('button', { name: 'Submit test button' }));
     expect(screen.getAllByText('Enter your phone value')).toHaveLength(2);
-    expect(screen.getByRole('button', { name: 'Enter your phone value' }).outerHTML).toEqual('<button class="govuk-button--text">Enter your phone value</button>');
+    expect(screen.getByRole('button', { name: 'Enter your phone value' }).outerHTML).toEqual('<button class="govuk-button--text" type="button">Enter your phone value</button>');
     expect(screen.getByRole('textbox', { name: 'Country phone code field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code govuk-input--error" id="testPhoneField-input[0]" name="testPhoneFieldCountryPhoneCode" type="text" inputmode="numeric" aria-describedby="testPhoneField-hint" value="">');
     expect(screen.getByRole('textbox', { name: 'Phone number field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testPhoneField-input[1]" name="testPhoneFieldPhoneNumber" type="tel" autocomplete="tel" aria-describedby="testPhoneField-hint" value="">');
 

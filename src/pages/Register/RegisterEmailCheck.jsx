@@ -3,6 +3,7 @@ import { REGISTER_EMAIL_RESEND_URL } from '../../constants/AppUrlConstants';
 
 const RegisterEmailCheck = () => {
   const { state } = useLocation();
+  document.title = 'Check your email';
 
   return (
     <>
@@ -16,15 +17,6 @@ const RegisterEmailCheck = () => {
           state={{ dataToSubmit: { emailAddress: state?.dataToSubmit.emailAddress } }}
         >
           Not received an email?
-        </Link>
-      </p>
-
-      {/* below is to make testing easier until other elements built */}
-      <hr />
-      <p>FOR TESTING <Link
-          to={'/create-account/your-details'}
-          state={{ dataToSubmit: { emailAddress: state?.dataToSubmit.emailAddress } }}>
-          SKIP TO YOUR DETAILS
         </Link>
       </p>
     </>

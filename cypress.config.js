@@ -1,4 +1,4 @@
-const { defineConfig } = require('cypress');
+const {defineConfig} = require('cypress');
 const createBundler = require('@bahmutov/cypress-esbuild-preprocessor');
 const preprocessor = require('@badeball/cypress-cucumber-preprocessor');
 const createEsbuildPlugin = require('@badeball/cypress-cucumber-preprocessor/esbuild');
@@ -11,9 +11,10 @@ async function setupNodeEvents(on, config) {
       'file:preprocessor',
       createBundler({
         plugins: [createEsbuildPlugin.default(config)],
-      })
+      }),
   );
-  on('task',
+  on(
+      'task',
       {
         log(message) {
           // eslint-disable-next-line no-console
@@ -26,9 +27,10 @@ async function setupNodeEvents(on, config) {
           console.table(message);
 
           return null;
-        }
-      });
-
+        },
+      },
+  );
+  config.env.MAIL_API_KEY = process.env.DEV_NMSW_MAILSLURP_API_KEY;
   // Make sure to return the config object as it might have been modified by the plugin.
   return config;
 }
@@ -37,7 +39,7 @@ module.exports = defineConfig({
   e2e: {
     specPattern: '**/*.feature',
     step_definitions: 'cypress/support/step_definitions/',
-    baseUrl: 'http://localhost:3000/',
+    watchForFileChanges: false,
     setupNodeEvents,
-  },
+  }
 });

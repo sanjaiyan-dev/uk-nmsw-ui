@@ -1,37 +1,38 @@
 import { useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { REGISTER_ACCOUNT_URL } from '../../constants/AppUrlConstants';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../context/userContext';
 import {
   FIELD_EMAIL,
   FIELD_PASSWORD,
-  SINGLE_PAGE_FORM,
+  SIGN_IN_FORM,
   VALIDATE_EMAIL_ADDRESS,
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
-import { DASHBOARD_URL } from '../../constants/AppUrlConstants';
+import {
+  REGISTER_ACCOUNT_URL,
+  YOUR_VOYAGES_URL,
+} from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
 
-const SupportingText = () => {
-  return (
-    <>
-      <div className="govuk-inset-text">
-        <p className="govuk-body">If you do not have an account, you can <Link to={REGISTER_ACCOUNT_URL}>create one now</Link>.</p>
-      </div>
-    </>
-  );
-};
+const SupportingText = () => (
+  <div className="govuk-inset-text">
+    <p className="govuk-body">
+      If you do not have an account, you can <Link to={REGISTER_ACCOUNT_URL}>create one now</Link>.
+    </p>
+  </div>
+);
 
-const SignIn = (userDetails) => {
-  const tempHardCodedUser = Object.entries(userDetails).length > 0 ? userDetails.user : { name: 'MockedUser' };
-  const { signIn } = useContext(UserContext);
+const SignIn = () => {
+  const { signIn, user } = useContext(UserContext);
   const navigate = useNavigate();
+  const { state } = useLocation();
+  document.title = 'Sign in';
 
   // Form fields
   const formActions = {
     submit: {
       label: 'Sign in',
-    }
+    },
   };
   const formFields = [
     {
@@ -62,24 +63,30 @@ const SignIn = (userDetails) => {
     },
   ];
 
-  const handleSubmit = () => {
-    signIn({ ...tempHardCodedUser });
-    navigate(DASHBOARD_URL);
+  const handleSubmit = ({ formData }) => {
+    if (user.email !== formData.email) {
+      sessionStorage.removeItem('formData');
+    }
+    signIn({ formData });
+    if (state?.redirectURL) {
+      navigate(state.redirectURL);
+    } else {
+      navigate(YOUR_VOYAGES_URL);
+    }
   };
 
   return (
-    <>
-      <DisplayForm
-        pageHeading="Sign in"
-        formId='formSignIn'
-        fields={formFields}
-        formActions={formActions}
-        formType={SINGLE_PAGE_FORM}
-        handleSubmit={handleSubmit}
-      >
-        <SupportingText />
-      </DisplayForm>
-    </>
+    <DisplayForm
+      pageHeading="Sign in"
+      formId="formSignIn"
+      fields={formFields}
+      formActions={formActions}
+      formType={SIGN_IN_FORM}
+      keepSessionOnSubmit={state?.redirectURL}
+      handleSubmit={handleSubmit}
+    >
+      <SupportingText />
+    </DisplayForm>
   );
 };
 

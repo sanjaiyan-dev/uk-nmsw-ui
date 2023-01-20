@@ -35,7 +35,7 @@ Create an object of formActions for your form
     },
     cancel: {
       label: 'Cancel',
-      redirect_URL: DASHBOARD_URL
+      redirect_URL: YOUR_VOYAGES_URL
     }
   };
 ```
@@ -59,7 +59,7 @@ const formFields = [
       label: 'What is your favourite colour',
       fieldName: 'favouriteColour',
       className: 'govuk-radios',
-      grouped: true,
+      displayType: DISPLAY_GROUPED,
       radioOptions: [
         {
           label: 'Red',
@@ -96,7 +96,7 @@ const formFields = [
       label: 'Sample date field',
       hint: 'Enter a date',
       fieldName: 'myDate',
-      grouped: true,
+      displayType: DISPLAY_GROUPED,
     },
   ];
 
@@ -143,7 +143,7 @@ const formFields = [
       label: 'What is your favourite colour',
       fieldName: 'favouriteColour',
       className: 'govuk-radios',
-      grouped: true,
+      displayType: DISPLAY_GROUPED,
       radioOptions: [
         {
           label: 'Red',
@@ -180,7 +180,7 @@ const formFields = [
       label: 'Sample date field',
       hint: 'Enter a date',
       fieldName: 'myDate',
-      grouped: true,
+      displayType: DISPLAY_GROUPED,
       validation: [
         {
           type: VALIDATE_REQUIRED,
@@ -218,8 +218,8 @@ If you use a confirmation page
         {
           state: {
             formName: 'Example form',
-            nextPageLink: DASHBOARD_URL,
-            nextPageName: DASHBOARD_PAGE_NAME,
+            nextPageLink: YOUR_VOYAGES_URL,
+            nextPageName: YOUR_VOYAGES_PAGE_NAME,
             // referenceNumber: referenceNumber // only include referenceNumber if you will receive one from your API POST/PATCH call, otherwise leave this out
           }
         }
@@ -263,7 +263,7 @@ import {
   VALIDATE_MIN_LENGTH,
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
-import { DASHBOARD_PAGE_NAME, DASHBOARD_URL, FORM_CONFIRMATION_URL } from '../../constants/AppUrlConstants';
+import { YOUR_VOYAGES_PAGE_NAME, YOUR_VOYAGES_URL, FORM_CONFIRMATION_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
 import { scrollToElementId } from '../../utils/ScrollToElementId';
 import Validator from '../../utils/Validator';
@@ -279,7 +279,7 @@ const SecondPage = () => {
     },
     cancel: {
       label: 'Cancel',
-      redirectURL: DASHBOARD_URL,
+      redirectURL: YOUR_VOYAGES_URL,
     }
   };
   const formFields = [
@@ -305,7 +305,7 @@ const SecondPage = () => {
       label: 'What is your favourite colour',
       fieldName: 'favouriteColour',
       className: 'govuk-radios',
-      grouped: true,
+      displayType: DISPLAY_GROUPED,
       radioOptions: [
         {
           label: 'Red',
@@ -342,7 +342,7 @@ const SecondPage = () => {
       label: 'Sample date field',
       hint: 'Enter a date',
       fieldName: 'myDate',
-      grouped: true,
+      displayType: DISPLAY_GROUPED,
       validation: [
         {
           type: VALIDATE_REQUIRED,
@@ -359,8 +359,8 @@ const SecondPage = () => {
       {
         state: {
           formName: 'Example form',
-          nextPageLink: DASHBOARD_URL,
-          nextPageName: DASHBOARD_PAGE_NAME,
+          nextPageLink: YOUR_VOYAGES_URL,
+          nextPageName: YOUR_VOYAGES_PAGE_NAME,
           referenceNumber: referenceNumber
         }
       }

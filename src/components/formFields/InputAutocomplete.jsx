@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Autocomplete from 'accessible-autocomplete/react';
 
-/* there is an open PR to fix the aria-activedescendent issue: 
+/* there is an open PR to fix the aria-activedescendent issue:
  * https://github.com/alphagov/accessible-autocomplete/issues/434
  * https://github.com/alphagov/accessible-autocomplete/pull/553/files
  * The aria-activedescendent looks to work correctly, if you use your mouse to select an item from the list
@@ -24,12 +24,11 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
 
     // adding a filter in here to mimic the userQuery being used to get a response
     // TODO: filteredResults will be replaced with the api call to return a filtered dataset based on the userQuery
-    const filteredResults = apiResponseData.filter(o => Object.keys(o).some(k => o[k].toLowerCase().includes(userQuery.toLowerCase())));
-// console.log(filteredResults)
+    const filteredResults = apiResponseData.filter((o) => Object.keys(o).some((k) => o[k].toLowerCase().includes(userQuery.toLowerCase())));
+    // console.log(filteredResults)
     // this is part of the Autocomplete componet and how we return results to the list
     populateResults(filteredResults);
   };
-
 
   const template = (result) => {
     let response;
@@ -47,6 +46,8 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
       // this covers when user hasn't typed in field yet / field is null
       return;
     }
+    // TODO: work out why this fails linting
+    // eslint-disable-next-line consistent-return
     return response;
   };
 
@@ -78,10 +79,10 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
      * AND: the field has an additional key
      * THEN: we determine the search term by extracting the value of the responseKey from the session data
      * AND: we can use that to retrieve the related object from the dataset
-     * 
+     *
      * WHEN: the field does NOT have an additional key
      * THEN: we can use the defaultValue as the search term
-     * 
+     *
      * WHEN: the value of that item (e) does NOT match the value of defaultValue (aka user has typed something new)
      * THEN: we do not need to search as e contains the full object
      * this is because when the list is created based on the user typing, the suggest function returns the full object
@@ -91,9 +92,9 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
     if (e === valueToTest) {
       if (fieldDetails.additionalKey) {
         const termToSearchOn = sessionData[`${fieldDetails.fieldName}ExpandedDetails`][fieldDetails.fieldName][fieldDetails.responseKey];
-        retrievedValue = apiResponseData.find(o => o[fieldDetails.responseKey] === termToSearchOn);
+        retrievedValue = apiResponseData.find((o) => o[fieldDetails.responseKey] === termToSearchOn);
       } else {
-        retrievedValue = apiResponseData.find(o =>  o[fieldDetails.responseKey] === defaultValue);
+        retrievedValue = apiResponseData.find((o) => o[fieldDetails.responseKey] === defaultValue);
       }
     } else {
       retrievedValue = e;
@@ -103,7 +104,7 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
      * GIVEN: an item on the list has been clicked and we have retrieved its object
      * WHEN: the field has an additionalKey and the retrieved object has a value for that additionalKey
      * THEN: we concatenate the responseKey value and the additionalKey value together as the displayValue to show in the UI
-     * 
+     *
      * WHEN: the field does not have an additionalKey OR it has an additionalKey but the object has no value for this
      * THEN: we set the displayValue to just have the responseKey value
      */
@@ -124,30 +125,30 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
         name: fieldDetails.fieldName,
         value: displayValue,
         additionalDetails: {
-          [fieldDetails.fieldName]: retrievedValue
+          [fieldDetails.fieldName]: retrievedValue,
         },
-      }
+      },
     };
 
     handleChange(formattedEvent);
   };
 
-  /* 
+  /*
    * There is no onBlur event available for us to place a function on
    * There is no onKeyPress event available for us to place a function on
    * There is no current way other than vanillaJS to capture that the
-   * user has cleared the field with delete/backspace and then 
+   * user has cleared the field with delete/backspace and then
    * clear the value from formData/sessionData
   */
   useEffect(() => {
-    const handleKeypress = e => {
+    const handleKeypress = (e) => {
       if (e.key === 'Delete' || e.key === 'Backspace') {
         const formattedEvent = {
           target: {
             name: e.target.name,
             value: null,
             additionalDetails: {},
-          }
+          },
         };
         handleChange(formattedEvent);
       }
@@ -163,10 +164,10 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
   // this lets us format the strings to display as we like
   // for more details see https://github.com/alphagov/accessible-autocomplete
   // we want the input value & suggestion to show the same value so both call the template function to return the same value
-  // if we wanted to show different values we could call separate functions, or define them in the template function to return 
+  // if we wanted to show different values we could call separate functions, or define them in the template function to return
   // different results
   return (
-    <div className='autocomplete-input'>
+    <div className="autocomplete-input">
       <Autocomplete
         confirmOnBlur={false}
         defaultValue={defaultValue}
@@ -185,14 +186,13 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
 };
 
 InputAutocomplete.propTypes = {
-  error: PropTypes.string,
   fieldDetails: PropTypes.shape({
     // dataAPIEndpoint: PropTypes.string.isRequired, // when we implement the endpoint
     dataAPIEndpoint: PropTypes.array.isRequired, // for while we're passing in a mocked array of data
     fieldName: PropTypes.string.isRequired,
     hint: PropTypes.string,
-    responseKey: PropTypes.string.isRequired,  // a field that always exists in the dataset that we can use as a key for returning results
-    additionalKey: PropTypes.string,  // optional other field that we want to append to the returned result if it exists in the dataset (e.g. country ISO code, unlocode)
+    responseKey: PropTypes.string.isRequired, // a field that always exists in the dataset that we can use as a key for returning results
+    additionalKey: PropTypes.string, // optional other field that we want to append to the returned result if it exists in the dataset (e.g. country ISO code, unlocode)
     value: PropTypes.string,
   }).isRequired,
   handleChange: PropTypes.func.isRequired,

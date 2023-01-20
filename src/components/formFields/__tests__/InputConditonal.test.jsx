@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { FIELD_CONDITIONAL } from '../../../constants/AppConstants';
+import { DISPLAY_GROUPED, FIELD_CONDITIONAL } from '../../../constants/AppConstants';
 import InputConditional from '../InputConditional';
 
 /*
@@ -16,7 +16,7 @@ describe('Conditional input field generation', () => {
     className: 'govuk-radios',
     label: 'What is your favourite animal',
     fieldName: 'favAnimal',
-    grouped: true,
+    displayType: DISPLAY_GROUPED,
     radioOptions: [
       {
         radioField: true,
@@ -62,7 +62,7 @@ describe('Conditional input field generation', () => {
     hint: 'A hint on choosing a colour',
     label: 'What is your favourite colour',
     fieldName: 'favColour',
-    grouped: true,
+    displayType: DISPLAY_GROUPED,
     radioOptions: [
       {
         radioField: true,
@@ -91,7 +91,7 @@ describe('Conditional input field generation', () => {
     hint: 'A hint on choosing a colour',
     label: 'What is your favourite colour',
     fieldName: 'favColour',
-    grouped: true,
+    displayType: DISPLAY_GROUPED,
     radioOptions: [
       {
         radioField: true,
@@ -115,13 +115,13 @@ describe('Conditional input field generation', () => {
     ],
     value: 'red',
   };
-  
+
   it('should render the radio input fields with only the required props', () => {
     render(
       <InputConditional
         fieldDetails={fieldDetailsBasic}
         handleChange={parentHandleChange}
-      />
+      />,
     );
     expect(screen.getByRole('radio', { name: 'Cat' })).toBeInTheDocument();
     expect(screen.getByRole('radio', { name: 'Cat' }).outerHTML).toEqual('<input class="govuk-radios__input" id="favAnimal-input[0]" name="favAnimal" type="radio" value="cat">');
@@ -140,7 +140,7 @@ describe('Conditional input field generation', () => {
       <InputConditional
         fieldDetails={fieldDetailsAllProps}
         handleChange={parentHandleChange}
-      />
+      />,
     );
     expect(screen.getByRole('radio', { name: 'Red' })).toBeInTheDocument();
     expect(screen.getByRole('radio', { name: 'Red' }).outerHTML).toEqual('<input class="govuk-radios__input" id="favColour-input[0]" name="favColour" type="radio" value="red">');
@@ -154,20 +154,20 @@ describe('Conditional input field generation', () => {
       <InputConditional
         fieldDetails={fieldDetailsBasic}
         handleChange={parentHandleChange}
-      />
+      />,
     );
-    
+
     // The following are conditional fields, they will exist but should have a hidden class
     expect(screen.getByTestId('breedOfCat-container')).toBeInTheDocument();
     expect(screen.getByTestId('breedOfCat-container').outerHTML).toEqual('<div data-testid="breedOfCat-container" class="govuk-radios__conditional govuk-radios__conditional--hidden"><div class="govuk-form-group"><label class="govuk-label" for="breedOfCat-input">Breed of cat</label><div id="breedOfCat-hint" class="govuk-hint"></div><p id="breedOfCat-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> </p><input class="govuk-input govuk-!-width-one-third" id="breedOfCat-input" name="breedOfCat" type="text" value=""></div></div>');
     expect(screen.getByTestId('breedOfDog-container')).toBeInTheDocument();
     expect(screen.getByTestId('breedOfDog-container').outerHTML).toEqual('<div data-testid="breedOfDog-container" class="govuk-radios__conditional govuk-radios__conditional--hidden"><div class="govuk-form-group"><label class="govuk-label" for="breedOfDog-input">Breed of dog</label><div id="breedOfDog-hint" class="govuk-hint"></div><p id="breedOfDog-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> </p><input class="govuk-input govuk-!-width-one-third" id="breedOfDog-input" name="breedOfDog" type="text" value=""></div></div>');
-    
+
     // Click on the cat radio and now the Breed of cat should not have the hidden class aka it is visible
     await user.click(screen.getByRole('radio', { name: 'Cat' }));
     expect(screen.getByRole('radio', { name: 'Cat' })).toBeChecked();
     expect(screen.getByTestId('breedOfCat-container').outerHTML).toEqual('<div data-testid="breedOfCat-container" class="govuk-radios__conditional"><div class="govuk-form-group"><label class="govuk-label" for="breedOfCat-input">Breed of cat</label><div id="breedOfCat-hint" class="govuk-hint"></div><p id="breedOfCat-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> </p><input class="govuk-input govuk-!-width-one-third" id="breedOfCat-input" name="breedOfCat" type="text" value=""></div></div>');
-  
+
     // Click on the dog radio and now Breed of cat should be hidden and breed of dog should be visible
     await user.click(screen.getByRole('radio', { name: 'Dog' }));
     expect(screen.getByRole('radio', { name: 'Dog' })).toBeChecked();
@@ -181,9 +181,9 @@ describe('Conditional input field generation', () => {
       <InputConditional
         fieldDetails={fieldDetailsBasic}
         handleChange={parentHandleChange}
-      />
+      />,
     );
-    
+
     await user.click(screen.getByRole('radio', { name: 'Dog' }));
     await user.type(screen.getByRole('radio', { name: 'Dog' }), 'Labrador');
     await user.click(screen.getByRole('radio', { name: 'Rabbit' }));
@@ -197,7 +197,7 @@ describe('Conditional input field generation', () => {
       <InputConditional
         fieldDetails={fieldDetailsAllProps}
         handleChange={parentHandleChange}
-      />
+      />,
     );
     await user.click(screen.getByRole('radio', { name: 'Red' }));
     // using a text check to test the text is in the html as it should render, but inside a div with a hidden class
@@ -211,8 +211,8 @@ describe('Conditional input field generation', () => {
       <InputConditional
         fieldDetails={fieldDetailsWithValueSelected}
         handleChange={parentHandleChange}
-        type='radio'
-      />
+        type="radio"
+      />,
     );
     expect(screen.getByRole('radio', { name: 'Red' })).toBeChecked();
     expect(screen.getByRole('radio', { name: 'Other' })).not.toBeChecked();

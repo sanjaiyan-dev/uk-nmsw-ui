@@ -9,6 +9,11 @@ This app has an in built form creator with reusable components for if you wish t
 - [Form action options](#form-action-options)
 
 ## Field types
+Display types
+Every input can be displayed as a single field, set of grouped fields, or contained within a `<details>` component. By default, inputs are treated as single field unless otherwise specified.
+
+- [Display types](#display-types)
+
 Standard inputs
 - [Autocomplete](#autocomplete)
 - [Radio buttons](#radio-buttons)
@@ -30,6 +35,9 @@ Validating fields
 - [Minimum Length](#minimum-length)
 - [No Spaces](#no-spaces)
 - [Phone Number Format](#phone-number-format)
+
+## SinglePage Forms
+- [Single Page Form](#single-page-forms)
 
 ## MultiPage Forms
 - [Multi Page Form](#multi-page-forms)
@@ -145,6 +153,31 @@ The page you want to redirect the user to if they click cancel
 
 ----
 
+## Display Types
+
+Sometimes an input needs to be contained with the GDS `<details>` tags to allow users control over whether to interact with it or not.
+
+Some inputs must be grouped with a fieldset e.g. radio buttons and checkboxes, conditional fields
+
+To create one, when you define your input (see input options below) you need to include the params:
+- `displayType: <type>`
+- `linkText: <required/optional>`
+
+Parameters
+
+### displayType
+Import and use
+- `FIELD_DETAILS` for detail components
+- `FIELD_GROUPED` for grouped inputs
+- `FIELD_SINGLE` for everything else
+
+### linkText
+This is required for a `FIELD_DETAILS` type as this is the text that will show on the detail summary to be clicked on
+
+It should NOT be used for the other types as it is redundant for them.
+
+----
+
 ## Autocomplete
 
 Requirements
@@ -156,6 +189,7 @@ Object structure
 ```
 {
   type: FIELD_AUTOCOMPLETE,
+  displayType: DISPLAY_SINGLE,
   dataAPIEndpoint: <required>,
   fieldName: <required>,
   hint: <optional>
@@ -208,8 +242,8 @@ Object structure
 {
   type: FIELD_RADIO,
   className: <required>,
+  displayType: DISPLAY_GROUPED,
   fieldName: <required>,
-  grouped: true,
   hint: <optional>
   label: <required>,
   radioOptions: [
@@ -236,7 +270,7 @@ A string that will be used for `name` and to create `id` and other field referen
 
 ### grouped
 Always specify this as `true` as radio buttons are grouped inputs and use a different fieldset/label html structure.
-This is defined within `src/components/formFields/DetermineFieldType` and at some point we will refactor this so that `grouped: true` does not need to be specified within the field object
+This is defined within `src/components/formFields/DetermineFieldType` and at some point we will refactor this so that `displayType: DISPLAY_GROUPED,` does not need to be specified within the field object
 
 ### hint (optional)
 An optional string
@@ -271,8 +305,8 @@ Object structure
 {
   type: FIELD_CONDITIONAL,
   className: <required>,
+  displayType: DISPLAY_GROUPED,
   fieldName: <required>,
-  grouped: true,
   hint: <optional>,
   label: <required>,
   radioOptions: [
@@ -306,7 +340,7 @@ A string that will be used for `name` and to create `id` and other field referen
 
 ### grouped
 Always specify this as `true` as radio buttons are grouped inputs and use a different fieldset/label html structure.
-This is defined within `src/components/formFields/DetermineFieldType` and at some point we will refactor this so that `grouped: true` does not need to be specified within the field object
+This is defined within `src/components/formFields/DetermineFieldType` and at some point we will refactor this so that `displayType: DISPLAY_GROUPED,` does not need to be specified within the field object
 
 ### hint (optional)
 An optional string
@@ -341,6 +375,7 @@ Object structure
 ```
 {
   type: FIELD_TEXT,
+  displayType: DISPLAY_SINGLE,
   fieldName: <required>,
   hint: <optional>,
   label: <required>
@@ -374,6 +409,7 @@ Object structure
 ```
 {
   type: FIELD_EMAIL,
+  displayType: DISPLAY_SINGLE,
   fieldName: <required>,
   hint: <optional>,
   label: <required>
@@ -407,6 +443,7 @@ Object structure
 ```
 {
   type: FIELD_PASSWORD,
+  displayType: DISPLAY_SINGLE,
   fieldName: <required>,
   hint: <optional>,
   label: <required>
@@ -423,7 +460,7 @@ A string that will be used for `name` and to create `id` and other field referen
 
 ### grouped
 Always specify this as `true` as phone number fields are grouped inputs and use a different fieldset/label html structure.
-This is defined within `src/components/formFields/DetermineFieldType` and at some point we will refactor this so that `grouped: true` does not need to be specified within the field object
+This is defined within `src/components/formFields/DetermineFieldType` and at some point we will refactor this so that `displayType: DISPLAY_GROUPED,` does not need to be specified within the field object
 
 ### hint (optional)
 An optional string
@@ -444,6 +481,7 @@ Object structure
 ```
 {
   type: FIELD_PHONE,
+  displayType: DISPLAY_SINGLE,
   fieldName: <required>,
   hint: <optional>,
   label: <required>
@@ -592,6 +630,7 @@ e.g.
 ```
 {
   type: FIELD_TEXT,
+  displayType: DISPLAY_SINGLE,
   label: 'First name',
   fieldName: 'firstName',
   validation: [
@@ -612,7 +651,7 @@ e.g.
   label: 'What is your favourite animal',
   fieldName: 'favAnimal',
   className: 'govuk-radios',
-  grouped: true,
+  displayType: DISPLAY_GROUPED,
   radioOptions: [
     {
       radioField: true,
@@ -649,6 +688,26 @@ e.g.
     }
   ],
 }
+```
+
+----
+
+## Single Page Forms
+By default single page forms will clear sessionStorage of formData on submit.
+
+For special cases such as when you redirect a user to sign in due to a token expiry and want the user to be able to return to the original form without losing their session data, you can add a `keepSessionOnSubmit` variable to the middle form (in this case sign-in) to tell the form to keep the session data in certain cases.
+
+e.g.
+```javascript
+ <DisplayForm
+  pageHeading="Sign in"
+  formId='formSignIn'
+  fields={formFields}
+  formActions={formActions}
+  formType={SINGLE_PAGE_FORM}
+  keepSessionOnSubmit={state?.redirectURL ? true : false}
+  handleSubmit={handleSubmit}
+>
 ```
 
 ----

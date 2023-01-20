@@ -2,6 +2,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
+  DISPLAY_GROUPED,
   FIELD_CONDITIONAL,
   FIELD_RADIO,
   FIELD_TEXT,
@@ -27,7 +28,7 @@ jest.mock('react-router-dom', () => ({
 
 describe('Display Form', () => {
   const handleSubmit = jest.fn();
-  let scrollIntoViewMock = jest.fn();
+  const scrollIntoViewMock = jest.fn();
   window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
   const formActionsSubmitOnly = {
     submit: {
@@ -40,7 +41,7 @@ describe('Display Form', () => {
       label: 'What is your favourite animal',
       fieldName: 'favAnimal',
       className: 'govuk-radios',
-      grouped: true,
+      displayType: DISPLAY_GROUPED,
       radioOptions: [
         {
           radioField: true,
@@ -91,7 +92,7 @@ describe('Display Form', () => {
             parentValue: 'dog',
             fieldName: 'breedOfDog',
             ruleToTest: VALIDATE_REQUIRED,
-            message: 'Enter a breed of dog'
+            message: 'Enter a breed of dog',
           },
         },
         {
@@ -100,9 +101,9 @@ describe('Display Form', () => {
             parentValue: 'cat',
             fieldName: 'breedOfCat',
             ruleToTest: VALIDATE_REQUIRED,
-            message: 'Enter a breed of cat'
+            message: 'Enter a breed of cat',
           },
-        }
+        },
       ],
     },
   ];
@@ -118,7 +119,7 @@ describe('Display Form', () => {
           message: 'Enter your text input value',
         },
       ],
-    }
+    },
   ];
   const formRequiredRadioInput = [
     {
@@ -126,7 +127,7 @@ describe('Display Form', () => {
       label: 'This is a radio button set',
       fieldName: 'radioButtonSet',
       className: 'govuk-radios',
-      grouped: true,
+      displayType: DISPLAY_GROUPED,
       hint: 'radio hint',
       radioOptions: [
         {
@@ -134,21 +135,21 @@ describe('Display Form', () => {
           name: 'radioButtonSet',
           id: 'radioOne',
           value: 'radioOne',
-          checked: true
+          checked: true,
         },
         {
           label: 'Radio two',
           name: 'radioButtonSet',
           id: 'radioTwo',
           value: 'radioTwo',
-          checked: false
+          checked: false,
         },
         {
           label: 'Radio three',
           name: 'radioButtonSet',
           id: 'radioThree',
           value: 'radioThree',
-          checked: false
+          checked: false,
         },
       ],
       validation: [
@@ -159,7 +160,6 @@ describe('Display Form', () => {
       ],
     },
   ];
-  
 
   beforeEach(() => {
     window.sessionStorage.clear();
@@ -176,14 +176,15 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     await user.click(screen.getByRole('button', { name: 'Submit test button' }));
+    await screen.getByText('There is a problem');
 
     expect(screen.getByText('There is a problem').outerHTML).toEqual('<h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>');
     expect(screen.getAllByText('Enter your text input value')).toHaveLength(2);
     // Error summary has the error message as a button and correct class
-    expect(screen.getByRole('button', { name: 'Enter your text input value' }).outerHTML).toEqual('<button class="govuk-button--text">Enter your text input value</button>');
+    expect(screen.getByRole('button', { name: 'Enter your text input value' }).outerHTML).toEqual('<button class="govuk-button--text" type="button">Enter your text input value</button>');
     // Input field has the error class attached
     expect(screen.getByRole('textbox', { name: 'Text input' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testField-input" name="testField" type="text" aria-describedby="testField-hint" value="">');
   });
@@ -199,7 +200,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     await user.click(screen.getByRole('radio', { name: 'Cat' }));
@@ -208,7 +209,7 @@ describe('Display Form', () => {
     expect(screen.getByText('There is a problem').outerHTML).toEqual('<h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>');
     expect(screen.getAllByText('Enter a breed of cat')).toHaveLength(2);
     // // Error summary has the error message as a button and correct class
-    expect(screen.getByRole('button', { name: 'Enter a breed of cat' }).outerHTML).toEqual('<button class="govuk-button--text">Enter a breed of cat</button>');
+    expect(screen.getByRole('button', { name: 'Enter a breed of cat' }).outerHTML).toEqual('<button class="govuk-button--text" type="button">Enter a breed of cat</button>');
     // // Input field has the error class attached
     expect(screen.getByTestId('breedOfCat-container').outerHTML).toEqual('<div data-testid="breedOfCat-container" class="govuk-radios__conditional"><div class="govuk-form-group govuk-form-group--error"><label class="govuk-label" for="breedOfCat-input">Breed of cat</label><div id="breedOfCat-hint" class="govuk-hint"></div><p id="breedOfCat-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> Enter a breed of cat</p><input class="govuk-input govuk-!-width-one-third govuk-input--error" id="breedOfCat-input" name="breedOfCat" type="text" value=""></div></div>');
   });
@@ -224,7 +225,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     await user.click(screen.getByRole('button', { name: 'Submit test button' }));
     await user.click(screen.getByRole('button', { name: 'Enter your text input value' }));
@@ -243,7 +244,7 @@ describe('Display Form', () => {
           formType={SINGLE_PAGE_FORM}
           handleSubmit={handleSubmit}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     await user.click(screen.getByRole('button', { name: 'Submit test button' }));
     await user.click(screen.getByRole('button', { name: 'Select your radio option' }));

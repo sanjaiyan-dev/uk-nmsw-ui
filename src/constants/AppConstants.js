@@ -1,9 +1,14 @@
 // Site
 export const SERVICE_NAME = 'National Maritime Single Window';
 
+// Forms: display types
+export const DISPLAY_DETAILS = 'details';
+export const DISPLAY_GROUPED = 'grouped';
+export const DISPLAY_SINGLE = 'single';
 // Forms: identifiers
 export const EXPANDED_DETAILS = 'ExpandedDetails';
 export const MULTI_PAGE_FORM = 'multiPageForm';
+export const SIGN_IN_FORM = 'signInForm';
 export const SINGLE_PAGE_FORM = 'singlePageForm';
 // Forms: input types
 export const FIELD_AUTOCOMPLETE = 'autocomplete';

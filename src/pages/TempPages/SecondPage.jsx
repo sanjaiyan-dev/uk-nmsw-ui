@@ -1,7 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import {
+  DISPLAY_DETAILS,
+  DISPLAY_GROUPED,
+  DISPLAY_SINGLE,
   FIELD_AUTOCOMPLETE,
   FIELD_CONDITIONAL,
+  FIELD_EMAIL,
   FIELD_TEXT,
   FIELD_RADIO,
   CHECKED_FALSE,
@@ -9,7 +13,13 @@ import {
   VALIDATE_CONDITIONAL,
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
-import { DASHBOARD_PAGE_NAME, DASHBOARD_URL, FORM_CONFIRMATION_URL } from '../../constants/AppUrlConstants';
+import {
+  YOUR_VOYAGES_PAGE_NAME,
+  YOUR_VOYAGES_URL,
+  FORM_CONFIRMATION_URL,
+  SECOND_PAGE_URL,
+  SIGN_IN_URL,
+} from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
 import { countries } from './TempMockList-countries';
 import { portList } from './TempMockList-portList';
@@ -23,12 +33,40 @@ const SecondPage = () => {
     },
     cancel: {
       label: 'Cancel',
-      redirectURL: DASHBOARD_URL
-    }
+      redirectURL: YOUR_VOYAGES_URL,
+    },
   };
   const formFields = [
     {
+      type: FIELD_EMAIL,
+      displayType: DISPLAY_DETAILS,
+      label: 'Email',
+      linkText: 'Click on this link',
+      hint: 'Enter your resend email',
+      fieldName: 'emailAddress',
+      validation: [
+        {
+          type: VALIDATE_REQUIRED,
+          message: 'Enter your email address',
+        },
+      ],
+    },
+    {
       type: FIELD_TEXT,
+      label: 'First name missing display type test',
+      hint: 'Enter your first name',
+      fieldName: 'firstNameMissing',
+      value: 'Sample value',
+      validation: [
+        {
+          type: VALIDATE_REQUIRED,
+          message: 'Enter your first name',
+        },
+      ],
+    },
+    {
+      type: FIELD_TEXT,
+      displayType: DISPLAY_SINGLE,
       label: 'First name',
       hint: 'Enter your first name',
       fieldName: 'firstName',
@@ -44,35 +82,35 @@ const SecondPage = () => {
       label: 'What is your favourite colour',
       fieldName: 'favouriteColour',
       className: 'govuk-radios',
-      grouped: true,
+      displayType: DISPLAY_GROUPED,
       radioOptions: [
         {
           label: 'Red',
           name: 'favouriteColour',
           id: 'red',
           value: 'red',
-          checked: CHECKED_FALSE
+          checked: CHECKED_FALSE,
         },
         {
           label: 'Blue',
           name: 'favouriteColour',
           id: 'blue',
           value: 'blue',
-          checked: CHECKED_FALSE
+          checked: CHECKED_FALSE,
         },
         {
           label: 'Green',
           name: 'favouriteColour',
           id: 'green',
           value: 'green',
-          checked: CHECKED_FALSE
+          checked: CHECKED_FALSE,
         },
         {
           label: 'Other',
           name: 'favouriteColour',
           id: 'other',
           value: 'other',
-          checked: CHECKED_FALSE
+          checked: CHECKED_FALSE,
         },
       ],
       validation: [
@@ -87,7 +125,7 @@ const SecondPage = () => {
       label: 'What is your favourite animal',
       fieldName: 'favAnimal',
       className: 'govuk-radios',
-      grouped: true,
+      displayType: DISPLAY_GROUPED,
       radioOptions: [
         {
           radioField: true,
@@ -138,7 +176,7 @@ const SecondPage = () => {
             parentValue: 'dog',
             fieldName: 'breedOfDog',
             ruleToTest: VALIDATE_REQUIRED,
-            message: 'Enter a breed of dog'
+            message: 'Enter a breed of dog',
           },
         },
         {
@@ -147,9 +185,9 @@ const SecondPage = () => {
             parentValue: 'cat',
             fieldName: 'breedOfCat',
             ruleToTest: VALIDATE_REQUIRED,
-            message: 'Enter a breed of cat'
+            message: 'Enter a breed of cat',
           },
-        }
+        },
       ],
     },
     {
@@ -194,27 +232,36 @@ const SecondPage = () => {
       {
         state: {
           formName: 'Second page',
-          nextPageLink: DASHBOARD_URL,
-          nextPageName: DASHBOARD_PAGE_NAME,
-          referenceNumber: referenceNumber
-        }
-      }
+          nextPageLink: YOUR_VOYAGES_URL,
+          nextPageName: YOUR_VOYAGES_PAGE_NAME,
+          referenceNumber,
+        },
+      },
     );
   };
 
+  const forceSignIn = () => {
+    navigate(SIGN_IN_URL, { state: { redirectURL: SECOND_PAGE_URL } });
+  };
+
   return (
-    <div className="govuk-grid-row">
-      <div className="govuk-grid-column-three-quarters">
-        <DisplayForm
-          pageHeading="Second page"
-          formId='formSecondPage'
-          fields={formFields}
-          formActions={formActions}
-          formType={SINGLE_PAGE_FORM}
-          handleSubmit={handleSubmit}
-        />
-      </div >
-    </div>
+    <>
+      <h1>Second page</h1>
+      <p>Click this button to test going to sign in page with navigation state</p>
+      <button onClick={forceSignIn} type="button">Force sign in</button>
+      <hr />
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-three-quarters">
+          <DisplayForm
+            formId="formSecondPage"
+            fields={formFields}
+            formActions={formActions}
+            formType={SINGLE_PAGE_FORM}
+            handleSubmit={handleSubmit}
+          />
+        </div>
+      </div>
+    </>
   );
 };
 

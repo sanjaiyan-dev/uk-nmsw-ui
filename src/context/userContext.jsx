@@ -15,7 +15,7 @@ const UserProvider = ({ children }) => {
   // Here is where we will make the api call to get the token
 
   // Will take email and password as props
-  const signIn = () => {
+  const signIn = ({ formData }) => {
     // Make an api call to sign in with email and password
     // api returns 200 a name a group and a token
 
@@ -23,8 +23,9 @@ const UserProvider = ({ children }) => {
       token: '123',
       name: 'Bob',
       group: 'Disney Cruises',
+      email: formData.email,
     };
-    
+
     sessionStorage.setItem('isAuthenticated', JSON.stringify(response));
     setUser(() => (response));
 
@@ -39,6 +40,8 @@ const UserProvider = ({ children }) => {
   };
 
   return (
+    // TODO: disabling this linting for now as entire component is due to be rewritten for sign in
+    // eslint-disable-next-line react/jsx-no-constructed-context-values
     <UserContext.Provider value={{ user, signIn, signOut }}>
       {children}
     </UserContext.Provider>

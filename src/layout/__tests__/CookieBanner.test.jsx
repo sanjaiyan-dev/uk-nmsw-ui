@@ -4,13 +4,15 @@ import { MemoryRouter } from 'react-router-dom';
 
 import CookieBanner from '../CookieBanner';
 
-// For when more than just the cookiePreference cookie exists 
+// For when more than just the cookiePreference cookie exists
+// TODO: review this fuction
+// eslint-disable-next-line consistent-return
 const extractPreferenceCookie = (cookieName) => {
   const cookieArray = document.cookie.split(';');
 
   for (let i = 0; i < cookieArray.length; i++) {
-    let cookiePair = cookieArray[i].split('=');
-    if (cookieName == cookiePair[0].trim()) {
+    const cookiePair = cookieArray[i].split('=');
+    if (cookieName === cookiePair[0].trim()) {
       return cookieArray[i];
     }
   }
@@ -19,7 +21,6 @@ const extractPreferenceCookie = (cookieName) => {
 const setIsCookieBannerShown = jest.fn();
 
 describe('CookieBanner tests', () => {
-
   it('should render the CookieBanner with cookie text', async () => {
     render(<MemoryRouter><CookieBanner setIsCookieBannerShown={setIsCookieBannerShown} /></MemoryRouter>);
     expect(screen.getByText('Cookies on National Maritime Single Window')).toBeInTheDocument();
@@ -31,7 +32,7 @@ describe('CookieBanner tests', () => {
     render(<MemoryRouter><CookieBanner setIsCookieBannerShown={setIsCookieBannerShown} /></MemoryRouter>);
     const acceptButton = screen.getByRole('button', { name: 'Accept analytics cookies' });
     const rejectButton = screen.getByRole('button', { name: 'Reject analytics cookies' });
-    const viewCookieLink = screen.getByRole('link', { name: 'View cookies'});
+    const viewCookieLink = screen.getByRole('link', { name: 'View cookies' });
 
     expect(acceptButton).toBeInTheDocument();
     expect(rejectButton).toBeInTheDocument();
@@ -96,4 +97,3 @@ describe('CookieBanner tests', () => {
     expect(setIsCookieBannerShown).toHaveBeenCalled();
   });
 });
-

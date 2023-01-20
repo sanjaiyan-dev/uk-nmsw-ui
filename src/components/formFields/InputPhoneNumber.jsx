@@ -23,15 +23,16 @@ const InputPhoneNumber = ({ error, fieldDetails, handleChange }) => {
       target: {
         name: fieldDetails.fieldName,
         value: `(${countryPhoneCodeEntered})${phoneNumberEntered}`,
-      }
+      },
     };
 
     handleChange(formattedItemToAdd);
   };
 
+  // TODO: work out why the linter thinks this input doesn't have a label
   return (
     <div className="phoneNumber-input">
-      <label className="govuk-visually-hidden" htmlFor={`${fieldDetails.fieldName}-input[0]`}>Country phone code field</label> 
+      <label className="govuk-visually-hidden" htmlFor={`${fieldDetails.fieldName}-input[0]`}>Country phone code field</label>
       <input
         className={countryPhoneCodeClassToApply}
         id={`${fieldDetails.fieldName}-input[0]`}
@@ -43,7 +44,7 @@ const InputPhoneNumber = ({ error, fieldDetails, handleChange }) => {
         defaultValue={countryPhoneCode}
         aria-describedby={fieldDetails.hint ? `${fieldDetails.fieldName}-hint` : null}
       />
-      <label className="govuk-visually-hidden" htmlFor={`${fieldDetails.fieldName}-input[1]`}>Phone number field</label> 
+      <label className="govuk-visually-hidden" htmlFor={`${fieldDetails.fieldName}-input[1]`}>Phone number field</label>
       <input
         className={phoneNumberClassToApply}
         id={`${fieldDetails.fieldName}-input[1]`}

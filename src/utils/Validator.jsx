@@ -11,6 +11,7 @@ import {
 } from '../constants/AppConstants';
 
 const validateField = ({ type, value, condition }) => {
+  let response;
   /* rules should be in order of importance here
    * as once a rule is matched for a field, we will stop testing further
    * rules for that field
@@ -18,55 +19,58 @@ const validateField = ({ type, value, condition }) => {
   switch (type) {
     case VALIDATE_REQUIRED:
       if (!value || value.trim() === '') {
-        return 'error';
+        response = 'error';
       }
       break;
     case VALIDATE_MAX_LENGTH:
       if (value && value.length > condition) {
-        return 'error';
+        response = 'error';
       }
       break;
     case VALIDATE_MIN_LENGTH:
       if (value && value.length < condition) {
-        return 'error';
+        response = 'error';
       }
       break;
     case VALIDATE_NO_SPACES:
       if (value && !/^\S+$/.test(value)) { // tests for spaces and errors if any found
-        return 'error';
+        response = 'error';
       }
       break;
     case VALIDATE_EMAIL_ADDRESS:
       if (value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) {
-        return 'error';
+        response = 'error';
       }
       break;
     case VALIDATE_FIELD_MATCH_CASE_SENSITIVE:
       if (value && value !== condition.valueToMatch) {
-        return 'error';
+        response = 'error';
       }
       break;
     case VALIDATE_FIELD_MATCH:
       if (value && value?.toLowerCase() !== condition.valueToMatch.toLowerCase()) {
-        return 'error';
+        response = 'error';
       }
       break;
     case VALIDATE_PHONE_NUMBER:
       if (value && !/^\([0-9]+\)[0-9]+$/i.test(value)) {
-        return 'error';
+        response = 'error';
       }
       break;
-    default: return 'valid';
+    default: response = 'valid';
   }
+  return response;
 };
 
 const Validator = ({ formData, formFields }) => {
   const fieldsToValidate = Object.entries(formData).reduce((result, field) => { // result is our accumulator that starts as an empty array as defined at end of reduce
     const key = field[0];
-    let value = field[1];
-    const rules = formFields.find(field => field.fieldName === key) ? formFields.find(field => field.fieldName === key).validation : null; // find all the rules for this field, if any
+    const value = field[1];
+    const rules = formFields.find((formField) => formField.fieldName === key) ? formFields.find((formField) => formField.fieldName === key).validation : null; // find all rules for this field if any
 
     if (rules) {
+      // TODO: refactor this map so it returns (and we can turn linting rule back on for it)
+      // eslint-disable-next-line array-callback-return
       rules.map((rule) => {
         if (rule.type === VALIDATE_CONDITIONAL) {
           // check if the conditional field is visible (it's parent field is selected)
@@ -79,15 +83,15 @@ const Validator = ({ formData, formFields }) => {
           }
         } else if (rule.type === VALIDATE_FIELD_MATCH || rule.type === VALIDATE_FIELD_MATCH_CASE_SENSITIVE) {
           result.push({
-            key: key,
-            value: value,
+            key,
+            value,
             rule: {
               type: rule.type,
               message: rule.message,
               condition: {
                 valueToMatch: formData[rule.condition],
-              }
-            }
+              },
+            },
           });
         } else {
           result.push({ key, value, rule }); // for each rule for this field, push an entry to the result array
@@ -110,7 +114,7 @@ const Validator = ({ formData, formFields }) => {
   const uniqueFieldErrors = allErrors.reduce((result, error) => {
     // If there are multiple errors matched for a field, return only the first
     // error order is determined in the formFields object on the page that contains the form
-    const findFirstErrorForField = allErrors.find(field => field.name === error.name);
+    const findFirstErrorForField = allErrors.find((field) => field.name === error.name);
     if (findFirstErrorForField.message === error.message) {
       result.push(error);
     }

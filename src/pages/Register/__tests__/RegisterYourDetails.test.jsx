@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
-import { REGISTER_EMAIL_VERIFIED_URL } from '../../../constants/AppUrlConstants';
+import { ERROR_VERIFICATION_FAILED_URL } from '../../../constants/AppUrlConstants';
 import RegisterYourDetails from '../RegisterYourDetails';
 
 let mockUseLocationState = {};
@@ -9,14 +9,12 @@ const mockedUseNavigate = jest.fn();
 jest.mock('react-router', () => ({
   ...jest.requireActual('react-router'),
   useNavigate: () => mockedUseNavigate,
-  useLocation: jest.fn().mockImplementation(() => {
-    return mockUseLocationState;
-  })
+  useLocation: jest.fn().mockImplementation(() => mockUseLocationState),
 }));
 
 describe('Your details tests', () => {
   const handleSubmit = jest.fn();
-  let scrollIntoViewMock = jest.fn();
+  const scrollIntoViewMock = jest.fn();
   window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
 
   beforeEach(() => {
@@ -28,7 +26,7 @@ describe('Your details tests', () => {
     mockUseLocationState = {};
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(REGISTER_EMAIL_VERIFIED_URL);
+      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_VERIFICATION_FAILED_URL);
     });
   });
 
@@ -36,15 +34,31 @@ describe('Your details tests', () => {
     mockUseLocationState = { state: {} };
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(REGISTER_EMAIL_VERIFIED_URL);
+      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_VERIFICATION_FAILED_URL);
+    });
+  });
+
+  it('should redirect user to other page if there is an empty dataToSubmit object in state', async () => {
+    mockUseLocationState = { state: { dataToSubmit: {} } };
+    render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
+    await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_VERIFICATION_FAILED_URL);
     });
   });
 
   it('should redirect user to other page if there is no emailAddress in state', async () => {
-    mockUseLocationState = { state: { dataToSubmit: {} } };
+    mockUseLocationState = { state: { dataToSubmit: { toke: '123' } } };
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(REGISTER_EMAIL_VERIFIED_URL);
+      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_VERIFICATION_FAILED_URL);
+    });
+  });
+
+  it('should redirect user to other page if there is no token in state', async () => {
+    mockUseLocationState = { state: { dataToSubmit: { emailAddress: 'testemail@email.com' } } };
+    render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
+    await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_VERIFICATION_FAILED_URL);
     });
   });
 
@@ -56,13 +70,13 @@ describe('Your details tests', () => {
   it('should render a full name question', async () => {
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     expect(screen.getByLabelText('Full name')).toBeInTheDocument();
-    expect(screen.getByRole('textbox', {name: 'Full name'}).outerHTML).toEqual('<input class="govuk-input" id="fullName-input" name="fullName" type="text" value="">');
+    expect(screen.getByRole('textbox', { name: 'Full name' }).outerHTML).toEqual('<input class="govuk-input" id="fullName-input" name="fullName" type="text" value="">');
   });
 
   it('should render a company name question', async () => {
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     expect(screen.getByLabelText('Your company name')).toBeInTheDocument();
-    expect(screen.getByRole('textbox', {name: 'Your company name'}).outerHTML).toEqual('<input class="govuk-input" id="companyName-input" name="companyName" type="text" value="">');
+    expect(screen.getByRole('textbox', { name: 'Your company name' }).outerHTML).toEqual('<input class="govuk-input" id="companyName-input" name="companyName" type="text" value="">');
   });
 
   it('should render a phone number question', async () => {
@@ -77,7 +91,7 @@ describe('Your details tests', () => {
   it('should render a country question', async () => {
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     expect(screen.getByLabelText('Country')).toBeInTheDocument();
-    expect(screen.getByRole('textbox', {name: 'Country'}).outerHTML).toEqual('<input class="govuk-input" id="country-input" name="country" type="text" value="">');
+    expect(screen.getByRole('textbox', { name: 'Country' }).outerHTML).toEqual('<input class="govuk-input" id="country-input" name="country" type="text" value="">');
   });
 
   it('should render a shipping agent question', async () => {
@@ -85,12 +99,13 @@ describe('Your details tests', () => {
     expect(screen.getByText('Is your company a shipping agent?')).toBeInTheDocument();
     expect(screen.getByText('Yes')).toBeInTheDocument();
     expect(screen.getByText('No')).toBeInTheDocument();
-    expect(screen.getByRole('group', {name: 'Is your company a shipping agent?'}).outerHTML).toEqual('<fieldset class="govuk-fieldset"><legend class="govuk-fieldset__legend">Is your company a shipping agent?</legend><div id="shippingAgent-hint" class="govuk-hint"></div><p id="shippingAgent-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> </p><div class="govuk-radios govuk-radios--inline" data-module="govuk-radios"><div class="govuk-radios__item"><input class="govuk-radios__input" id="shippingAgent-input[0]" name="shippingAgent" type="radio" value="yes"><label class="govuk-label govuk-radios__label" for="shippingAgent-input[0]">Yes</label></div><div class="govuk-radios__item"><input class="govuk-radios__input" id="shippingAgent-input[1]" name="shippingAgent" type="radio" value="no"><label class="govuk-label govuk-radios__label" for="shippingAgent-input[1]">No</label></div></div></fieldset>');
+    // eslint-disable-next-line max-len
+    expect(screen.getByRole('group', { name: 'Is your company a shipping agent?' }).outerHTML).toEqual('<fieldset class="govuk-fieldset"><legend class="govuk-fieldset__legend">Is your company a shipping agent?</legend><div id="shippingAgent-hint" class="govuk-hint"></div><p id="shippingAgent-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> </p><div class="govuk-radios govuk-radios--inline" data-module="govuk-radios"><div class="govuk-radios__item"><input class="govuk-radios__input" id="shippingAgent-input[0]" name="shippingAgent" type="radio" value="yes"><label class="govuk-label govuk-radios__label" for="shippingAgent-input[0]">Yes</label></div><div class="govuk-radios__item"><input class="govuk-radios__input" id="shippingAgent-input[1]" name="shippingAgent" type="radio" value="no"><label class="govuk-label govuk-radios__label" for="shippingAgent-input[1]">No</label></div></div></fieldset>');
   });
 
   it('should render a continue button', async () => {
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
-    expect(screen.getByRole('button', {name: 'Continue'}).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Continue</button>');
+    expect(screen.getByRole('button', { name: 'Continue' }).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Continue</button>');
   });
 
   it('should NOT call the handleSubmit function on button click if there ARE errors', async () => {

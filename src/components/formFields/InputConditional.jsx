@@ -1,55 +1,53 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { FIELD_RADIO, FIELD_TEXT } from '../../constants/AppConstants';
-import { useEffect } from 'react';
 
-const RadioField = ({ checkedState, index, label, name, value, handleChange }) => {
-  return (
-    <div className="govuk-radios__item">
-      <input
-        className="govuk-radios__input"
-        defaultChecked={checkedState}
-        id={`${name}-input[${index}]`}
-        name={name}
-        type={FIELD_RADIO}
-        value={value}
-        onChange={handleChange}
-      />
-      <label className="govuk-label govuk-radios__label" htmlFor={`${name}-input[${index}]`}>
+const RadioField = ({
+  checkedState, index, label, name, value, handleChange,
+}) => (
+  <div className="govuk-radios__item">
+    <input
+      className="govuk-radios__input"
+      defaultChecked={checkedState}
+      id={`${name}-input[${index}]`}
+      name={name}
+      type={FIELD_RADIO}
+      value={value}
+      onChange={handleChange}
+    />
+    <label className="govuk-label govuk-radios__label" htmlFor={`${name}-input[${index}]`}>
+      {label}
+    </label>
+  </div>
+);
+
+const TextField = ({
+  errors, hint, isVisible, label, name, value, handleChange,
+}) => (
+  <div data-testid={`${name}-container`} className={isVisible ? 'govuk-radios__conditional' : 'govuk-radios__conditional govuk-radios__conditional--hidden'}>
+    <div className={errors?.name ? 'govuk-form-group govuk-form-group--error' : 'govuk-form-group'}>
+      <label className="govuk-label" htmlFor={`${name}-input`}>
         {label}
       </label>
-    </div>
-  );
-};
-
-const TextField = ({ errors, hint, isVisible, label, name, value, handleChange }) => {
-  return (
-    <div data-testid={`${name}-container`} className={isVisible ? 'govuk-radios__conditional' : 'govuk-radios__conditional govuk-radios__conditional--hidden'}>
-      <div className={errors?.name ? 'govuk-form-group govuk-form-group--error' : 'govuk-form-group'}>
-        <label className="govuk-label" htmlFor={`${name}-input`}>
-          {label}
-        </label>
-        <div id={`${name}-hint`} className="govuk-hint">
-          {hint}
-        </div>
-        <p id={`${name}-error`} className="govuk-error-message">
-          <span className="govuk-visually-hidden">Error:</span> {errors?.message ? errors.message : null}
-        </p>
-        <input
-          aria-describedby={hint ? `${name}-hint` : null}
-          className={errors?.name ? 'govuk-input govuk-!-width-one-third govuk-input--error' : 'govuk-input govuk-!-width-one-third'}
-          defaultValue={value}
-          id={`${name}-input`}
-          name={name}
-          type={FIELD_TEXT}
-          onChange={handleChange}
-          onPaste={handleChange}
-        />
+      <div id={`${name}-hint`} className="govuk-hint">
+        {hint}
       </div>
+      <p id={`${name}-error`} className="govuk-error-message">
+        <span className="govuk-visually-hidden">Error:</span> {errors?.message ? errors.message : null}
+      </p>
+      <input
+        aria-describedby={hint ? `${name}-hint` : null}
+        className={errors?.name ? 'govuk-input govuk-!-width-one-third govuk-input--error' : 'govuk-input govuk-!-width-one-third'}
+        defaultValue={value}
+        id={`${name}-input`}
+        name={name}
+        type={FIELD_TEXT}
+        onChange={handleChange}
+        onPaste={handleChange}
+      />
     </div>
-  );
-};
-
+  </div>
+);
 
 const InputConditional = ({ errors, fieldDetails, handleChange }) => {
   const [activeConditionalField, setActiveConditionalField] = useState(fieldDetails.conditionalValueToFill);
@@ -67,7 +65,7 @@ const InputConditional = ({ errors, fieldDetails, handleChange }) => {
           target: {
             name: activeConditionalField.name,
             value: null,
-          }
+          },
         };
       }
       // find it's conditional field (if any) and update it
@@ -85,7 +83,7 @@ const InputConditional = ({ errors, fieldDetails, handleChange }) => {
         target: {
           name: fieldDetails.conditionalValueToFill.name,
           value: fieldDetails.conditionalValueToFill.value,
-        }
+        },
       };
       handleChange(formatPrefilledItem);
     }
@@ -94,36 +92,40 @@ const InputConditional = ({ errors, fieldDetails, handleChange }) => {
   return (
     <div className={fieldDetails.className} data-module="govuk-radios">
       {(fieldDetails.radioOptions).map((option, index) => {
+        const id = `${option.name}-input[${index}]`;
         const checkedState = checkedItem === option.value ? true : option.checked;
-        const isVisible = checkedItem === option.parentFieldValue ? true : false;
-        const conditionalValuePrefill = isVisible ? conditionalDefaultValue : null;  
+        const isVisible = checkedItem === option.parentFieldValue;
+        const conditionalValuePrefill = isVisible ? conditionalDefaultValue : null;
         const conditionalError = isVisible
-        ? errors?.find(errorField => errorField.name === option.name)
-        : null;
+          ? errors?.find((errorField) => errorField.name === option.name)
+          : null;
 
         return (
-          <Fragment key={`${option.name}-input[${index}]`}>
+          <Fragment key={id}>
             {
-              option.radioField ?
-                <RadioField
-                  checkedState={checkedState}
-                  index={index}
-                  label={option.label}
-                  name={option.name}
-                  value={option.value}
-                  handleChange={wrapHandleChange}
-                />
-                :
-                <TextField
-                  errors={conditionalError}
-                  hint={option.hint}
-                  isVisible={isVisible}
-                  label={option.label}
-                  name={option.name}
-                  value={conditionalValuePrefill}
-                  handleChange={wrapHandleChange}
-                />
-            }
+              option.radioField
+                ? (
+                  <RadioField
+                    checkedState={checkedState}
+                    index={index}
+                    label={option.label}
+                    name={option.name}
+                    value={option.value}
+                    handleChange={wrapHandleChange}
+                  />
+                )
+                : (
+                  <TextField
+                    errors={conditionalError}
+                    hint={option.hint}
+                    isVisible={isVisible}
+                    label={option.label}
+                    name={option.name}
+                    value={conditionalValuePrefill}
+                    handleChange={wrapHandleChange}
+                  />
+                )
+              }
           </Fragment>
         );
       })}
@@ -163,7 +165,8 @@ InputConditional.propTypes = {
         name: PropTypes.string.isRequired,
         label: PropTypes.string.isRequired,
         value: PropTypes.string,
-      })).isRequired,
+      }),
+    ).isRequired,
     value: PropTypes.string,
   }).isRequired,
   handleChange: PropTypes.func.isRequired,

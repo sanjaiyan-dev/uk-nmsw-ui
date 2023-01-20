@@ -16,17 +16,14 @@ class EmailPage {
     return cy.get('#emailAddress-error');
   }
 
-  get confirmEmailErrorMsg() {
-    return cy.get('#repeatEmailAddress-error');
-  }
-
-  get emailHeading() {
+  get heading() {
     return cy.get('h1');
   }
 
   //reusable methods
-  checkEmailHeading() {
-    this.emailHeading.should('have.text', 'What is your email address');
+  verifyEmailPage() {
+    cy.url().should('include', 'create-account/email-address');
+    this.heading.should('have.text', 'What is your email address');
   }
 
   enterEmailAddress(email) {
@@ -39,13 +36,46 @@ class EmailPage {
     return this;
   }
 
+  clickResendConfirmationEmail() {
+    cy.contains('Resend confirmation email').click();
+  }
+
+//check your email page
+  verifyCheckYourEmailPage() {
+    cy.url().should('include', 'check-your-email');
+    this.heading.should('have.text', 'Check your email');
+  }
+
+  linkEmailNotReceived() {
+    cy.contains('Not received an email?');
+  }
+
   //verify email page
   enterVerifyEmail(email) {
-    this.emailHeading.should('have.text', 'Your email address has been verified​');
+    this.heading.should('have.text', 'Your email address has been verified');
     this.verifyEmail.clear().type(email);
   }
-  EmailVerifyErrorMessage() {
-    cy.contains('User is already registered');
+
+  emailVerifyMessage() {
+    cy.contains('You already have an account');
+  }
+
+//activate-account page
+  checkActivateAccountPage() {
+    this.heading.should('have.text', 'Your email address has been verified');
+  }
+
+  //link expired page
+  linkExpired() {
+    this.heading.should('have.text', 'Verification link has expired');
+  }
+
+  clickRequestButton() {
+    cy.contains('Request a new link').click();
+  }
+
+  clickChangeWhereEmailSent() {
+    cy.contains('Change where the email was sent').click();
   }
 
 }

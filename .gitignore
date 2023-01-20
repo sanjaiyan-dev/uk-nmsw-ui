@@ -3,6 +3,7 @@
 .env.test
 .vscode
  .idea/
+.DS_Store
 # Directories
 coverage/
 dist/
@@ -12,6 +13,7 @@ node_modules/
 .npm
 # Files
 *.log*
+cypress-env.sh
 cypress/screenshots
 cypress/videos
 cypress/report
