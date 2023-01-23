@@ -5,7 +5,9 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import SignIn from './SignIn';
 import { SIGN_IN, USER_NOT_VERIFIED, USER_SIGN_IN_DETAILS_INVALID } from '../../constants/AppAPIConstants';
-import { MESSAGE_URL, SIGN_IN_URL, YOUR_VOYAGES_URL } from '../../constants/AppUrlConstants';
+import {
+  MESSAGE_URL, REGISTER_EMAIL_RESEND_URL, SIGN_IN_URL, YOUR_VOYAGES_URL,
+} from '../../constants/AppUrlConstants';
 
 const mockUseLocationState = { state: {} };
 const mockedUseNavigate = jest.fn();
@@ -219,7 +221,7 @@ describe('Sign in tests', () => {
     expect(screen.getByText('Email and password combination is invalid')).toBeInTheDocument();
   });
 
-  it('should show an error is user is not verified', async () => {
+  it('should redirect to re-send verification email page if user is not verified', async () => {
     const user = userEvent.setup();
 
     mockAxios
@@ -233,7 +235,7 @@ describe('Sign in tests', () => {
     await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
     await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
     await user.click(screen.getByTestId('submit-button'));
-    expect(screen.getByText('Account is not registered')).toBeInTheDocument();
+    expect(mockedUseNavigate).toHaveBeenCalledWith(REGISTER_EMAIL_RESEND_URL, { state: { dataToSubmit: { emailAddress: 'testemail@email.com' } } });
   });
 
   it('should redirect to error page if 500 response received', async () => {
@@ -258,7 +260,7 @@ describe('Sign in tests', () => {
     mockAxios
       .onPost(SIGN_IN)
       .reply(401, {
-        message: USER_NOT_VERIFIED,
+        message: USER_SIGN_IN_DETAILS_INVALID,
       });
 
     render(<MemoryRouter><SignIn /></MemoryRouter>);
@@ -266,10 +268,10 @@ describe('Sign in tests', () => {
     await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
     await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
     await user.click(screen.getByTestId('submit-button'));
-    expect(screen.getByText('Account is not registered')).toBeInTheDocument();
+    expect(screen.getByText('Email and password combination is invalid')).toBeInTheDocument();
 
     await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
-    expect(screen.queryByText('Account is not registered')).not.toBeInTheDocument();
+    expect(screen.queryByText('Email and password combination is invalid')).not.toBeInTheDocument();
   });
 
   // it('should clear session storage if user is being redirected to sign in before completing their action AND the newly signed in user is NOT the same as the previously signed in one', async () => {
