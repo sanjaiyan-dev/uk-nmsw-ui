@@ -1,12 +1,12 @@
 import { MemoryRouter } from 'react-router-dom';
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import {
-  VOYAGE_CREW_UPLOAD_URL,
-  VOYAGE_GENERAL_DECLARATION_UPLOAD_URL,
-  VOYAGE_PASSENGERS_URL,
-  VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
-} from '../../../constants/AppUrlConstants';
+import { render, screen } from '@testing-library/react';
+// import userEvent from '@testing-library/user-event';
+// import {
+//   VOYAGE_CREW_UPLOAD_URL,
+//   VOYAGE_GENERAL_DECLARATION_UPLOAD_URL,
+//   VOYAGE_PASSENGERS_URL,
+//   VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
+// } from '../../../constants/AppUrlConstants';
 import VoyageCheckYourAnswers from '../VoyageCheckYourAnswers';
 
 const mockUseLocationState = { state: {} };

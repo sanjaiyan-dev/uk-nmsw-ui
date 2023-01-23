@@ -103,13 +103,13 @@ const VoyageCheckYourAnswers = () => {
                   {
                     Array.isArray(item.value)
                       ? item.value.map((subItem) => {
-                        console.log('label', subItem.label)
+                        console.log('label', subItem.label);
                         return (
                           <React.Fragment key={subItem.title}>
                             <span>{subItem.label}</span>
                             <p className="govuk-!-margin-bottom-2 govuk-!-margin-top-0">{subItem.item}</p>
                           </React.Fragment>
-                        )
+                        );
                       })
                       : item.value
                   }
