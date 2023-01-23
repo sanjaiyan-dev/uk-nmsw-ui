@@ -273,23 +273,4 @@ describe('Sign in tests', () => {
     await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
     expect(screen.queryByText('Email and password combination is invalid')).not.toBeInTheDocument();
   });
-
-  // it('should clear session storage if user is being redirected to sign in before completing their action AND the newly signed in user is NOT the same as the previously signed in one', async () => {
-  //   mockUseLocationState.state = {
-  //     redirectURL: '/thisurl',
-  //   };
-  //   const user = userEvent.setup();
-  //   /* mock some sessionData that may exist if a user had clicked 'submit' on a form page but their AuthToken had expired */
-  //   window.sessionStorage.setItem('formData', JSON.stringify({ testField: 'Hello Test Field', radioButtonSet: 'radioOne' }));
-  //   const userDetails = {
-  //     name: 'MockedUser', token: '123', group: 'testGroup', email: 'testemail@email.com',
-  //   };
-
-  //   renderWithUserContext(userDetails);
-  //   await user.type(screen.getByRole('textbox', { name: /email/i }), 'differentperson@email.com');
-  //   await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
-  //   await user.click(screen.getByTestId('submit-button'));
-  //   expect(mockedLogin).toHaveBeenCalled();
-  //   expect(window.sessionStorage.getItem('formData')).toStrictEqual(null);
-  // });
 });

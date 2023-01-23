@@ -73,9 +73,6 @@ const SignIn = () => {
   };
 
   const handleSubmit = async ({ formData }) => {
-    // if (user.email !== formData.email) {
-    //   sessionStorage.removeItem('formData');
-    // }
     try {
       const response = await axios.post(SIGN_IN, formData);
       if (response.data.token) { Auth.storeToken(response.data.token); }
