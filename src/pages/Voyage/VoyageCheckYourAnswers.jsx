@@ -1,7 +1,10 @@
+import { useLocation } from 'react-router-dom';
+
 const VoyageCheckYourAnswers = () => {
-  console.log('cya');
+  const { state } = useLocation();
+
   return (
-    <h1>CYA</h1>
+    <h1>{state?.voyageId}</h1>
   );
 };
 
