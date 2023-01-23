@@ -1,5 +1,6 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { VOYAGE_GENERAL_DECLARATION_UPLOAD_URL } from '../../constants/AppUrlConstants';
 
 const VoyageCheckYourAnswers = () => {
   const { state } = useLocation();
@@ -87,7 +88,9 @@ const VoyageCheckYourAnswers = () => {
               </dt>
               <dd className="govuk-summary-list__value" />
               <dd className="govuk-summary-list__actions">
-                Change<span className="govuk-visually-hidden"> change voyage details</span>
+                <Link to={VOYAGE_GENERAL_DECLARATION_UPLOAD_URL} aria-describedby="generalDeclaration" data-testid="changeGeneralDeclarationLink">
+                  Change<span className="govuk-visually-hidden"> change voyage details</span>
+                </Link>
               </dd>
             </div>
 
@@ -99,12 +102,15 @@ const VoyageCheckYourAnswers = () => {
                 <dd className="govuk-summary-list__value">
                   {
                     Array.isArray(item.value)
-                      ? item.value.map((subItem) => (
-                        <React.Fragment key={subItem.title}>
-                          <span>{subItem.label}</span>
-                          <p className="govuk-!-margin-bottom-2 govuk-!-margin-top-0">{subItem.item}</p>
-                        </React.Fragment>
-                      ))
+                      ? item.value.map((subItem) => {
+                        console.log('label', subItem.label)
+                        return (
+                          <React.Fragment key={subItem.title}>
+                            <span>{subItem.label}</span>
+                            <p className="govuk-!-margin-bottom-2 govuk-!-margin-top-0">{subItem.item}</p>
+                          </React.Fragment>
+                        )
+                      })
                       : item.value
                   }
                 </dd>
