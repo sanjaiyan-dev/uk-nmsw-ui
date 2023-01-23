@@ -39,6 +39,7 @@ jest.mock('react-router-dom', () => ({
 
 describe('Display Form', () => {
   const handleSubmit = jest.fn();
+  const removeApiErrors = jest.fn();
   const scrollIntoViewMock = jest.fn();
   window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
   const formActions = {
@@ -395,6 +396,8 @@ describe('Display Form', () => {
           formActions={formActionsSubmitOnly}
           formType={SIGN_IN_FORM}
           handleSubmit={handleSubmit}
+          removeApiErrors={removeApiErrors}
+
         />
       </MemoryRouter>,
     );

@@ -1,5 +1,4 @@
 import {
-  useContext,
   useEffect,
   useRef,
   useState,
@@ -13,15 +12,13 @@ import {
   SIGN_IN_FORM,
   SINGLE_PAGE_FORM,
 } from '../constants/AppConstants';
-import { UserContext } from '../context/userContext';
 import determineFieldType from './formFields/DetermineFieldType';
 import { scrollToTop } from '../utils/ScrollToElement';
 import Validator from '../utils/Validator';
 
 const DisplayForm = ({
-  fields, formId, formActions, formType, pageHeading, handleSubmit, children,
+  fields, formId, formActions, formType, pageHeading, handleSubmit, children, removeApiErrors,
 }) => {
-  const { user } = useContext(UserContext);
   const fieldsRef = useRef(null);
   const navigate = useNavigate();
   const [errors, setErrors] = useState();
@@ -38,6 +35,10 @@ const DisplayForm = ({
       const itemToCheck = itemToClear ? itemToClear.target.name : e.target.name;
       const filteredErrors = errors?.filter((errorField) => errorField.name !== itemToCheck);
       setErrors(filteredErrors);
+    }
+
+    if (formType === SIGN_IN_FORM) {
+      removeApiErrors();
     }
 
     // create the dataset to store, accounting for objects coming from autocomplete
@@ -165,7 +166,7 @@ const DisplayForm = ({
     });
     const objectOfMappedFields = Object.assign({}, ...mappedFormData.map((field) => ({ [field.fieldName]: field.value })));
     setFormData(objectOfMappedFields);
-  }, [user, setFieldsWithValues, setFormData]);
+  }, [setFieldsWithValues, setFormData]);
 
   if (!formActions || !fieldsWithValues) { return null; }
   return (
@@ -292,4 +293,5 @@ DisplayForm.propTypes = {
   formType: PropTypes.string.isRequired,
   pageHeading: PropTypes.string,
   handleSubmit: PropTypes.func.isRequired,
+  removeApiErrors: PropTypes.func,
 };
