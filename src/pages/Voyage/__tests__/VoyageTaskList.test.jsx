@@ -97,8 +97,8 @@ describe('Voyage task list page', () => {
     await user.click(screen.getByText('Check answers and submit'));
     await waitFor(() => {
       expect(mockedUseNavigate).toHaveBeenCalledWith(VOYAGE_CHECK_YOUR_ANSWERS, {
-        preventScrollReset: undefined, relative: undefined, replace: false, state: undefined,
-      }); // params on Link generated links by default
+        preventScrollReset: undefined, relative: undefined, replace: false, state: { voyageId: '123' },
+      });
     });
   });
 });
