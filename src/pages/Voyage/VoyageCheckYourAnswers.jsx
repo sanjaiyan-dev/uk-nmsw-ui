@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { VOYAGE_GENERAL_DECLARATION_UPLOAD_URL } from '../../constants/AppUrlConstants';
+import {
+  VOYAGE_CREW_UPLOAD_URL, VOYAGE_GENERAL_DECLARATION_UPLOAD_URL, VOYAGE_PASSENGERS_URL, VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
+} from '../../constants/AppUrlConstants';
 
 const VoyageCheckYourAnswers = () => {
   const { state } = useLocation();
@@ -77,6 +79,29 @@ const VoyageCheckYourAnswers = () => {
       value: '',
     },
   ];
+  const uploadedDocuments = [
+    {
+      id: 'crewDetails',
+      title: 'Crew details',
+      value: '',
+      fileLink: '',
+      changeLink: VOYAGE_CREW_UPLOAD_URL,
+    },
+    {
+      id: 'passengerDetails',
+      title: 'Passenger details',
+      value: '',
+      fileLink: '',
+      changeLink: VOYAGE_PASSENGERS_URL,
+    },
+    {
+      id: 'supportingDocuments',
+      title: 'Supporting documents',
+      value: '',
+      fileLink: '',
+      changeLink: VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
+    },
+  ];
 
   return (
     <>
@@ -87,19 +112,18 @@ const VoyageCheckYourAnswers = () => {
       </div>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
-          <dl className="govuk-summary-list">
+          <dl className="govuk-summary-list govuk-!-margin-bottom-9">
             <div className="govuk-summary-list__row">
               <dt className="govuk-summary-list__key">
-                <h2 className="govuk-heading-m">Voyage details</h2>
+                <h2 id="voyageDetails" className="govuk-heading-m">Voyage details</h2>
               </dt>
               <dd className="govuk-summary-list__value" />
               <dd className="govuk-summary-list__actions">
-                <Link to={VOYAGE_GENERAL_DECLARATION_UPLOAD_URL} aria-describedby="generalDeclaration" data-testid="changeGeneralDeclarationLink">
+                <Link to={VOYAGE_GENERAL_DECLARATION_UPLOAD_URL} aria-describedby="voyageDetails" data-testid="changeGeneralDeclarationLink">
                   Change<span className="govuk-visually-hidden"> change voyage details</span>
                 </Link>
               </dd>
             </div>
-
             {voyageDetails.map((item) => (
               <div key={item.title} className="govuk-summary-list__row">
                 <dt className="govuk-summary-list__key">
@@ -118,6 +142,25 @@ const VoyageCheckYourAnswers = () => {
                   }
                 </dd>
                 <dd className="govuk-summary-list__actions" />
+              </div>
+            ))}
+          </dl>
+
+          <h2 className="govuk-heading-m">Uploaded documents</h2>
+          <dl className="govuk-summary-list govuk-!-margin-bottom-9">
+            {uploadedDocuments.map((item) => (
+              <div key={item.id} className="govuk-summary-list__row">
+                <dt id={item.id} className="govuk-summary-list__key">
+                  {item.title}
+                </dt>
+                <dd className="govuk-summary-list__value">
+                  {item.value}
+                </dd>
+                <dd className="govuk-summary-list__actions">
+                  <Link to={item.changeLink} aria-describedby={item.id} data-testid={`change${item.id}`}>
+                    Change<span className="govuk-visually-hidden">{` change ${item.title}`}</span>
+                  </Link>
+                </dd>
               </div>
             ))}
 
