@@ -209,7 +209,7 @@ const DisplayForm = ({
       </div>
 
       <div className="govuk-grid-row">
-        <form id={formId} className="govuk-grid-column-one-half" autoComplete="off">
+        <form id={formId} className="govuk-grid-column-full" autoComplete="off">
           {
             fieldsWithValues.map((field) => {
               const error = errors?.find((errorField) => errorField.name === field.fieldName);
