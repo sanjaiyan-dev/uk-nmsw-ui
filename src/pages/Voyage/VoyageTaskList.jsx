@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import {
   VOYAGE_CHECK_YOUR_ANSWERS,
   VOYAGE_CREW_UPLOAD_URL,
+  VOYAGE_DELETE_DRAFT_CHECK_URL,
   VOYAGE_GENERAL_DECLARATION_UPLOAD_URL,
   VOYAGE_PASSENGERS_URL,
   VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
@@ -31,14 +32,6 @@ const VoyageTaskList = () => {
   const classOptional = 'govuk-tag govuk-tag--blue app-task-list__tag';
   const classNotStarted = 'govuk-tag govuk-tag--grey app-task-list__tag';
   const classCannotStartYet = 'govuk-tag govuk-tag--grey app-task-list__tag';
-
-  const handleDelete = () => {
-    /* TODO: this will direct to an are you sure you want to delete page
-     * which will then return to your voyages
-     * with a confirmation banner
-     */
-    navigate('/');
-  };
 
   return (
     <>
@@ -107,7 +100,7 @@ const VoyageTaskList = () => {
             type="button"
             className="govuk-button govuk-button--warning"
             data-module="govuk-button"
-            onClick={() => handleDelete()}
+            onClick={() => navigate(VOYAGE_DELETE_DRAFT_CHECK_URL, { state: { shipName } })}
           >
             Delete draft
           </button>

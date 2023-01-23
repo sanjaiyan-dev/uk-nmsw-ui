@@ -28,6 +28,7 @@ import {
   TEMPLATE_PAGE_URL,
   VOYAGE_CREW_UPLOAD_URL,
   VOYAGE_CREW_CONFIRMATION_URL,
+  VOYAGE_DELETE_DRAFT_CHECK_URL,
   VOYAGE_GENERAL_DECLARATION_UPLOAD_URL,
   VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL,
   VOYAGE_PASSENGERS_URL,
@@ -61,6 +62,7 @@ import PrivacyNotice from './pages/Regulatory/PrivacyNotice';
 // Voyage pages
 import FileUploadConfirmation from './pages/Voyage/FileUploadConfirmation';
 import VoyageCrew from './pages/Voyage/VoyageCrew';
+import VoyageDeleteDraftCheck from './pages/Voyage/VoyageDeleteDraftCheck';
 import VoyageGeneralDeclaration from './pages/Voyage/VoyageGeneralDeclaration';
 import VoyagePassengers from './pages/Voyage/VoyagePassengers';
 import VoyagePassengerUpload from './pages/Voyage/VoyagePassengerUpload';
@@ -106,6 +108,7 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
           <Route path={YOUR_VOYAGES_URL} element={<YourVoyages />} />
           <Route path={VOYAGE_CREW_UPLOAD_URL} element={<VoyageCrew />} />
           <Route path={VOYAGE_CREW_CONFIRMATION_URL} element={<FileUploadConfirmation />} />
+          <Route path={VOYAGE_DELETE_DRAFT_CHECK_URL} element={<VoyageDeleteDraftCheck />} />
           <Route path={VOYAGE_GENERAL_DECLARATION_UPLOAD_URL} element={<VoyageGeneralDeclaration />} />
           <Route path={VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL} element={<FileUploadConfirmation />} />
           <Route path={VOYAGE_PASSENGERS_URL} element={<VoyagePassengers />} />
