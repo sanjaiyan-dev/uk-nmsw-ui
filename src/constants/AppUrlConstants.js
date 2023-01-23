@@ -23,6 +23,7 @@ export const PRIVACY_URL = '/privacy-notice';
 
 // Voyage pages
 export const ERROR_CREW_DETAILS_UPLOAD_URL = '/create-voyage/check-crew-details';
+export const VOYAGE_CHECK_YOUR_ANSWERS = '/your-voyages'; // TODO: replace this
 export const VOYAGE_CREW_UPLOAD_URL = '/report-voyage/upload-crew-details';
 export const VOYAGE_CREW_CONFIRMATION_URL = '/report-voyage/crew-details-uploaded';
 export const VOYAGE_GENERAL_DECLARATION_UPLOAD_URL = '/report-voyage/upload-general-declaration';

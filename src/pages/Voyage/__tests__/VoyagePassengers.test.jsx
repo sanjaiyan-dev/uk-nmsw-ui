@@ -12,7 +12,7 @@ jest.mock('react-router', () => ({
   useLocation: jest.fn().mockImplementation(() => mockUseLocationState),
 }));
 
-describe('File upload success confirmation page', () => {
+describe('Voyage passengers page', () => {
   beforeEach(() => {
     window.sessionStorage.clear();
     mockUseLocationState.state = {};
