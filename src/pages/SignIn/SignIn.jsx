@@ -13,6 +13,7 @@ import {
   REGISTER_ACCOUNT_URL,
   SIGN_IN_URL,
   YOUR_VOYAGES_URL,
+  REGISTER_EMAIL_RESEND_URL,
 } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
 import { SIGN_IN, USER_NOT_VERIFIED, USER_SIGN_IN_DETAILS_INVALID } from '../../constants/AppAPIConstants';
@@ -87,7 +88,7 @@ const SignIn = () => {
       if (err?.response?.data?.message === USER_SIGN_IN_DETAILS_INVALID) {
         setErrors('Email and password combination is invalid');
       } else if (err?.response?.data?.message === USER_NOT_VERIFIED) {
-        setErrors('Account is not registered');
+        navigate(REGISTER_EMAIL_RESEND_URL, { state: { dataToSubmit: { emailAddress: formData?.email } } });
       } else {
         navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: SIGN_IN_URL } });
       }
