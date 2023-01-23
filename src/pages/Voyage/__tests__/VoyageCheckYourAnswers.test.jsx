@@ -29,8 +29,8 @@ describe('Voyage task list page', () => {
     expect(screen.getByRole('heading', { name: 'Check your answers' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Voyage details' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Uploaded documents' })).toBeInTheDocument();
-    // expect(screen.getByRole('heading', { name: 'Now send your application' })).toBeInTheDocument();
-    // expect(screen.getByText('By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Now send your application' })).toBeInTheDocument();
+    expect(screen.getByText('By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.')).toBeInTheDocument();
     // expect(screen.getByRole('button', { name: 'Save and submit' }).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button">Save and submit</button>');
   });
 

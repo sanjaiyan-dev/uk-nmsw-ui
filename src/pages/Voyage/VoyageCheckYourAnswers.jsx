@@ -163,8 +163,10 @@ const VoyageCheckYourAnswers = () => {
                 </dd>
               </div>
             ))}
-
           </dl>
+
+          <h2 className="govuk-heading-m">Now send your application</h2>
+          <p className="govuk-body">By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.</p>
         </div>
       </div>
     </>
