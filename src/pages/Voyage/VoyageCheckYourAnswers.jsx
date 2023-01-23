@@ -32,14 +32,17 @@ const VoyageCheckYourAnswers = () => {
       title: 'Departure details',
       value: [
         {
+          id: 1, // adding ID to ensure we have a unique key for mapping between here and arrival details
           label: 'Name of departure port',
           item: '',
         },
         {
+          id: 2,
           label: 'Date of departure',
           item: '',
         },
         {
+          id: 3,
           label: 'Time of departure',
           item: '',
         },
@@ -49,14 +52,17 @@ const VoyageCheckYourAnswers = () => {
       title: 'Arrival details',
       value: [
         {
+          id: 4,
           label: 'Name of arrival port',
           item: '',
         },
         {
+          id: 5,
           label: 'Date of arrival',
           item: '',
         },
         {
+          id: 6,
           label: 'Time of arrival',
           item: '',
         },
@@ -102,15 +108,12 @@ const VoyageCheckYourAnswers = () => {
                 <dd className="govuk-summary-list__value">
                   {
                     Array.isArray(item.value)
-                      ? item.value.map((subItem) => {
-                        console.log('label', subItem.label);
-                        return (
-                          <React.Fragment key={subItem.title}>
-                            <span>{subItem.label}</span>
-                            <p className="govuk-!-margin-bottom-2 govuk-!-margin-top-0">{subItem.item}</p>
-                          </React.Fragment>
-                        );
-                      })
+                      ? item.value.map((subItem) => (
+                        <React.Fragment key={subItem.id}>
+                          <span>{subItem.label}</span>
+                          <p className="govuk-!-margin-bottom-2 govuk-!-margin-top-0">{subItem.item}</p>
+                        </React.Fragment>
+                      ))
                       : item.value
                   }
                 </dd>
