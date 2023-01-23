@@ -31,13 +31,12 @@ describe('Voyage task list page', () => {
     expect(screen.getByRole('heading', { name: 'Uploaded documents' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Now send your application' })).toBeInTheDocument();
     expect(screen.getByText('By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.')).toBeInTheDocument();
-    // expect(screen.getByRole('button', { name: 'Save and submit' }).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button">Save and submit</button>');
   });
 
-  // it('should render the submit button on the page', () => {
-  //   render(<MemoryRouter><VoyageCheckYourAnswers /></MemoryRouter>);
-  //   expect(screen.getByRole('button', { name: 'Save and submit' }).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button">Save and submit</button>');
-  // });
+  it('should render the submit button on the page', () => {
+    render(<MemoryRouter><VoyageCheckYourAnswers /></MemoryRouter>);
+    expect(screen.getByRole('button', { name: 'Save and submit' }).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button">Save and submit</button>');
+  });
 
   it('should render the list titles on the page', () => {
     render(<MemoryRouter><VoyageCheckYourAnswers /></MemoryRouter>);

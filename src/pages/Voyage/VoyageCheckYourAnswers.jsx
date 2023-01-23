@@ -1,12 +1,14 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
-  VOYAGE_CREW_UPLOAD_URL, VOYAGE_GENERAL_DECLARATION_UPLOAD_URL, VOYAGE_PASSENGERS_URL, VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
+  VOYAGE_CREW_UPLOAD_URL,
+  VOYAGE_GENERAL_DECLARATION_UPLOAD_URL,
+  VOYAGE_PASSENGERS_URL,
+  VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
 } from '../../constants/AppUrlConstants';
 
 const VoyageCheckYourAnswers = () => {
   const { state } = useLocation();
-  console.log(state?.voyageId);
 
   // values of this array will be populated by GET request when available
   const voyageDetails = [
@@ -103,6 +105,10 @@ const VoyageCheckYourAnswers = () => {
     },
   ];
 
+  const handleSubmit = () => {
+    console.log('submit clicked for id', state?.voyageId);
+  };
+
   return (
     <>
       <div className="govuk-grid-row">
@@ -167,6 +173,15 @@ const VoyageCheckYourAnswers = () => {
 
           <h2 className="govuk-heading-m">Now send your application</h2>
           <p className="govuk-body">By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.</p>
+
+          <button
+            type="button"
+            className="govuk-button"
+            data-module="govuk-button"
+            onClick={() => handleSubmit()}
+          >
+            Save and submit
+          </button>
         </div>
       </div>
     </>
