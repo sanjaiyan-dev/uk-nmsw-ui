@@ -24,29 +24,29 @@ Feature: User Registration
 
 
   @registration
-#  Scenario: User able to verify email and complete registration when account is not active
-#    When I click create an account on the landing page
-#    Then the registration page is displayed
-#    And I provide my email address
-#    Then I am taken to check your email page
-#    When I click on not received an email
-#    Then I am on request-new-verification-link
-#    When I click `send confirmation email` button
-#    Then I am taken to check your email page
-#    When I navigate back to landing page
-#    When I create an account with same email previously registered
-#    And I verify the email address
-#    Then the email address verified page is loaded with a continue button
-#    Then I am redirected to provide my other details
-#    When I provide all my details
-#    Then I am redirected to password page
-#    When I provide my new password
-#    Then my account is created and taken to confirmation page
-#    When I am on request-new-verification-link
-#    When I click on 'change email details link'
-#    When I enter the email address
-#    And I click `send confirmation email` button
-#    Then I am shown - You already have an account
+  Scenario: User able to verify email and complete registration when account is not active
+    When I click create an account on the landing page
+    Then the registration page is displayed
+    And I provide my email address
+    Then I am taken to check your email page
+    When I click on not received an email
+    Then the user is redirected to request-new-verification-link
+    And I click `send confirmation email` button
+    Then I am taken to check your email page
+    When I navigate back to landing page
+    When I create an account with same email previously registered
+    And I verify the email address
+    Then the email address verified page is loaded with a continue button
+    Then I am redirected to provide my other details
+    When I provide all my details
+    Then I am redirected to password page
+    When I provide my new password
+    Then my account is created and taken to confirmation page
+    When I am on request-new-verification-link
+    When I click on 'change email details link'
+    When I enter the email address
+    And I click `send confirmation email` button
+    Then I am shown - You already have an account
 
 
   @registration
