@@ -246,6 +246,7 @@ Object structure
   fieldName: <required>,
   hint: <optional>
   label: <required>,
+  labelAsH1: <optional: true / false>,
   radioOptions: [
     {
       label: <required>,
@@ -277,6 +278,9 @@ An optional string
 
 ### label
 A string that will be shown as the question/label text for the field
+
+### labelAsH1
+When the label is also the h1, set this to true. This ensure the h1 tag and styling is applied
 
 ### radioOptions
 - label: A string that will be shown as the associated label text for the field

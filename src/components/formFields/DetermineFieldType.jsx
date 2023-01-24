@@ -38,17 +38,54 @@ const DetailsInput = ({
   }, [error]);
 
   return (
-    <div className={error ? 'govuk-form-group govuk-form-group--error' : 'govuk-form-group'}>
-      <details className="govuk-details" data-module="govuk-details" data-testid="details-component" open={isOpen}>
-        <summary className="govuk-details__summary">
-          <span className="govuk-details__summary-text">
-            {linkText}
-          </span>
-        </summary>
-        <div className="govuk-details__text">
-          <label className="govuk-label" htmlFor={`${fieldName}-input`}>
-            {label}
-          </label>
+    <div className="govuk-grid-row">
+      <div className="govuk-grid-column-one-half">
+        <div className={error ? 'govuk-form-group govuk-form-group--error' : 'govuk-form-group'}>
+          <details className="govuk-details" data-module="govuk-details" data-testid="details-component" open={isOpen}>
+            <summary className="govuk-details__summary">
+              <span className="govuk-details__summary-text">
+                {linkText}
+              </span>
+            </summary>
+            <div className="govuk-details__text">
+              <label className="govuk-label" htmlFor={`${fieldName}-input`}>
+                {label}
+              </label>
+              <div id={`${fieldName}-hint`} className="govuk-hint">
+                {hint}
+              </div>
+              <p id={`${fieldName}-error`} className="govuk-error-message">
+                <span className="govuk-visually-hidden">Error:</span> {error}
+              </p>
+              {fieldToReturn}
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const GroupedInputs = ({
+  error, fieldName, fieldToReturn, hint, label, legendAsH1,
+}) => (
+  <div className="govuk-grid-row">
+    <div className="govuk-grid-column-full">
+      <div className={error ? 'govuk-form-group govuk-form-group--error' : 'govuk-form-group'}>
+        <fieldset className="govuk-fieldset">
+          {legendAsH1
+            ? (
+              <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
+                <h1 className="govuk-fieldset__heading">
+                  {label}
+                </h1>
+              </legend>
+            )
+            : (
+              <legend className="govuk-fieldset__legend">
+                {label}
+              </legend>
+            )}
           <div id={`${fieldName}-hint`} className="govuk-hint">
             {hint}
           </div>
@@ -56,45 +93,30 @@ const DetailsInput = ({
             <span className="govuk-visually-hidden">Error:</span> {error}
           </p>
           {fieldToReturn}
-        </div>
-      </details>
-    </div>
-  );
-};
-
-const GroupedInputs = ({
-  error, fieldName, fieldToReturn, hint, label,
-}) => (
-  <div className={error ? 'govuk-form-group govuk-form-group--error' : 'govuk-form-group'}>
-    <fieldset className="govuk-fieldset">
-      <legend className="govuk-fieldset__legend">
-        {label}
-      </legend>
-      <div id={`${fieldName}-hint`} className="govuk-hint">
-        {hint}
+        </fieldset>
       </div>
-      <p id={`${fieldName}-error`} className="govuk-error-message">
-        <span className="govuk-visually-hidden">Error:</span> {error}
-      </p>
-      {fieldToReturn}
-    </fieldset>
+    </div>
   </div>
 );
 
 const SingleInput = ({
   error, fieldName, fieldToReturn, hint, label,
 }) => (
-  <div className={error ? 'govuk-form-group govuk-form-group--error' : 'govuk-form-group'}>
-    <label className="govuk-label" htmlFor={`${fieldName}-input`}>
-      {label}
-    </label>
-    <div id={`${fieldName}-hint`} className="govuk-hint">
-      {hint}
+  <div className="govuk-grid-row">
+    <div className="govuk-grid-column-one-half">
+      <div className={error ? 'govuk-form-group govuk-form-group--error' : 'govuk-form-group'}>
+        <label className="govuk-label" htmlFor={`${fieldName}-input`}>
+          {label}
+        </label>
+        <div id={`${fieldName}-hint`} className="govuk-hint">
+          {hint}
+        </div>
+        <p id={`${fieldName}-error`} className="govuk-error-message">
+          <span className="govuk-visually-hidden">Error:</span> {error}
+        </p>
+        {fieldToReturn}
+      </div>
     </div>
-    <p id={`${fieldName}-error`} className="govuk-error-message">
-      <span className="govuk-visually-hidden">Error:</span> {error}
-    </p>
-    {fieldToReturn}
   </div>
 );
 
@@ -200,6 +222,7 @@ const determineFieldType = ({
             fieldToReturn={fieldToReturn}
             hint={fieldDetails.hint}
             label={fieldDetails.label}
+            legendAsH1={fieldDetails.labelAsH1}
           />
         )}
       {displayType === DISPLAY_SINGLE
@@ -249,6 +272,7 @@ GroupedInputs.propTypes = {
   fieldToReturn: PropTypes.object.isRequired,
   hint: PropTypes.string,
   label: PropTypes.string.isRequired,
+  legendAsH1: PropTypes.bool,
 };
 
 SingleInput.propTypes = {

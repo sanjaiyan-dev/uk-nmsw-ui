@@ -1,7 +1,10 @@
+import { useLocation } from 'react-router-dom';
 import { SERVICE_NAME } from '../../constants/AppConstants';
 
 const YourVoyages = () => {
+  const { state } = useLocation();
   document.title = SERVICE_NAME;
+  console.log(state?.confirmationBanner);
   return (
     <>
       <h1 className="govuk-heading-xl govuk-!-margin-bottom-4">Your voyages</h1>
