@@ -1,6 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL } from '../../../constants/AppUrlConstants';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
+import { TOKEN_INVALID } from '../../../constants/AppAPIConstants';
+import { SIGN_IN_URL, VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL, VOYAGE_GENERAL_DECLARATION_UPLOAD_URL } from '../../../constants/AppUrlConstants';
 import VoyageGeneralDeclaration from '../VoyageGeneralDeclaration';
 
 const mockUseLocationState = { state: {} };
@@ -13,7 +16,10 @@ jest.mock('react-router', () => ({
 }));
 
 describe('Voyage general declaration page', () => {
+  const mockAxios = new MockAdapter(axios);
+
   beforeEach(() => {
+    mockAxios.reset();
     window.sessionStorage.clear();
     mockUseLocationState.state = {};
   });
@@ -27,12 +33,33 @@ describe('Voyage general declaration page', () => {
     expect(screen.getByRole('button', { name: 'Save and continue' }).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button">Save and continue</button>');
   });
 
+  // TODO: Update tests to include the actual BE endpoint and responses
+
   it('should go to the voyage task list page on button click', async () => {
     const user = userEvent.setup();
+
+    mockAxios
+      .onPost('SOME-END-POINT')
+      .reply(200);
+
     render(<VoyageGeneralDeclaration />);
     expect(screen.getByRole('button', { name: 'Save and continue' })).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Save and continue' }));
     expect(mockedUseNavigate).toHaveBeenCalledWith(VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL, { state: { fileType: 'General Declaration' } });
+  });
+
+  it('should navigate to sign in when auth token is invalid', async () => {
+    const user = userEvent.setup();
+
+    mockAxios
+      .onPost('SOME-END-POINT')
+      .reply(401, {
+        message: TOKEN_INVALID,
+      });
+    render(<VoyageGeneralDeclaration />);
+    expect(screen.getByRole('button', { name: 'Save and continue' })).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Save and continue' }));
+    expect(mockedUseNavigate).toHaveBeenCalledWith(SIGN_IN_URL, { state: { declarationID: '123', redirectURL: VOYAGE_GENERAL_DECLARATION_UPLOAD_URL } });
   });
 
   // TODO: add test for file download
