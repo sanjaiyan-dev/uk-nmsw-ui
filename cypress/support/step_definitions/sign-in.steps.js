@@ -3,13 +3,17 @@ import EmailPage from '../../e2e/pages/registration/email.page.js';
 import SignInPage from '../../e2e/pages/sign-in.page.js';
 import {faker} from '@faker-js/faker';
 import LandingPage from '../../e2e/pages/landing.page';
+import BasePage from "../../e2e/pages/base.page";
 
 let email;
 let password;
 
 Before(() => {
   email = faker.internet.email();
-  password = faker.internet.password();
+  // password = faker.internet.password();
+  password = cy.fixture('registration.json').then((user) => {
+    user.password
+  });
 });
 
 Given('I am on the sign-in page', () => {
@@ -27,9 +31,9 @@ Then('I am taken to the create-account page', () => {
 });
 
 When('I enter valid credentials and sign-in', () => {
-  SignInPage.EnterEmailAddress(email);
-  SignInPage.EnterPassword(password);
-  SignInPage.clickSignIn();
+  EmailPage.enterEmailAddress(email);
+  SignInPage.enterPassword(password);
+  BasePage.clickSignIn();
 });
 
 Then('I am taken to your-voyages page', () => {

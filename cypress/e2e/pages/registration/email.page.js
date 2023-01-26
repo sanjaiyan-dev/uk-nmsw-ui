@@ -47,7 +47,7 @@ class EmailPage {
   }
 
   linkEmailNotReceived() {
-    cy.contains('Not received an email?');
+    cy.contains('Not received an email?').click();
   }
 
   //verify email page

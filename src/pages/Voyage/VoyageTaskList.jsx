@@ -13,6 +13,7 @@ const VoyageTaskList = () => {
   document.title = 'Report a voyage';
 
   // temp data until we can populate programatically
+  const voyageId = '123';
   const reportStatus = 'Draft';
   const shipName = 'Snowplant';
   const voyageType = 'Departure from the UK';
@@ -82,7 +83,11 @@ const VoyageTaskList = () => {
               <h2 className="app-task-list__section"><span className="app-task-list__section-number">2. </span>Submit the report</h2>
               <ul className="app-task-list__items">
                 <li className="app-task-list__item">
-                  <Link to={VOYAGE_CHECK_YOUR_ANSWERS} aria-describedby="generalDeclaration">
+                  <Link
+                    to={VOYAGE_CHECK_YOUR_ANSWERS}
+                    aria-describedby="generalDeclaration"
+                    state={{ voyageId }}
+                  >
                     <span>Check answers and submit</span>
                     <strong className={classCannotStartYet} id="eligibility-status">{statusCheckYourAnswers}</strong>
                   </Link>
