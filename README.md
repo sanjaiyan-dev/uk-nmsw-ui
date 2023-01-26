@@ -52,6 +52,19 @@ docker run -d --name nmswui -p 8080:8080 nmsw-ui .
 ----
 
 ### Run Cypress tests
+**Run all the tests on local environment - replace below command with actual mailslurp API key** *(It executes tests headless mode on Electron Browser)*
 ```sh
-npx cypress open
+npm run cypress:run:local -- --env MAIL_API_KEY=<API_KEY> .
+```
+**Run tests on cypress runner on local environment - replace below command with actual mailslurp API key**
+```sh
+npm run cypress:open:local -- --env MAIL_API_KEY=<API_KEY> .
+```
+**Run all the tests on development environment - replace below command with actual mailslurp API key** *(It executes tests headless mode on Electron Browser)*
+```sh
+npm run cypress:run:dev -- --env MAIL_API_KEY=<API_KEY> .
+```
+**Run tests on cypress runner on a specific browser on development environment - replace below command with actual mailslurp API key**
+```sh
+npm run cypress:open:dev -- --env MAIL_API_KEY=<API_KEY> .
 ```
