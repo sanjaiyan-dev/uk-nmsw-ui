@@ -9,7 +9,7 @@ class BasePage {
   }
 
   clickSignIn() {
-    cy.contains('Sign in').click();
+    cy.get('[data-testid="submit-button"]').click();
   }
 
   clickBackButton() {
@@ -23,6 +23,10 @@ class BasePage {
 
   verifyFieldError(field, error) {
     cy.get(`#${field}`).should('have.text', error);
+  }
+
+  verifyText(message) {
+    cy.contains(message);
   }
 }
 

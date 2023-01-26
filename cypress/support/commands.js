@@ -1,3 +1,4 @@
+import SignInPage from "../e2e/pages/sign-in.page";
 const {terminalLog} = require('../utils/axeTableLog.js');
 import EmailPage from '../e2e/pages/registration/email.page.js';
 import BasePage from '../e2e/pages/base.page';
@@ -92,5 +93,19 @@ Cypress.Commands.add('removeTestUser', () => {
           }
       )
     })
+  })
+});
+
+Cypress.Commands.add('signIn', () => {
+  cy.fixture('registration.json').then((registration) => {
+    let signInEmail = registration.signInEmail;
+    let password = registration.password;
+    SignInPage.enterEmailAddress(signInEmail);
+    SignInPage.enterPassword(password);
+    cy.intercept('POST', '**/sign-in*').as('signIn');
+    BasePage.clickSignIn();
+    cy.wait('@signIn').then(({response}) => {
+      expect(response.statusCode).to.equal(200);
+    });
   })
 });

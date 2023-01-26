@@ -4,6 +4,10 @@ class SignInPage {
     return cy.get('#password-input');
   }
 
+  get emailAddress() {
+    return cy.get('#email-input');
+  }
+
   checkSignInLink() {
     cy.contains('Sign in');
   }
@@ -18,10 +22,22 @@ class SignInPage {
     cy.contains('create one now').click();
   }
 
+  enterEmailAddress(email) {
+    this.emailAddress.clear().type(email);
+    return this;
+  }
+
   enterPassword(pwd) {
     this.password.clear().type(pwd)
   }
 
+  checkSignOut() {
+    cy.contains('Sign out');
+  }
+
+  clickSignOut() {
+    cy.contains('Sign out').click();
+  }
 }
 
 export default new SignInPage();
