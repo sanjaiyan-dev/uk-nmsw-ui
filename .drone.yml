@@ -180,6 +180,7 @@ steps:
   - ./cypress-extract-env.sh ./helm/dev.yaml
   - cat ./cypress-env.sh
   - export $(cat ./cypress-env.sh | xargs)
+  - apt-get update && apt-get install -y procps
   - ./drone-cypress-test-script.sh dev
   when:
     branch:
