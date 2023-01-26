@@ -174,13 +174,12 @@ steps:
   pull: if-not-exists
   image: quay.io/ukhomeofficedigital/cop-cypress:10.3.0-node16
   environment:
-    MAIL_API_KEY:
+    CYPRESS_MAIL_API_KEY:
       from_secret: DEV_NMSW_MAILSLURP_API_KEY
   commands:
   - ./cypress-extract-env.sh ./helm/dev.yaml
   - cat ./cypress-env.sh
   - export $(cat ./cypress-env.sh | xargs)
-  - apt-get update && apt-get upgrade -y
   - ./drone-cypress-test-script.sh dev
   when:
     branch:
