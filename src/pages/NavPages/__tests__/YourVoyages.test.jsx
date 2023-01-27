@@ -13,4 +13,13 @@ describe('Your voyages page tests', () => {
     render(<MemoryRouter><YourVoyages /></MemoryRouter>);
     expect(screen.getByRole('button', { name: 'Report a voyage' })).toBeInTheDocument();
   });
+
+  it('should render voyages if voyages exist', () => {
+    render(<MemoryRouter><YourVoyages /></MemoryRouter>);
+    expect(screen.getByText('Select report type')).toBeInTheDocument();
+    expect(screen.getByRole('radio', { name: 'All' })).toBeInTheDocument();
+    expect(screen.getByRole('radio', { name: 'Drafts' })).toBeInTheDocument();
+    expect(screen.getByRole('radio', { name: 'Submitted' })).toBeInTheDocument();
+    expect(screen.getByText('All report types')).toBeInTheDocument();
+  });
 });
