@@ -133,7 +133,7 @@ const YourVoyages = () => {
                 </div>
               </div>
 
-              <div className="govuk-!-padding-left-8 govuk-!-padding-right-0 govuk-grid-column-three-quarters">
+              <div className=" declaration-spacing govuk-grid-column-three-quarters">
                 <div className=" filter-results__border govuk-!-margin-bottom-0">
                   <div className="govuk-grid-row">
                     <div className="govuk-grid-column-full">
