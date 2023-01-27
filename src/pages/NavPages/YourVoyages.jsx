@@ -65,7 +65,7 @@ const YourVoyages = () => {
                           onChange={() => { }}
                           defaultChecked
                         />
-                        <label className="govuk-label govuk-radios__label" htmlFor="selectAll">
+                        <label className="govuk-label govuk-radios__label" htmlFor="all">
                           All
                         </label>
                       </div>
