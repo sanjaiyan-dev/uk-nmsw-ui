@@ -17,6 +17,11 @@ const voyageList = [
   // },
 ];
 
+// NOTES:
+// - The filter buttons do nothing
+// - There is commented out code for when/if we need to display in cancelled/failed voyages in the future
+// - There is commented out code for when the filter is working but there are no voyages relating to the filter
+
 const YourVoyages = () => {
   const { state } = useLocation();
   const [voyageData, setVoyageData] = useState();
@@ -107,6 +112,20 @@ const YourVoyages = () => {
                         <label className="govuk-label govuk-radios__label" htmlFor="cancelled">
                           Cancelled
                         </label>
+                      </div>
+
+                      <div className="govuk-radios__item">
+                        <input
+                          className="govuk-radios__input"
+                          id="failed"
+                          name="reports"
+                          type="radio"
+                          value="failed"
+                          onChange={() => { }}
+                        />
+                        <label className="govuk-label govuk-radios__label" htmlFor="failed">
+                          Failed
+                        </label>
                       </div> */}
                     </div>
 
@@ -149,7 +168,7 @@ const YourVoyages = () => {
                   </div>
 
                 </div>
-
+                {/* TODO: See if there is a cleaner way to set these attributes for diffrerent statuses */}
                 {voyageData?.map((voyage) => {
                   let statusTagClass;
                   let statusLinkText;
@@ -164,6 +183,7 @@ const YourVoyages = () => {
                     statusLinkText = 'Continue';
                     statusType = 'draft';
                   }
+                  // This is for if/when we implement showing cancelled/failed reports
                   // } else if (voyage.status === 'Draft') {
                   //   statusTagClass = 'govuk-tag govuk-tag--grey';
                   //   statusLinkText = 'Continue';
@@ -218,6 +238,7 @@ const YourVoyages = () => {
                     </div>
                   );
                 })}
+                {/* To be implemented when the filter is working and there are no voyages relating to the filter */}
                 {/* <div className="no-results govuk-!-font-size-19" style="display: none;">
     <p className="govuk-body govuk-inset-text govuk-!-font-weight-bold">There are no matching results.</p>
     <p className="govuk-body">Improve your search results by:</p>

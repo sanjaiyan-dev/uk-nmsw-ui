@@ -22,4 +22,6 @@ describe('Your voyages page tests', () => {
     expect(screen.getByRole('radio', { name: 'Submitted' })).toBeInTheDocument();
     expect(screen.getByText('All report types')).toBeInTheDocument();
   });
+
+  // TODO: rewrite tests when BE endpoint is ready as the mocked voyage data will always be availiable
 });
