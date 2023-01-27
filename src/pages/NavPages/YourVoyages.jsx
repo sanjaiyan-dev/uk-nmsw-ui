@@ -9,12 +9,12 @@ const voyageList = [
   {
     id: '2', voyageType: 'Departure from the UK', shipName: 'The Queen Mary', arrivalDate: '11th September 2023', departureDate: '15th September 2023', status: 'Draft',
   },
-  {
-    id: '3', voyageType: 'Departure from the UK', shipName: 'The Black Pearl', arrivalDate: '15th May 2023', departureDate: '27th May 2023', status: 'Cancelled',
-  },
-  {
-    id: '4', voyageType: 'Arrival to the UK', shipName: 'The Golden Hind', arrivalDate: '15th March 2023', departureDate: '27th March 2023', status: 'Failed',
-  },
+  // {
+  //   id: '3', voyageType: 'Departure from the UK', shipName: 'The Black Pearl', arrivalDate: '15th May 2023', departureDate: '27th May 2023', status: 'Cancelled',
+  // },
+  // {
+  //   id: '4', voyageType: 'Arrival to the UK', shipName: 'The Golden Hind', arrivalDate: '15th March 2023', departureDate: '27th March 2023', status: 'Failed',
+  // },
 ];
 
 const YourVoyages = () => {
@@ -62,7 +62,7 @@ const YourVoyages = () => {
                           name="reports"
                           type="radio"
                           value="all"
-                          onChange={() => {}}
+                          onChange={() => { }}
                           defaultChecked
                         />
                         <label className="govuk-label govuk-radios__label" htmlFor="selectAll">
@@ -76,7 +76,7 @@ const YourVoyages = () => {
                           name="reports"
                           type="radio"
                           value="draft"
-                          onChange={() => {}}
+                          onChange={() => { }}
                         />
                         <label className="govuk-label govuk-radios__label" htmlFor="draft">
                           Drafts
@@ -89,13 +89,13 @@ const YourVoyages = () => {
                           name="reports"
                           type="radio"
                           value="submitted"
-                          onChange={() => {}}
+                          onChange={() => { }}
                         />
                         <label className="govuk-label govuk-radios__label" htmlFor="submitted">
                           Submitted
                         </label>
                       </div>
-                      <div className="govuk-radios__item">
+                      {/* <div className="govuk-radios__item">
                         <input
                           className="govuk-radios__input"
                           id="cancelled"
@@ -107,7 +107,7 @@ const YourVoyages = () => {
                         <label className="govuk-label govuk-radios__label" htmlFor="cancelled">
                           Cancelled
                         </label>
-                      </div>
+                      </div> */}
                     </div>
 
                   </fieldset>
@@ -158,29 +158,35 @@ const YourVoyages = () => {
                     statusTagClass = 'govuk-tag govuk-tag--green';
                     statusLinkText = 'Review or cancel';
                     statusType = 'submitted';
-                  } else if (voyage.status === 'Draft') {
+                  }
+                  if (voyage.status === 'Draft') {
                     statusTagClass = 'govuk-tag govuk-tag--grey';
                     statusLinkText = 'Continue';
                     statusType = 'draft';
-                  } else if (voyage.status === 'Cancelled' || voyage.status === 'PreCancelled') {
-                    statusTagClass = 'govuk-tag govuk-tag--red';
-                    statusLinkText = 'Review';
-                    statusType = 'cancelled';
-                  } else {
-                    statusTagClass = 'govuk-tag govuk-tag--red';
-                    statusLinkText = 'Review and re-submit';
-                    statusType = 'failed';
                   }
+                  // } else if (voyage.status === 'Draft') {
+                  //   statusTagClass = 'govuk-tag govuk-tag--grey';
+                  //   statusLinkText = 'Continue';
+                  //   statusType = 'draft';
+                  // } else if (voyage.status === 'Cancelled' || voyage.status === 'PreCancelled') {
+                  //   statusTagClass = 'govuk-tag govuk-tag--red';
+                  //   statusLinkText = 'Review';
+                  //   statusType = 'cancelled';
+                  // } else {
+                  //   statusTagClass = 'govuk-tag govuk-tag--red';
+                  //   statusLinkText = 'Review and re-submit';
+                  //   statusType = 'failed';
+                  // }
                   return (
                     <div key={voyage.id} className="filter-results__layout govuk-!-margin-bottom-5">
                       <div className="govuk-grid-row govuk-!-margin-top-5">
-                        <div className="filter-results__text govuk-grid-column-one-quarter ">
+                        <div className="filter-results__text govuk-grid-column-one-quarter">
                           <strong className="govuk-label--s ">
                             {voyage.shipName}
                           </strong>
                         </div>
 
-                        <div className="filter-results__text govuk-grid-column-one-quarter ">
+                        <div className="filter-results__text govuk-grid-column-one-quarter">
                           <p className="govuk-body-s">
                             Voyage type :
                             <br />
@@ -188,7 +194,7 @@ const YourVoyages = () => {
                           </p>
                         </div>
 
-                        <div className="filter-results__text govuk-grid-column-one-quarter ">
+                        <div className="filter-results__text govuk-grid-column-one-quarter">
                           <p className="govuk-body-s">
                             Date:
                             <br />
@@ -201,7 +207,7 @@ const YourVoyages = () => {
                           <strong className={statusTagClass}>{statusType}</strong>
                         </div>
 
-                        <div className="filter-results__text govuk-grid-column-one-third">
+                        <div className="filter-results__text govuk-grid-column-one-quarter">
                           <span className="govuk-body-s">Actions</span> <br />
                           <a href="#change" className="govuk-link govuk-body-s">{statusLinkText}</a>
                         </div>

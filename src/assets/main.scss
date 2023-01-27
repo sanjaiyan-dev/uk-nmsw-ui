@@ -274,3 +274,18 @@ body {
 .filter-results__text {
   width: 20%;
 }
+
+.govuk-tag {
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
+@media (max-width: 640px) {
+  .declaration-filter__flex {
+    flex-direction: column;
+  }
+
+  .filter-results__text {
+    width: 100%;
+  }
+}
