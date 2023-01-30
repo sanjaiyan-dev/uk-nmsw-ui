@@ -5,11 +5,25 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-  entry: ['./src/index.js', './src/assets/main.scss'],
+  entry: {
+    main: path.resolve(__dirname, 'src/index.js'),
+    css: path.resolve(__dirname, 'src/assets/main.scss'),
+    Templates: path.resolve(__dirname, 'src/pages/NavPages/Templates.jsx'), // templates page rarely change so can be served from cache most of the time
+  },
   output: {
+    filename: '[contenthash:8].bundle.js',
+    chunkFilename: '[contenthash].bundle.js',
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.[contenthash].js',
     publicPath: '/',
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
+  },
+  performance: {
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000,
   },
   resolve: {
     alias: {
