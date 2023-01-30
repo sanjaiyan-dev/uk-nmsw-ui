@@ -22,7 +22,6 @@ import {
   REGISTER_EMAIL_CHECK_URL,
 } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
-import LoadingSpinner from '../../components/LoadingSpinner';
 import Auth from '../../utils/Auth';
 
 const SupportingText = () => (
@@ -100,11 +99,13 @@ const RegisterEmailAddress = () => {
         // USER_NOT_REGISTERED & 500 errors will fall into this bucket (error out on USER_NOT_REGISTERED as it shouldn't occur here and we don't want to cause a loop of register/resend running)
         navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: REGISTER_EMAIL_URL } });
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleSubmit = async (formData) => {
-    const timer = setTimeout(() => setIsLoading(true), 750);
+    setIsLoading(true);
     const dataToSubmit = {
       email: formData.formData.emailAddress,
     };
@@ -114,22 +115,21 @@ const RegisterEmailAddress = () => {
         headers: { Authorization: `Bearer ${Auth.retrieveToken()}` },
       });
       navigate(REGISTER_EMAIL_CHECK_URL, { state: { dataToSubmit: { emailAddress: response.data.email } } });
+      setIsLoading(false);
     } catch (err) {
       if (err.response?.data?.message === USER_ALREADY_REGISTERED) {
         navigate(ERROR_ACCOUNT_ALREADY_ACTIVE_URL, { state: { dataToSubmit: { emailAddress: formData.formData.emailAddress } } });
+        setIsLoading(false);
       } else if (err.response?.data?.message === USER_AWAITING_VERIFICATION) {
         resendVerificationEmail(formData.formData.emailAddress);
       } else {
         // 500 errors will fall into this bucket
         navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: REGISTER_EMAIL_URL } });
+        setIsLoading(false);
       }
-    } finally {
-      setIsLoading(false);
-      clearTimeout(timer);
     }
   };
 
-  if (isLoading) { return (<LoadingSpinner />); }
   return (
     <DisplayForm
       formId="formRegisterEmailAddress"
