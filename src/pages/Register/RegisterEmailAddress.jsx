@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {
@@ -21,6 +22,7 @@ import {
   REGISTER_EMAIL_CHECK_URL,
 } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
+import LoadingSpinner from '../../components/LoadingSpinner';
 import Auth from '../../utils/Auth';
 
 const SupportingText = () => (
@@ -32,6 +34,7 @@ const SupportingText = () => (
 
 const RegisterEmailAddress = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   document.title = 'What is your email address';
 
   const formActions = {
@@ -101,6 +104,7 @@ const RegisterEmailAddress = () => {
   };
 
   const handleSubmit = async (formData) => {
+    const timer = setTimeout(() => setIsLoading(true), 750);
     const dataToSubmit = {
       email: formData.formData.emailAddress,
     };
@@ -119,9 +123,13 @@ const RegisterEmailAddress = () => {
         // 500 errors will fall into this bucket
         navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: REGISTER_EMAIL_URL } });
       }
+    } finally {
+      setIsLoading(false);
+      clearTimeout(timer);
     }
   };
 
+  if (isLoading) { return (<LoadingSpinner />); }
   return (
     <DisplayForm
       formId="formRegisterEmailAddress"
@@ -130,6 +138,7 @@ const RegisterEmailAddress = () => {
       formType={SINGLE_PAGE_FORM}
       pageHeading="What is your email address"
       handleSubmit={handleSubmit}
+      isLoading={isLoading}
     >
       <SupportingText />
     </DisplayForm>
