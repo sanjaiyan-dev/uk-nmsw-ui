@@ -18,6 +18,7 @@ import {
 import DisplayForm from '../../components/DisplayForm';
 import { SIGN_IN, USER_NOT_VERIFIED, USER_SIGN_IN_DETAILS_INVALID } from '../../constants/AppAPIConstants';
 import Auth from '../../utils/Auth';
+import { scrollToTop } from '../../utils/ScrollToElement';
 
 const SupportingText = () => (
   <div className="govuk-inset-text">
@@ -84,6 +85,7 @@ const SignIn = () => {
     } catch (err) {
       if (err?.response?.data?.message === USER_SIGN_IN_DETAILS_INVALID) {
         setErrors('Email and password combination is invalid');
+        scrollToTop();
       } else if (err?.response?.data?.message === USER_NOT_VERIFIED) {
         navigate(REGISTER_EMAIL_RESEND_URL, { state: { dataToSubmit: { emailAddress: formData?.email } } });
       } else {
