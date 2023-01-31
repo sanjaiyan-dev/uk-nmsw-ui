@@ -1,5 +1,4 @@
 import SignInPage from "../e2e/pages/sign-in.page";
-
 const {terminalLog} = require('../utils/axeTableLog.js');
 import EmailPage from '../e2e/pages/registration/email.page.js';
 import BasePage from '../e2e/pages/base.page';
