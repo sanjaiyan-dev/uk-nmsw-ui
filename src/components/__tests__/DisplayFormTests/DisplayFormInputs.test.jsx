@@ -16,7 +16,6 @@ import {
   VALIDATE_PHONE_NUMBER,
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
-import { YOUR_VOYAGES_URL } from '../../constants/AppUrlConstants';
 
 /*
  * These tests check that we can pass a variety of
@@ -36,19 +35,10 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockedUseNavigate,
 }));
 
-describe('Display Form', () => {
+describe('Display Form inputs', () => {
   const handleSubmit = jest.fn();
   const scrollIntoViewMock = jest.fn();
   window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
-  const formActions = {
-    submit: {
-      label: 'Submit test button',
-    },
-    cancel: {
-      label: 'Cancel test button',
-      redirectURL: YOUR_VOYAGES_URL,
-    },
-  };
   const formActionsSubmitOnly = {
     submit: {
       label: 'Submit test button',
@@ -279,60 +269,6 @@ describe('Display Form', () => {
 
   beforeEach(() => {
     window.sessionStorage.clear();
-  });
-
-  // ACTION BUTTONS
-  it('should render a submit and cancel button if both exist', () => {
-    render(
-      <MemoryRouter>
-        <DisplayForm
-          formId="testForm"
-          fields={formRequiredTextInput}
-          formActions={formActions}
-          formType={SINGLE_PAGE_FORM}
-          handleSubmit={handleSubmit}
-        />
-      </MemoryRouter>,
-    );
-    expect((screen.getByTestId('submit-button')).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Submit test button</button>');
-    expect((screen.getByTestId('cancel-button')).outerHTML).toEqual('<button type="button" class="govuk-button govuk-button--secondary" data-module="govuk-button" data-testid="cancel-button">Cancel test button</button>');
-  });
-
-  it('should render only a submit button if there is no cancel button', () => {
-    render(
-      <MemoryRouter>
-        <DisplayForm
-          formId="testForm"
-          fields={formRequiredTextInput}
-          formActions={formActionsSubmitOnly}
-          formType={SINGLE_PAGE_FORM}
-          handleSubmit={handleSubmit}
-        />
-      </MemoryRouter>,
-    );
-    expect(screen.getByTestId('submit-button').outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Submit test button</button>');
-    expect(screen.getAllByRole('button')).toHaveLength(1);
-  });
-
-  it('should call handleSubmit function if submit button is clicked and there are no errors', async () => {
-    const user = userEvent.setup();
-    render(
-      <MemoryRouter>
-        <DisplayForm
-          formId="testForm"
-          fields={formRequiredTextInput}
-          formActions={formActionsSubmitOnly}
-          formType={SINGLE_PAGE_FORM}
-          handleSubmit={handleSubmit}
-        />
-      </MemoryRouter>,
-    );
-
-    await user.type(screen.getByLabelText('Text input'), 'Hello');
-    expect(screen.getByTestId('submit-button').outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Submit test button</button>');
-    expect(screen.getAllByRole('button')).toHaveLength(1);
-    await user.click(screen.getByRole('button', { name: 'Submit test button' }));
-    expect(handleSubmit).toHaveBeenCalled();
   });
 
   // INPUTS
