@@ -50,6 +50,7 @@ describe('Display Form action buttons', () => {
       type: FIELD_TEXT,
       label: 'Text input',
       hint: 'This is a hint for a text input',
+      isLoading: false,
       fieldName: 'testField',
       validation: [
         {
@@ -116,5 +117,62 @@ describe('Display Form action buttons', () => {
     expect(screen.getAllByRole('button')).toHaveLength(1);
     await user.click(screen.getByRole('button', { name: 'Submit test button' }));
     expect(handleSubmit).toHaveBeenCalled();
+  });
+
+  it('should disable the submit button when isLoading is true', () => {
+    // Note: isLoading state is set by the container page so in this test we just test the correct behaviour when the state is true
+    const isLoading = true;
+    render(
+      <MemoryRouter>
+        <DisplayForm
+          formId="testForm"
+          fields={formRequiredTextInput}
+          formActions={formActions}
+          formType={SINGLE_PAGE_FORM}
+          isLoading={isLoading}
+          handleSubmit={handleSubmit}
+        />
+      </MemoryRouter>,
+    );
+    expect((screen.getByTestId('submit-button')).outerHTML).toEqual('<button type="button" class="govuk-button disabled" data-module="govuk-button" data-testid="submit-button" disabled="">Submit test button</button>');
+    expect((screen.getByTestId('cancel-button')).outerHTML).toEqual('<button type="button" class="govuk-button govuk-button--secondary" data-module="govuk-button" data-testid="cancel-button">Cancel test button</button>');
+  });
+
+  it('should NOT disable the submit button when isLoading is false', () => {
+    // Note: isLoading state is set by the container page so in this test we just test the correct behaviour when the state is true
+    const isLoading = false;
+    render(
+      <MemoryRouter>
+        <DisplayForm
+          formId="testForm"
+          fields={formRequiredTextInput}
+          formActions={formActions}
+          formType={SINGLE_PAGE_FORM}
+          isLoading={isLoading}
+          handleSubmit={handleSubmit}
+        />
+      </MemoryRouter>,
+    );
+    expect((screen.getByTestId('submit-button')).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Submit test button</button>');
+    expect((screen.getByTestId('cancel-button')).outerHTML).toEqual('<button type="button" class="govuk-button govuk-button--secondary" data-module="govuk-button" data-testid="cancel-button">Cancel test button</button>');
+  });
+
+  it('should NOT disable the submit button when isLoading is undefined', () => {
+    // Note: isLoading state is set by the container page so in this test we just test the correct behaviour when the state is true
+    const isLoading = undefined;
+    render(
+      <MemoryRouter>
+        <DisplayForm
+          formId="testForm"
+          fields={formRequiredTextInput}
+          formActions={formActions}
+          formType={SINGLE_PAGE_FORM}
+          isLoading={isLoading}
+          handleSubmit={handleSubmit}
+        />
+      </MemoryRouter>,
+    );
+    expect((screen.getByTestId('submit-button')).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Submit test button</button>');
+    expect((screen.getByTestId('cancel-button')).outerHTML).toEqual('<button type="button" class="govuk-button govuk-button--secondary" data-module="govuk-button" data-testid="cancel-button">Cancel test button</button>');
   });
 });

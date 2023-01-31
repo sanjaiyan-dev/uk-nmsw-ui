@@ -1,7 +1,7 @@
 import { MemoryRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import DisplayForm from '../DisplayForm';
+import DisplayForm from '../../DisplayForm';
 import {
   DISPLAY_GROUPED,
   FIELD_AUTOCOMPLETE,
@@ -15,7 +15,7 @@ import {
   VALIDATE_EMAIL_ADDRESS,
   VALIDATE_PHONE_NUMBER,
   VALIDATE_REQUIRED,
-} from '../../constants/AppConstants';
+} from '../../../constants/AppConstants';
 
 /*
  * These tests check that we can pass a variety of
