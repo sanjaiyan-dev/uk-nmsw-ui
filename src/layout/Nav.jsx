@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import {
   Link, NavLink, useLocation, useNavigate,
 } from 'react-router-dom';
+import axios from 'axios';
 import { SERVICE_NAME } from '../constants/AppConstants';
 import {
   YOUR_VOYAGES_PAGE_NAME,
@@ -11,6 +12,7 @@ import {
   TEMPLATE_PAGE_NAME,
   SIGN_IN_URL,
 } from '../constants/AppUrlConstants';
+import { SIGN_OUT_ENDPOINT } from '../constants/AppAPIConstants';
 import useUserIsPermitted from '../hooks/useUserIsPermitted';
 import Auth from '../utils/Auth';
 
@@ -61,6 +63,21 @@ const Nav = () => {
 
   const removeFormData = () => {
     sessionStorage.removeItem('formData');
+  };
+
+  const handleSignOut = async () => {
+    try {
+      const response = await axios.post(SIGN_OUT_ENDPOINT, {}, {
+        headers: { Authorization: `Bearer ${Auth.retrieveToken()}` },
+      });
+      if (response.status === 200) {
+        Auth.logout();
+        navigate(SIGN_IN_URL);
+      }
+    } catch (err) {
+      Auth.logout();
+      navigate(SIGN_IN_URL);
+    }
   };
 
   useEffect(() => {
@@ -138,7 +155,7 @@ const Nav = () => {
                 </li>
               ))}
               <li className="govuk-header__navigation-item">
-                <NavLink to={YOUR_VOYAGES_URL} className="govuk-header__link" onClick={() => { Auth.logout(); navigate(SIGN_IN_URL); }}>Sign out</NavLink>
+                <NavLink to={YOUR_VOYAGES_URL} className="govuk-header__link" onClick={handleSignOut}>Sign out</NavLink>
                 {/* Link tag cannot be used as we do not have a signout route */}
               </li>
             </ul>
