@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import LoadingSpinner from '../../components/LoadingSpinner';
 import { REGISTER_CHECK_TOKEN_ENDPOINT, TOKEN_INVALID, TOKEN_USED_TO_REGISTER } from '../../constants/AppAPIConstants';
 import {
   ERROR_ACCOUNT_ALREADY_ACTIVE_URL,
@@ -64,7 +65,7 @@ const RegisterEmailVerified = () => {
     fetchData();
   }, [tokenToCheck, emailAddress]);
 
-  if (Object.entries(pageContent).length === 0) { setPageContent({ blurb: '...Loading' }); }
+  if (Object.entries(pageContent).length === 0) { return (<LoadingSpinner />); }
   return (
     <>
       <div className="govuk-grid-row">

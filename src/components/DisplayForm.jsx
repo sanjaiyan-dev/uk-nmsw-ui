@@ -17,7 +17,7 @@ import { scrollToTop } from '../utils/ScrollToElement';
 import Validator from '../utils/Validator';
 
 const DisplayForm = ({
-  fields, formId, formActions, formType, pageHeading, handleSubmit, children, removeApiErrors,
+  fields, formId, formActions, formType, isLoading, pageHeading, handleSubmit, children, removeApiErrors,
 }) => {
   const fieldsRef = useRef(null);
   const navigate = useNavigate();
@@ -242,10 +242,11 @@ const DisplayForm = ({
           <div className="govuk-button-group">
             <button
               type="button"
-              className="govuk-button"
+              className={isLoading ? 'govuk-button disabled' : 'govuk-button'}
               data-module="govuk-button"
               data-testid="submit-button"
               onClick={(e) => handleValidation(e, { formData })}
+              disabled={isLoading}
             >
               {formActions.submit.label}
             </button>
@@ -291,6 +292,7 @@ DisplayForm.propTypes = {
     }),
   }),
   formType: PropTypes.string.isRequired,
+  isLoading: PropTypes.bool,
   pageHeading: PropTypes.string,
   handleSubmit: PropTypes.func.isRequired,
   removeApiErrors: PropTypes.func,
