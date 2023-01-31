@@ -4,7 +4,7 @@ import { apiUrl } from './Config';
 export const REGISTER_ACCOUNT_ENDPOINT = `${apiUrl}/registration`;
 export const REGISTER_CHECK_TOKEN_ENDPOINT = `${apiUrl}/check-token`;
 export const REGISTER_RESEND_VERIFICATION_EMAIL_ENDPOINT = `${apiUrl}/resend-verification-email`;
-export const SIGN_IN = `${apiUrl}/sign-in`;
+export const SIGN_IN_ENDPOINT = `${apiUrl}/sign-in`;
 
 // Responses
 export const TOKEN_INVALID = 'Token is invalid or it has expired';
