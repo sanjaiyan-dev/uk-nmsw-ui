@@ -36,6 +36,10 @@ module.exports = {
       },
     },
   },
+  performance: {
+    maxAssetSize: 512000,
+    maxEntrypointSize: 1024000,
+  },
   resolve: {
     alias: {
       '/assets': path.resolve(__dirname, 'node_modules/govuk-frontend/govuk/assets'),
