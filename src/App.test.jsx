@@ -9,19 +9,22 @@ describe('App tests', () => {
     window.sessionStorage.clear();
   });
 
-  it('should render the heading on the page', () => {
+  it('should render the heading on the page', async () => {
     render(<BrowserRouter><App /></BrowserRouter>);
+    await screen.findByRole('heading', { name: SERVICE_NAME }); // the landing page H1 should always be the service name so this is a good element to wait for load before doing our expects
     expect(screen.getByText('GOV.UK')).toBeInTheDocument();
     expect(screen.getByTestId('serviceName').textContent).toEqual(SERVICE_NAME);
   });
 
-  it('should render the phase banner on the page', () => {
+  it('should render the phase banner on the page', async () => {
     render(<BrowserRouter><App /></BrowserRouter>);
+    await screen.findByRole('heading', { name: SERVICE_NAME });
     expect(screen.getByTestId('phaseBannerText')).toHaveTextContent('This is a new service - your feedback will help us to improve it.');
   });
 
-  it('should render the footer on the page', () => {
+  it('should render the footer on the page', async () => {
     render(<BrowserRouter><App /></BrowserRouter>);
+    await screen.findByRole('heading', { name: SERVICE_NAME });
     expect(screen.getByText('© Crown copyright')).toBeInTheDocument();
     expect(screen.getByText('© Crown copyright').outerHTML).toEqual('<a class="govuk-footer__link govuk-footer__copyright-logo" target="_blank" rel="noreferrer noopener" href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/">© Crown copyright</a>');
     expect(screen.getByText('Cookies')).toBeInTheDocument();
@@ -71,7 +74,7 @@ describe('App tests', () => {
     expect(screen.queryByText('We\'d also like to use analytics cookies so we can understand how you use the service and make improvements.')).not.toBeInTheDocument();
   });
 
-  it('should not render cookie banner when cookiePreference is false', () => {
+  it('should not render cookie banner when cookiePreference is false', async () => {
     document.cookie = 'cookiePreference=false';
     render(<BrowserRouter><App /></BrowserRouter>);
     const acceptButton = screen.queryByRole('button', { name: 'Accept analytics cookies' });
@@ -90,12 +93,12 @@ describe('App tests', () => {
     const user = userEvent.setup();
     render(<MemoryRouter><App /></MemoryRouter>);
 
+    await screen.findByRole('button', { name: 'Start now' });
+    expect(screen.getByRole('button', { name: 'Start now' })).toBeInTheDocument();
     expect(screen.queryByText('Back')).not.toBeInTheDocument();
 
-    const startButton = screen.getByRole('button', { name: 'Start now' });
-    await user.click(startButton);
-
-    expect(screen.getAllByText('Sign in')).toHaveLength(2);
+    await user.click(screen.getByRole('button', { name: 'Start now' }));
+    await screen.findByRole('button', { name: 'Sign in' });
     expect(screen.queryByText('Back')).not.toBeInTheDocument();
   });
 

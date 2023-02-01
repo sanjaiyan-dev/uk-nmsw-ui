@@ -159,7 +159,7 @@ describe('Display Form', () => {
         />
       </MemoryRouter>,
     );
-
+    await screen.findByRole('button', { name: 'Submit test button' });
     await user.click(screen.getByRole('button', { name: 'Submit test button' }));
     // Input field has the error class attached as component rendered with errors > 0
     expect(screen.getByRole('textbox', { name: 'Text input' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testField-input" name="testField" type="text" aria-describedby="testField-hint" value="">');

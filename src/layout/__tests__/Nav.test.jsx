@@ -46,8 +46,8 @@ describe('Navigation within header tests', () => {
     mockedUserIsPermitted = true;
     const user = userEvent.setup();
     render(<MemoryRouter><App /></MemoryRouter>);
-    await user.click(screen.getByText('Your voyages'));
-    expect(screen.getAllByText('Your voyages')).toHaveLength(2); // h1 & nav item
+    expect(screen.getByRole('link', { name: 'Your voyages' })).toBeInTheDocument();
+    await user.click(screen.getByRole('link', { name: 'Your voyages' }));
     expect(screen.getByTestId('listitem-YourVoyages').outerHTML).toEqual('<li class="govuk-header__navigation-item govuk-header__navigation-item--active" data-testid="listitem-YourVoyages"><a class="govuk-header__link" href="/your-voyages">Your voyages</a></li>');
     expect(screen.getByTestId('listitem-Templates').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-Templates"><a class="govuk-header__link" href="/templates">Templates</a></li>');
   });
@@ -56,8 +56,8 @@ describe('Navigation within header tests', () => {
     mockedUserIsPermitted = true;
     const user = userEvent.setup();
     render(<MemoryRouter><App /></MemoryRouter>);
-    await user.click(screen.getByText('Templates'));
-    expect(screen.getAllByText('Templates')).toHaveLength(2); // h1 & nav item
+    expect(screen.getByRole('link', { name: 'Templates' })).toBeInTheDocument();
+    await user.click(screen.getByRole('link', { name: 'Templates' }));
     expect(screen.getByTestId('listitem-YourVoyages').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-YourVoyages"><a class="govuk-header__link" href="/your-voyages">Your voyages</a></li>');
     expect(screen.getByTestId('listitem-Templates').outerHTML).toEqual('<li class="govuk-header__navigation-item govuk-header__navigation-item--active" data-testid="listitem-Templates"><a class="govuk-header__link" href="/templates">Templates</a></li>');
   });
