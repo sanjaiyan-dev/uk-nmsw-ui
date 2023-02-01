@@ -29,6 +29,10 @@ class BasePage {
   verifyText(message) {
     cy.contains(message);
   }
+
+  checkH1(message) {
+    cy.get('h1').should('have.text', message);
+  }
 }
 
 export default new BasePage();

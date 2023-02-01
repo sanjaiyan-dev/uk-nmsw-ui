@@ -1,4 +1,4 @@
-class LandingPage{
+class LandingPage {
 
   checkHeading() {
     cy.get('h1').should('have.text', 'National Maritime Single Window');
@@ -10,6 +10,10 @@ class LandingPage{
 
   clickStartNow() {
     cy.get('.govuk-button--start').should('have.text', 'Start now').click();
+  }
+
+  clickTemplateTab() {
+    cy.get('a[href="/templates"]').click();
   }
 }
 
