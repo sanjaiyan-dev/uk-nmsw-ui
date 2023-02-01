@@ -12,6 +12,11 @@ class SignInPage {
     cy.contains('Sign in');
   }
 
+//sign-in for sign-in page
+  clickSignIn() {
+    cy.get('[data-testid="submit-button"]').click();
+  }
+
   checkSignInPage() {
     cy.url().should('include', 'sign-in');
     cy.get('h1').should('have.text', 'Sign in');

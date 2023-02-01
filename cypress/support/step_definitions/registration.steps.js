@@ -255,7 +255,7 @@ When('I click on \'change email details link\'', () => {
   EmailPage.clickChangeWhereEmailSent();
 });
 
-When('click on request new email', () => {
+When('I click on request new email', () => {
   cy.contains('Not received an email?').click();
 });
 
