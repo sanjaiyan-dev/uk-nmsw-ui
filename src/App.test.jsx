@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import { SERVICE_NAME } from './constants/AppConstants';
@@ -89,12 +89,10 @@ describe('App tests', () => {
   it('should not render a back button on the / page or /sign-in page', async () => {
     const user = userEvent.setup();
     render(<MemoryRouter><App /></MemoryRouter>);
-
+    await waitFor(() => { expect(screen.getByRole('button', { name: 'Start now' })).toBeInTheDocument(); });
     expect(screen.queryByText('Back')).not.toBeInTheDocument();
 
-    const startButton = screen.getByRole('button', { name: 'Start now' });
-    await user.click(startButton);
-
+    await user.click(screen.getByRole('button', { name: 'Start now' }));
     expect(screen.getAllByText('Sign in')).toHaveLength(2);
     expect(screen.queryByText('Back')).not.toBeInTheDocument();
   });
