@@ -68,6 +68,7 @@ describe('Display Form', () => {
         />
       </MemoryRouter>,
     );
+    await screen.findByRole('button', { name: 'Submit test button' });
     await user.click(screen.getByRole('button', { name: 'Submit test button' }));
     await screen.getByText('There is a problem');
     expect(screen.getByText('There is a problem').outerHTML).toEqual('<h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>');
