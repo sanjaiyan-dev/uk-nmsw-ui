@@ -2,7 +2,6 @@ const CopyPlugin = require('copy-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const path = require('path');
 const webpack = require('webpack');
 
@@ -16,24 +15,8 @@ module.exports = {
     publicPath: '/',
   },
   optimization: {
-    runtimeChunk: 'single',
     splitChunks: {
       chunks: 'all',
-      maxInitialRequests: Infinity,
-      minSize: 0,
-      cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name(module) {
-            // get the name. E.g. node_modules/packageName/not/this/part.js
-            // or node_modules/packageName
-            const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-
-            // npm package names are URL-safe, but some servers don't like @ symbols
-            return `npm.${packageName.replace('@', '')}`;
-          },
-        },
-      },
     },
   },
   performance: {
@@ -77,7 +60,6 @@ module.exports = {
     ],
   },
   plugins: [
-    new BundleAnalyzerPlugin(),
     new Dotenv({ systemvars: true }),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'public', 'index.html'),
@@ -96,7 +78,7 @@ module.exports = {
     ),
     // This allows to pass env vars on runtime, see /nginx/run.sh and Dockerfile
     new webpack.EnvironmentPlugin({
-      NMSW_DATA_API_BASE_URL: 'http://localhost:5000',
+      NMSW_DATA_API_BASE_URL: 'http://localhost:3000',
     }),
   ].concat(devMode ? [] : [new MiniCssExtractPlugin({
     filename: '[name]-[hash].css',
