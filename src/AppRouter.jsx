@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import { Navigate, Routes, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import useUserIsPermitted from './hooks/useUserIsPermitted';
@@ -74,7 +75,9 @@ import YourVoyages from './pages/NavPages/YourVoyages';
 import ErrorsCrewUpload from './pages/Voyage/ErrorsCrewUpload';
 // Other pages
 import FormConfirmationPage from './pages/Message/FormConfirmationPage';
-import Templates from './pages/NavPages/Templates';
+import LoadingSpinner from './components/LoadingSpinner';
+
+const Templates = lazy(() => import('./pages/NavPages/Templates'));
 
 const AppRouter = ({ setIsCookieBannerShown }) => {
   document.title = SERVICE_NAME;
@@ -105,7 +108,7 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
 
         <Route element={<ProtectedRoutes isPermittedToView={isPermittedToView} />}>
           <Route path={FORM_CONFIRMATION_URL} element={<FormConfirmationPage />} />
-          <Route path={TEMPLATE_PAGE_URL} element={<Templates />} />
+          <Route path={TEMPLATE_PAGE_URL} element={<Suspense fallback={<LoadingSpinner />}><Templates /></Suspense>} />
 
           <Route path={YOUR_VOYAGES_URL} element={<YourVoyages />} />
           <Route path={VOYAGE_CHECK_YOUR_ANSWERS} element={<VoyageCheckYourAnswers />} />
