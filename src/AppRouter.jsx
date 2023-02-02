@@ -78,7 +78,7 @@ const ErrorsCrewUpload = lazy(() => import('./pages/Voyage/ErrorsCrewUpload'));
 // Other pages
 const FormConfirmationPage = lazy(() => import('./pages/Message/FormConfirmationPage'));
 const Templates = lazy(() => import('./pages/NavPages/Templates'));
-const YourDetails = lazy(() => import('./pages/NavPages/YourDetails'));
+const YourDetails = lazy(() => import('./pages/NavPages/YourDetails/YourDetails'));
 
 const AppRouter = ({ setIsCookieBannerShown }) => {
   document.title = SERVICE_NAME;
