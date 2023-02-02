@@ -41,7 +41,11 @@ class SignInPage {
   }
 
   clickSignOut() {
+    cy.intercept('POST', '*/sign-out').as('sign-out');
     cy.contains('Sign out').click();
+    cy.wait('@sign-out').then(({response}) => {
+      expect(response.statusCode).to.equal(200);
+    })
   }
 }
 
