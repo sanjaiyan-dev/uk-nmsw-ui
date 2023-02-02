@@ -46,6 +46,7 @@ describe('Navigation within header tests', () => {
     render(<MemoryRouter><Nav /></MemoryRouter>);
     expect(screen.queryByText('Your voyages')).not.toBeInTheDocument();
     expect(screen.queryByText('Templates')).not.toBeInTheDocument();
+    expect(screen.queryByText('Your details')).not.toBeInTheDocument();
   });
 
   it('should render nav items when user has permission to view them', () => {
@@ -53,6 +54,7 @@ describe('Navigation within header tests', () => {
     render(<MemoryRouter><Nav /></MemoryRouter>);
     expect(screen.getByText('Your voyages')).toBeInTheDocument();
     expect(screen.getByText('Templates')).toBeInTheDocument();
+    expect(screen.getByText('Your details')).toBeInTheDocument();
   });
 
   it('should load the Your voyages component and set its nav item to active when nav item clicked, and other nav items to not have active class', async () => {
@@ -63,6 +65,7 @@ describe('Navigation within header tests', () => {
     await user.click(screen.getByRole('link', { name: 'Your voyages' }));
     expect(screen.getByTestId('listitem-YourVoyages').outerHTML).toEqual('<li class="govuk-header__navigation-item govuk-header__navigation-item--active" data-testid="listitem-YourVoyages"><a class="govuk-header__link" href="/your-voyages">Your voyages</a></li>');
     expect(screen.getByTestId('listitem-Templates').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-Templates"><a class="govuk-header__link" href="/templates">Templates</a></li>');
+    expect(screen.getByTestId('listitem-YourDetails').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-YourDetails"><a class="govuk-header__link" href="/your-details">Your details</a></li>');
   });
 
   it('should load the Templates component and set its nav item to active when nav item clicked, and other nav items to not have active class', async () => {
@@ -82,6 +85,7 @@ describe('Navigation within header tests', () => {
     await user.click(screen.getByTestId('serviceName'));
     expect(screen.getByTestId('listitem-YourVoyages').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-YourVoyages"><a class="govuk-header__link" href="/your-voyages">Your voyages</a></li>');
     expect(screen.getByTestId('listitem-Templates').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-Templates"><a class="govuk-header__link" href="/templates">Templates</a></li>');
+    expect(screen.getByTestId('listitem-YourDetails').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-YourDetails"><a class="govuk-header__link" href="/your-details">Your details</a></li>');
   });
 
   it('should set all nav items to inactive class when logo is clicked', async () => {
@@ -91,6 +95,7 @@ describe('Navigation within header tests', () => {
     await user.click(screen.getByText('GOV.UK'));
     expect(screen.getByTestId('listitem-YourVoyages').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-YourVoyages"><a class="govuk-header__link" href="/your-voyages">Your voyages</a></li>');
     expect(screen.getByTestId('listitem-Templates').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-Templates"><a class="govuk-header__link" href="/templates">Templates</a></li>');
+    expect(screen.getByTestId('listitem-YourDetails').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-YourDetails"><a class="govuk-header__link" href="/your-details">Your details</a></li>');
   });
 
   it('should set highlight NO nav items if a new url is rendered and it does not relate to any of them', () => {
@@ -98,6 +103,7 @@ describe('Navigation within header tests', () => {
     render(<MemoryRouter><App /></MemoryRouter>);
     expect(screen.getByTestId('listitem-YourVoyages').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-YourVoyages"><a class="govuk-header__link" href="/your-voyages">Your voyages</a></li>');
     expect(screen.getByTestId('listitem-Templates').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-Templates"><a class="govuk-header__link" href="/templates">Templates</a></li>');
+    expect(screen.getByTestId('listitem-YourDetails').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-YourDetails"><a class="govuk-header__link" href="/your-details">Your details</a></li>');
   });
 
   it('should toggle menu state when menu button is clicked (small screen functionality)', async () => {
