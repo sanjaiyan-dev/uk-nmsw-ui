@@ -1,15 +1,27 @@
 const CopyPlugin = require('copy-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 const webpack = require('webpack');
+
+const devMode = process.env.NODE_ENV !== 'production';
 
 module.exports = {
   entry: ['./src/index.js', './src/assets/main.scss'],
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.[contenthash].js',
+    filename: '[name].[contenthash].js',
     publicPath: '/',
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
+  },
+  performance: {
+    maxAssetSize: 512000,
+    maxEntrypointSize: 1024000,
   },
   resolve: {
     alias: {
@@ -29,7 +41,7 @@ module.exports = {
       {
         test: /\.(sa|sc|c)ss$/, // styles files
         use: [
-          { loader: 'style-loader' },
+          { loader: devMode ? 'style-loader' : MiniCssExtractPlugin.loader }, // Creates `style` nodes from JS strings
           { loader: 'css-loader' },
           {
             loader: 'sass-loader',
@@ -68,7 +80,10 @@ module.exports = {
     new webpack.EnvironmentPlugin({
       NMSW_DATA_API_BASE_URL: 'http://localhost:5000',
     }),
-  ],
+  ].concat(devMode ? [] : [new MiniCssExtractPlugin({
+    filename: '[name]-[hash].css',
+    chunkFilename: '[id]-[hash].css',
+  })]),
   devServer: {
     historyApiFallback: true,
     hot: false,

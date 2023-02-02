@@ -1,15 +1,28 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 import { SERVICE_NAME } from '../../constants/AppConstants';
 import App from '../../App';
 import Nav from '../Nav';
+import { SIGN_OUT_ENDPOINT } from '../../constants/AppAPIConstants';
+import { SIGN_IN_URL } from '../../constants/AppUrlConstants';
 
 let mockedUserIsPermitted = false;
 jest.mock('../../hooks/useUserIsPermitted', () => jest.fn(() => (mockedUserIsPermitted)));
 
+const mockedUseNavigate = jest.fn();
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockedUseNavigate,
+}));
+
 describe('Navigation within header tests', () => {
+  const mockAxios = new MockAdapter(axios);
+
   beforeEach(() => {
+    mockAxios.reset();
     window.sessionStorage.clear();
   });
 
@@ -46,8 +59,8 @@ describe('Navigation within header tests', () => {
     mockedUserIsPermitted = true;
     const user = userEvent.setup();
     render(<MemoryRouter><App /></MemoryRouter>);
-    await user.click(screen.getByText('Your voyages'));
-    expect(screen.getAllByText('Your voyages')).toHaveLength(2); // h1 & nav item
+    expect(screen.getByRole('link', { name: 'Your voyages' })).toBeInTheDocument();
+    await user.click(screen.getByRole('link', { name: 'Your voyages' }));
     expect(screen.getByTestId('listitem-YourVoyages').outerHTML).toEqual('<li class="govuk-header__navigation-item govuk-header__navigation-item--active" data-testid="listitem-YourVoyages"><a class="govuk-header__link" href="/your-voyages">Your voyages</a></li>');
     expect(screen.getByTestId('listitem-Templates').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-Templates"><a class="govuk-header__link" href="/templates">Templates</a></li>');
   });
@@ -56,8 +69,8 @@ describe('Navigation within header tests', () => {
     mockedUserIsPermitted = true;
     const user = userEvent.setup();
     render(<MemoryRouter><App /></MemoryRouter>);
-    await user.click(screen.getByText('Templates'));
-    expect(screen.getAllByText('Templates')).toHaveLength(2); // h1 & nav item
+    expect(screen.getByRole('link', { name: 'Templates' })).toBeInTheDocument();
+    await user.click(screen.getByRole('link', { name: 'Templates' }));
     expect(screen.getByTestId('listitem-YourVoyages').outerHTML).toEqual('<li class="govuk-header__navigation-item" data-testid="listitem-YourVoyages"><a class="govuk-header__link" href="/your-voyages">Your voyages</a></li>');
     expect(screen.getByTestId('listitem-Templates').outerHTML).toEqual('<li class="govuk-header__navigation-item govuk-header__navigation-item--active" data-testid="listitem-Templates"><a class="govuk-header__link" href="/templates">Templates</a></li>');
   });
@@ -111,5 +124,34 @@ describe('Navigation within header tests', () => {
     render(<MemoryRouter><App /></MemoryRouter>);
     await user.click(screen.getByText('Templates'));
     expect(window.sessionStorage.getItem('formData')).toStrictEqual(null);
+  });
+
+  it('should clear token from session and redirect to sign in page on successful sign out', async () => {
+    window.sessionStorage.setItem('token', '123');
+    mockedUserIsPermitted = true;
+    const user = userEvent.setup();
+    mockAxios
+      .onPost(SIGN_OUT_ENDPOINT)
+      .reply(200);
+
+    render(<MemoryRouter><App /></MemoryRouter>);
+    await user.click(screen.getByText('Sign out'));
+    expect(window.sessionStorage.getItem('token')).toStrictEqual(null);
+    expect(mockedUseNavigate).toHaveBeenCalledWith(SIGN_IN_URL);
+  });
+
+  // Error case will usually be when a user clicks sign out but token is already expired
+  it('should clear token from session and redirect to sign in page on sign out', async () => {
+    window.sessionStorage.setItem('token', '123');
+    mockedUserIsPermitted = true;
+    const user = userEvent.setup();
+    mockAxios
+      .onPost(SIGN_OUT_ENDPOINT)
+      .reply(401);
+
+    render(<MemoryRouter><App /></MemoryRouter>);
+    await user.click(screen.getByText('Sign out'));
+    expect(window.sessionStorage.getItem('token')).toStrictEqual(null);
+    expect(mockedUseNavigate).toHaveBeenCalledWith(SIGN_IN_URL);
   });
 });
