@@ -11,6 +11,8 @@ import {
   TEMPLATE_PAGE_URL,
   TEMPLATE_PAGE_NAME,
   SIGN_IN_URL,
+  YOUR_DETAILS_PAGE_URL,
+  YOUR_DETAILS_PAGE_NAME,
 } from '../constants/AppUrlConstants';
 import { SIGN_OUT_ENDPOINT } from '../constants/AppAPIConstants';
 import useUserIsPermitted from '../hooks/useUserIsPermitted';
@@ -25,6 +27,12 @@ const Nav = () => {
       id: 'YourVoyages',
       urlStem: YOUR_VOYAGES_URL,
       text: YOUR_VOYAGES_PAGE_NAME,
+      active: false,
+    },
+    {
+      id: 'Your details',
+      urlStem: YOUR_DETAILS_PAGE_URL,
+      text: YOUR_DETAILS_PAGE_NAME,
       active: false,
     },
     {
