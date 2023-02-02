@@ -40,6 +40,8 @@ import {
   VOYAGE_TASK_LIST_URL,
   YOUR_VOYAGES_URL,
   YOUR_DETAILS_PAGE_URL,
+  CHANGE_YOUR_DETAILS_PAGE_URL,
+  CHANGE_YOUR_PASSWORD_PAGE_URL,
 } from './constants/AppUrlConstants';
 
 import LoadingSpinner from './components/LoadingSpinner';
@@ -79,6 +81,8 @@ const ErrorsCrewUpload = lazy(() => import('./pages/Voyage/ErrorsCrewUpload'));
 const FormConfirmationPage = lazy(() => import('./pages/Message/FormConfirmationPage'));
 const Templates = lazy(() => import('./pages/NavPages/Templates'));
 const YourDetails = lazy(() => import('./pages/NavPages/YourDetails/YourDetails'));
+const ChangeYourDetails = lazy(() => import('./pages/NavPages/YourDetails/ChangeYourDetails'));
+const ChangeYourPassword = lazy(() => import('./pages/NavPages/YourDetails/ChangeYourPassword'));
 
 const AppRouter = ({ setIsCookieBannerShown }) => {
   document.title = SERVICE_NAME;
@@ -109,6 +113,8 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
           <Route path={PRIVACY_URL} element={<PrivacyNotice />} />
 
           <Route element={<ProtectedRoutes isPermittedToView={isPermittedToView} />}>
+            <Route path={CHANGE_YOUR_DETAILS_PAGE_URL} element={<ChangeYourDetails />} />
+            <Route path={CHANGE_YOUR_PASSWORD_PAGE_URL} element={<ChangeYourPassword />} />
             <Route path={FORM_CONFIRMATION_URL} element={<FormConfirmationPage />} />
             <Route path={TEMPLATE_PAGE_URL} element={<Templates />} />
             <Route path={YOUR_DETAILS_PAGE_URL} element={<YourDetails />} />
