@@ -40,8 +40,3 @@ Feature: User sign-in
   Scenario: User should not be signed-in without providing email and password
     When user try to access a protected page
     Then I am on NMSW landing page
-
-
-
-
-
