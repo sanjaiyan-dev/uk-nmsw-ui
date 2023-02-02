@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { LANDING_URL, YOUR_DETAILS_PAGE_NAME } from '../../constants/AppUrlConstants';
+import { LANDING_URL, YOUR_DETAILS_PAGE_NAME } from '../../../constants/AppUrlConstants';
 
 const mockedUserData = {
   fullName: 'John Doe',
