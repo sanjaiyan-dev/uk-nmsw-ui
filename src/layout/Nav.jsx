@@ -30,7 +30,7 @@ const Nav = () => {
       active: false,
     },
     {
-      id: 'Your details',
+      id: 'YourDetails',
       urlStem: YOUR_DETAILS_PAGE_URL,
       text: YOUR_DETAILS_PAGE_NAME,
       active: false,
