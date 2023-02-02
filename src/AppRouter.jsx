@@ -39,6 +39,7 @@ import {
   VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
   VOYAGE_TASK_LIST_URL,
   YOUR_VOYAGES_URL,
+  YOUR_DETAILS_PAGE_URL,
 } from './constants/AppUrlConstants';
 
 import LoadingSpinner from './components/LoadingSpinner';
@@ -77,6 +78,7 @@ const ErrorsCrewUpload = lazy(() => import('./pages/Voyage/ErrorsCrewUpload'));
 // Other pages
 const FormConfirmationPage = lazy(() => import('./pages/Message/FormConfirmationPage'));
 const Templates = lazy(() => import('./pages/NavPages/Templates'));
+const YourDetails = lazy(() => import('./pages/NavPages/YourDetails'));
 
 const AppRouter = ({ setIsCookieBannerShown }) => {
   document.title = SERVICE_NAME;
@@ -109,7 +111,7 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
           <Route element={<ProtectedRoutes isPermittedToView={isPermittedToView} />}>
             <Route path={FORM_CONFIRMATION_URL} element={<FormConfirmationPage />} />
             <Route path={TEMPLATE_PAGE_URL} element={<Templates />} />
-
+            <Route path={YOUR_DETAILS_PAGE_URL} element={<YourDetails />} />
             <Route path={YOUR_VOYAGES_URL} element={<YourVoyages />} />
             <Route path={VOYAGE_CHECK_YOUR_ANSWERS} element={<VoyageCheckYourAnswers />} />
             <Route path={VOYAGE_CREW_UPLOAD_URL} element={<VoyageCrew />} />
