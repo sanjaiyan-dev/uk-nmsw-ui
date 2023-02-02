@@ -41,8 +41,14 @@ export const YOUR_VOYAGES_URL = '/your-voyages';
 export const FORM_CONFIRMATION_URL = '/confirmation';
 export const TEMPLATE_PAGE_NAME = 'Templates';
 export const TEMPLATE_PAGE_URL = '/templates';
+
+// User details pages
 export const YOUR_DETAILS_PAGE_NAME = 'Your details';
 export const YOUR_DETAILS_PAGE_URL = '/your-details';
+export const CHANGE_YOUR_DETAILS_PAGE_NAME = 'Change your details';
+export const CHANGE_YOUR_DETAILS_PAGE_URL = '/change-your-details';
+export const CHANGE_YOUR_PASSWORD_PAGE_NAME = 'Change your password';
+export const CHANGE_YOUR_PASSWORD_PAGE_URL = '/change-your-password';
 
 // Error/message pages
 export const MESSAGE_URL = '/message';
