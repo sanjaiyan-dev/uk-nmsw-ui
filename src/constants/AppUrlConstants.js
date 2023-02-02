@@ -41,6 +41,8 @@ export const YOUR_VOYAGES_URL = '/your-voyages';
 export const FORM_CONFIRMATION_URL = '/confirmation';
 export const TEMPLATE_PAGE_NAME = 'Templates';
 export const TEMPLATE_PAGE_URL = '/templates';
+export const YOUR_DETAILS_PAGE_NAME = 'Your details';
+export const YOUR_DETAILS_PAGE_URL = '/your-details';
 
 // Error/message pages
 export const MESSAGE_URL = '/message';
@@ -55,6 +57,7 @@ export const TOP_LEVEL_PAGES = [
   LANDING_URL,
   PRIVACY_URL,
   TEMPLATE_PAGE_URL,
+  YOUR_DETAILS_PAGE_URL,
 ];
 
 // Pages without back links
