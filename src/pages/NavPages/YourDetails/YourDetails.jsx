@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { LANDING_URL, YOUR_DETAILS_PAGE_NAME } from '../../../constants/AppUrlConstants';
+import { CHANGE_YOUR_DETAILS_PAGE_URL, CHANGE_YOUR_PASSWORD_PAGE_URL, YOUR_DETAILS_PAGE_NAME } from '../../../constants/AppUrlConstants';
 
 const mockedUserData = {
   fullName: 'John Doe',
@@ -61,7 +61,7 @@ const YourDetails = () => {
             </dd>
           </div>
         </dl>
-        <Link className="govuk-link" to={LANDING_URL}>Change your details</Link>
+        <Link className="govuk-link" to={CHANGE_YOUR_DETAILS_PAGE_URL}>Change your details</Link>
 
         <h2 className="govuk-heading-m govuk-!-margin-top-6">Account details</h2>
         <dl className="govuk-summary-list">
@@ -88,7 +88,7 @@ const YourDetails = () => {
               Password
               <br />
               <p className="govuk-body">
-                <Link className="govuk-link" to={LANDING_URL}>Change your password</Link>
+                <Link className="govuk-link" to={CHANGE_YOUR_PASSWORD_PAGE_URL}>Change your password</Link>
               </p>
             </dt>
             <dd className="govuk-summary-list__value govuk-hint">
