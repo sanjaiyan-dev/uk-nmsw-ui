@@ -1,8 +1,25 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { LANDING_URL, YOUR_DETAILS_PAGE_NAME } from '../../constants/AppUrlConstants';
 
+const mockedUserData = {
+  fullName: 'John Doe',
+  emailAddress: 'john@example.com',
+  phoneNumber: '07123456576',
+  country: 'England',
+  userType: 'Standard user',
+  company: 'Company 1',
+  passwordChanged: '9 June 2021 14:22',
+};
+
 const YourDetails = () => {
   document.title = YOUR_DETAILS_PAGE_NAME;
+  const [formData, setFormData] = useState({});
+
+  useEffect(() => {
+    setFormData(mockedUserData);
+  });
+
   return (
     <div className="govuk-grid-row">
       <div className="govuk-grid-column-two-thirds">
@@ -13,7 +30,7 @@ const YourDetails = () => {
               Email address
             </dt>
             <dd className="govuk-summary-list__value">
-              x
+              {formData.emailAddress}
             </dd>
           </div>
 
@@ -22,7 +39,7 @@ const YourDetails = () => {
               Full name
             </dt>
             <dd className="govuk-summary-list__value">
-              x
+              {formData.fullName}
             </dd>
           </div>
 
@@ -31,7 +48,7 @@ const YourDetails = () => {
               Phone number
             </dt>
             <dd className="govuk-summary-list__value">
-              x
+              {formData.phoneNumber}
             </dd>
           </div>
 
@@ -40,7 +57,7 @@ const YourDetails = () => {
               Country
             </dt>
             <dd className="govuk-summary-list__value">
-              x
+              {formData.country}
             </dd>
           </div>
         </dl>
@@ -53,7 +70,7 @@ const YourDetails = () => {
               User type
             </dt>
             <dd className="govuk-summary-list__value">
-              x
+              {formData.userType}
             </dd>
           </div>
 
@@ -62,7 +79,7 @@ const YourDetails = () => {
               Company
             </dt>
             <dd className="govuk-summary-list__value">
-              x
+              {formData.company}
             </dd>
           </div>
 
@@ -74,8 +91,8 @@ const YourDetails = () => {
                 <Link className="govuk-link" to={LANDING_URL}>Change your password</Link>
               </p>
             </dt>
-            <dd className="govuk-summary-list__value">
-              x
+            <dd className="govuk-summary-list__value govuk-hint">
+              {`Last changed ${formData.passwordChanged}`}
             </dd>
           </div>
         </dl>
