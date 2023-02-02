@@ -1,4 +1,4 @@
-import { Link } from 'react';
+import { Link } from 'react-router-dom';
 import { LANDING_URL, YOUR_DETAILS_PAGE_NAME } from '../../constants/AppUrlConstants';
 
 const YourDetails = () => {
@@ -43,8 +43,41 @@ const YourDetails = () => {
               x
             </dd>
           </div>
-          <br />
-          <Link className="govuk-link" to={LANDING_URL}> Change your details </Link>
+        </dl>
+        <Link className="govuk-link" to={LANDING_URL}>Change your details</Link>
+
+        <h2 className="govuk-heading-m govuk-!-margin-top-6">Account details</h2>
+        <dl className="govuk-summary-list">
+          <div className="govuk-summary-list__row">
+            <dt className="govuk-summary-list__key">
+              User type
+            </dt>
+            <dd className="govuk-summary-list__value">
+              x
+            </dd>
+          </div>
+
+          <div className="govuk-summary-list__row">
+            <dt className="govuk-summary-list__key">
+              Company
+            </dt>
+            <dd className="govuk-summary-list__value">
+              x
+            </dd>
+          </div>
+
+          <div className="govuk-summary-list__row">
+            <dt className="govuk-summary-list__key">
+              Password
+              <br />
+              <p className="govuk-body">
+                <Link className="govuk-link" to={LANDING_URL}>Change your password</Link>
+              </p>
+            </dt>
+            <dd className="govuk-summary-list__value">
+              x
+            </dd>
+          </div>
         </dl>
       </div>
     </div>
