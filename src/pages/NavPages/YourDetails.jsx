@@ -96,6 +96,9 @@ const YourDetails = () => {
             </dd>
           </div>
         </dl>
+        <button type="button" className="govuk-button govuk-button--warning" data-module="govuk-button" onClick={() => {}}>
+          Delete your account
+        </button>
       </div>
     </div>
   );
