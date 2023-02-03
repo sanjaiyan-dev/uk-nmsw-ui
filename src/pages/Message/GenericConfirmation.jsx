@@ -20,17 +20,18 @@ const GenericConfirmation = () => {
 
   return (
     <div className="govuk-grid-row">
-      <div className="govuk-grid-column-three-quarters">
+      <div className="govuk-grid-column-two-thirds">
         <div className="govuk-panel govuk-panel--confirmation">
-          <h1 className="govuk-panel__title">
+          <h1 className="govuk-panel__title govuk-!-margin-bottom-6">
             {`${state.confirmationMessage}`}
           </h1>
-          <Link
-            to={state.nextPageLink}
-          >
-            Return to {state.nextPageName}
-          </Link>
+
         </div>
+        <Link
+          to={state.nextPageLink}
+        >
+          Return to {state.nextPageName}
+        </Link>
       </div>
     </div>
   );
