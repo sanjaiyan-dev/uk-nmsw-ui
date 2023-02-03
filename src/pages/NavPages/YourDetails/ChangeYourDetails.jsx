@@ -4,7 +4,7 @@ import {
   FIELD_TEXT, SINGLE_PAGE_FORM, VALIDATE_MAX_LENGTH, VALIDATE_REQUIRED,
 } from '../../../constants/AppConstants';
 import {
-  CHANGE_YOUR_DETAILS_PAGE_NAME, GENERIC_CONFIRMATION_URL, YOUR_DETAILS_PAGE_NAME, YOUR_DETAILS_PAGE_URL,
+  CHANGE_YOUR_DETAILS_PAGE_NAME, GENERIC_CONFIRMATION_URL, YOUR_DETAILS_PAGE_URL,
 } from '../../../constants/AppUrlConstants';
 
 const ChangeYourDetails = () => {
@@ -87,7 +87,7 @@ const ChangeYourDetails = () => {
         state: {
           pageTitle: 'Change your details confirmation',
           nextPageLink: YOUR_DETAILS_PAGE_URL,
-          nextPageName: YOUR_DETAILS_PAGE_NAME,
+          nextPageName: 'your details',
           confirmationMessage: 'Your details have been saved',
         },
       },
