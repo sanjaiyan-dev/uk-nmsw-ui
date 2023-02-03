@@ -99,10 +99,19 @@ const GroupedInputs = ({
 );
 
 const SingleInput = ({
-  error, fieldName, fieldToReturn, hint, label,
+  error, extraText, fieldName, fieldToReturn, hint, label,
 }) => (
   <div className="govuk-grid-row">
+    {extraText
+      && (
+        <div className="govuk-grid-column-two-thirds">
+          <p className="govuk-body govuk-!-font-weight-bold">{extraText?.title}</p>
+          <p className="govuk-body">{extraText?.body}</p>
+          <p className="govuk-body">{extraText?.hint}</p>
+        </div>
+      )}
     <div className="govuk-grid-column-one-half">
+
       <div className={error ? 'govuk-form-group govuk-form-group--error' : 'govuk-form-group'}>
         <label className="govuk-label" htmlFor={`${fieldName}-input`}>
           {label}
@@ -230,6 +239,7 @@ const determineFieldType = ({
         && (
           <SingleInput
             error={error}
+            extraText={fieldDetails?.extraText}
             fieldName={fieldDetails.fieldName}
             fieldToReturn={fieldToReturn}
             hint={fieldDetails.hint}
@@ -253,6 +263,13 @@ determineFieldType.propTypes = {
       linkText: PropTypes.string,
       type: PropTypes.string.isRequired,
       value: PropTypes.string,
+      extraText: PropTypes.objectOf(
+        PropTypes.shape({
+          title: PropTypes.string,
+          body: PropTypes.string,
+          hint: PropTypes.string,
+        }),
+      ),
     }),
   ),
   parentHandleChange: PropTypes.func.isRequired,
@@ -282,4 +299,11 @@ SingleInput.propTypes = {
   fieldToReturn: PropTypes.object.isRequired,
   hint: PropTypes.string,
   label: PropTypes.string.isRequired,
+  extraText: PropTypes.objectOf(
+    PropTypes.shape({
+      title: PropTypes.string,
+      body: PropTypes.string,
+      hint: PropTypes.string,
+    }),
+  ),
 };
