@@ -42,6 +42,7 @@ import {
   YOUR_DETAILS_PAGE_URL,
   CHANGE_YOUR_DETAILS_PAGE_URL,
   CHANGE_YOUR_PASSWORD_PAGE_URL,
+  GENERIC_CONFIRMATION_URL,
 } from './constants/AppUrlConstants';
 
 import LoadingSpinner from './components/LoadingSpinner';
@@ -79,6 +80,7 @@ const YourVoyages = lazy(() => import('./pages/NavPages/YourVoyages'));
 const ErrorsCrewUpload = lazy(() => import('./pages/Voyage/ErrorsCrewUpload'));
 // Other pages
 const FormConfirmationPage = lazy(() => import('./pages/Message/FormConfirmationPage'));
+const GenericConfirmationPage = lazy(() => import('./pages/Message/GenericConfirmation'));
 const Templates = lazy(() => import('./pages/NavPages/Templates'));
 const YourDetails = lazy(() => import('./pages/NavPages/YourDetails/YourDetails'));
 const ChangeYourDetails = lazy(() => import('./pages/NavPages/YourDetails/ChangeYourDetails'));
@@ -116,6 +118,7 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
             <Route path={CHANGE_YOUR_DETAILS_PAGE_URL} element={<ChangeYourDetails />} />
             <Route path={CHANGE_YOUR_PASSWORD_PAGE_URL} element={<ChangeYourPassword />} />
             <Route path={FORM_CONFIRMATION_URL} element={<FormConfirmationPage />} />
+            <Route path={GENERIC_CONFIRMATION_URL} element={<GenericConfirmationPage />} />
             <Route path={TEMPLATE_PAGE_URL} element={<Templates />} />
             <Route path={YOUR_DETAILS_PAGE_URL} element={<YourDetails />} />
             <Route path={YOUR_VOYAGES_URL} element={<YourVoyages />} />
