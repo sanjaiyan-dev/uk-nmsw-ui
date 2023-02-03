@@ -56,6 +56,8 @@ const VoyageDeleteDraftCheck = () => {
     );
   }
 
+  console.log('Delete draft page, declaration id', state?.declarationId);
+
   return (
     <DisplayForm
       formId="voyagePassengers"

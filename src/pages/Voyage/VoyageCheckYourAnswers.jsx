@@ -108,7 +108,7 @@ const VoyageCheckYourAnswers = () => {
   ];
 
   const handleSubmit = () => {
-    console.log('submit clicked for id', state?.voyageId);
+    console.log('submit clicked for id', state?.declarationId);
   };
 
   if (!state?.declarationId) {
