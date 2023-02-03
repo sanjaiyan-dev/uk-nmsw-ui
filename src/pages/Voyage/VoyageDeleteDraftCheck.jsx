@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { DISPLAY_GROUPED, FIELD_RADIO, SINGLE_PAGE_FORM } from '../../constants/AppConstants';
 import { VOYAGE_TASK_LIST_URL, YOUR_VOYAGES_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
+import Message from '../../components/Message';
 
 const VoyageDeleteDraftCheck = () => {
   const { state } = useLocation();
@@ -48,6 +49,12 @@ const VoyageDeleteDraftCheck = () => {
       navigate(VOYAGE_TASK_LIST_URL);
     }
   };
+
+  if (!state?.declarationId) {
+    return (
+      <Message title="Something has gone wrong" redirectURL={YOUR_VOYAGES_URL} />
+    );
+  }
 
   return (
     <DisplayForm
