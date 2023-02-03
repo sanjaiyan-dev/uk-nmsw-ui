@@ -5,7 +5,9 @@ import {
   VOYAGE_GENERAL_DECLARATION_UPLOAD_URL,
   VOYAGE_PASSENGERS_URL,
   VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
+  YOUR_VOYAGES_URL,
 } from '../../constants/AppUrlConstants';
+import Message from '../../components/Message';
 
 const VoyageCheckYourAnswers = () => {
   const { state } = useLocation();
@@ -108,6 +110,12 @@ const VoyageCheckYourAnswers = () => {
   const handleSubmit = () => {
     console.log('submit clicked for id', state?.voyageId);
   };
+
+  if (!state?.declarationId) {
+    return (
+      <Message title="Something has gone wrong" redirectURL={YOUR_VOYAGES_URL} />
+    );
+  }
 
   return (
     <>
