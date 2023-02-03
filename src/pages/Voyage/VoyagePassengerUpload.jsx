@@ -1,9 +1,17 @@
-import { useNavigate } from 'react-router-dom';
-import { VOYAGE_PASSENGER_CONFIRMATION_URL } from '../../constants/AppUrlConstants';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { VOYAGE_PASSENGER_CONFIRMATION_URL, YOUR_VOYAGES_URL } from '../../constants/AppUrlConstants';
+import Message from '../../components/Message';
 
 const VoyagePassengerUpload = () => {
+  const { state } = useLocation();
   const navigate = useNavigate();
   document.title = 'Upload the passenger details (FAL 6)';
+
+  if (!state?.declarationId) {
+    return (
+      <Message title="Something has gone wrong" redirectURL={YOUR_VOYAGES_URL} />
+    );
+  }
 
   return (
     <>
