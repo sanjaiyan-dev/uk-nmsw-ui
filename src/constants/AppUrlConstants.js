@@ -23,6 +23,7 @@ export const PRIVACY_URL = '/privacy-notice';
 
 // Voyage pages
 export const ERROR_CREW_DETAILS_UPLOAD_URL = '/create-voyage/check-crew-details';
+export const FORM_CONFIRMATION_URL = '/report-voyage/confirmation';
 export const VOYAGE_CHECK_YOUR_ANSWERS = '/your-voyages/check-your-answers';
 export const VOYAGE_CREW_UPLOAD_URL = '/report-voyage/upload-crew-details';
 export const VOYAGE_CREW_CONFIRMATION_URL = '/report-voyage/crew-details-uploaded';
@@ -38,7 +39,7 @@ export const YOUR_VOYAGES_PAGE_NAME = 'Your voyages';
 export const YOUR_VOYAGES_URL = '/your-voyages';
 
 // Other pages
-export const FORM_CONFIRMATION_URL = '/confirmation';
+export const GENERIC_CONFIRMATION_URL = '/confirmation';
 export const TEMPLATE_PAGE_NAME = 'Templates';
 export const TEMPLATE_PAGE_URL = '/templates';
 
