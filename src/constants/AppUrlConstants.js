@@ -23,6 +23,7 @@ export const PRIVACY_URL = '/privacy-notice';
 
 // Voyage pages
 export const ERROR_CREW_DETAILS_UPLOAD_URL = '/create-voyage/check-crew-details';
+export const FORM_CONFIRMATION_URL = '/report-voyage/confirmation';
 export const VOYAGE_CHECK_YOUR_ANSWERS = '/your-voyages/check-your-answers';
 export const VOYAGE_CREW_UPLOAD_URL = '/report-voyage/upload-crew-details';
 export const VOYAGE_CREW_CONFIRMATION_URL = '/report-voyage/crew-details-uploaded';
@@ -38,9 +39,17 @@ export const YOUR_VOYAGES_PAGE_NAME = 'Your voyages';
 export const YOUR_VOYAGES_URL = '/your-voyages';
 
 // Other pages
-export const FORM_CONFIRMATION_URL = '/confirmation';
+export const GENERIC_CONFIRMATION_URL = '/confirmation';
 export const TEMPLATE_PAGE_NAME = 'Templates';
 export const TEMPLATE_PAGE_URL = '/templates';
+
+// User details pages
+export const YOUR_DETAILS_PAGE_NAME = 'Your details';
+export const YOUR_DETAILS_PAGE_URL = '/your-details';
+export const CHANGE_YOUR_DETAILS_PAGE_NAME = 'Change your details';
+export const CHANGE_YOUR_DETAILS_PAGE_URL = '/change-your-details';
+export const CHANGE_YOUR_PASSWORD_PAGE_NAME = 'Change your password';
+export const CHANGE_YOUR_PASSWORD_PAGE_URL = '/change-your-password';
 
 // Error/message pages
 export const MESSAGE_URL = '/message';
@@ -55,6 +64,7 @@ export const TOP_LEVEL_PAGES = [
   LANDING_URL,
   PRIVACY_URL,
   TEMPLATE_PAGE_URL,
+  YOUR_DETAILS_PAGE_URL,
 ];
 
 // Pages without back links
@@ -62,6 +72,7 @@ export const NO_BACK_LINKS = [
   ...TOP_LEVEL_PAGES,
   ERROR_VERIFICATION_FAILED_URL,
   FORM_CONFIRMATION_URL,
+  GENERIC_CONFIRMATION_URL,
   MESSAGE_URL,
   REGISTER_CONFIRMATION_URL,
   REGISTER_EMAIL_CHECK_URL,
