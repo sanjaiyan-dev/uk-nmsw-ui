@@ -162,7 +162,7 @@ const Nav = () => {
                   </Link>
                 </li>
               ))}
-              <li className="govuk-header__navigation-item">
+              <li className="govuk-header__navigation-item float">
                 <NavLink to={YOUR_VOYAGES_URL} className="govuk-header__link" onClick={handleSignOut}>Sign out</NavLink>
                 {/* Link tag cannot be used as we do not have a signout route */}
               </li>
