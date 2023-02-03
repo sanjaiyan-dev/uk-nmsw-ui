@@ -19,7 +19,7 @@ const YourDetails = () => {
 
   useEffect(() => {
     setFormData(mockedUserData);
-  });
+  }, []);
 
   return (
     <div className="govuk-grid-row">
