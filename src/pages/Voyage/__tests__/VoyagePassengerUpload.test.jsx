@@ -40,6 +40,6 @@ describe('Voyage passenger upload page', () => {
     render(<MemoryRouter><VoyagePassengerUpload /></MemoryRouter>);
     expect(screen.getByRole('button', { name: 'Save and continue' })).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Save and continue' }));
-    expect(mockedUseNavigate).toHaveBeenCalledWith(VOYAGE_PASSENGER_CONFIRMATION_URL, { state: { fileType: 'Passenger details' } });
+    expect(mockedUseNavigate).toHaveBeenCalledWith(VOYAGE_PASSENGER_CONFIRMATION_URL, { state: { fileType: 'Passenger details', declarationId: '123' } });
   });
 });

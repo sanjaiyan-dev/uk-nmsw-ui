@@ -46,7 +46,7 @@ const VoyageDeleteDraftCheck = () => {
     if (formData?.formData?.deleteDraft === 'deleteDraftYes') {
       navigate(YOUR_VOYAGES_URL, { state: { confirmationBanner: { message: `Report for ${state?.shipName} deleted.` } } });
     } else if (formData?.formData?.deleteDraft === 'deleteDraftNo') {
-      navigate(VOYAGE_TASK_LIST_URL);
+      navigate(VOYAGE_TASK_LIST_URL, { state: { declarationId: state?.declarationId } });
     }
   };
 

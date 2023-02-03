@@ -73,7 +73,7 @@ describe('Voyage task list page', () => {
     await user.click(screen.getByTestId('changeGeneralDeclarationLink'));
     await waitFor(() => {
       expect(mockedUseNavigate).toHaveBeenCalledWith(VOYAGE_GENERAL_DECLARATION_UPLOAD_URL, {
-        preventScrollReset: undefined, relative: undefined, replace: false, state: undefined,
+        preventScrollReset: undefined, relative: undefined, replace: false, state: { declarationId: '123' },
       }); // params on Link generated links by default
     });
   });
@@ -86,7 +86,7 @@ describe('Voyage task list page', () => {
     await user.click(screen.getByTestId('changecrewDetails'));
     await waitFor(() => {
       expect(mockedUseNavigate).toHaveBeenCalledWith(VOYAGE_CREW_UPLOAD_URL, {
-        preventScrollReset: undefined, relative: undefined, replace: false, state: undefined,
+        preventScrollReset: undefined, relative: undefined, replace: false, state: { declarationId: '123' },
       }); // params on Link generated links by default
     });
   });
@@ -99,7 +99,7 @@ describe('Voyage task list page', () => {
     await user.click(screen.getByTestId('changepassengerDetails'));
     await waitFor(() => {
       expect(mockedUseNavigate).toHaveBeenCalledWith(VOYAGE_PASSENGERS_URL, {
-        preventScrollReset: undefined, relative: undefined, replace: false, state: undefined,
+        preventScrollReset: undefined, relative: undefined, replace: false, state: { declarationId: '123' },
       }); // params on Link generated links by default
     });
   });
@@ -112,7 +112,7 @@ describe('Voyage task list page', () => {
     await user.click(screen.getByTestId('changesupportingDocuments'));
     await waitFor(() => {
       expect(mockedUseNavigate).toHaveBeenCalledWith(VOYAGE_SUPPORTING_DOCS_UPLOAD_URL, {
-        preventScrollReset: undefined, relative: undefined, replace: false, state: undefined,
+        preventScrollReset: undefined, relative: undefined, replace: false, state: { declarationId: '123' },
       }); // params on Link generated links by default
     });
   });

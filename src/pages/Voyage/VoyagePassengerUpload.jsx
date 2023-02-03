@@ -26,7 +26,7 @@ const VoyagePassengerUpload = () => {
             type="button"
             className="govuk-button"
             data-module="govuk-button"
-            onClick={() => navigate(VOYAGE_PASSENGER_CONFIRMATION_URL, { state: { fileType: 'Passenger details' } })}
+            onClick={() => navigate(VOYAGE_PASSENGER_CONFIRMATION_URL, { state: { fileType: 'Passenger details', declarationId: state?.declarationId } })}
           >
             Save and continue
           </button>

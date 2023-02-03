@@ -26,7 +26,7 @@ const VoyageCrew = () => {
             type="button"
             className="govuk-button"
             data-module="govuk-button"
-            onClick={() => navigate(VOYAGE_CREW_CONFIRMATION_URL, { state: { fileType: 'Crew details' } })}
+            onClick={() => navigate(VOYAGE_CREW_CONFIRMATION_URL, { state: { fileType: 'Crew details', declarationId: state?.declarationId } })}
           >
             Save and continue
           </button>

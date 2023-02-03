@@ -53,6 +53,6 @@ describe('Voyage delete draft check are you sure page', () => {
     expect(screen.getByRole('button', { name: 'Confirm' })).toBeInTheDocument();
     await user.click(screen.getByRole('radio', { name: 'No' }));
     await user.click(screen.getByRole('button', { name: 'Confirm' }));
-    expect(mockedUseNavigate).toHaveBeenCalledWith(VOYAGE_TASK_LIST_URL);
+    expect(mockedUseNavigate).toHaveBeenCalledWith(VOYAGE_TASK_LIST_URL, { state: { declarationId: '123' } });
   });
 });

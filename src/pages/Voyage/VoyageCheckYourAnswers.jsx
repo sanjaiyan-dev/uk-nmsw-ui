@@ -11,6 +11,7 @@ import Message from '../../components/Message';
 
 const VoyageCheckYourAnswers = () => {
   const { state } = useLocation();
+  const declarationId = state?.declarationId;
 
   // values of this array will be populated by GET request when available
   const voyageDetails = [
@@ -133,7 +134,12 @@ const VoyageCheckYourAnswers = () => {
               </dt>
               <dd className="govuk-summary-list__value" />
               <dd className="govuk-summary-list__actions">
-                <Link to={VOYAGE_GENERAL_DECLARATION_UPLOAD_URL} aria-describedby="voyageDetails" data-testid="changeGeneralDeclarationLink">
+                <Link
+                  to={VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}
+                  aria-describedby="voyageDetails"
+                  data-testid="changeGeneralDeclarationLink"
+                  state={{ declarationId }}
+                >
                   Change<span className="govuk-visually-hidden"> change voyage details</span>
                 </Link>
               </dd>
@@ -171,7 +177,12 @@ const VoyageCheckYourAnswers = () => {
                   {item.value}
                 </dd>
                 <dd className="govuk-summary-list__actions">
-                  <Link to={item.changeLink} aria-describedby={item.id} data-testid={`change${item.id}`}>
+                  <Link
+                    to={item.changeLink}
+                    aria-describedby={item.id}
+                    data-testid={`change${item.id}`}
+                    state={{ declarationId }}
+                  >
                     Change<span className="govuk-visually-hidden">{` change ${item.title}`}</span>
                   </Link>
                 </dd>

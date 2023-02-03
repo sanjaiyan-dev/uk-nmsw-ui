@@ -49,9 +49,9 @@ const VoyagePassengers = () => {
 
   const handleSubmit = (formData) => {
     if (formData?.formData?.passengers === 'passengersYes') {
-      navigate(VOYAGE_PASSENGER_UPLOAD_URL);
+      navigate(VOYAGE_PASSENGER_UPLOAD_URL, { state: { declarationId: state?.declarationId } });
     } else if (formData?.formData?.passengers === 'passengersNo') {
-      navigate(VOYAGE_TASK_LIST_URL);
+      navigate(VOYAGE_TASK_LIST_URL, { state: { declarationId: state?.declarationId } });
     }
   };
 

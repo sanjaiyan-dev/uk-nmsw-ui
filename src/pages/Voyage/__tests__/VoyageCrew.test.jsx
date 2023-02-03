@@ -40,6 +40,6 @@ describe('Voyage crew page', () => {
     render(<MemoryRouter><VoyageCrew /></MemoryRouter>);
     expect(screen.getByRole('button', { name: 'Save and continue' })).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Save and continue' }));
-    expect(mockedUseNavigate).toHaveBeenCalledWith(VOYAGE_CREW_CONFIRMATION_URL, { state: { fileType: 'Crew details' } });
+    expect(mockedUseNavigate).toHaveBeenCalledWith(VOYAGE_CREW_CONFIRMATION_URL, { state: { fileType: 'Crew details', declarationId: '123' } });
   });
 });

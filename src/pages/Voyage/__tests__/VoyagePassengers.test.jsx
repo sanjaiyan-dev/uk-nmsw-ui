@@ -43,7 +43,7 @@ describe('Voyage passengers page', () => {
     expect(screen.getByRole('button', { name: 'Save and continue' })).toBeInTheDocument();
     await user.click(screen.getByRole('radio', { name: 'Yes' }));
     await user.click(screen.getByRole('button', { name: 'Save and continue' }));
-    expect(mockedUseNavigate).toHaveBeenCalledWith(VOYAGE_PASSENGER_UPLOAD_URL);
+    expect(mockedUseNavigate).toHaveBeenCalledWith(VOYAGE_PASSENGER_UPLOAD_URL, { state: { declarationId: '123' } });
   });
 
   it('should go to the task details page if user selects NO', async () => {
@@ -53,6 +53,6 @@ describe('Voyage passengers page', () => {
     expect(screen.getByRole('button', { name: 'Save and continue' })).toBeInTheDocument();
     await user.click(screen.getByRole('radio', { name: 'No' }));
     await user.click(screen.getByRole('button', { name: 'Save and continue' }));
-    expect(mockedUseNavigate).toHaveBeenCalledWith(VOYAGE_TASK_LIST_URL);
+    expect(mockedUseNavigate).toHaveBeenCalledWith(VOYAGE_TASK_LIST_URL, { state: { declarationId: '123' } });
   });
 });

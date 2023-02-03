@@ -113,7 +113,7 @@ const VoyageTaskList = () => {
             type="button"
             className="govuk-button govuk-button--warning"
             data-module="govuk-button"
-            onClick={() => navigate(VOYAGE_DELETE_DRAFT_CHECK_URL, { state: { shipName } })}
+            onClick={() => navigate(VOYAGE_DELETE_DRAFT_CHECK_URL, { state: { shipName, declarationId } })}
           >
             Delete draft
           </button>
