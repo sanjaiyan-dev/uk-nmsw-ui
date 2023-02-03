@@ -41,12 +41,12 @@ const ChangeYourDetails = () => {
     {
       type: FIELD_TEXT,
       label: 'International dialling code',
-      fieldName: 'dialingCode',
+      fieldName: 'diallingCode',
       hint: 'For example, 44 for UK',
       validation: [
         {
           type: VALIDATE_REQUIRED,
-          message: 'Enter your country code',
+          message: 'Enter your international dialling code',
         },
       ],
     },
