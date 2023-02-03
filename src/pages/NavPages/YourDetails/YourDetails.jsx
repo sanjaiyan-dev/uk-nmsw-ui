@@ -9,6 +9,7 @@ const mockedUserData = {
   country: 'England',
   userType: 'Standard user',
   company: 'Company 1',
+  companyType: 'Shipping agent',
   passwordChanged: '9 June 2021 14:22',
 };
 
@@ -45,6 +46,15 @@ const YourDetails = () => {
 
           <div className="govuk-summary-list__row">
             <dt className="govuk-summary-list__key">
+              Your company name
+            </dt>
+            <dd className="govuk-summary-list__value">
+              {formData.company}
+            </dd>
+          </div>
+
+          <div className="govuk-summary-list__row">
+            <dt className="govuk-summary-list__key">
               Phone number
             </dt>
             <dd className="govuk-summary-list__value">
@@ -67,7 +77,7 @@ const YourDetails = () => {
         <dl className="govuk-summary-list">
           <div className="govuk-summary-list__row">
             <dt className="govuk-summary-list__key">
-              User type
+              Type of account
             </dt>
             <dd className="govuk-summary-list__value">
               {formData.userType}
@@ -76,10 +86,10 @@ const YourDetails = () => {
 
           <div className="govuk-summary-list__row">
             <dt className="govuk-summary-list__key">
-              Company
+              Company type
             </dt>
             <dd className="govuk-summary-list__value">
-              {formData.company}
+              {formData.companyType}
             </dd>
           </div>
 
