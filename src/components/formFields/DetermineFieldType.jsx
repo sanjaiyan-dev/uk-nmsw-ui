@@ -8,7 +8,7 @@ import {
   FIELD_CONDITIONAL,
   FIELD_EMAIL,
   FIELD_PASSWORD,
-  // FIELD_PHONE,
+  FIELD_PHONE,
   FIELD_TEXT,
   FIELD_RADIO,
 } from '../../constants/AppConstants';
@@ -167,14 +167,16 @@ const determineFieldType = ({
     );
       break;
 
-      // case FIELD_PHONE: fieldToReturn = (
-      //   <InputPhoneNumber
-      //     error={error}
-      //     fieldDetails={fieldDetails}
-      //     handleChange={parentHandleChange}
-      //   />
-      // );
-      //   break;
+    case FIELD_PHONE: fieldToReturn = (
+      <InputText
+        autoComplete="tel"
+        error={error} // if error true, error styling applied to input
+        fieldDetails={fieldDetails}
+        handleChange={parentHandleChange}
+        type="tel"
+      />
+    );
+      break;
 
     case FIELD_RADIO: fieldToReturn = (
       <InputRadio
