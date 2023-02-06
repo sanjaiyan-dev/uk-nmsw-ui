@@ -8,12 +8,12 @@ import {
   FIELD_CONDITIONAL,
   FIELD_EMAIL,
   FIELD_PASSWORD,
-  // FIELD_PHONE,
+  FIELD_PHONE,
   FIELD_RADIO,
   FIELD_TEXT,
   SINGLE_PAGE_FORM,
   VALIDATE_EMAIL_ADDRESS,
-  // VALIDATE_PHONE_NUMBER,
+  VALIDATE_PHONE_NUMBER,
   VALIDATE_REQUIRED,
 } from '../../../constants/AppConstants';
 
@@ -73,24 +73,24 @@ describe('Display Form inputs', () => {
       ],
     },
   ];
-  // const formRequiredPhoneNumberInput = [
-  //   {
-  //     type: FIELD_PHONE,
-  //     label: 'Phone input',
-  //     hint: 'This is a hint for a phone input',
-  //     fieldName: 'testPhoneField',
-  //     validation: [
-  //       {
-  //         type: VALIDATE_REQUIRED,
-  //         message: 'Enter your phone value',
-  //       },
-  //       {
-  //         type: VALIDATE_PHONE_NUMBER,
-  //         message: 'Enter your phone value',
-  //       },
-  //     ],
-  //   },
-  // ];
+  const formRequiredPhoneNumberInput = [
+    {
+      type: FIELD_PHONE,
+      label: 'Phone input',
+      hint: 'This is a hint for a phone input',
+      fieldName: 'testPhoneField',
+      validation: [
+        {
+          type: VALIDATE_REQUIRED,
+          message: 'Enter your phone value',
+        },
+        {
+          type: VALIDATE_PHONE_NUMBER,
+          message: 'Enter your phone value',
+        },
+      ],
+    },
+  ];
   const formRequiredTextInput = [
     {
       type: FIELD_TEXT,
@@ -196,12 +196,12 @@ describe('Display Form inputs', () => {
       ], // for while we're passing in a mocked array of data
       responseKey: 'name',
     },
-    // {
-    //   type: FIELD_PHONE,
-    //   label: 'Phone input',
-    //   hint: 'This is a hint for a phone input',
-    //   fieldName: 'testPhoneField',
-    // },
+    {
+      type: FIELD_PHONE,
+      label: 'Phone input',
+      hint: 'This is a hint for a phone input',
+      fieldName: 'testPhoneField',
+    },
     {
       type: FIELD_TEXT,
       label: 'Text input',
@@ -290,24 +290,22 @@ describe('Display Form inputs', () => {
     expect(screen.getByRole('listbox', { name: '' })).toBeInTheDocument();
   });
 
-  // it('should render a phone field input', () => {
-  //   render(
-  //     <MemoryRouter>
-  //       <DisplayForm
-  //         formId="testForm"
-  //         fields={formRequiredPhoneNumberInput}
-  //         formActions={formActionsSubmitOnly}
-  //         formType={SINGLE_PAGE_FORM}
-  //         handleSubmit={handleSubmit}
-  //       />
-  //     </MemoryRouter>,
-  //   );
-  //   expect(screen.getByLabelText('Country phone code field')).toBeInTheDocument();
-  //   expect(screen.getByRole('textbox', { name: 'Country phone code field' })).toBeInTheDocument();
-  //   expect(screen.getByLabelText('Phone number field')).toBeInTheDocument();
-  //   expect(screen.getByRole('textbox', { name: 'Phone number field' })).toBeInTheDocument();
-  //   expect(screen.getByText('This is a hint for a phone input').outerHTML).toEqual('<div id="testPhoneField-hint" class="govuk-hint">This is a hint for a phone input</div>');
-  // });
+  it('should render a phone field input', () => {
+    render(
+      <MemoryRouter>
+        <DisplayForm
+          formId="testForm"
+          fields={formRequiredPhoneNumberInput}
+          formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
+          handleSubmit={handleSubmit}
+        />
+      </MemoryRouter>,
+    );
+    expect(screen.getByLabelText('Phone input')).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: 'Phone input' })).toBeInTheDocument();
+    expect(screen.getByText('This is a hint for a phone input').outerHTML).toEqual('<div id="testPhoneField-hint" class="govuk-hint">This is a hint for a phone input</div>');
+  });
 
   it('should render a radio button input', () => {
     render(
