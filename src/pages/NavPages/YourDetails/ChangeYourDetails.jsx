@@ -1,10 +1,17 @@
 import { useNavigate } from 'react-router-dom';
 import DisplayForm from '../../../components/DisplayForm';
 import {
-  FIELD_TEXT, SINGLE_PAGE_FORM, VALIDATE_MAX_LENGTH, VALIDATE_REQUIRED,
+  FIELD_PHONE,
+  FIELD_TEXT,
+  SINGLE_PAGE_FORM,
+  VALIDATE_MAX_LENGTH,
+  VALIDATE_PHONE_NUMBER,
+  VALIDATE_REQUIRED,
 } from '../../../constants/AppConstants';
 import {
-  CHANGE_YOUR_DETAILS_PAGE_NAME, GENERIC_CONFIRMATION_URL, YOUR_DETAILS_PAGE_URL,
+  CHANGE_YOUR_DETAILS_PAGE_NAME,
+  GENERIC_CONFIRMATION_URL,
+  YOUR_DETAILS_PAGE_URL,
 } from '../../../constants/AppUrlConstants';
 
 const ChangeYourDetails = () => {
@@ -51,14 +58,18 @@ const ChangeYourDetails = () => {
       ],
     },
     {
-      type: FIELD_TEXT,
-      label: 'Telephone number',
-      fieldName: 'telephoneNumber',
+      type: FIELD_PHONE,
+      fieldName: 'phoneNumber',
       hint: 'For example, 7123123123',
+      label: 'Telephone number',
       validation: [
         {
           type: VALIDATE_REQUIRED,
-          message: 'Enter your telephone number',
+          message: 'Enter a telephone number',
+        },
+        {
+          type: VALIDATE_PHONE_NUMBER,
+          message: 'Enter a telephone number in the correct format',
         },
       ],
     },
