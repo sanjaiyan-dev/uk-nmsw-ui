@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   VOYAGE_CHECK_YOUR_ANSWERS,
   VOYAGE_CREW_UPLOAD_URL,
@@ -6,14 +6,17 @@ import {
   VOYAGE_GENERAL_DECLARATION_UPLOAD_URL,
   VOYAGE_PASSENGERS_URL,
   VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
+  YOUR_VOYAGES_URL,
 } from '../../constants/AppUrlConstants';
+import Message from '../../components/Message';
 
 const VoyageTaskList = () => {
+  const { state } = useLocation();
   const navigate = useNavigate();
   document.title = 'Report a voyage';
 
   // temp data until we can populate programatically
-  const voyageId = '123';
+  const declarationId = state?.declarationId;
   const reportStatus = 'Draft';
   const shipName = 'Snowplant';
   const voyageType = 'Departure from the UK';
@@ -33,6 +36,12 @@ const VoyageTaskList = () => {
   const classOptional = 'govuk-tag govuk-tag--blue app-task-list__tag';
   const classNotStarted = 'govuk-tag govuk-tag--grey app-task-list__tag';
   const classCannotStartYet = 'govuk-tag govuk-tag--grey app-task-list__tag';
+
+  if (!state?.declarationId) {
+    return (
+      <Message title="Something has gone wrong" redirectURL={YOUR_VOYAGES_URL} />
+    );
+  }
 
   return (
     <>
@@ -54,25 +63,25 @@ const VoyageTaskList = () => {
               <h2 className="app-task-list__section"><span className="app-task-list__section-number">1. </span>Upload documents</h2>
               <ul className="app-task-list__items">
                 <li className="app-task-list__item">
-                  <Link to={VOYAGE_GENERAL_DECLARATION_UPLOAD_URL} aria-describedby="generalDeclaration">
+                  <Link to={VOYAGE_GENERAL_DECLARATION_UPLOAD_URL} state={{ declarationId }}>
                     <span>General Declaration (FAL 1)</span>
                     <strong className={classCompleted} id="eligibility-status">{statusGeneralDeclaration}</strong>
                   </Link>
                 </li>
                 <li className="app-task-list__item">
-                  <Link to={VOYAGE_CREW_UPLOAD_URL} aria-describedby="generalDeclaration">
+                  <Link to={VOYAGE_CREW_UPLOAD_URL} state={{ declarationId }}>
                     <span>Crew details including supernumeraries (FAL 5)</span>
                     <strong className={classRequired} id="eligibility-status">{statusCrewDetails}</strong>
                   </Link>
                 </li>
                 <li className="app-task-list__item">
-                  <Link to={VOYAGE_PASSENGERS_URL} aria-describedby="generalDeclaration">
+                  <Link to={VOYAGE_PASSENGERS_URL} state={{ declarationId }}>
                     <span>Any passenger details (FAL 6)</span>
                     <strong className={classRequired} id="eligibility-status">{statusPassengerDetails}</strong>
                   </Link>
                 </li>
                 <li className="app-task-list__item">
-                  <Link to={VOYAGE_SUPPORTING_DOCS_UPLOAD_URL} aria-describedby="generalDeclaration">
+                  <Link to={VOYAGE_SUPPORTING_DOCS_UPLOAD_URL} state={{ declarationId }}>
                     <span>Supporting documents</span>
                     <strong className={classOptional} id="eligibility-status">{statusSupportingDocuments}</strong>
                   </Link>
@@ -85,15 +94,14 @@ const VoyageTaskList = () => {
                 <li className="app-task-list__item">
                   <Link
                     to={VOYAGE_CHECK_YOUR_ANSWERS}
-                    aria-describedby="generalDeclaration"
-                    state={{ voyageId }}
+                    state={{ declarationId }}
                   >
                     <span>Check answers and submit</span>
                     <strong className={classCannotStartYet} id="eligibility-status">{statusCheckYourAnswers}</strong>
                   </Link>
                 </li>
                 <li className="app-task-list__item">
-                  <Link to={VOYAGE_CHECK_YOUR_ANSWERS} aria-describedby="generalDeclaration">
+                  <Link to={VOYAGE_CHECK_YOUR_ANSWERS} state={{ declarationId }}>
                     Example not yet started
                     <strong className={classNotStarted} id="eligibility-status">{testStatus}</strong>
                   </Link>
@@ -105,7 +113,7 @@ const VoyageTaskList = () => {
             type="button"
             className="govuk-button govuk-button--warning"
             data-module="govuk-button"
-            onClick={() => navigate(VOYAGE_DELETE_DRAFT_CHECK_URL, { state: { shipName } })}
+            onClick={() => navigate(VOYAGE_DELETE_DRAFT_CHECK_URL, { state: { shipName, declarationId } })}
           >
             Delete draft
           </button>

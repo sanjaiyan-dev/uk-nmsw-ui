@@ -24,7 +24,7 @@ export const PRIVACY_URL = '/privacy-notice';
 // Voyage pages
 export const ERROR_CREW_DETAILS_UPLOAD_URL = '/create-voyage/check-crew-details';
 export const FORM_CONFIRMATION_URL = '/report-voyage/confirmation';
-export const VOYAGE_CHECK_YOUR_ANSWERS = '/your-voyages/check-your-answers';
+export const VOYAGE_CHECK_YOUR_ANSWERS = '/report-voyage/check-your-answers';
 export const VOYAGE_CREW_UPLOAD_URL = '/report-voyage/upload-crew-details';
 export const VOYAGE_CREW_CONFIRMATION_URL = '/report-voyage/crew-details-uploaded';
 export const VOYAGE_DELETE_DRAFT_CHECK_URL = '/report-voyage/confirm-delete-draft';

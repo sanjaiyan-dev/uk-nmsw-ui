@@ -1,34 +1,28 @@
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { DownloadFile } from '../../utils/DownloadFile';
 import {
-  MESSAGE_URL, SIGN_IN_URL, VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL, VOYAGE_GENERAL_DECLARATION_UPLOAD_URL, YOUR_VOYAGES_URL,
+  VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL,
+  YOUR_VOYAGES_URL,
 } from '../../constants/AppUrlConstants';
-import { TOKEN_INVALID } from '../../constants/AppAPIConstants';
+import Message from '../../components/Message';
 
 const VoyageUploadGeneralDeclaration = () => {
+  const { state } = useLocation();
   const navigate = useNavigate();
   document.title = 'Upload the General Declaration (FAL 1)';
 
-  const declarationId = '123';
-
   const handleSubmit = async () => {
-    try {
-      const response = await axios.post('SOME-END-POINT');
-      // TODO: set correct response when BE is ready
-      if (response.status === 200) {
-        navigate(VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL, { state: { fileType: 'General Declaration' } });
-      }
-    } catch (err) {
-      if (err?.response?.data?.message === TOKEN_INVALID) {
-        navigate(SIGN_IN_URL, { state: { declarationID: declarationId, redirectURL: VOYAGE_GENERAL_DECLARATION_UPLOAD_URL } });
-      } else {
-        navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: YOUR_VOYAGES_URL } });
-      }
-    }
+    console.log('Gen Dec', state?.declarationId);
+    // this will be refactored once we have the upload file component
+    // for now it just takes the declaration ID and passes it to the next page
+    navigate(VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL, { state: { fileType: 'General Declaration', declarationId: state?.declarationId } });
   };
 
-  // TODO: If state?.declarationId then set declarationId somewhere
+  if (!state?.declarationId) {
+    return (
+      <Message title="Something has gone wrong" redirectURL={YOUR_VOYAGES_URL} />
+    );
+  }
 
   return (
     <>
@@ -47,15 +41,6 @@ const VoyageUploadGeneralDeclaration = () => {
             onClick={handleSubmit}
           >
             Save and continue
-          </button>
-          <hr />
-          <button
-            type="button"
-            className="govuk-button"
-            data-module="govuk-button"
-            onClick={() => navigate(VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL, { state: { fileType: 'General Declaration' } })}
-          >
-            Bypass fake API call
           </button>
         </div>
       </div>

@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { DISPLAY_GROUPED, FIELD_RADIO, SINGLE_PAGE_FORM } from '../../constants/AppConstants';
 import { VOYAGE_TASK_LIST_URL, YOUR_VOYAGES_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
+import Message from '../../components/Message';
 
 const VoyageDeleteDraftCheck = () => {
   const { state } = useLocation();
@@ -45,9 +46,17 @@ const VoyageDeleteDraftCheck = () => {
     if (formData?.formData?.deleteDraft === 'deleteDraftYes') {
       navigate(YOUR_VOYAGES_URL, { state: { confirmationBanner: { message: `Report for ${state?.shipName} deleted.` } } });
     } else if (formData?.formData?.deleteDraft === 'deleteDraftNo') {
-      navigate(VOYAGE_TASK_LIST_URL);
+      navigate(VOYAGE_TASK_LIST_URL, { state: { declarationId: state?.declarationId } });
     }
   };
+
+  if (!state?.declarationId) {
+    return (
+      <Message title="Something has gone wrong" redirectURL={YOUR_VOYAGES_URL} />
+    );
+  }
+
+  console.log('Delete draft page, declaration id', state?.declarationId);
 
   return (
     <DisplayForm

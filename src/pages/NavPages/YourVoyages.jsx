@@ -1,6 +1,15 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { CREATE_VOYAGE_ENDPOINT } from '../../constants/AppAPIConstants';
+import {
+  SIGN_IN_URL,
+  VOYAGE_GENERAL_DECLARATION_UPLOAD_URL,
+  YOUR_VOYAGES_URL,
+} from '../../constants/AppUrlConstants';
 import { SERVICE_NAME } from '../../constants/AppConstants';
+import Message from '../../components/Message';
+import Auth from '../../utils/Auth';
 
 const voyageList = [
   {
@@ -24,14 +33,43 @@ const voyageList = [
 
 const YourVoyages = () => {
   const { state } = useLocation();
+  const navigate = useNavigate();
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [voyageData, setVoyageData] = useState();
 
   document.title = SERVICE_NAME;
-  console.log(state?.confirmationBanner);
+  console.log('confbanner', state?.confirmationBanner);
+
+  const handleClick = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.post(CREATE_VOYAGE_ENDPOINT, {}, {
+        headers: { Authorization: `Bearer ${Auth.retrieveToken()}` },
+      });
+      if (response.status === 200) {
+        console.log('declaration id', response.data.id);
+        navigate(VOYAGE_GENERAL_DECLARATION_UPLOAD_URL, { state: { declarationId: response.data.id } });
+      }
+    } catch (err) {
+      // 422 missing segments = missing bearer token for this endpoint
+      if (err?.response?.status === 422) {
+        navigate(SIGN_IN_URL, { state: { redirectURL: YOUR_VOYAGES_URL } });
+      } else {
+        setIsError(true);
+      }
+    }
+  };
 
   useEffect(() => {
     setVoyageData(voyageList);
   }, []);
+
+  if (isError) {
+    return (
+      <Message title="Something has gone wrong" redirectURL={YOUR_VOYAGES_URL} />
+    );
+  }
 
   return (
     <div className="govuk-grid-row">
@@ -44,7 +82,10 @@ const YourVoyages = () => {
         )}
         <button
           className="govuk-button"
+          data-module="govuk-button"
+          disabled={isLoading}
           type="button"
+          onClick={() => { handleClick(); }}
         >
           Report a voyage
         </button>

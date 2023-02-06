@@ -1,9 +1,17 @@
-import { useNavigate } from 'react-router-dom';
-import { VOYAGE_CREW_CONFIRMATION_URL } from '../../constants/AppUrlConstants';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { VOYAGE_CREW_CONFIRMATION_URL, YOUR_VOYAGES_URL } from '../../constants/AppUrlConstants';
+import Message from '../../components/Message';
 
 const VoyageCrew = () => {
+  const { state } = useLocation();
   const navigate = useNavigate();
   document.title = 'Upload the crew details including supernumeraries (FAL 5)';
+
+  if (!state?.declarationId) {
+    return (
+      <Message title="Something has gone wrong" redirectURL={YOUR_VOYAGES_URL} />
+    );
+  }
 
   return (
     <>
@@ -18,7 +26,7 @@ const VoyageCrew = () => {
             type="button"
             className="govuk-button"
             data-module="govuk-button"
-            onClick={() => navigate(VOYAGE_CREW_CONFIRMATION_URL, { state: { fileType: 'Crew details' } })}
+            onClick={() => navigate(VOYAGE_CREW_CONFIRMATION_URL, { state: { fileType: 'Crew details', declarationId: state?.declarationId } })}
           >
             Save and continue
           </button>
