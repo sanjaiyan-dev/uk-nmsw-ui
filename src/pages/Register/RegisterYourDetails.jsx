@@ -64,7 +64,7 @@ const RegisterYourDetails = () => {
     },
     {
       type: FIELD_PHONE,
-      fieldName: 'phoneNumber',
+      fieldName: 'telephoneNumber',
       hint: 'For example, 7123123123',
       label: 'Telephone number',
       validation: [
@@ -122,8 +122,32 @@ const RegisterYourDetails = () => {
   ];
 
   const handleSubmit = async (formData) => {
-    const dataToSubmit = { ...state?.dataToSubmit, ...formData.formData };
-    navigate(REGISTER_PASSWORD_URL, { state: { dataToSubmit } });
+
+    /* International Dialing Code and Phone Number need to be merged into
+     * a single number for the eventual PATCH to the endpoint to create
+     * the user.
+     * We let the user enter the number with +-.() and spaces as that's
+     * common for phone numbers
+     * And then here we the special characters and spacesout
+     * Then we add () around the dialling code and concat with the telephone number
+     * and add it to the raw data set to be passed on
+     */
+
+    const strippedDiallingCode = formData.formData.diallingCode.replace(/[()+-. ]/g, '');
+    const strippedTelephoneNumber = formData.formData.telephoneNumber.replace(/[()+-. ]/g, '');
+    const combinedPhoneNumber = `(${strippedDiallingCode})${strippedTelephoneNumber}`;
+
+    const dataToSubmit = {
+      ...state?.dataToSubmit,
+      ...formData.formData,
+      phoneNumber: combinedPhoneNumber,
+    };
+
+    console.log(dataToSubmit)
+
+
+    // const dataToSubmit = { ...state?.dataToSubmit, ...formData.formData };
+    // navigate(REGISTER_PASSWORD_URL, { state: { dataToSubmit } });
   };
 
   /*
@@ -133,11 +157,11 @@ const RegisterYourDetails = () => {
    * TODO: once we have email verification flow journey replace REGISTER_EMAIL_URL_VERIFIED
    * with a more appropriate page
    */
-  useEffect(() => {
-    if (!state || !state.dataToSubmit || !state.dataToSubmit.emailAddress || !state.dataToSubmit.token) {
-      navigate(ERROR_VERIFICATION_FAILED_URL);
-    }
-  }, [state]);
+  // useEffect(() => {
+  //   if (!state || !state.dataToSubmit || !state.dataToSubmit.emailAddress || !state.dataToSubmit.token) {
+  //     navigate(ERROR_VERIFICATION_FAILED_URL);
+  //   }
+  // }, [state]);
 
   return (
     <DisplayForm

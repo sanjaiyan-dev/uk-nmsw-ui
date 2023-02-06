@@ -63,7 +63,7 @@ const ChangeYourDetails = () => {
     },
     {
       type: FIELD_PHONE,
-      fieldName: 'phoneNumber',
+      fieldName: 'telephoneNumber',
       hint: 'For example, 7123123123',
       label: 'Telephone number',
       validation: [
