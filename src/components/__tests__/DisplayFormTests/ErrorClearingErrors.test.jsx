@@ -4,11 +4,9 @@ import userEvent from '@testing-library/user-event';
 import {
   DISPLAY_GROUPED,
   FIELD_CONDITIONAL,
-  // FIELD_PHONE,
   FIELD_TEXT,
   SINGLE_PAGE_FORM,
   VALIDATE_CONDITIONAL,
-  // VALIDATE_PHONE_NUMBER,
   VALIDATE_REQUIRED,
 } from '../../../constants/AppConstants';
 import DisplayForm from '../../DisplayForm';
@@ -107,24 +105,6 @@ describe('Display Form', () => {
       ],
     },
   ];
-  // const formRequiredPhoneNumberInput = [
-  //   {
-  //     type: FIELD_PHONE,
-  //     label: 'Phone input',
-  //     hint: 'This is a hint for a phone input',
-  //     fieldName: 'testPhoneField',
-  //     validation: [
-  //       {
-  //         type: VALIDATE_REQUIRED,
-  //         message: 'Enter your phone value',
-  //       },
-  //       {
-  //         type: VALIDATE_PHONE_NUMBER,
-  //         message: 'Enter your phone value',
-  //       },
-  //     ],
-  //   },
-  // ];
   const formRequiredTextInput = [
     {
       type: FIELD_TEXT,
@@ -198,47 +178,4 @@ describe('Display Form', () => {
     // // Input field does not have the error class attached
     expect(screen.getByTestId('breedOfCat-container').outerHTML).toEqual('<div data-testid="breedOfCat-container" class="govuk-radios__conditional govuk-radios__conditional--hidden"><div class="govuk-form-group"><label class="govuk-label" for="breedOfCat-input">Breed of cat</label><div id="breedOfCat-hint" class="govuk-hint"></div><p id="breedOfCat-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> </p><input class="govuk-input govuk-!-width-one-third" id="breedOfCat-input" name="breedOfCat" type="text" value=""></div></div>');
   });
-
-  // it('should clear a phone number field error if a user types in either field', async () => {
-  //   const user = userEvent.setup();
-  //   render(
-  //     <MemoryRouter>
-  //       <DisplayForm
-  //         formId="testForm"
-  //         fields={formRequiredPhoneNumberInput}
-  //         formActions={formActionsSubmitOnly}
-  //         formType={SINGLE_PAGE_FORM}
-  //         handleSubmit={handleSubmit}
-  //       />
-  //     </MemoryRouter>,
-  //   );
-
-  //   // trigger error
-  //   await user.click(screen.getByRole('button', { name: 'Submit test button' }));
-  //   expect(screen.getAllByText('Enter your phone value')).toHaveLength(2);
-  //   expect(screen.getByRole('button', { name: 'Enter your phone value' }).outerHTML).toEqual('<button class="govuk-button--text" type="button">Enter your phone value</button>');
-  //   expect(screen.getByRole('textbox', { name: 'Country phone code field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code govuk-input--error" id="testPhoneField-input[0]" name="testPhoneFieldCountryPhoneCode" type="text" inputmode="numeric" aria-describedby="testPhoneField-hint" value="">');
-  //   expect(screen.getByRole('textbox', { name: 'Phone number field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testPhoneField-input[1]" name="testPhoneFieldPhoneNumber" type="tel" autocomplete="tel" aria-describedby="testPhoneField-hint" value="">');
-
-  //   // typing in phone number field should clear error
-  //   await user.type(screen.getByRole('textbox', { name: 'Phone number field' }), '1');
-  //   expect(screen.queryByText('Enter your phone value')).not.toBeInTheDocument();
-  //   expect(screen.getByRole('textbox', { name: 'Country phone code field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code" id="testPhoneField-input[0]" name="testPhoneFieldCountryPhoneCode" type="text" inputmode="numeric" aria-describedby="testPhoneField-hint" value="">');
-  //   expect(screen.getByRole('textbox', { name: 'Phone number field' }).outerHTML).toEqual('<input class="govuk-input" id="testPhoneField-input[1]" name="testPhoneFieldPhoneNumber" type="tel" autocomplete="tel" aria-describedby="testPhoneField-hint" value="1">');
-
-  //   // trigger error again
-  //   screen.getByRole('textbox', { name: 'Phone number field' }).setSelectionRange(0, 14);
-  //   await user.keyboard('{delete}');
-  //   await user.click(screen.getByRole('button', { name: 'Submit test button' }));
-  //   expect(screen.getAllByText('Enter your phone value')).toHaveLength(2);
-  //   expect(screen.getByRole('button', { name: 'Enter your phone value' }).outerHTML).toEqual('<button class="govuk-button--text" type="button">Enter your phone value</button>');
-  //   expect(screen.getByRole('textbox', { name: 'Country phone code field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code govuk-input--error" id="testPhoneField-input[0]" name="testPhoneFieldCountryPhoneCode" type="text" inputmode="numeric" aria-describedby="testPhoneField-hint" value="">');
-  //   expect(screen.getByRole('textbox', { name: 'Phone number field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testPhoneField-input[1]" name="testPhoneFieldPhoneNumber" type="tel" autocomplete="tel" aria-describedby="testPhoneField-hint" value="">');
-
-  //   // typing in Country phone code field should clear error
-  //   await user.type(screen.getByRole('textbox', { name: 'Country phone code field' }), '1');
-  //   expect(screen.queryByText('Enter your phone value')).not.toBeInTheDocument();
-  //   expect(screen.getByRole('textbox', { name: 'Country phone code field' }).outerHTML).toEqual('<input class="govuk-input govuk-input--width-5 phoneNumber-input_country-code" id="testPhoneField-input[0]" name="testPhoneFieldCountryPhoneCode" type="text" inputmode="numeric" aria-describedby="testPhoneField-hint" value="1">');
-  //   expect(screen.getByRole('textbox', { name: 'Phone number field' }).outerHTML).toEqual('<input class="govuk-input" id="testPhoneField-input[1]" name="testPhoneFieldPhoneNumber" type="tel" autocomplete="tel" aria-describedby="testPhoneField-hint" value="">');
-  // });
 });
