@@ -3,10 +3,10 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import {
   FIELD_RADIO,
   FIELD_TEXT,
-  FIELD_PHONE,
+  // FIELD_PHONE,
   MULTI_PAGE_FORM,
   VALIDATE_MAX_LENGTH,
-  VALIDATE_PHONE_NUMBER,
+  // VALIDATE_PHONE_NUMBER,
   VALIDATE_REQUIRED,
   DISPLAY_GROUPED,
 } from '../../constants/AppConstants';
@@ -46,21 +46,21 @@ const RegisterYourDetails = () => {
         },
       ],
     },
-    {
-      type: FIELD_PHONE,
-      fieldName: 'phoneNumber',
-      label: 'Phone number',
-      validation: [
-        {
-          type: VALIDATE_REQUIRED,
-          message: 'Enter your phone number',
-        },
-        {
-          type: VALIDATE_PHONE_NUMBER,
-          message: 'Enter your country code and phone number',
-        },
-      ],
-    },
+    // {
+    //   type: FIELD_PHONE,
+    //   fieldName: 'phoneNumber',
+    //   label: 'Phone number',
+    //   validation: [
+    //     {
+    //       type: VALIDATE_REQUIRED,
+    //       message: 'Enter your phone number',
+    //     },
+    //     {
+    //       type: VALIDATE_PHONE_NUMBER,
+    //       message: 'Enter your country code and phone number',
+    //     },
+    //   ],
+    // },
     {
       type: FIELD_TEXT,
       fieldName: 'country',
