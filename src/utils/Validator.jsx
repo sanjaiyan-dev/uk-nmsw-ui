@@ -53,7 +53,7 @@ const validateField = ({ type, value, condition }) => {
       }
       break;
     case VALIDATE_PHONE_NUMBER:
-      if (value && !/^\([0-9]+\)[0-9]+$/i.test(value)) {
+      if (value && !/^[+(\s.\-/\d)]{0,}$/i.test(value)) {
         response = 'error';
       }
       break;
