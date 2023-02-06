@@ -47,6 +47,22 @@ const RegisterYourDetails = () => {
       ],
     },
     {
+      type: FIELD_TEXT,
+      label: 'International dialling code',
+      fieldName: 'diallingCode',
+      hint: 'For example, 44 for UK',
+      validation: [
+        {
+          type: VALIDATE_REQUIRED,
+          message: 'Enter your international dialling code',
+        },
+        {
+          type: VALIDATE_PHONE_NUMBER,
+          message: 'Enter an international dialling code in the correct format',
+        },
+      ],
+    },
+    {
       type: FIELD_PHONE,
       fieldName: 'phoneNumber',
       hint: 'For example, 7123123123',

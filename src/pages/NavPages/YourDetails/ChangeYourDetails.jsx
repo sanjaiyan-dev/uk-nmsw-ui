@@ -55,6 +55,10 @@ const ChangeYourDetails = () => {
           type: VALIDATE_REQUIRED,
           message: 'Enter your international dialling code',
         },
+        {
+          type: VALIDATE_PHONE_NUMBER,
+          message: 'Enter  an international dialling code in the correct format',
+        },
       ],
     },
     {
