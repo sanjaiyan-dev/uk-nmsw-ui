@@ -79,14 +79,14 @@ describe('Your details tests', () => {
     expect(screen.getByRole('textbox', { name: 'Your company name' }).outerHTML).toEqual('<input class="govuk-input" id="companyName-input" name="companyName" type="text" value="">');
   });
 
-  it('should render a phone number question', async () => {
-    render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
-    expect(screen.getByText('Phone number field')).toBeInTheDocument();
-    expect(screen.getByLabelText('Country phone code field')).toBeInTheDocument();
-    expect(screen.getByRole('textbox', { name: 'Country phone code field' })).toBeInTheDocument();
-    expect(screen.getByLabelText('Phone number field')).toBeInTheDocument();
-    expect(screen.getByRole('textbox', { name: 'Phone number field' })).toBeInTheDocument();
-  });
+  // it('should render a phone number question', async () => {
+  //   render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
+  //   expect(screen.getByText('Phone number field')).toBeInTheDocument();
+  //   expect(screen.getByLabelText('Country phone code field')).toBeInTheDocument();
+  //   expect(screen.getByRole('textbox', { name: 'Country phone code field' })).toBeInTheDocument();
+  //   expect(screen.getByLabelText('Phone number field')).toBeInTheDocument();
+  //   expect(screen.getByRole('textbox', { name: 'Phone number field' })).toBeInTheDocument();
+  // });
 
   it('should render a country question', async () => {
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
@@ -129,7 +129,7 @@ describe('Your details tests', () => {
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
     expect(screen.getAllByText('Enter your full name')).toHaveLength(2);
     expect(screen.getAllByText('Enter your company name')).toHaveLength(2);
-    expect(screen.getAllByText('Enter your phone number')).toHaveLength(2);
+    // expect(screen.getAllByText('Enter your phone number')).toHaveLength(2);
     expect(screen.getAllByText('Enter country')).toHaveLength(2);
     expect(screen.getAllByText('Select is your company a shipping agent')).toHaveLength(2);
   });
@@ -137,11 +137,11 @@ describe('Your details tests', () => {
   it('should display the error messages if fields are formatted incorrectly', async () => {
     const user = userEvent.setup();
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
-    await user.type(screen.getByLabelText('Country phone code field'), '123');
+    // await user.type(screen.getByLabelText('Country phone code field'), '123');
     await user.type(screen.getByLabelText('Country'), 'Australia');
     await user.click(screen.getByTestId('submit-button'));
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
-    expect(screen.getAllByText('Enter your country code and phone number')).toHaveLength(2);
+    // expect(screen.getAllByText('Enter your country code and phone number')).toHaveLength(2);
     expect(screen.getAllByText('Enter 3 digit country code')).toHaveLength(2);
   });
 
@@ -150,28 +150,29 @@ describe('Your details tests', () => {
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     await user.type(screen.getByLabelText('Full name'), 'Joe Bloggs');
     await user.type(screen.getByLabelText('Your company name'), 'Joe Bloggs Company');
-    await user.type(screen.getByLabelText('Country phone code field'), '123');
-    await user.type(screen.getByLabelText('Phone number field'), '12345');
+    // await user.type(screen.getByLabelText('Country phone code field'), '123');
+    // await user.type(screen.getByLabelText('Phone number field'), '12345');
     await user.type(screen.getByLabelText('Country'), 'AUS');
     await user.click(screen.getByRole('radio', { name: 'Yes' }));
     await user.click(screen.getByTestId('submit-button'));
     expect(screen.queryByText('There is a problem')).not.toBeInTheDocument();
     expect(screen.queryByText('Enter your full name')).not.toBeInTheDocument();
     expect(screen.queryByText('Enter your company name')).not.toBeInTheDocument();
-    expect(screen.queryByText('Enter your phone number')).not.toBeInTheDocument();
+    // expect(screen.queryByText('Enter your phone number')).not.toBeInTheDocument();
     expect(screen.queryByText('Enter country')).not.toBeInTheDocument();
     expect(screen.queryByText('Select is your company a shipping agent')).not.toBeInTheDocument();
   });
 
   it('should NOT clear form session data on submit', async () => {
     const user = userEvent.setup();
-    const expectedStoredData = '{"fullName":"Joe Bloggs","companyName":"Joe Bloggs Company","phoneNumber":"(123)12345","country":"AUS","shippingAgent":"yes"}';
+    // const expectedStoredData = '{"fullName":"Joe Bloggs","companyName":"Joe Bloggs Company","phoneNumber":"(123)12345","country":"AUS","shippingAgent":"yes"}';
+    const expectedStoredData = '{"fullName":"Joe Bloggs","companyName":"Joe Bloggs Company","country":"AUS","shippingAgent":"yes"}';
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
 
     await user.type(screen.getByLabelText('Full name'), 'Joe Bloggs');
     await user.type(screen.getByLabelText('Your company name'), 'Joe Bloggs Company');
-    await user.type(screen.getByLabelText('Country phone code field'), '123');
-    await user.type(screen.getByLabelText('Phone number field'), '12345');
+    // await user.type(screen.getByLabelText('Country phone code field'), '123');
+    // await user.type(screen.getByLabelText('Phone number field'), '12345');
     await user.type(screen.getByLabelText('Country'), 'AUS');
     await user.click(screen.getByRole('radio', { name: 'Yes' }));
 

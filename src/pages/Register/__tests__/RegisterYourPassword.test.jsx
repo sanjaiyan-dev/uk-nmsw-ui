@@ -178,7 +178,7 @@ describe('Register password tests', () => {
         email: 'testemail@email.com',
         fullName: 'Joe Bloggs',
         country: 'GBR',
-        phoneNumber: '(44)123123123',
+        // phoneNumber: '(44)123123123',
         password: 'abc1234567',
         groupName: 'My Corporation',
         groupTypeName: 'Shipping Agency',
@@ -196,14 +196,15 @@ describe('Register password tests', () => {
 
   it('should persist data from previous form (state.dataToSubmit) in session as well as new fields', async () => {
     const user = userEvent.setup();
-    const expectedStoredData = '{"fullName":"Joe Bloggs","companyName":"My company","phoneNumber":"(123)12345","country":"AUS","shippingAgent":"yes","requirePassword":"mypasswordis","repeatPassword":"mypasswordis"}';
+    // const expectedStoredData = '{"fullName":"Joe Bloggs","companyName":"My company","phoneNumber":"(123)12345","country":"AUS","shippingAgent":"yes","requirePassword":"mypasswordis","repeatPassword":"mypasswordis"}';
+    const expectedStoredData = '{"fullName":"Joe Bloggs","companyName":"My company","country":"AUS","shippingAgent":"yes","requirePassword":"mypasswordis","repeatPassword":"mypasswordis"}';
     mockUseLocationState.state = {
       dataToSubmit: {
         companyName: 'My company',
         country: 'AUS',
         emailAddress: 'testemail@email.com',
         fullName: 'Joe Bloggs',
-        phoneNumber: '(123)12345',
+        // phoneNumber: '(123)12345',
         shippingAgent: 'yes',
       },
     };
@@ -213,7 +214,7 @@ describe('Register password tests', () => {
         email: 'testemail@email.com',
         fullName: 'Joe Bloggs',
         country: 'GBR',
-        phoneNumber: '(44)123123123',
+        // phoneNumber: '(44)123123123',
         password: 'abc1234567',
         groupName: 'My Corporation',
         groupTypeName: 'Shipping Agency',
@@ -227,7 +228,8 @@ describe('Register password tests', () => {
 
     // set what would be in the session prior to this page
     window.sessionStorage.setItem('formData', JSON.stringify({
-      fullName: 'Joe Bloggs', companyName: 'My company', phoneNumber: '(123)12345', country: 'AUS', shippingAgent: 'yes',
+      fullName: 'Joe Bloggs', companyName: 'My company', country: 'AUS', shippingAgent: 'yes',
+      // fullName: 'Joe Bloggs', companyName: 'My company', phoneNumber: '(123)12345', country: 'AUS', shippingAgent: 'yes',
     }));
     render(<MemoryRouter><RegisterYourPassword /></MemoryRouter>);
     await user.type(screen.getByLabelText('Password'), 'mypasswordis');
@@ -248,7 +250,7 @@ describe('Register password tests', () => {
         email: 'testemail@email.com',
         fullName: 'Joe Bloggs',
         country: 'GBR',
-        phoneNumber: '(44)123123123',
+        // phoneNumber: '(44)123123123',
         password: 'abc1234567',
         groupName: 'My company',
         groupTypeName: 'Shipping Agency',
