@@ -1,4 +1,4 @@
-export const FormatPhoneNumberForSubmission = ({ diallingCode, telephoneNumber }) => {
+export const MergePhoneNumberFields = ({ diallingCode, telephoneNumber }) => {
 /* International Dialing Code and Phone Number need to be merged into
      * a single number for the eventual PATCH to the endpoint to create
      * the user.
@@ -16,7 +16,7 @@ export const FormatPhoneNumberForSubmission = ({ diallingCode, telephoneNumber }
   return combinedPhoneNumber;
 };
 
-export const FormatPhoneNumberForDisplay = (phoneNumber) => {
+export const SplitPhoneNumberFields = (phoneNumber) => {
   const diallingCode = phoneNumber.split('(').pop().split(')')[0];
   const telephoneNumber = phoneNumber.split(')')[1];
 

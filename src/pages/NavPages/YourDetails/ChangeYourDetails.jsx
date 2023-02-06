@@ -13,7 +13,7 @@ import {
   GENERIC_CONFIRMATION_URL,
   YOUR_DETAILS_PAGE_URL,
 } from '../../../constants/AppUrlConstants';
-import { FormatPhoneNumberForSubmission } from '../../../utils/FormatPhoneNumber';
+import { MergePhoneNumberFields } from '../../../utils/FormatPhoneNumber';
 
 const ChangeYourDetails = () => {
   const navigate = useNavigate();
@@ -100,7 +100,7 @@ const ChangeYourDetails = () => {
     // Format data in preparation for when we add the PATCH
     const dataToSubmit = {
       ...formData.formData,
-      phoneNumber: FormatPhoneNumberForSubmission({ diallingCode: formData.formData.diallingCode, telephoneNumber: formData.formData.telephoneNumber }),
+      phoneNumber: MergePhoneNumberFields({ diallingCode: formData.formData.diallingCode, telephoneNumber: formData.formData.telephoneNumber }),
     };
     console.log(dataToSubmit);
 

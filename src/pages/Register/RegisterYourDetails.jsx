@@ -12,7 +12,7 @@ import {
 } from '../../constants/AppConstants';
 import { ERROR_VERIFICATION_FAILED_URL, REGISTER_PASSWORD_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
-import { FormatPhoneNumberForSubmission } from '../../utils/FormatPhoneNumber';
+import { MergePhoneNumberFields } from '../../utils/FormatPhoneNumber';
 
 const RegisterYourDetails = () => {
   const navigate = useNavigate();
@@ -126,7 +126,7 @@ const RegisterYourDetails = () => {
     const dataToSubmit = {
       ...state?.dataToSubmit,
       ...formData.formData,
-      phoneNumber: FormatPhoneNumberForSubmission({ diallingCode: formData.formData.diallingCode, telephoneNumber: formData.formData.telephoneNumber }),
+      phoneNumber: MergePhoneNumberFields({ diallingCode: formData.formData.diallingCode, telephoneNumber: formData.formData.telephoneNumber }),
     };
 
     navigate(REGISTER_PASSWORD_URL, { state: { dataToSubmit } });
