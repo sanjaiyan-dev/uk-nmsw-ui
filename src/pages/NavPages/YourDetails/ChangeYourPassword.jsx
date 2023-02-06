@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import DisplayForm from '../../../components/DisplayForm';
 import {
+  DISPLAY_PASSWORD,
   FIELD_PASSWORD,
   SINGLE_PAGE_FORM,
   VALIDATE_FIELD_MATCH_CASE_SENSITIVE,
@@ -38,13 +39,9 @@ const ChangeYourPassword = () => {
     },
     {
       type: FIELD_PASSWORD,
-      extraText: {
-        title: 'Enter a new password',
-        body: 'Your new password needs to be 10 or more characters. To help you create a long and strong password, the National Cyber Security Centre recommends using 3 random words.',
-        hint: 'You can use a mix of letters, numbers or symbols in these three words.',
-      },
       fieldName: 'requirePassword',
       label: 'New password',
+      displayType: DISPLAY_PASSWORD,
       validation: [
         {
           type: VALIDATE_REQUIRED,

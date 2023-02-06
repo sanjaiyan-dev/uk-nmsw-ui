@@ -11,6 +11,7 @@ import {
   FIELD_PHONE,
   FIELD_TEXT,
   FIELD_RADIO,
+  DISPLAY_PASSWORD,
 } from '../../constants/AppConstants';
 import InputAutocomplete from './InputAutocomplete';
 import InputConditional from './InputConditional';
@@ -99,19 +100,36 @@ const GroupedInputs = ({
 );
 
 const SingleInput = ({
-  error, extraText, fieldName, fieldToReturn, hint, label,
+  error, fieldName, fieldToReturn, hint, label,
 }) => (
   <div className="govuk-grid-row">
-    {extraText
-      && (
-        <div className="govuk-grid-column-two-thirds">
-          <p className="govuk-body govuk-!-font-weight-bold">{extraText?.title}</p>
-          <p className="govuk-body">{extraText?.body}</p>
-          <p className="govuk-body">{extraText?.hint}</p>
-        </div>
-      )}
     <div className="govuk-grid-column-one-half">
+      <div className={error ? 'govuk-form-group govuk-form-group--error' : 'govuk-form-group'}>
+        <label className="govuk-label" htmlFor={`${fieldName}-input`}>
+          {label}
+        </label>
+        <div id={`${fieldName}-hint`} className="govuk-hint">
+          {hint}
+        </div>
+        <p id={`${fieldName}-error`} className="govuk-error-message">
+          <span className="govuk-visually-hidden">Error:</span> {error}
+        </p>
+        {fieldToReturn}
+      </div>
+    </div>
+  </div>
+);
 
+const PasswordInput = ({
+  error, fieldName, fieldToReturn, hint, label,
+}) => (
+  <div className="govuk-grid-row">
+    <div className="govuk-grid-column-two-thirds">
+      <p className="govuk-body govuk-!-font-weight-bold">Enter a new password</p>
+      <p className="govuk-body">Your new password needs to be 10 or more characters. To help you create a long and strong password, the National Cyber Security Centre recommends using 3 random words.</p>
+      <p className="govuk-body">You can use a mix of letters, numbers or symbols in these three words.</p>
+    </div>
+    <div className="govuk-grid-column-one-half">
       <div className={error ? 'govuk-form-group govuk-form-group--error' : 'govuk-form-group'}>
         <label className="govuk-label" htmlFor={`${fieldName}-input`}>
           {label}
@@ -239,7 +257,16 @@ const determineFieldType = ({
         && (
           <SingleInput
             error={error}
-            extraText={fieldDetails?.extraText}
+            fieldName={fieldDetails.fieldName}
+            fieldToReturn={fieldToReturn}
+            hint={fieldDetails.hint}
+            label={fieldDetails.label}
+          />
+        )}
+      {displayType === DISPLAY_PASSWORD
+        && (
+          <PasswordInput
+            error={error}
             fieldName={fieldDetails.fieldName}
             fieldToReturn={fieldToReturn}
             hint={fieldDetails.hint}
@@ -263,13 +290,6 @@ determineFieldType.propTypes = {
       linkText: PropTypes.string,
       type: PropTypes.string.isRequired,
       value: PropTypes.string,
-      extraText: PropTypes.objectOf(
-        PropTypes.shape({
-          title: PropTypes.string,
-          body: PropTypes.string,
-          hint: PropTypes.string,
-        }),
-      ),
     }),
   ),
   parentHandleChange: PropTypes.func.isRequired,
@@ -299,11 +319,12 @@ SingleInput.propTypes = {
   fieldToReturn: PropTypes.object.isRequired,
   hint: PropTypes.string,
   label: PropTypes.string.isRequired,
-  extraText: PropTypes.objectOf(
-    PropTypes.shape({
-      title: PropTypes.string,
-      body: PropTypes.string,
-      hint: PropTypes.string,
-    }),
-  ),
+};
+
+PasswordInput.propTypes = {
+  error: PropTypes.string,
+  fieldName: PropTypes.string.isRequired,
+  fieldToReturn: PropTypes.object.isRequired,
+  hint: PropTypes.string,
+  label: PropTypes.string.isRequired,
 };
