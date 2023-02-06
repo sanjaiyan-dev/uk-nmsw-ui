@@ -9,6 +9,7 @@ export const DISPLAY_PASSWORD = 'password';
 // Forms: identifiers
 export const EXPANDED_DETAILS = 'ExpandedDetails';
 export const MULTI_PAGE_FORM = 'multiPageForm';
+export const PASSWORD_FORM = 'passwordForm';
 export const SIGN_IN_FORM = 'signInForm';
 export const SINGLE_PAGE_FORM = 'singlePageForm';
 // Forms: input types

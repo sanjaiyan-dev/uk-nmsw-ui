@@ -9,6 +9,7 @@ import {
   EXPANDED_DETAILS,
   FIELD_CONDITIONAL,
   FIELD_PASSWORD,
+  PASSWORD_FORM,
   SIGN_IN_FORM,
   SINGLE_PAGE_FORM,
 } from '../constants/AppConstants';
@@ -85,7 +86,7 @@ const DisplayForm = ({
        * we do not clear the session for multipage forms or sign in form
        * as they have different needs
       */
-      if (formType === SINGLE_PAGE_FORM) {
+      if (formType === SINGLE_PAGE_FORM || formType === PASSWORD_FORM) {
         sessionStorage.removeItem('formData');
       }
     } else {
@@ -203,11 +204,13 @@ const DisplayForm = ({
         {pageHeading && <h1 className="govuk-heading-xl govuk-grid-column-full">{pageHeading}</h1>}
       </div>
 
+      {formType !== PASSWORD_FORM && (
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-three-quarters below-h1">
           {children}
         </div>
       </div>
+      )}
 
       <div className="govuk-grid-row">
         <form id={formId} className="govuk-grid-column-full" autoComplete="off">
@@ -233,6 +236,7 @@ const DisplayForm = ({
                       error: error?.message,
                       fieldDetails: field,
                       parentHandleChange: handleChange,
+                      children,
                     })
                   }
                 </div>

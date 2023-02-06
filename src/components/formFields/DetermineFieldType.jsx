@@ -121,14 +121,10 @@ const SingleInput = ({
 );
 
 const PasswordInput = ({
-  error, fieldName, fieldToReturn, hint, label,
+  error, children, fieldName, fieldToReturn, hint, label,
 }) => (
   <div className="govuk-grid-row">
-    <div className="govuk-grid-column-two-thirds">
-      <p className="govuk-body govuk-!-font-weight-bold">Enter a new password</p>
-      <p className="govuk-body">Your new password needs to be 10 or more characters. To help you create a long and strong password, the National Cyber Security Centre recommends using 3 random words.</p>
-      <p className="govuk-body">You can use a mix of letters, numbers or symbols in these three words.</p>
-    </div>
+    {children}
     <div className="govuk-grid-column-one-half">
       <div className={error ? 'govuk-form-group govuk-form-group--error' : 'govuk-form-group'}>
         <label className="govuk-label" htmlFor={`${fieldName}-input`}>
@@ -147,7 +143,7 @@ const PasswordInput = ({
 );
 
 const determineFieldType = ({
-  allErrors, error, fieldDetails, parentHandleChange,
+  allErrors, children, error, fieldDetails, parentHandleChange,
 }) => {
   const displayType = fieldDetails.displayType ? fieldDetails.displayType : DISPLAY_SINGLE;
   let fieldToReturn;
@@ -271,7 +267,9 @@ const determineFieldType = ({
             fieldToReturn={fieldToReturn}
             hint={fieldDetails.hint}
             label={fieldDetails.label}
-          />
+          >
+            {children}
+          </PasswordInput>
         )}
     </>
   );
@@ -281,6 +279,7 @@ export default determineFieldType;
 
 determineFieldType.propTypes = {
   allErrors: PropTypes.array,
+  children: PropTypes.node,
   error: PropTypes.string,
   fieldDetails: PropTypes.objectOf(
     PropTypes.shape({
@@ -323,6 +322,7 @@ SingleInput.propTypes = {
 
 PasswordInput.propTypes = {
   error: PropTypes.string,
+  children: PropTypes.node,
   fieldName: PropTypes.string.isRequired,
   fieldToReturn: PropTypes.object.isRequired,
   hint: PropTypes.string,

@@ -3,7 +3,7 @@ import DisplayForm from '../../../components/DisplayForm';
 import {
   DISPLAY_PASSWORD,
   FIELD_PASSWORD,
-  SINGLE_PAGE_FORM,
+  PASSWORD_FORM,
   VALIDATE_FIELD_MATCH_CASE_SENSITIVE,
   VALIDATE_MIN_LENGTH,
   VALIDATE_NO_SPACES,
@@ -14,6 +14,14 @@ import {
   GENERIC_CONFIRMATION_URL,
   YOUR_DETAILS_PAGE_URL,
 } from '../../../constants/AppUrlConstants';
+
+const PasswordSupportingText = () => (
+  <div className="govuk-grid-column-two-thirds">
+    <p className="govuk-body govuk-!-font-weight-bold">Enter a new password</p>
+    <p className="govuk-body">Your new password needs to be 10 or more characters. To help you create a long and strong password, the National Cyber Security Centre recommends using 3 random words.</p>
+    <p className="govuk-body">You can use a mix of letters, numbers or symbols in these three words.</p>
+  </div>
+);
 
 const ChangeYourPassword = () => {
   const navigate = useNavigate();
@@ -95,11 +103,12 @@ const ChangeYourPassword = () => {
       formId="formRegisterYourPassword"
       fields={formFieldNewPassword}
       formActions={formActions}
-      formType={SINGLE_PAGE_FORM}
+      formType={PASSWORD_FORM}
       pageHeading={CHANGE_YOUR_PASSWORD_PAGE_NAME}
       handleSubmit={handleSubmit}
-    />
-
+    >
+      <PasswordSupportingText />
+    </DisplayForm>
   );
 };
 
