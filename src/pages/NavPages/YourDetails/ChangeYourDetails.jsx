@@ -53,11 +53,11 @@ const ChangeYourDetails = () => {
       validation: [
         {
           type: VALIDATE_REQUIRED,
-          message: 'Enter your international dialling code',
+          message: 'Enter an international dialling code',
         },
         {
           type: VALIDATE_PHONE_NUMBER,
-          message: 'Enter  an international dialling code in the correct format',
+          message: 'Enter an international dialling code in the correct format',
         },
       ],
     },

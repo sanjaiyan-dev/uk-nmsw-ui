@@ -12,7 +12,7 @@ jest.mock('react-router', () => ({
   useLocation: jest.fn().mockImplementation(() => mockUseLocationState),
 }));
 
-describe('Your details tests', () => {
+describe('Register your details tests', () => {
   const handleSubmit = jest.fn();
   const scrollIntoViewMock = jest.fn();
   window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
@@ -79,6 +79,13 @@ describe('Your details tests', () => {
     expect(screen.getByRole('textbox', { name: 'Your company name' }).outerHTML).toEqual('<input class="govuk-input" id="companyName-input" name="companyName" type="text" value="">');
   });
 
+  it('should render an international dialling code question', async () => {
+    render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
+    expect(screen.getByLabelText('International dialling code')).toBeInTheDocument();
+    expect(screen.getByText('For example, 44 for UK')).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: 'International dialling code' })).toBeInTheDocument();
+  });
+
   it('should render a telephone number question', async () => {
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     expect(screen.getByLabelText('Telephone number')).toBeInTheDocument();
@@ -128,6 +135,7 @@ describe('Your details tests', () => {
     expect(screen.getAllByText('Enter your full name')).toHaveLength(2);
     expect(screen.getAllByText('Enter your company name')).toHaveLength(2);
     expect(screen.getAllByText('Enter a telephone number')).toHaveLength(2);
+    expect(screen.getAllByText('Enter an international dialling code')).toHaveLength(2);
     expect(screen.getAllByText('Enter country')).toHaveLength(2);
     expect(screen.getAllByText('Select is your company a shipping agent')).toHaveLength(2);
   });
@@ -135,11 +143,13 @@ describe('Your details tests', () => {
   it('should display the error messages if fields are formatted incorrectly', async () => {
     const user = userEvent.setup();
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
+    await user.type(screen.getByLabelText('International dialling code'), 'abc');
     await user.type(screen.getByLabelText('Telephone number'), 'abc');
     await user.type(screen.getByLabelText('Country'), 'Australia');
     await user.click(screen.getByTestId('submit-button'));
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
     expect(screen.getAllByText('Enter a telephone number in the correct format')).toHaveLength(2);
+    expect(screen.getAllByText('Enter an international dialling code in the correct format')).toHaveLength(2);
     expect(screen.getAllByText('Enter 3 digit country code')).toHaveLength(2);
   });
 
@@ -148,6 +158,7 @@ describe('Your details tests', () => {
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     await user.type(screen.getByLabelText('Full name'), 'Joe Bloggs');
     await user.type(screen.getByLabelText('Your company name'), 'Joe Bloggs Company');
+    await user.type(screen.getByLabelText('International dialling code'), '+44');
     await user.type(screen.getByLabelText('Telephone number'), '(123)-123.456+123 12'); // all these characters should be valid
     await user.type(screen.getByLabelText('Country'), 'AUS');
     await user.click(screen.getByRole('radio', { name: 'Yes' }));
@@ -155,6 +166,7 @@ describe('Your details tests', () => {
     expect(screen.queryByText('There is a problem')).not.toBeInTheDocument();
     expect(screen.queryByText('Enter your full name')).not.toBeInTheDocument();
     expect(screen.queryByText('Enter your company name')).not.toBeInTheDocument();
+    expect(screen.queryByText('Enter an international dialling code')).not.toBeInTheDocument();
     expect(screen.queryByText('Enter a telephone number')).not.toBeInTheDocument();
     expect(screen.queryByText('Enter a telephone number in the correct format')).not.toBeInTheDocument();
     expect(screen.queryByText('Enter country')).not.toBeInTheDocument();
@@ -163,11 +175,12 @@ describe('Your details tests', () => {
 
   it('should NOT clear form session data on submit', async () => {
     const user = userEvent.setup();
-    const expectedStoredData = '{"fullName":"Joe Bloggs","companyName":"Joe Bloggs Company","phoneNumber":"12345","country":"AUS","shippingAgent":"yes"}';
+    const expectedStoredData = '{"fullName":"Joe Bloggs","companyName":"Joe Bloggs Company","diallingCode":"44","phoneNumber":"12345","country":"AUS","shippingAgent":"yes"}';
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
 
     await user.type(screen.getByLabelText('Full name'), 'Joe Bloggs');
     await user.type(screen.getByLabelText('Your company name'), 'Joe Bloggs Company');
+    await user.type(screen.getByLabelText('International dialling code'), '44');
     await user.type(screen.getByLabelText('Telephone number'), '12345');
     await user.type(screen.getByLabelText('Country'), 'AUS');
     await user.click(screen.getByRole('radio', { name: 'Yes' }));

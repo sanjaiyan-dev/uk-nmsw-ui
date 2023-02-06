@@ -54,7 +54,7 @@ const RegisterYourDetails = () => {
       validation: [
         {
           type: VALIDATE_REQUIRED,
-          message: 'Enter your international dialling code',
+          message: 'Enter an international dialling code',
         },
         {
           type: VALIDATE_PHONE_NUMBER,
