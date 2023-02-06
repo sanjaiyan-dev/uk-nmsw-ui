@@ -15,3 +15,10 @@ export const FormatPhoneNumberForSubmission = ({ diallingCode, telephoneNumber }
 
   return combinedPhoneNumber;
 };
+
+export const FormatPhoneNumberForDisplay = (phoneNumber) => {
+  const diallingCode = phoneNumber.split('(').pop().split(')')[0];
+  const telephoneNumber = phoneNumber.split(')')[1];
+
+  return ({ diallingCode, telephoneNumber });
+};
