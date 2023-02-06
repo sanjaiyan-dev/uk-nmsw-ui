@@ -101,6 +101,12 @@ describe('Display Form default values and session data', () => {
       responseKey: 'name',
     },
     {
+      type: FIELD_TEXT,
+      label: 'Dialling code input',
+      hint: 'This is a hint for a dialling code input',
+      fieldName: 'testDiallingCodeField',
+    },
+    {
       type: FIELD_PHONE,
       label: 'Phone input',
       hint: 'This is a hint for a phone input',
@@ -268,9 +274,9 @@ describe('Display Form default values and session data', () => {
   });
 
   it('should prefill form with data from session if it exists', async () => {
-    const expectedStoredData = '{"testField":"Hello Test Field","radioButtonSet":"radioOne","radioWithConditional":"optionWithConditional","conditionalTextInput":"world","testPhoneField":"(123)1.2 3+4-5"}';
+    const expectedStoredData = '{"testField":"Hello Test Field","radioButtonSet":"radioOne","radioWithConditional":"optionWithConditional","conditionalTextInput":"world","testDiallingCodeField":"+44","testPhoneField":"(123)1.2 3+4-5"}';
     window.sessionStorage.setItem('formData', JSON.stringify({
-      testField: 'Hello Test Field', radioButtonSet: 'radioOne', radioWithConditional: 'optionWithConditional', conditionalTextInput: 'world', testPhoneField: '(123)1.2 3+4-5',
+      testField: 'Hello Test Field', radioButtonSet: 'radioOne', radioWithConditional: 'optionWithConditional', conditionalTextInput: 'world', testDiallingCodeField: '+44', testPhoneField: '(123)1.2 3+4-5',
     }));
     render(
       <MemoryRouter>
@@ -287,6 +293,7 @@ describe('Display Form default values and session data', () => {
     expect(screen.getByRole('radio', { name: 'Radio one' })).toBeChecked();
     expect(screen.getByRole('radio', { name: 'Option that has a conditional' })).toBeChecked();
     expect(screen.getByLabelText('Conditional text input')).toHaveValue('world');
+    expect(screen.getByRole('textbox', { name: 'Dialling code input' })).toHaveValue('+44');
     expect(screen.getByRole('textbox', { name: 'Phone input' })).toHaveValue('(123)1.2 3+4-5');
     expect(window.sessionStorage.getItem('formData')).toStrictEqual(expectedStoredData);
   });
