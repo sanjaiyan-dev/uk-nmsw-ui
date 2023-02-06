@@ -175,7 +175,7 @@ describe('Register your details tests', () => {
 
   it('should NOT clear form session data on submit', async () => {
     const user = userEvent.setup();
-    const expectedStoredData = '{"fullName":"Joe Bloggs","companyName":"Joe Bloggs Company","diallingCode":"44","phoneNumber":"12345","country":"AUS","shippingAgent":"yes"}';
+    const expectedStoredData = '{"fullName":"Joe Bloggs","companyName":"Joe Bloggs Company","diallingCode":"44","telephoneNumber":"12345","country":"AUS","shippingAgent":"yes"}';
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
 
     await user.type(screen.getByLabelText('Full name'), 'Joe Bloggs');
