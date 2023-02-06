@@ -41,7 +41,7 @@ const ChangeYourPassword = () => {
       validation: [
         {
           type: VALIDATE_REQUIRED,
-          message: 'Enter your password',
+          message: 'Enter a password',
         },
       ],
     },
@@ -73,7 +73,7 @@ const ChangeYourPassword = () => {
       validation: [
         {
           type: VALIDATE_REQUIRED,
-          message: 'Confirm your new password',
+          message: 'Confirm a new password',
         },
         {
           type: VALIDATE_FIELD_MATCH_CASE_SENSITIVE,
