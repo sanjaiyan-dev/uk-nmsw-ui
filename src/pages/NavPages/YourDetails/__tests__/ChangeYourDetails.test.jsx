@@ -12,7 +12,7 @@ jest.mock('react-router', () => ({
   useLocation: jest.fn().mockImplementation(() => mockUseLocationState),
 }));
 
-describe('Your details tests', () => {
+describe('Change your details tests', () => {
   const handleSubmit = jest.fn();
 
   beforeEach(() => {
@@ -81,8 +81,8 @@ describe('Your details tests', () => {
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
     expect(screen.getAllByText('Enter your full name')).toHaveLength(2);
     expect(screen.getAllByText('Enter your company name')).toHaveLength(2);
-    expect(screen.getAllByText('Enter your international dialling code')).toHaveLength(2);
-    expect(screen.getAllByText('Enter your telephone number')).toHaveLength(2);
+    expect(screen.getAllByText('Enter an international dialling code')).toHaveLength(2);
+    expect(screen.getAllByText('Enter a telephone number')).toHaveLength(2);
     expect(screen.getAllByText('Enter country')).toHaveLength(2);
   });
 
@@ -107,8 +107,8 @@ describe('Your details tests', () => {
     expect(screen.queryByText('There is a problem')).not.toBeInTheDocument();
     expect(screen.queryByText('Enter your full name')).not.toBeInTheDocument();
     expect(screen.queryByText('Enter your company name')).not.toBeInTheDocument();
-    expect(screen.queryByText('Enter your international dialling code')).not.toBeInTheDocument();
-    expect(screen.queryByText('Enter your phone number')).not.toBeInTheDocument();
+    expect(screen.queryByText('Enter an international dialling code')).not.toBeInTheDocument();
+    expect(screen.queryByText('Enter a telephone number')).not.toBeInTheDocument();
     expect(screen.queryByText('Enter country')).not.toBeInTheDocument();
   });
 

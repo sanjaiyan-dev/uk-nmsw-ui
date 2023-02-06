@@ -302,10 +302,8 @@ describe('Display Form inputs', () => {
         />
       </MemoryRouter>,
     );
-    expect(screen.getByLabelText('Country phone code field')).toBeInTheDocument();
-    expect(screen.getByRole('textbox', { name: 'Country phone code field' })).toBeInTheDocument();
-    expect(screen.getByLabelText('Phone number field')).toBeInTheDocument();
-    expect(screen.getByRole('textbox', { name: 'Phone number field' })).toBeInTheDocument();
+    expect(screen.getByLabelText('Phone input')).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: 'Phone input' })).toBeInTheDocument();
     expect(screen.getByText('This is a hint for a phone input').outerHTML).toEqual('<div id="testPhoneField-hint" class="govuk-hint">This is a hint for a phone input</div>');
   });
 

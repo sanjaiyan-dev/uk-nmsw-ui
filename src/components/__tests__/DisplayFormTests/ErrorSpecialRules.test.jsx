@@ -2,10 +2,12 @@ import { MemoryRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
+  FIELD_PHONE,
   FIELD_TEXT,
   SINGLE_PAGE_FORM,
   VALIDATE_FIELD_MATCH,
   VALIDATE_FIELD_MATCH_CASE_SENSITIVE,
+  VALIDATE_PHONE_NUMBER,
   VALIDATE_MIN_LENGTH,
   VALIDATE_REQUIRED,
 } from '../../../constants/AppConstants';
@@ -63,6 +65,24 @@ describe('Display Form', () => {
           type: VALIDATE_FIELD_MATCH_CASE_SENSITIVE,
           message: 'Fields must match',
           condition: 'testField',
+        },
+      ],
+    },
+  ];
+  const formPhonePatterns = [
+    {
+      type: FIELD_PHONE,
+      fieldName: 'phoneNumber',
+      hint: 'For example, 7123123123',
+      label: 'Telephone number',
+      validation: [
+        {
+          type: VALIDATE_REQUIRED,
+          message: 'Enter a telephone number',
+        },
+        {
+          type: VALIDATE_PHONE_NUMBER,
+          message: 'Enter a telephone number in the correct format',
         },
       ],
     },
@@ -195,6 +215,46 @@ describe('Display Form', () => {
 
     expect(screen.queryByText('There is a problem')).not.toBeInTheDocument();
     expect(screen.queryByText('Fields must match')).not.toBeInTheDocument();
+  });
+
+  it('should return an error if a phone number has characters that are not in the defined accepted numsymbol list', async () => {
+    const user = userEvent.setup();
+    render(
+      <MemoryRouter>
+        <DisplayForm
+          formId="testForm"
+          fields={formPhonePatterns}
+          formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
+          handleSubmit={handleSubmit}
+        />
+      </MemoryRouter>,
+    );
+    await user.type(screen.getByLabelText('Telephone number'), 'Abcd');
+    await user.click(screen.getByRole('button', { name: 'Submit test button' }));
+
+    expect(screen.getByText('There is a problem')).toBeInTheDocument();
+    expect(screen.getAllByText('Enter a telephone number in the correct format')).toHaveLength(2);
+  });
+
+  it('should NOT return an error if a phone number has characters that ARE in the defined accepted numsymbol list', async () => {
+    const user = userEvent.setup();
+    render(
+      <MemoryRouter>
+        <DisplayForm
+          formId="testForm"
+          fields={formPhonePatterns}
+          formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
+          handleSubmit={handleSubmit}
+        />
+      </MemoryRouter>,
+    );
+    await user.type(screen.getByLabelText('Telephone number'), '12 (12 )12 -+. 12');
+    await user.click(screen.getByRole('button', { name: 'Submit test button' }));
+
+    expect(screen.queryByText('There is a problem')).not.toBeInTheDocument();
+    expect(screen.queryByText('Enter a telephone number in the correct format')).not.toBeInTheDocument();
   });
 
   it('should return the error for the first failing validation rule if there are multiple rules', async () => {
