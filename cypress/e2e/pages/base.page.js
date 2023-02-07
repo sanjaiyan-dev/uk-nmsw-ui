@@ -8,8 +8,9 @@ class BasePage {
     cy.contains('Send confirmation email').should('be.enabled').click({force: true});
   }
 
+// sign-in for other pages
   clickSignIn() {
-    cy.get('[data-testid="submit-button"]').click();
+    cy.contains('Sign in').click();
   }
 
   clickBackButton() {
@@ -27,6 +28,10 @@ class BasePage {
 
   verifyText(message) {
     cy.contains(message);
+  }
+
+  checkH1(message) {
+    cy.get('h1').should('have.text', message);
   }
 }
 

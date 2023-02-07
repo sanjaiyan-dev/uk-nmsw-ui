@@ -1,10 +1,17 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { VOYAGE_TASK_LIST_URL } from '../../constants/AppUrlConstants';
+import { VOYAGE_TASK_LIST_URL, YOUR_VOYAGES_URL } from '../../constants/AppUrlConstants';
+import Message from '../../components/Message';
 
 const FileUploadConfirmation = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   document.title = 'No errors found';
+
+  if (!state?.declarationId || !state?.fileType) {
+    return (
+      <Message title="Something has gone wrong" redirectURL={YOUR_VOYAGES_URL} />
+    );
+  }
 
   return (
     <>
@@ -31,7 +38,7 @@ const FileUploadConfirmation = () => {
             type="button"
             className="govuk-button"
             data-module="govuk-button"
-            onClick={() => navigate(VOYAGE_TASK_LIST_URL)}
+            onClick={() => navigate(VOYAGE_TASK_LIST_URL, { state: { declarationId: state?.declarationId } })}
           >
             Save and continue
           </button>

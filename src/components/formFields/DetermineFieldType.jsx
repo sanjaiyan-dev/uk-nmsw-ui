@@ -14,7 +14,6 @@ import {
 } from '../../constants/AppConstants';
 import InputAutocomplete from './InputAutocomplete';
 import InputConditional from './InputConditional';
-import InputPhoneNumber from './InputPhoneNumber';
 import InputRadio from './InputRadio';
 import InputText from './InputText';
 
@@ -168,10 +167,12 @@ const determineFieldType = ({
       break;
 
     case FIELD_PHONE: fieldToReturn = (
-      <InputPhoneNumber
-        error={error}
+      <InputText
+        autoComplete="tel"
+        error={error} // if error true, error styling applied to input
         fieldDetails={fieldDetails}
         handleChange={parentHandleChange}
+        type="tel"
       />
     );
       break;

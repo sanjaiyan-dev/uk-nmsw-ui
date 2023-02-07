@@ -6,6 +6,7 @@ import {
   VOYAGE_GENERAL_DECLARATION_UPLOAD_URL,
   VOYAGE_PASSENGERS_URL,
   VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
+  YOUR_VOYAGES_URL,
 } from '../../../constants/AppUrlConstants';
 import VoyageCheckYourAnswers from '../VoyageCheckYourAnswers';
 
@@ -24,7 +25,16 @@ describe('Voyage task list page', () => {
     mockUseLocationState.state = {};
   });
 
+  it('should render an error without state', async () => {
+    mockUseLocationState.state = {};
+    render(<MemoryRouter><VoyageCheckYourAnswers /></MemoryRouter>);
+    await screen.findByRole('heading', { name: 'Something has gone wrong' });
+    expect(screen.getByRole('heading', { name: 'Something has gone wrong' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Click here to continue' }).outerHTML).toEqual(`<a href="${YOUR_VOYAGES_URL}">Click here to continue</a>`);
+  });
+
   it('should render the headings the page', () => {
+    mockUseLocationState.state = { declarationId: '123' };
     render(<MemoryRouter><VoyageCheckYourAnswers /></MemoryRouter>);
     expect(screen.getByRole('heading', { name: 'Check your answers' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Voyage details' })).toBeInTheDocument();
@@ -34,11 +44,13 @@ describe('Voyage task list page', () => {
   });
 
   it('should render the submit button on the page', () => {
+    mockUseLocationState.state = { declarationId: '123' };
     render(<MemoryRouter><VoyageCheckYourAnswers /></MemoryRouter>);
     expect(screen.getByRole('button', { name: 'Save and submit' }).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button">Save and submit</button>');
   });
 
   it('should render the list titles on the page', () => {
+    mockUseLocationState.state = { declarationId: '123' };
     render(<MemoryRouter><VoyageCheckYourAnswers /></MemoryRouter>);
     expect(screen.getByText('Voyage type').outerHTML).toEqual('<dt class="govuk-summary-list__key">Voyage type</dt>');
     expect(screen.getByText('Ship name').outerHTML).toEqual('<dt class="govuk-summary-list__key">Ship name</dt>');
@@ -55,48 +67,52 @@ describe('Voyage task list page', () => {
 
   it('should load the General Declarations upload page if Change next to Voyage Details is clicked', async () => {
     const user = userEvent.setup();
+    mockUseLocationState.state = { declarationId: '123' };
     render(<MemoryRouter><VoyageCheckYourAnswers /></MemoryRouter>);
     expect(screen.getByTestId('changeGeneralDeclarationLink')).toBeInTheDocument();
     await user.click(screen.getByTestId('changeGeneralDeclarationLink'));
     await waitFor(() => {
       expect(mockedUseNavigate).toHaveBeenCalledWith(VOYAGE_GENERAL_DECLARATION_UPLOAD_URL, {
-        preventScrollReset: undefined, relative: undefined, replace: false, state: undefined,
+        preventScrollReset: undefined, relative: undefined, replace: false, state: { declarationId: '123' },
       }); // params on Link generated links by default
     });
   });
 
   it('should load the Crew upload page if Change next to Crew is clicked', async () => {
     const user = userEvent.setup();
+    mockUseLocationState.state = { declarationId: '123' };
     render(<MemoryRouter><VoyageCheckYourAnswers /></MemoryRouter>);
     expect(screen.getByTestId('changecrewDetails')).toBeInTheDocument();
     await user.click(screen.getByTestId('changecrewDetails'));
     await waitFor(() => {
       expect(mockedUseNavigate).toHaveBeenCalledWith(VOYAGE_CREW_UPLOAD_URL, {
-        preventScrollReset: undefined, relative: undefined, replace: false, state: undefined,
+        preventScrollReset: undefined, relative: undefined, replace: false, state: { declarationId: '123' },
       }); // params on Link generated links by default
     });
   });
 
   it('should load the Passenger check page if Change next to Passenger is clicked', async () => {
     const user = userEvent.setup();
+    mockUseLocationState.state = { declarationId: '123' };
     render(<MemoryRouter><VoyageCheckYourAnswers /></MemoryRouter>);
     expect(screen.getByTestId('changepassengerDetails')).toBeInTheDocument();
     await user.click(screen.getByTestId('changepassengerDetails'));
     await waitFor(() => {
       expect(mockedUseNavigate).toHaveBeenCalledWith(VOYAGE_PASSENGERS_URL, {
-        preventScrollReset: undefined, relative: undefined, replace: false, state: undefined,
+        preventScrollReset: undefined, relative: undefined, replace: false, state: { declarationId: '123' },
       }); // params on Link generated links by default
     });
   });
 
   it('should load the Supporting docs check page if Change next to Supporting documents is clicked', async () => {
     const user = userEvent.setup();
+    mockUseLocationState.state = { declarationId: '123' };
     render(<MemoryRouter><VoyageCheckYourAnswers /></MemoryRouter>);
     expect(screen.getByTestId('changesupportingDocuments')).toBeInTheDocument();
     await user.click(screen.getByTestId('changesupportingDocuments'));
     await waitFor(() => {
       expect(mockedUseNavigate).toHaveBeenCalledWith(VOYAGE_SUPPORTING_DOCS_UPLOAD_URL, {
-        preventScrollReset: undefined, relative: undefined, replace: false, state: undefined,
+        preventScrollReset: undefined, relative: undefined, replace: false, state: { declarationId: '123' },
       }); // params on Link generated links by default
     });
   });

@@ -28,6 +28,7 @@
   "rules": {
     "eol-last": ["error", "always"],
     "import/prefer-default-export": ["off"],
+    "jsx-a11y/label-has-associated-control": ["error", { "assert": "either" } ],
     "max-len": ["error", { "code": 250, "ignoreStrings": true, "ignoreComments": true, "ignorePattern": "^path " }],
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
     "quotes": [ "error",  "single"],
@@ -42,7 +43,6 @@
     "react/forbid-prop-types": "off",
     "react/require-default-props": "off",
     "semi": ["error", "always"],
-    "jsx-a11y/label-has-associated-control": ["warn"],
     "no-console": ["warn"]
   },
   "overrides": [

@@ -16,7 +16,7 @@ import {
   REGISTER_EMAIL_RESEND_URL,
 } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
-import { SIGN_IN, USER_NOT_VERIFIED, USER_SIGN_IN_DETAILS_INVALID } from '../../constants/AppAPIConstants';
+import { SIGN_IN_ENDPOINT, USER_NOT_VERIFIED, USER_SIGN_IN_DETAILS_INVALID } from '../../constants/AppAPIConstants';
 import Auth from '../../utils/Auth';
 import { scrollToTop } from '../../utils/ScrollToElement';
 
@@ -75,7 +75,7 @@ const SignIn = () => {
 
   const handleSubmit = async ({ formData }) => {
     try {
-      const response = await axios.post(SIGN_IN, formData);
+      const response = await axios.post(SIGN_IN_ENDPOINT, formData);
       if (response.data.token) { Auth.storeToken(response.data.token); }
       if (state?.redirectURL) {
         navigate(state.redirectURL);

@@ -5,10 +5,13 @@ import {
   VOYAGE_GENERAL_DECLARATION_UPLOAD_URL,
   VOYAGE_PASSENGERS_URL,
   VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
+  YOUR_VOYAGES_URL,
 } from '../../constants/AppUrlConstants';
+import Message from '../../components/Message';
 
 const VoyageCheckYourAnswers = () => {
   const { state } = useLocation();
+  const declarationId = state?.declarationId;
 
   // values of this array will be populated by GET request when available
   const voyageDetails = [
@@ -106,8 +109,14 @@ const VoyageCheckYourAnswers = () => {
   ];
 
   const handleSubmit = () => {
-    console.log('submit clicked for id', state?.voyageId);
+    console.log('submit clicked for id', state?.declarationId);
   };
+
+  if (!state?.declarationId) {
+    return (
+      <Message title="Something has gone wrong" redirectURL={YOUR_VOYAGES_URL} />
+    );
+  }
 
   return (
     <>
@@ -125,7 +134,12 @@ const VoyageCheckYourAnswers = () => {
               </dt>
               <dd className="govuk-summary-list__value" />
               <dd className="govuk-summary-list__actions">
-                <Link to={VOYAGE_GENERAL_DECLARATION_UPLOAD_URL} aria-describedby="voyageDetails" data-testid="changeGeneralDeclarationLink">
+                <Link
+                  to={VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}
+                  aria-describedby="voyageDetails"
+                  data-testid="changeGeneralDeclarationLink"
+                  state={{ declarationId }}
+                >
                   Change<span className="govuk-visually-hidden"> change voyage details</span>
                 </Link>
               </dd>
@@ -163,7 +177,12 @@ const VoyageCheckYourAnswers = () => {
                   {item.value}
                 </dd>
                 <dd className="govuk-summary-list__actions">
-                  <Link to={item.changeLink} aria-describedby={item.id} data-testid={`change${item.id}`}>
+                  <Link
+                    to={item.changeLink}
+                    aria-describedby={item.id}
+                    data-testid={`change${item.id}`}
+                    state={{ declarationId }}
+                  >
                     Change<span className="govuk-visually-hidden">{` change ${item.title}`}</span>
                   </Link>
                 </dd>

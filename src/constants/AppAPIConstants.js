@@ -1,10 +1,14 @@
 import { apiUrl } from './Config';
 
-// Create account/register pages
+// Create account/register
 export const REGISTER_ACCOUNT_ENDPOINT = `${apiUrl}/registration`;
 export const REGISTER_CHECK_TOKEN_ENDPOINT = `${apiUrl}/check-token`;
 export const REGISTER_RESEND_VERIFICATION_EMAIL_ENDPOINT = `${apiUrl}/resend-verification-email`;
-export const SIGN_IN = `${apiUrl}/sign-in`;
+export const SIGN_IN_ENDPOINT = `${apiUrl}/sign-in`;
+export const SIGN_OUT_ENDPOINT = `${apiUrl}/sign-out`;
+
+// Report a voyage
+export const CREATE_VOYAGE_ENDPOINT = `${apiUrl}/user/declaration`;
 
 // Responses
 export const TOKEN_INVALID = 'Token is invalid or it has expired';

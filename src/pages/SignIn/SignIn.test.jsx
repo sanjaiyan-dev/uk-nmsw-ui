@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import SignIn from './SignIn';
-import { SIGN_IN, USER_NOT_VERIFIED, USER_SIGN_IN_DETAILS_INVALID } from '../../constants/AppAPIConstants';
+import { SIGN_IN_ENDPOINT, USER_NOT_VERIFIED, USER_SIGN_IN_DETAILS_INVALID } from '../../constants/AppAPIConstants';
 import {
   MESSAGE_URL, REGISTER_EMAIL_RESEND_URL, SIGN_IN_URL, YOUR_VOYAGES_URL,
 } from '../../constants/AppUrlConstants';
@@ -151,7 +151,7 @@ describe('Sign in tests', () => {
     const user = userEvent.setup();
 
     mockAxios
-      .onPost(SIGN_IN)
+      .onPost(SIGN_IN_ENDPOINT)
       .reply(200, {
         token: '123',
       });
@@ -168,7 +168,7 @@ describe('Sign in tests', () => {
     const user = userEvent.setup();
 
     mockAxios
-      .onPost(SIGN_IN)
+      .onPost(SIGN_IN_ENDPOINT)
       .reply(200, {
         token: '123',
       });
@@ -190,7 +190,7 @@ describe('Sign in tests', () => {
     window.sessionStorage.setItem('formData', JSON.stringify({ testField: 'Hello Test Field', radioButtonSet: 'radioOne' }));
     const expectedStoredData = '{"testField":"Hello Test Field","radioButtonSet":"radioOne"}';
     mockAxios
-      .onPost(SIGN_IN)
+      .onPost(SIGN_IN_ENDPOINT)
       .reply(200, {
         token: '123',
       });
@@ -208,7 +208,7 @@ describe('Sign in tests', () => {
     const user = userEvent.setup();
 
     mockAxios
-      .onPost(SIGN_IN)
+      .onPost(SIGN_IN_ENDPOINT)
       .reply(401, {
         message: USER_SIGN_IN_DETAILS_INVALID,
       });
@@ -225,7 +225,7 @@ describe('Sign in tests', () => {
     const user = userEvent.setup();
 
     mockAxios
-      .onPost(SIGN_IN)
+      .onPost(SIGN_IN_ENDPOINT)
       .reply(401, {
         message: USER_NOT_VERIFIED,
       });
@@ -241,7 +241,7 @@ describe('Sign in tests', () => {
   it('should redirect to error page if 500 response received', async () => {
     const user = userEvent.setup();
     mockAxios
-      .onPost(SIGN_IN)
+      .onPost(SIGN_IN_ENDPOINT)
       .reply(500);
 
     render(<MemoryRouter><SignIn /></MemoryRouter>);
@@ -258,7 +258,7 @@ describe('Sign in tests', () => {
     const user = userEvent.setup();
 
     mockAxios
-      .onPost(SIGN_IN)
+      .onPost(SIGN_IN_ENDPOINT)
       .reply(401, {
         message: USER_SIGN_IN_DETAILS_INVALID,
       });

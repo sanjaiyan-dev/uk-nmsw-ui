@@ -9,11 +9,11 @@ class yourDetailsPage {
   }
 
   typePhoneCode(phCode) {
-    cy.get('.phoneNumber-input :nth-child(2)').clear().type(phCode);
+    cy.get('input#diallingCode-input').clear().type(phCode);
   }
 
   typePhoneNumber(phNumber) {
-    cy.get('.phoneNumber-input :nth-child(4)').clear().type(phNumber);
+    cy.get('input#telephoneNumber-input').clear().type(phNumber);
   }
 
   typeCountry(country) {

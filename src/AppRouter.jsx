@@ -39,6 +39,10 @@ import {
   VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
   VOYAGE_TASK_LIST_URL,
   YOUR_VOYAGES_URL,
+  YOUR_DETAILS_PAGE_URL,
+  CHANGE_YOUR_DETAILS_PAGE_URL,
+  CHANGE_YOUR_PASSWORD_PAGE_URL,
+  GENERIC_CONFIRMATION_URL,
 } from './constants/AppUrlConstants';
 
 import LoadingSpinner from './components/LoadingSpinner';
@@ -76,7 +80,11 @@ const YourVoyages = lazy(() => import('./pages/NavPages/YourVoyages'));
 const ErrorsCrewUpload = lazy(() => import('./pages/Voyage/ErrorsCrewUpload'));
 // Other pages
 const FormConfirmationPage = lazy(() => import('./pages/Message/FormConfirmationPage'));
+const GenericConfirmationPage = lazy(() => import('./pages/Message/GenericConfirmation'));
 const Templates = lazy(() => import('./pages/NavPages/Templates'));
+const YourDetails = lazy(() => import('./pages/NavPages/YourDetails/YourDetails'));
+const ChangeYourDetails = lazy(() => import('./pages/NavPages/YourDetails/ChangeYourDetails'));
+const ChangeYourPassword = lazy(() => import('./pages/NavPages/YourDetails/ChangeYourPassword'));
 
 const AppRouter = ({ setIsCookieBannerShown }) => {
   document.title = SERVICE_NAME;
@@ -107,9 +115,12 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
           <Route path={PRIVACY_URL} element={<PrivacyNotice />} />
 
           <Route element={<ProtectedRoutes isPermittedToView={isPermittedToView} />}>
+            <Route path={CHANGE_YOUR_DETAILS_PAGE_URL} element={<ChangeYourDetails />} />
+            <Route path={CHANGE_YOUR_PASSWORD_PAGE_URL} element={<ChangeYourPassword />} />
             <Route path={FORM_CONFIRMATION_URL} element={<FormConfirmationPage />} />
+            <Route path={GENERIC_CONFIRMATION_URL} element={<GenericConfirmationPage />} />
             <Route path={TEMPLATE_PAGE_URL} element={<Templates />} />
-
+            <Route path={YOUR_DETAILS_PAGE_URL} element={<YourDetails />} />
             <Route path={YOUR_VOYAGES_URL} element={<YourVoyages />} />
             <Route path={VOYAGE_CHECK_YOUR_ANSWERS} element={<VoyageCheckYourAnswers />} />
             <Route path={VOYAGE_CREW_UPLOAD_URL} element={<VoyageCrew />} />

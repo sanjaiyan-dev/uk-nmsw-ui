@@ -1,23 +1,22 @@
-import { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import DisplayForm from '../../../components/DisplayForm';
 import {
-  FIELD_RADIO,
-  FIELD_TEXT,
   FIELD_PHONE,
-  MULTI_PAGE_FORM,
+  FIELD_TEXT,
+  SINGLE_PAGE_FORM,
   VALIDATE_MAX_LENGTH,
   VALIDATE_PHONE_NUMBER,
   VALIDATE_REQUIRED,
-  DISPLAY_GROUPED,
-} from '../../constants/AppConstants';
-import { ERROR_VERIFICATION_FAILED_URL, REGISTER_PASSWORD_URL } from '../../constants/AppUrlConstants';
-import DisplayForm from '../../components/DisplayForm';
-import { MergePhoneNumberFields } from '../../utils/FormatPhoneNumber';
+} from '../../../constants/AppConstants';
+import {
+  CHANGE_YOUR_DETAILS_PAGE_NAME,
+  GENERIC_CONFIRMATION_URL,
+  YOUR_DETAILS_PAGE_URL,
+} from '../../../constants/AppUrlConstants';
+import { MergePhoneNumberFields } from '../../../utils/FormatPhoneNumber';
 
-const RegisterYourDetails = () => {
+const ChangeYourDetails = () => {
   const navigate = useNavigate();
-  const { state } = useLocation();
-  document.title = 'Your details';
 
   const formActions = {
     submit: {
@@ -27,8 +26,8 @@ const RegisterYourDetails = () => {
   const formFields = [
     {
       type: FIELD_TEXT,
-      fieldName: 'fullName',
       label: 'Full name',
+      fieldName: 'fullName',
       validation: [
         {
           type: VALIDATE_REQUIRED,
@@ -38,8 +37,8 @@ const RegisterYourDetails = () => {
     },
     {
       type: FIELD_TEXT,
-      fieldName: 'companyName',
       label: 'Your company name',
+      fieldName: 'companyName',
       validation: [
         {
           type: VALIDATE_REQUIRED,
@@ -95,66 +94,39 @@ const RegisterYourDetails = () => {
         },
       ],
     },
-    {
-      type: FIELD_RADIO,
-      className: 'govuk-radios govuk-radios--inline',
-      displayType: DISPLAY_GROUPED,
-      fieldName: 'shippingAgent',
-      label: 'Is your company a shipping agent?',
-      radioOptions: [
-        {
-          label: 'Yes',
-          name: 'shippingAgent',
-          value: 'yes',
-        },
-        {
-          label: 'No',
-          name: 'shippingAgent',
-          value: 'no',
-        },
-      ],
-      validation: [
-        {
-          type: VALIDATE_REQUIRED,
-          message: 'Select is your company a shipping agent',
-        },
-      ],
-    },
   ];
 
   const handleSubmit = async (formData) => {
+    // Format data in preparation for when we add the PATCH
     const dataToSubmit = {
-      ...state?.dataToSubmit,
       ...formData.formData,
       phoneNumber: MergePhoneNumberFields({ diallingCode: formData.formData.diallingCode, telephoneNumber: formData.formData.telephoneNumber }),
     };
+    console.log(dataToSubmit);
 
-    navigate(REGISTER_PASSWORD_URL, { state: { dataToSubmit } });
+    navigate(
+      GENERIC_CONFIRMATION_URL,
+      {
+        state: {
+          pageTitle: 'Change your details confirmation',
+          nextPageLink: YOUR_DETAILS_PAGE_URL,
+          nextPageName: 'your details',
+          confirmationMessage: 'Your details have been saved',
+        },
+      },
+    );
   };
-
-  /*
-   * Without an email address & token we can't submit the PATCH to update the user account
-   * So if a user arrives to this page and we do not have an email address in state
-   * we need to direct them to a place where they can deal with that
-   * TODO: once we have email verification flow journey replace REGISTER_EMAIL_URL_VERIFIED
-   * with a more appropriate page
-   */
-  useEffect(() => {
-    if (!state || !state.dataToSubmit || !state.dataToSubmit.emailAddress || !state.dataToSubmit.token) {
-      navigate(ERROR_VERIFICATION_FAILED_URL);
-    }
-  }, [state]);
 
   return (
     <DisplayForm
-      formId="formRegisterYourDetails"
+      formId="changeYourDetails"
       fields={formFields}
       formActions={formActions}
-      formType={MULTI_PAGE_FORM}
-      pageHeading="Your details"
+      formType={SINGLE_PAGE_FORM}
+      pageHeading={CHANGE_YOUR_DETAILS_PAGE_NAME}
       handleSubmit={handleSubmit}
     />
   );
 };
 
-export default RegisterYourDetails;
+export default ChangeYourDetails;

@@ -16,11 +16,8 @@ Feature: User Registration
     Then I am redirected to password page
     When I provide my password
     Then my account is created and taken to confirmation page
-#    When I am on the sign-in page
-#    When I enter valid credentials and sign-in
-#    Then I am taken to your-voyages page
-
-
+    When I click sign-in
+    Then I am taken to the sign-in page
 
 
   @registration
@@ -96,7 +93,7 @@ Feature: User Registration
     Then I am redirected to provide my other details
     When I click continue without providing any details
     Then I am shown form error message
-      | Error | Enter your full nameEnter your company nameEnter your phone numberEnter countrySelect is your company a shipping agent |
+      | Error | Enter your full nameEnter your company nameEnter an international dialling codeEnter a telephone numberEnter countrySelect is your company a shipping agent |
     When I click back navigation button
     Then the email address verified page is loaded with a continue button
     Then I am redirected to provide my other details
@@ -143,7 +140,7 @@ Feature: User Registration
     Then the registration page is displayed
     And I provide new email address
     Then I am taken to check your email page
-    When click on request new email
+    When I click on request new email
     Then I am on request-new-verification-link
     When I click change the email sent and  change to different email
     And I click `send confirmation email` button
