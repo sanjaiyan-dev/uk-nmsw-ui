@@ -11,6 +11,7 @@ import {
   FIELD_PHONE,
   FIELD_TEXT,
   FIELD_RADIO,
+  DISPLAY_PASSWORD,
 } from '../../constants/AppConstants';
 import InputAutocomplete from './InputAutocomplete';
 import InputConditional from './InputConditional';
@@ -99,9 +100,10 @@ const GroupedInputs = ({
 );
 
 const SingleInput = ({
-  error, fieldName, fieldToReturn, hint, label,
+  error, children, fieldName, fieldToReturn, hint, label,
 }) => (
   <div className="govuk-grid-row">
+    {children || null}
     <div className="govuk-grid-column-one-half">
       <div className={error ? 'govuk-form-group govuk-form-group--error' : 'govuk-form-group'}>
         <label className="govuk-label" htmlFor={`${fieldName}-input`}>
@@ -120,7 +122,7 @@ const SingleInput = ({
 );
 
 const determineFieldType = ({
-  allErrors, error, fieldDetails, parentHandleChange,
+  allErrors, children, error, fieldDetails, parentHandleChange,
 }) => {
   const displayType = fieldDetails.displayType ? fieldDetails.displayType : DISPLAY_SINGLE;
   let fieldToReturn;
@@ -236,6 +238,18 @@ const determineFieldType = ({
             label={fieldDetails.label}
           />
         )}
+      {displayType === DISPLAY_PASSWORD
+        && (
+          <SingleInput
+            error={error}
+            fieldName={fieldDetails.fieldName}
+            fieldToReturn={fieldToReturn}
+            hint={fieldDetails.hint}
+            label={fieldDetails.label}
+          >
+            {children}
+          </SingleInput>
+        )}
     </>
   );
 };
@@ -244,6 +258,7 @@ export default determineFieldType;
 
 determineFieldType.propTypes = {
   allErrors: PropTypes.array,
+  children: PropTypes.node,
   error: PropTypes.string,
   fieldDetails: PropTypes.objectOf(
     PropTypes.shape({
@@ -278,6 +293,7 @@ GroupedInputs.propTypes = {
 
 SingleInput.propTypes = {
   error: PropTypes.string,
+  children: PropTypes.node,
   fieldName: PropTypes.string.isRequired,
   fieldToReturn: PropTypes.object.isRequired,
   hint: PropTypes.string,
