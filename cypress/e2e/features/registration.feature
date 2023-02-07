@@ -93,7 +93,7 @@ Feature: User Registration
     Then I am redirected to provide my other details
     When I click continue without providing any details
     Then I am shown form error message
-      | Error | Enter your full nameEnter your company nameEnter your phone numberEnter countrySelect is your company a shipping agent |
+      | Error | Enter your full nameEnter your company nameEnter an international dialling codeEnter a telephone numberEnter countrySelect is your company a shipping agent |
     When I click back navigation button
     Then the email address verified page is loaded with a continue button
     Then I am redirected to provide my other details
