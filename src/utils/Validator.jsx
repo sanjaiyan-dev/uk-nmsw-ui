@@ -53,7 +53,9 @@ const validateField = ({ type, value, condition }) => {
       }
       break;
     case VALIDATE_PHONE_NUMBER:
-      if (value && !/^[+(\s.\-/\d)]{0,}$/i.test(value)) {
+      if (value && (value.replace(/[()+-. ]/g, '') === '')) { // value has no numbers
+        response = 'error';
+      } else if (value && !/^[+(\s.\-/\d)]{0,}$/i.test(value)) { // value has characters we don't allow e.g. letters
         response = 'error';
       }
       break;
