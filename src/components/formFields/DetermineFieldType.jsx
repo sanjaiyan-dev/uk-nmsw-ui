@@ -100,31 +100,10 @@ const GroupedInputs = ({
 );
 
 const SingleInput = ({
-  error, fieldName, fieldToReturn, hint, label,
-}) => (
-  <div className="govuk-grid-row">
-    <div className="govuk-grid-column-one-half">
-      <div className={error ? 'govuk-form-group govuk-form-group--error' : 'govuk-form-group'}>
-        <label className="govuk-label" htmlFor={`${fieldName}-input`}>
-          {label}
-        </label>
-        <div id={`${fieldName}-hint`} className="govuk-hint">
-          {hint}
-        </div>
-        <p id={`${fieldName}-error`} className="govuk-error-message">
-          <span className="govuk-visually-hidden">Error:</span> {error}
-        </p>
-        {fieldToReturn}
-      </div>
-    </div>
-  </div>
-);
-
-const PasswordInput = ({
   error, children, fieldName, fieldToReturn, hint, label,
 }) => (
   <div className="govuk-grid-row">
-    {children}
+    {children || null}
     <div className="govuk-grid-column-one-half">
       <div className={error ? 'govuk-form-group govuk-form-group--error' : 'govuk-form-group'}>
         <label className="govuk-label" htmlFor={`${fieldName}-input`}>
@@ -261,7 +240,7 @@ const determineFieldType = ({
         )}
       {displayType === DISPLAY_PASSWORD
         && (
-          <PasswordInput
+          <SingleInput
             error={error}
             fieldName={fieldDetails.fieldName}
             fieldToReturn={fieldToReturn}
@@ -269,7 +248,7 @@ const determineFieldType = ({
             label={fieldDetails.label}
           >
             {children}
-          </PasswordInput>
+          </SingleInput>
         )}
     </>
   );
@@ -313,14 +292,6 @@ GroupedInputs.propTypes = {
 };
 
 SingleInput.propTypes = {
-  error: PropTypes.string,
-  fieldName: PropTypes.string.isRequired,
-  fieldToReturn: PropTypes.object.isRequired,
-  hint: PropTypes.string,
-  label: PropTypes.string.isRequired,
-};
-
-PasswordInput.propTypes = {
   error: PropTypes.string,
   children: PropTypes.node,
   fieldName: PropTypes.string.isRequired,
