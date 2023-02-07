@@ -237,6 +237,26 @@ describe('Display Form', () => {
     expect(screen.getAllByText('Enter a telephone number in the correct format')).toHaveLength(2);
   });
 
+  it('should return an error if a phone number has no numbers in it', async () => {
+    const user = userEvent.setup();
+    render(
+      <MemoryRouter>
+        <DisplayForm
+          formId="testForm"
+          fields={formPhonePatterns}
+          formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
+          handleSubmit={handleSubmit}
+        />
+      </MemoryRouter>,
+    );
+    await user.type(screen.getByLabelText('Telephone number'), '()++-- ..)');
+    await user.click(screen.getByRole('button', { name: 'Submit test button' }));
+
+    expect(screen.getByText('There is a problem')).toBeInTheDocument();
+    expect(screen.getAllByText('Enter a telephone number in the correct format')).toHaveLength(2);
+  });
+
   it('should NOT return an error if a phone number has characters that ARE in the defined accepted numsymbol list', async () => {
     const user = userEvent.setup();
     render(
