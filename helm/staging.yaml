@@ -42,7 +42,7 @@ service:
   targetPort: 10443
 
 ingress:
-  host: nmsw-ui.staging.nmsw.homeoffice.gov.uk
+  host: www.staging.nmsw.homeoffice.gov.uk
   path: /
   pathType: ImplementationSpecific
   annotations:
