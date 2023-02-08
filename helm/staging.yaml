@@ -94,6 +94,11 @@ env:
       value: "false"
     - name: GOV_NOTIFY_SUPPORT_EMAIL
       value: "sgmrsupportdev@digital.homeoffice.gov.uk"
+    - name: GA_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: nmsw-ui-ga-token
+          key: token
   proxy:
     - name: PROXY_SERVICE_HOST
       value: 'http://127.0.0.1'
