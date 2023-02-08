@@ -130,6 +130,7 @@ steps:
   pull: if-not-exists
   image: quay.io/ukhomeofficedigital/helm:latest
   commands:
+  - ./helm/decrypt-secrets.sh dev
   - /run-helm.sh list -n nmsw-dev
   - helm upgrade --install nmsw-ui ./helm -f ./helm/dev.yaml -n nmsw-dev --dry-run
   - helm upgrade --install nmsw-ui ./helm -f ./helm/dev.yaml -n nmsw-dev
@@ -142,6 +143,8 @@ steps:
       from_secret: DEV_NMSW_KUBE_SERVER
     KUBE_TOKEN:
       from_secret: DEV_NMSW_KUBE_TOKEN
+    GPG_KEY:
+      from_secret: DEV_NMSW_GPG_KEY
   when:
     branch:
     - version-*
@@ -152,6 +155,7 @@ steps:
   pull: if-not-exists
   image: quay.io/ukhomeofficedigital/helm:latest
   commands:
+  - ./helm/decrypt-secrets.sh staging
   - /run-helm.sh list -n nmsw-staging
   - helm upgrade --install nmsw-ui ./helm -f ./helm/staging.yaml -n nmsw-staging --dry-run
   - helm upgrade --install nmsw-ui ./helm -f ./helm/staging.yaml -n nmsw-staging
@@ -164,6 +168,8 @@ steps:
       from_secret: STAGING_NMSW_KUBE_SERVER
     KUBE_TOKEN:
       from_secret: STAGING_NMSW_KUBE_TOKEN
+    GPG_KEY:
+      from_secret: STAGING_NMSW_GPG_KEY
   when:
     event:
     - promote
