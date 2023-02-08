@@ -56,6 +56,7 @@ const YourVoyages = () => {
       if (err?.response?.status === 422) {
         navigate(SIGN_IN_URL, { state: { redirectURL: YOUR_VOYAGES_URL } });
       } else if (err?.response?.message === TOKEN_EXPIRED) {
+        Auth.removeToken();
         navigate(SIGN_IN_URL, { state: { redirectURL: YOUR_VOYAGES_URL } });
       } else {
         setIsError(true);
