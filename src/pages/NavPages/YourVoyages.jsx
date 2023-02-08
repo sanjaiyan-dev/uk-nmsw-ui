@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { CREATE_VOYAGE_ENDPOINT } from '../../constants/AppAPIConstants';
+import { CREATE_VOYAGE_ENDPOINT, TOKEN_EXPIRED } from '../../constants/AppAPIConstants';
 import {
   SIGN_IN_URL,
   VOYAGE_GENERAL_DECLARATION_UPLOAD_URL,
@@ -54,6 +54,8 @@ const YourVoyages = () => {
     } catch (err) {
       // 422 missing segments = missing bearer token for this endpoint
       if (err?.response?.status === 422) {
+        navigate(SIGN_IN_URL, { state: { redirectURL: YOUR_VOYAGES_URL } });
+      } else if (err?.response?.message === TOKEN_EXPIRED) {
         navigate(SIGN_IN_URL, { state: { redirectURL: YOUR_VOYAGES_URL } });
       } else {
         setIsError(true);
