@@ -234,4 +234,27 @@ steps:
     event:
     - push
   failure: ignore
+
+- name: staging_cypress_test
+  pull: if-not-exists
+  image: quay.io/ukhomeofficedigital/cop-cypress:12.2.0-node18
+  environment:
+    CYPRESS_MAIL_API_KEY:
+      from_secret: STAGING_NMSW_MAILSLURP_API_KEY
+  commands:
+  - ./cypress-extract-env.sh ./helm/staging.yaml
+  - cat ./cypress-env.sh
+  - export $(cat ./cypress-env.sh | xargs)
+  - >-
+    apt-get update && apt-get install -y procps curl;
+    curl -O https://github.com/cucumber/json-formatter/releases/download/v19.0.0/cucumber-json-formatter-linux-amd64;
+    mv ./cucumber-json-formatter-linux-amd64 /usr/local/bin/cucumber-json-formatter;
+    chmod +x /usr/local/bin/cucumber-json-formatter
+  - ./drone-cypress-test-script.sh staging
+  when:
+    event:
+    - promote
+    target:
+    - staging
+  failure: ignore
 ...
