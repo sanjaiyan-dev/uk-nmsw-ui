@@ -55,7 +55,7 @@ const YourVoyages = () => {
       // 422 missing segments = missing bearer token for this endpoint
       if (err?.response?.status === 422) {
         navigate(SIGN_IN_URL, { state: { redirectURL: YOUR_VOYAGES_URL } });
-      } else if (err?.response?.message === TOKEN_EXPIRED) {
+      } else if (err?.response?.data?.msg === TOKEN_EXPIRED) {
         Auth.removeToken();
         navigate(SIGN_IN_URL, { state: { redirectURL: YOUR_VOYAGES_URL } });
       } else {
