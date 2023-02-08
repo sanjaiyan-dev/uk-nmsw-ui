@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { CHANGE_YOUR_DETAILS_PAGE_URL, CHANGE_YOUR_PASSWORD_PAGE_URL, YOUR_DETAILS_PAGE_NAME } from '../../../constants/AppUrlConstants';
+import {
+  CHANGE_YOUR_DETAILS_PAGE_URL,
+  CHANGE_YOUR_PASSWORD_PAGE_URL,
+  YOUR_DETAILS_PAGE_NAME,
+} from '../../../constants/AppUrlConstants';
 
 const mockedUserData = {
   fullName: 'John Doe',
@@ -19,7 +23,7 @@ const YourDetails = () => {
 
   useEffect(() => {
     setFormData(mockedUserData);
-  });
+  }, []);
 
   return (
     <div className="govuk-grid-row">
@@ -106,7 +110,7 @@ const YourDetails = () => {
             </dd>
           </div>
         </dl>
-        <button type="button" className="govuk-button govuk-button--warning" data-module="govuk-button" onClick={() => {}}>
+        <button type="button" className="govuk-button govuk-button--warning" data-module="govuk-button" onClick={() => { }}>
           Delete your account
         </button>
       </div>
