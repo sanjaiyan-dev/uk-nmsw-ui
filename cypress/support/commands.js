@@ -89,6 +89,9 @@ Cypress.Commands.add('removeTestUser', () => {
             url: `${apiServer}/user`,
             auth: {
               'bearer': token
+            },
+            body: {
+              email: regEmail,
             }
           }
       )
