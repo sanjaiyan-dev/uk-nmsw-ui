@@ -1,15 +1,22 @@
 import { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import { MAX_FILE_SIZE, MAX_FILE_SIZE_DISPLAY } from '../constants/AppConstants';
+import Auth from '../utils/Auth';
 import { scrollToTop } from '../utils/ScrollToElement';
 
 const FileUploadForm = ({
+  declarationId,
+  endpoint,
   fileNameRequired,
   formId,
   pageHeading,
   submitButtonLabel,
+  urlSuccessPage,
   children,
 }) => {
+  const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const fileUploadId = 'fileUploadInput';
   const [error, setError] = useState();
@@ -34,7 +41,23 @@ const FileUploadForm = ({
       setError({ id: fileUploadId, message: `The file must be smaller than ${MAX_FILE_SIZE_DISPLAY}MB` });
       scrollToTop();
     } else {
-      console.log('upload clicked for', selectedFile);
+      const dataToSubmit = new FormData();
+      dataToSubmit.append('file', selectedFile?.file, selectedFile?.file?.name);
+
+      try {
+        const response = await axios.post(endpoint, dataToSubmit, {
+          headers: {
+            Authorization: `Bearer ${Auth.retrieveToken()}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        if (response.status === 200) {
+          navigate(urlSuccessPage, { state: { declarationId } });
+        }
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
@@ -112,8 +135,11 @@ export default FileUploadForm;
 
 FileUploadForm.propTypes = {
   children: PropTypes.node, // allows any renderable object
+  declarationId: PropTypes.string.isRequired,
+  endpoint: PropTypes.string.isRequired,
   fileNameRequired: PropTypes.string.isRequired,
   formId: PropTypes.string.isRequired,
   pageHeading: PropTypes.string.isRequired,
   submitButtonLabel: PropTypes.string.isRequired,
+  urlSuccessPage: PropTypes.string.isRequired,
 };
