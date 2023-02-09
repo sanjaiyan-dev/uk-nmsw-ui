@@ -40,7 +40,7 @@ describe('Error page tests', () => {
 
     await waitFor(() => {
       expect(mockedUseNavigate).toHaveBeenCalledWith(SIGN_IN_URL, {
-        preventScrollReset: undefined, relative: undefined, replace: false, state: undefined,
+        preventScrollReset: undefined, relative: undefined, replace: false, state: { redirectURL: SIGN_IN_URL },
       }); // params on Link generated links by default
     });
   });
@@ -54,7 +54,7 @@ describe('Error page tests', () => {
 
     await waitFor(() => {
       expect(mockedUseNavigate).toHaveBeenCalledWith(LANDING_URL, {
-        preventScrollReset: undefined, relative: undefined, replace: true, state: undefined,
+        preventScrollReset: undefined, relative: undefined, replace: true, state: {},
       }); // params on Link generated links by default
     });
   });
