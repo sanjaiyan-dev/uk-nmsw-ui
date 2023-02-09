@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import { MAX_FILE_SIZE, MAX_FILE_SIZE_DISPLAY } from '../constants/AppConstants';
 import { scrollToTop } from '../utils/ScrollToElement';
 
 const FileUploadForm = ({
@@ -28,6 +29,9 @@ const FileUploadForm = ({
   const handleUpload = async () => {
     if (Object.entries(selectedFile).length < 1) {
       setError({ id: fileUploadId, message: `Select a ${fileNameRequired}` });
+      scrollToTop();
+    } else if (selectedFile?.file.size > MAX_FILE_SIZE) {
+      setError({ id: fileUploadId, message: `The file must be smaller than ${MAX_FILE_SIZE_DISPLAY}MB` });
       scrollToTop();
     } else {
       console.log('upload clicked for', selectedFile);

@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-// import { MAX_FILE_SIZE, MAX_FILE_SIZE_DISPLAY } from '../../constants/AppConstants';
+import { MAX_FILE_SIZE, MAX_FILE_SIZE_DISPLAY } from '../../constants/AppConstants';
 // import { FILE_MISSING, FILE_TYPE_INVALID_PREFIX } from '../../constants/AppAPIConstants';
 // import { LOGGED_IN_LANDING, MESSAGE_URL, SIGN_IN_URL } from '../../constants/AppUrlConstants';
 import FileUploadForm from '../FileUploadForm';
@@ -110,19 +110,19 @@ describe('File upload tests', () => {
   //   expect(scrollIntoViewMock).toHaveBeenCalled();
   // });
 
-  // it('should show an error if filetype is too large and submit button clicked', async () => {
-  //   const user = userEvent.setup();
-  //   const file = new File(['template'], 'template.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-  //   Object.defineProperty(file, 'size', { value: MAX_FILE_SIZE + 1 });
-  //   renderPage();
-  //   const input = screen.getByLabelText('Upload a file');
-  //   await user.upload(input, file);
-  //   await user.click(screen.getByRole('button', { name: 'Submit text from props' }));
-  //   expect(screen.getByRole('alert', { name: 'There is a problem' })).toBeInTheDocument();
-  //   expect(screen.getByRole('button', { name: `The file must be smaller than ${MAX_FILE_SIZE_DISPLAY}MB` })).toBeInTheDocument();
-  //   expect(screen.getAllByText(`The file must be smaller than ${MAX_FILE_SIZE_DISPLAY}MB`)).toHaveLength(2);
-  //   expect(scrollIntoViewMock).toHaveBeenCalled();
-  // });
+  it('should show an error if filetype is too large and submit button clicked', async () => {
+    const user = userEvent.setup();
+    const file = new File(['template'], 'template.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    Object.defineProperty(file, 'size', { value: MAX_FILE_SIZE + 1 });
+    renderPage();
+    const input = screen.getByLabelText('Upload a file');
+    await user.upload(input, file);
+    await user.click(screen.getByRole('button', { name: 'Submit text from props' }));
+    expect(screen.getByRole('alert', { name: 'There is a problem' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: `The file must be smaller than ${MAX_FILE_SIZE_DISPLAY}MB` })).toBeInTheDocument();
+    expect(screen.getAllByText(`The file must be smaller than ${MAX_FILE_SIZE_DISPLAY}MB`)).toHaveLength(2);
+    expect(scrollIntoViewMock).toHaveBeenCalled();
+  });
 
   // it('should scroll to the error if user clicks on error link', async () => {
   //   const user = userEvent.setup();
