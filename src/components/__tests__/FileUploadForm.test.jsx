@@ -124,24 +124,24 @@ describe('File upload tests', () => {
     expect(scrollIntoViewMock).toHaveBeenCalled();
   });
 
-  // it('should scroll to the error if user clicks on error link', async () => {
-  //   const user = userEvent.setup();
-  //   renderPage();
-  //   await user.click(screen.getByRole('button', { name: 'Submit text from props' }));
-  //   await user.click(screen.getByRole('button', { name: 'Select a File name from props for error display' }));
-  //   expect(scrollIntoViewMock).toHaveBeenCalled();
-  // });
+  it('should scroll to the error if user clicks on error link', async () => {
+    const user = userEvent.setup();
+    renderPage();
+    await user.click(screen.getByRole('button', { name: 'Submit text from props' }));
+    await user.click(screen.getByRole('button', { name: 'Select a File name from props for error display' }));
+    expect(scrollIntoViewMock).toHaveBeenCalled();
+  });
 
-  // it('should clear the error message when a new file is added', async () => {
-  //   const user = userEvent.setup();
-  //   const file = new File(['template'], 'template.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-  //   renderPage();
-  //   await user.click(screen.getByRole('button', { name: 'Submit text from props' }));
-  //   expect(screen.getAllByText('Select a File name from props for error display')).toHaveLength(2);
-  //   const input = screen.getByLabelText('Upload a file');
-  //   await user.upload(input, file);
-  //   expect(screen.queryByText('Select a File name from props for error display')).not.toBeInTheDocument();
-  // });
+  it('should clear the error message when a new file is added', async () => {
+    const user = userEvent.setup();
+    const file = new File(['template'], 'template.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    renderPage();
+    await user.click(screen.getByRole('button', { name: 'Submit text from props' }));
+    expect(screen.getAllByText('Select a File name from props for error display')).toHaveLength(2);
+    const input = screen.getByLabelText('Upload a file');
+    await user.upload(input, file);
+    expect(screen.queryByText('Select a File name from props for error display')).not.toBeInTheDocument();
+  });
 
   // it('should redirect user to sign in with this page and declaration id if missing bearer token', async () => {
   //   const user = userEvent.setup();
