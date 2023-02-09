@@ -78,7 +78,7 @@ const SignIn = () => {
       const response = await axios.post(SIGN_IN_ENDPOINT, formData);
       if (response.data.token) { Auth.storeToken(response.data.token); }
       if (state?.redirectURL) {
-        navigate(state.redirectURL);
+        navigate(state.redirectURL, { state });
       } else {
         navigate(YOUR_VOYAGES_URL);
       }
