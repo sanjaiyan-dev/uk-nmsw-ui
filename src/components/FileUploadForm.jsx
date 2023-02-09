@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { MAX_FILE_SIZE, MAX_FILE_SIZE_DISPLAY } from '../constants/AppConstants';
+import { SIGN_IN_URL } from '../constants/AppUrlConstants';
 import Auth from '../utils/Auth';
 import { scrollToTop } from '../utils/ScrollToElement';
 
@@ -14,6 +15,7 @@ const FileUploadForm = ({
   pageHeading,
   submitButtonLabel,
   urlSuccessPage,
+  urlThisPage,
   children,
 }) => {
   const navigate = useNavigate();
@@ -56,7 +58,10 @@ const FileUploadForm = ({
           navigate(urlSuccessPage, { state: { declarationId } });
         }
       } catch (err) {
-        console.log(err);
+        if (err?.response?.status === 401 || err?.response?.status === 422) {
+          // unauthorised / missing bearer token / token invalidated
+          navigate(SIGN_IN_URL, { state: { redirectURL: urlThisPage, declarationId } });
+        }
       }
     }
   };
@@ -142,4 +147,5 @@ FileUploadForm.propTypes = {
   pageHeading: PropTypes.string.isRequired,
   submitButtonLabel: PropTypes.string.isRequired,
   urlSuccessPage: PropTypes.string.isRequired,
+  urlThisPage: PropTypes.string.isRequired,
 };
