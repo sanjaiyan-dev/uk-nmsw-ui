@@ -61,15 +61,15 @@ describe('File upload tests', () => {
     expect(input.files).toHaveLength(1);
   });
 
-  // it('should show an error if the user clicks submit button and no file provided', async () => {
-  //   const user = userEvent.setup();
-  //   renderPage();
-  //   await user.click(screen.getByRole('button', { name: 'Submit text from props' }));
-  //   expect(screen.getByRole('alert', { name: 'There is a problem' })).toBeInTheDocument();
-  //   expect(screen.getByRole('button', { name: 'Select a File name from props for error display' })).toBeInTheDocument();
-  //   expect(screen.getAllByText('Select a File name from props for error display')).toHaveLength(2);
-  //   expect(scrollIntoViewMock).toHaveBeenCalled();
-  // });
+  it('should show an error if the user clicks submit button and no file provided', async () => {
+    const user = userEvent.setup();
+    renderPage();
+    await user.click(screen.getByRole('button', { name: 'Submit text from props' }));
+    expect(screen.getByRole('alert', { name: 'There is a problem' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Select a File name from props for error display' })).toBeInTheDocument();
+    expect(screen.getAllByText('Select a File name from props for error display')).toHaveLength(2);
+    expect(scrollIntoViewMock).toHaveBeenCalled();
+  });
 
   // it('should show an error if the API returns a no file provided response', async () => {
   //   const user = userEvent.setup();

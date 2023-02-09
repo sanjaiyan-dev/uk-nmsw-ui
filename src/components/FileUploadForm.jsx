@@ -1,7 +1,9 @@
 import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import { scrollToTop } from '../utils/ScrollToElement';
 
 const FileUploadForm = ({
+  fileNameRequired,
   formId,
   pageHeading,
   submitButtonLabel,
@@ -24,7 +26,12 @@ const FileUploadForm = ({
   };
 
   const handleUpload = async () => {
-    console.log('upload clicked for', selectedFile);
+    if (Object.entries(selectedFile).length < 1) {
+      setError({ id: fileUploadId, message: `Select a ${fileNameRequired}` });
+      scrollToTop();
+    } else {
+      console.log('upload clicked for', selectedFile);
+    }
   };
 
   return (
@@ -101,6 +108,7 @@ export default FileUploadForm;
 
 FileUploadForm.propTypes = {
   children: PropTypes.node, // allows any renderable object
+  fileNameRequired: PropTypes.string.isRequired,
   formId: PropTypes.string.isRequired,
   pageHeading: PropTypes.string.isRequired,
   submitButtonLabel: PropTypes.string.isRequired,
