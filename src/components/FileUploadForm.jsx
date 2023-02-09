@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { MAX_FILE_SIZE, MAX_FILE_SIZE_DISPLAY } from '../constants/AppConstants';
-import { FILE_MISSING } from '../constants/AppAPIConstants';
+import { FILE_MISSING, FILE_TYPE_INVALID_PREFIX } from '../constants/AppAPIConstants';
 import { LOGGED_IN_LANDING, MESSAGE_URL, SIGN_IN_URL } from '../constants/AppUrlConstants';
 import Auth from '../utils/Auth';
 import { scrollToTop } from '../utils/ScrollToElement';
@@ -12,6 +12,7 @@ const FileUploadForm = ({
   declarationId,
   endpoint,
   fileNameRequired,
+  fileTypesAllowed,
   formId,
   pageHeading,
   submitButtonLabel,
@@ -65,6 +66,10 @@ const FileUploadForm = ({
         } else if (err?.response?.data?.message === FILE_MISSING) {
           // MISSING FILE from payload (shouldn't occur as we error out prior to POST attempt, this is an extra catch)
           setError({ id: fileUploadId, message: `Select a ${fileNameRequired}` });
+          scrollToTop();
+        } else if (err?.response?.data?.message.startsWith(FILE_TYPE_INVALID_PREFIX)) {
+          // file type provided is not allowed
+          setError({ id: fileUploadId, message: `The selected file must be a ${fileTypesAllowed}` });
           scrollToTop();
         } else if (err?.response?.status === 404) {
           // INVALID ENDPOINT, likely missing/invalid declarationId
@@ -168,6 +173,7 @@ FileUploadForm.propTypes = {
   declarationId: PropTypes.string.isRequired,
   endpoint: PropTypes.string.isRequired,
   fileNameRequired: PropTypes.string.isRequired,
+  fileTypesAllowed: PropTypes.string.isRequired,
   formId: PropTypes.string.isRequired,
   pageHeading: PropTypes.string.isRequired,
   submitButtonLabel: PropTypes.string.isRequired,
