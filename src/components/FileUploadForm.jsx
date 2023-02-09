@@ -71,6 +71,16 @@ const FileUploadForm = ({
               declarationId,
             },
           });
+        } else {
+          // 500 errors are caught here
+          navigate(MESSAGE_URL, {
+            state: {
+              title: 'Something has gone wrong',
+              message: err.response?.data?.message,
+              redirectURL: urlThisPage,
+              declarationId,
+            },
+          });
         }
       }
     }

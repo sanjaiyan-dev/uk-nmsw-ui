@@ -171,19 +171,19 @@ describe('File upload tests', () => {
     expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, { state: { redirectURL: LOGGED_IN_LANDING, title: 'Something has gone wrong', declarationId: '123' } });
   });
 
-  // it('should redirect user to message page with state of this page and declaration id if 500 error', async () => {
-  //   const user = userEvent.setup();
-  //   const file = new File(['template'], 'image.png', { type: 'image/png' });
-  //   mockAxios
-  //     .onPost('/specific-endpoint-path-for-filetype')
-  //     .reply(500);
-  //   renderPage();
-  //   const input = screen.getByLabelText('Upload a file');
-  //   await user.upload(input, file);
-  //   expect(input.files[0]).toStrictEqual(file);
-  //   await user.click(screen.getByRole('button', { name: 'Submit text from props' }));
-  //   expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, { state: { redirectURL: '/this-page', title: 'Something has gone wrong', declarationId: '123' } });
-  // });
+  it('should redirect user to message page with state of this page and declaration id if 500 error', async () => {
+    const user = userEvent.setup();
+    const file = new File(['template'], 'image.png', { type: 'image/png' });
+    mockAxios
+      .onPost('/specific-endpoint-path-for-filetype')
+      .reply(500);
+    renderPage();
+    const input = screen.getByLabelText('Upload a file');
+    await user.upload(input, file);
+    expect(input.files[0]).toStrictEqual(file);
+    await user.click(screen.getByRole('button', { name: 'Submit text from props' }));
+    expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, { state: { redirectURL: '/this-page', title: 'Something has gone wrong', declarationId: '123' } });
+  });
 
   it('should show the confirmation of upload page on success', async () => {
     const user = userEvent.setup();
