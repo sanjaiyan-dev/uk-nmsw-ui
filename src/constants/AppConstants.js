@@ -33,3 +33,7 @@ export const VALIDATE_MIN_LENGTH = 'minLength';
 export const VALIDATE_PHONE_NUMBER = 'phoneNumber';
 export const VALIDATE_REQUIRED = 'required';
 export const VALIDATE_NO_SPACES = 'noSpaces';
+
+// File upload
+export const MAX_FILE_SIZE = 4194304;
+export const MAX_FILE_SIZE_DISPLAY = (MAX_FILE_SIZE / (1024 * 1024)).toFixed(0);
