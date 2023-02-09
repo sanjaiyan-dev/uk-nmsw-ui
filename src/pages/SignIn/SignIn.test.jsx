@@ -273,4 +273,24 @@ describe('Sign in tests', () => {
     await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
     expect(screen.queryByText('Email and password combination is invalid')).not.toBeInTheDocument();
   });
+
+  it('should redirect to redirectURL on successful sign in if one in state, and pass the state through', async () => {
+    const user = userEvent.setup();
+    mockUseLocationState.state = {
+      redirectURL: '/thisurl',
+      otherState: 'another piece of state',
+    };
+    mockAxios
+      .onPost(SIGN_IN_ENDPOINT)
+      .reply(200, {
+        token: '123',
+      });
+
+    render(<MemoryRouter><SignIn /></MemoryRouter>);
+
+    await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
+    await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(mockedUseNavigate).toHaveBeenCalledWith('/thisurl', { state: { redirectURL: '/thisurl', otherState: 'another piece of state' } });
+  });
 });
