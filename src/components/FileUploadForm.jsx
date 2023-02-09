@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { MAX_FILE_SIZE, MAX_FILE_SIZE_DISPLAY } from '../constants/AppConstants';
+import { FILE_MISSING } from '../constants/AppAPIConstants';
 import { LOGGED_IN_LANDING, MESSAGE_URL, SIGN_IN_URL } from '../constants/AppUrlConstants';
 import Auth from '../utils/Auth';
 import { scrollToTop } from '../utils/ScrollToElement';
@@ -59,10 +60,14 @@ const FileUploadForm = ({
         }
       } catch (err) {
         if (err?.response?.status === 401 || err?.response?.status === 422) {
-          // unauthorised / missing bearer token / token invalidated
+          // UNAUTHORISED / missing bearer token / token invalidated
           navigate(SIGN_IN_URL, { state: { redirectURL: urlThisPage, declarationId } });
+        } else if (err?.response?.data?.message === FILE_MISSING) {
+          // MISSING FILE from payload (shouldn't occur as we error out prior to POST attempt, this is an extra catch)
+          setError({ id: fileUploadId, message: `Select a ${fileNameRequired}` });
+          scrollToTop();
         } else if (err?.response?.status === 404) {
-          // invalid endpoint, likely missing/invalid declarationId
+          // INVALID ENDPOINT, likely missing/invalid declarationId
           navigate(MESSAGE_URL, {
             state: {
               title: 'Something has gone wrong',
@@ -72,7 +77,7 @@ const FileUploadForm = ({
             },
           });
         } else {
-          // 500 errors are caught here
+          // OTHER ERRORS, 500 errors are caught here
           navigate(MESSAGE_URL, {
             state: {
               title: 'Something has gone wrong',

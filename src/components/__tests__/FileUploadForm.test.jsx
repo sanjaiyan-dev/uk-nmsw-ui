@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { MAX_FILE_SIZE, MAX_FILE_SIZE_DISPLAY } from '../../constants/AppConstants';
-// import { FILE_MISSING, FILE_TYPE_INVALID_PREFIX } from '../../constants/AppAPIConstants';
+import { FILE_MISSING } from '../../constants/AppAPIConstants';
 import { LOGGED_IN_LANDING, MESSAGE_URL, SIGN_IN_URL } from '../../constants/AppUrlConstants';
 import FileUploadForm from '../FileUploadForm';
 
@@ -71,25 +71,25 @@ describe('File upload tests', () => {
     expect(scrollIntoViewMock).toHaveBeenCalled();
   });
 
-  // it('should show an error if the API returns a no file provided response', async () => {
-  //   const user = userEvent.setup();
-  //   const file = new File(['template'], 'template.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-  //   mockAxios
-  //     .onPost('/specific-endpoint-path-for-filetype')
-  //     .reply(400, {
-  //       message: FILE_MISSING,
-  //     });
-  //   renderPage();
-  //   // make sure file is recognised so the FE no the FE file error isn't triggered
-  //   const input = screen.getByLabelText('Upload a file');
-  //   await user.upload(input, file);
-  //   expect(input.files[0]).toStrictEqual(file);
-  //   await user.click(screen.getByRole('button', { name: 'Submit text from props' }));
-  //   expect(screen.getByRole('alert', { name: 'There is a problem' })).toBeInTheDocument();
-  //   expect(screen.getByRole('button', { name: 'Select a File name from props for error display' })).toBeInTheDocument();
-  //   expect(screen.getAllByText('Select a File name from props for error display')).toHaveLength(2);
-  //   expect(scrollIntoViewMock).toHaveBeenCalled();
-  // });
+  it('should show an error if the API returns a no file provided response', async () => {
+    const user = userEvent.setup();
+    const file = new File(['template'], 'template.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    mockAxios
+      .onPost('/specific-endpoint-path-for-filetype')
+      .reply(400, {
+        message: FILE_MISSING,
+      });
+    renderPage();
+    // make sure file is recognised so the FE no the FE file error isn't triggered
+    const input = screen.getByLabelText('Upload a file');
+    await user.upload(input, file);
+    expect(input.files[0]).toStrictEqual(file);
+    await user.click(screen.getByRole('button', { name: 'Submit text from props' }));
+    expect(screen.getByRole('alert', { name: 'There is a problem' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Select a File name from props for error display' })).toBeInTheDocument();
+    expect(screen.getAllByText('Select a File name from props for error display')).toHaveLength(2);
+    expect(scrollIntoViewMock).toHaveBeenCalled();
+  });
 
   // it('should show an error if API returns a file is invalid type response', async () => {
   //   const user = userEvent.setup();
