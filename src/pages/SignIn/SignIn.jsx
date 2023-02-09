@@ -12,7 +12,7 @@ import {
   MESSAGE_URL,
   REGISTER_ACCOUNT_URL,
   SIGN_IN_URL,
-  YOUR_VOYAGES_URL,
+  LOGGED_IN_LANDING,
   REGISTER_EMAIL_RESEND_URL,
 } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
@@ -80,7 +80,7 @@ const SignIn = () => {
       if (state?.redirectURL) {
         navigate(state.redirectURL, { state });
       } else {
-        navigate(YOUR_VOYAGES_URL);
+        navigate(LOGGED_IN_LANDING);
       }
     } catch (err) {
       if (err?.response?.data?.message === USER_SIGN_IN_DETAILS_INVALID) {

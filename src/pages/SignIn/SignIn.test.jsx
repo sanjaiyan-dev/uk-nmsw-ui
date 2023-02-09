@@ -4,9 +4,16 @@ import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import SignIn from './SignIn';
-import { SIGN_IN_ENDPOINT, USER_NOT_VERIFIED, USER_SIGN_IN_DETAILS_INVALID } from '../../constants/AppAPIConstants';
 import {
-  MESSAGE_URL, REGISTER_EMAIL_RESEND_URL, SIGN_IN_URL, YOUR_VOYAGES_URL,
+  SIGN_IN_ENDPOINT,
+  USER_NOT_VERIFIED,
+  USER_SIGN_IN_DETAILS_INVALID,
+} from '../../constants/AppAPIConstants';
+import {
+  MESSAGE_URL,
+  REGISTER_EMAIL_RESEND_URL,
+  SIGN_IN_URL,
+  LOGGED_IN_LANDING,
 } from '../../constants/AppUrlConstants';
 
 const mockUseLocationState = { state: {} };
@@ -161,7 +168,7 @@ describe('Sign in tests', () => {
     await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
     await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
     await user.click(screen.getByTestId('submit-button'));
-    expect(mockedUseNavigate).toHaveBeenCalledWith(YOUR_VOYAGES_URL);
+    expect(mockedUseNavigate).toHaveBeenCalledWith(LOGGED_IN_LANDING);
   });
 
   it('should store token in session storage if sign in is successful', async () => {
