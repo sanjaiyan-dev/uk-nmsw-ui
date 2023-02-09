@@ -73,6 +73,61 @@ describe('Display Form, display layout tests', () => {
       ],
     },
   ];
+  const formFieldsLegendIsH1 = [
+    {
+      type: FIELD_TEXT,
+      displayType: DISPLAY_DETAILS,
+      label: 'Text input wrapped in details',
+      hint: 'This is a hint for the details input',
+      fieldName: 'textWithDetails',
+      linkText: 'The details link text',
+    },
+    {
+      type: FIELD_TEXT,
+      displayType: DISPLAY_SINGLE,
+      label: 'Basic text input',
+      hint: 'This is a hint for the basic text input',
+      fieldName: 'textSingle',
+    },
+    {
+      type: FIELD_TEXT,
+      label: 'Text input without a displayType defined',
+      hint: 'This is a hint for the text without display type',
+      fieldName: 'textMissingDisplayType',
+    },
+    {
+      type: FIELD_RADIO,
+      label: 'This is a radio button set where the label is the h1',
+      fieldName: 'radioButtonSet',
+      className: 'govuk-radios',
+      displayType: DISPLAY_GROUPED,
+      hint: 'radio hint',
+      labelAsH1: true,
+      radioOptions: [
+        {
+          label: 'Radio one',
+          name: 'radioButtonSet',
+          id: 'radioOne',
+          value: 'radioOne',
+          checked: true,
+        },
+        {
+          label: 'Radio two',
+          name: 'radioButtonSet',
+          id: 'radioTwo',
+          value: 'radioTwo',
+          checked: false,
+        },
+        {
+          label: 'Radio three',
+          name: 'radioButtonSet',
+          id: 'radioThree',
+          value: 'radioThree',
+          checked: false,
+        },
+      ],
+    },
+  ];
 
   beforeEach(() => {
     window.sessionStorage.clear();
@@ -111,7 +166,7 @@ describe('Display Form, display layout tests', () => {
     expect(screen.getByTestId('details-component').outerHTML).toEqual('<details class="govuk-details" data-module="govuk-details" data-testid="details-component"><summary class="govuk-details__summary"><span class="govuk-details__summary-text">The details link text</span></summary><div class="govuk-details__text"><label class="govuk-label" for="textWithDetails-input">Text input wrapped in details</label><div id="textWithDetails-hint" class="govuk-hint">This is a hint for the details input</div><p id="textWithDetails-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> </p><input class="govuk-input" id="textWithDetails-input" name="textWithDetails" type="text" aria-describedby="textWithDetails-hint" value=""></div></details>');
   });
 
-  it('should render a grouped input', () => {
+  it('should render a grouped input where the label is NOT the h1', () => {
     render(
       <MemoryRouter>
         <DisplayForm
@@ -126,6 +181,30 @@ describe('Display Form, display layout tests', () => {
     expect(screen.getByText('This is a radio button set')).toBeInTheDocument();
     expect(screen.getByText('radio hint').outerHTML).toEqual('<div id="radioButtonSet-hint" class="govuk-hint">radio hint</div>');
     expect(screen.getByRole('group', { name: 'This is a radio button set' })).toBeInTheDocument();
+    expect(screen.getByLabelText('Radio one')).toBeInTheDocument();
+    expect(screen.getByLabelText('Radio two')).toBeInTheDocument();
+    expect(screen.getByLabelText('Radio three')).toBeInTheDocument();
+    expect(screen.getByRole('radio', { name: 'Radio one' })).toBeInTheDocument();
+    expect(screen.getByRole('radio', { name: 'Radio two' })).toBeInTheDocument();
+    expect(screen.getByRole('radio', { name: 'Radio three' })).toBeInTheDocument();
+  });
+
+  it('should render a grouped input where the label IS the h1', () => {
+    render(
+      <MemoryRouter>
+        <DisplayForm
+          formId="testForm"
+          fields={formFieldsLegendIsH1}
+          formActions={formActions}
+          formType={SINGLE_PAGE_FORM}
+          handleSubmit={handleSubmit}
+        />
+      </MemoryRouter>,
+    );
+    expect(screen.getByText('This is a radio button set where the label is the h1')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'This is a radio button set where the label is the h1' })).toBeInTheDocument();
+    expect(screen.getByText('radio hint').outerHTML).toEqual('<div id="radioButtonSet-hint" class="govuk-hint">radio hint</div>');
+    expect(screen.getByRole('group', { name: 'This is a radio button set where the label is the h1' })).toBeInTheDocument();
     expect(screen.getByLabelText('Radio one')).toBeInTheDocument();
     expect(screen.getByLabelText('Radio two')).toBeInTheDocument();
     expect(screen.getByLabelText('Radio three')).toBeInTheDocument();

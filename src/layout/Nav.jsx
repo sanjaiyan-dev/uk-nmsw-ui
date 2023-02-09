@@ -1,21 +1,26 @@
-import { useContext, useEffect, useState } from 'react';
-import { Link, NavLink, useLocation } from 'react-router-dom';
-import { UserContext } from '../context/userContext';
+import { useEffect, useState } from 'react';
+import {
+  Link, NavLink, useLocation, useNavigate,
+} from 'react-router-dom';
+import axios from 'axios';
 import { SERVICE_NAME } from '../constants/AppConstants';
 import {
   YOUR_VOYAGES_PAGE_NAME,
   YOUR_VOYAGES_URL,
   LANDING_URL,
-  SECOND_PAGE_NAME,
-  SECOND_PAGE_URL,
   TEMPLATE_PAGE_URL,
   TEMPLATE_PAGE_NAME,
+  SIGN_IN_URL,
+  YOUR_DETAILS_PAGE_URL,
+  YOUR_DETAILS_PAGE_NAME,
 } from '../constants/AppUrlConstants';
+import { SIGN_OUT_ENDPOINT } from '../constants/AppAPIConstants';
 import useUserIsPermitted from '../hooks/useUserIsPermitted';
+import Auth from '../utils/Auth';
 
 const Nav = () => {
   const { pathname } = useLocation();
-  const { signOut } = useContext(UserContext);
+  const navigate = useNavigate();
   const showNav = useUserIsPermitted();
   const navData = [
     {
@@ -25,9 +30,9 @@ const Nav = () => {
       active: false,
     },
     {
-      id: 'SecondPage',
-      urlStem: SECOND_PAGE_URL,
-      text: SECOND_PAGE_NAME,
+      id: 'YourDetails',
+      urlStem: YOUR_DETAILS_PAGE_URL,
+      text: YOUR_DETAILS_PAGE_NAME,
       active: false,
     },
     {
@@ -66,6 +71,21 @@ const Nav = () => {
 
   const removeFormData = () => {
     sessionStorage.removeItem('formData');
+  };
+
+  const handleSignOut = async () => {
+    try {
+      const response = await axios.post(SIGN_OUT_ENDPOINT, {}, {
+        headers: { Authorization: `Bearer ${Auth.retrieveToken()}` },
+      });
+      if (response.status === 200) {
+        Auth.logout();
+        navigate(SIGN_IN_URL);
+      }
+    } catch (err) {
+      Auth.logout();
+      navigate(SIGN_IN_URL);
+    }
   };
 
   useEffect(() => {
@@ -142,8 +162,8 @@ const Nav = () => {
                   </Link>
                 </li>
               ))}
-              <li className="govuk-header__navigation-item">
-                <NavLink to={YOUR_VOYAGES_URL} className="govuk-header__link" onClick={() => signOut()}>Sign out</NavLink>
+              <li className="govuk-header__navigation-item float">
+                <NavLink to={YOUR_VOYAGES_URL} className="govuk-header__link" onClick={handleSignOut}>Sign out</NavLink>
                 {/* Link tag cannot be used as we do not have a signout route */}
               </li>
             </ul>

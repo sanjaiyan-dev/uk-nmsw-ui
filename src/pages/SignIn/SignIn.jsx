@@ -1,6 +1,6 @@
-import { useContext } from 'react';
+import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { UserContext } from '../../context/userContext';
+import axios from 'axios';
 import {
   FIELD_EMAIL,
   FIELD_PASSWORD,
@@ -9,10 +9,16 @@ import {
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
 import {
+  MESSAGE_URL,
   REGISTER_ACCOUNT_URL,
+  SIGN_IN_URL,
   YOUR_VOYAGES_URL,
+  REGISTER_EMAIL_RESEND_URL,
 } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
+import { SIGN_IN_ENDPOINT, USER_NOT_VERIFIED, USER_SIGN_IN_DETAILS_INVALID } from '../../constants/AppAPIConstants';
+import Auth from '../../utils/Auth';
+import { scrollToTop } from '../../utils/ScrollToElement';
 
 const SupportingText = () => (
   <div className="govuk-inset-text">
@@ -23,9 +29,9 @@ const SupportingText = () => (
 );
 
 const SignIn = () => {
-  const { signIn, user } = useContext(UserContext);
   const navigate = useNavigate();
   const { state } = useLocation();
+  const [errors, setErrors] = useState();
   document.title = 'Sign in';
 
   // Form fields
@@ -63,30 +69,67 @@ const SignIn = () => {
     },
   ];
 
-  const handleSubmit = ({ formData }) => {
-    if (user.email !== formData.email) {
-      sessionStorage.removeItem('formData');
-    }
-    signIn({ formData });
-    if (state?.redirectURL) {
-      navigate(state.redirectURL);
-    } else {
-      navigate(YOUR_VOYAGES_URL);
+  const removeApiErrors = () => {
+    if (errors) setErrors();
+  };
+
+  const handleSubmit = async ({ formData }) => {
+    try {
+      const response = await axios.post(SIGN_IN_ENDPOINT, formData);
+      if (response.data.token) { Auth.storeToken(response.data.token); }
+      if (state?.redirectURL) {
+        navigate(state.redirectURL);
+      } else {
+        navigate(YOUR_VOYAGES_URL);
+      }
+    } catch (err) {
+      if (err?.response?.data?.message === USER_SIGN_IN_DETAILS_INVALID) {
+        setErrors('Email and password combination is invalid');
+        scrollToTop();
+      } else if (err?.response?.data?.message === USER_NOT_VERIFIED) {
+        navigate(REGISTER_EMAIL_RESEND_URL, { state: { dataToSubmit: { emailAddress: formData?.email } } });
+      } else {
+        navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: SIGN_IN_URL } });
+      }
     }
   };
 
   return (
-    <DisplayForm
-      pageHeading="Sign in"
-      formId="formSignIn"
-      fields={formFields}
-      formActions={formActions}
-      formType={SIGN_IN_FORM}
-      keepSessionOnSubmit={state?.redirectURL}
-      handleSubmit={handleSubmit}
-    >
-      <SupportingText />
-    </DisplayForm>
+    <>
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-two-thirds">
+          {errors
+            && (
+              <div className="govuk-error-summary" data-module="govuk-error-summary">
+                <div role="alert">
+                  <h2 className="govuk-error-summary__title">
+                    There is a problem
+                  </h2>
+                  <div className="govuk-error-summary__body">
+                    <ul className="govuk-list govuk-error-summary__list">
+                      <li className="errorText govuk-!-font-weight-bold">
+                        {errors}
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            )}
+        </div>
+      </div>
+      <DisplayForm
+        pageHeading="Sign in"
+        formId="formSignIn"
+        fields={formFields}
+        formActions={formActions}
+        formType={SIGN_IN_FORM}
+        keepSessionOnSubmit={state?.redirectURL}
+        handleSubmit={handleSubmit}
+        removeApiErrors={removeApiErrors}
+      >
+        <SupportingText />
+      </DisplayForm>
+    </>
   );
 };
 

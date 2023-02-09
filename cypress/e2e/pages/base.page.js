@@ -8,6 +8,7 @@ class BasePage {
     cy.contains('Send confirmation email').should('be.enabled').click({force: true});
   }
 
+// sign-in for other pages
   clickSignIn() {
     cy.contains('Sign in').click();
   }
@@ -23,6 +24,14 @@ class BasePage {
 
   verifyFieldError(field, error) {
     cy.get(`#${field}`).should('have.text', error);
+  }
+
+  verifyText(message) {
+    cy.contains(message);
+  }
+
+  checkH1(message) {
+    cy.get('h1').should('have.text', message);
   }
 }
 

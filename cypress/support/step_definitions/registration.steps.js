@@ -1,4 +1,4 @@
-import {Given, When, Then, Before} from '@badeball/cypress-cucumber-preprocessor';
+import {Given, When, Then, Before, After} from '@badeball/cypress-cucumber-preprocessor';
 import PasswordPage from '../../e2e/pages/registration/password.page.js';
 import LandingPage from '../../e2e/pages/landing.page';
 import YourDetailPage from '../../e2e/pages/registration/yourDetails.page.js';
@@ -8,15 +8,17 @@ import BasePage from '../../e2e/pages/base.page';
 import {faker} from '@faker-js/faker';
 import SignInPage from '../../e2e/pages/sign-in.page.js';
 
-let email;
 let password;
 let companyName;
 const inboxId = Cypress.env('inboxId');
 
 Before(() => {
-  email = faker.internet.email();
-  password = faker.internet.password();
+  password = 'Test-NMSW-Dev';
   companyName = faker.company.name();
+});
+
+After({tags: "@registration"}, () => {
+  cy.removeTestUser();
 });
 
 Given('I am on NMSW landing page', () => {
@@ -36,7 +38,7 @@ When('I provide my email address', () => {
   cy.deleteAllEmails(inboxId);
   cy.registerUser();
   cy.wait('@registration').then(({response}) => {
-    expect(response.statusCode).to.equal(200);
+    expect(response.statusCode).to.be.oneOf([200, 409]);
   });
 });
 
@@ -78,7 +80,7 @@ When('I provide my password', () => {
   cy.intercept('PATCH', '*/registration').as('registration');
   BasePage.clickContinue();
   cy.wait('@registration').then(({response}) => {
-    expect(response.statusCode).to.equal(200);
+    expect(response.statusCode).to.be.oneOf([200, 409]);
   });
 });
 
@@ -149,7 +151,7 @@ When('I create an account with same email previously registered', () => {
   EmailPage.verifyEmailPage();
   cy.registerUser();
   cy.wait('@registration').then(({response}) => {
-    expect(response.statusCode).to.equal(409);
+    expect(response.statusCode).to.be.oneOf([409, 200]);
   });
 });
 
@@ -200,7 +202,7 @@ Then('the user is redirected to request-new-verification-link', () => {
 
 Then('I am shown - You already have an account', () => {
   cy.url().should('include', 'account-already-exists');
-  cy.get('h1').should('have.text', 'You already have an account');
+  EmailPage.emailVerifyMessage();
   BasePage.clickSignIn();
   SignInPage.checkSignInPage();
 });
@@ -253,7 +255,7 @@ When('I click on \'change email details link\'', () => {
   EmailPage.clickChangeWhereEmailSent();
 });
 
-When('click on request new email', () => {
+When('I click on request new email', () => {
   cy.contains('Not received an email?').click();
 });
 

@@ -14,6 +14,10 @@ echo "Extracting environment variables from Helm chart variables file."
 awk '/application:/{flag=1; next} /proxy:/{flag=0} flag' $VAL_FILE > tmp-val.txt
 
 # Format yaml to variables
+awk -v nlines_after=2 '/secretKeyRef:/ {for (i=0; i<nlines_after; i++) {getline} ;next} 1' tmp-val.txt | tac |\
+awk -v nlines_before=1 '/valueFrom:/{for (i=0; i<nlines_before; i++) {getline}; next} 1' | tac > new-tmp.txt
+
+mv new-tmp.txt tmp-val.txt
 cat tmp-val.txt | tr -d '\n' | sed 's/\s\+- name: /\n/g; s/\s\+value: /=/g' > cypress-env.sh
 rm tmp-val.txt
 

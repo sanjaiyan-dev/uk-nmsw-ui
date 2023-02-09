@@ -1,5 +1,4 @@
 import {
-  useContext,
   useEffect,
   useRef,
   useState,
@@ -10,18 +9,17 @@ import {
   EXPANDED_DETAILS,
   FIELD_CONDITIONAL,
   FIELD_PASSWORD,
+  PASSWORD_FORM,
   SIGN_IN_FORM,
   SINGLE_PAGE_FORM,
 } from '../constants/AppConstants';
-import { UserContext } from '../context/userContext';
 import determineFieldType from './formFields/DetermineFieldType';
 import { scrollToTop } from '../utils/ScrollToElement';
 import Validator from '../utils/Validator';
 
 const DisplayForm = ({
-  fields, formId, formActions, formType, pageHeading, handleSubmit, children,
+  fields, formId, formActions, formType, isLoading, pageHeading, handleSubmit, children, removeApiErrors,
 }) => {
-  const { user } = useContext(UserContext);
   const fieldsRef = useRef(null);
   const navigate = useNavigate();
   const [errors, setErrors] = useState();
@@ -38,6 +36,10 @@ const DisplayForm = ({
       const itemToCheck = itemToClear ? itemToClear.target.name : e.target.name;
       const filteredErrors = errors?.filter((errorField) => errorField.name !== itemToCheck);
       setErrors(filteredErrors);
+    }
+
+    if (formType === SIGN_IN_FORM) {
+      removeApiErrors();
     }
 
     // create the dataset to store, accounting for objects coming from autocomplete
@@ -84,7 +86,7 @@ const DisplayForm = ({
        * we do not clear the session for multipage forms or sign in form
        * as they have different needs
       */
-      if (formType === SINGLE_PAGE_FORM) {
+      if (formType === SINGLE_PAGE_FORM || formType === PASSWORD_FORM) {
         sessionStorage.removeItem('formData');
       }
     } else {
@@ -165,7 +167,7 @@ const DisplayForm = ({
     });
     const objectOfMappedFields = Object.assign({}, ...mappedFormData.map((field) => ({ [field.fieldName]: field.value })));
     setFormData(objectOfMappedFields);
-  }, [user, setFieldsWithValues, setFormData]);
+  }, [setFieldsWithValues, setFormData]);
 
   if (!formActions || !fieldsWithValues) { return null; }
   return (
@@ -202,14 +204,16 @@ const DisplayForm = ({
         {pageHeading && <h1 className="govuk-heading-xl govuk-grid-column-full">{pageHeading}</h1>}
       </div>
 
+      {formType !== PASSWORD_FORM && (
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-three-quarters below-h1">
           {children}
         </div>
       </div>
+      )}
 
       <div className="govuk-grid-row">
-        <form id={formId} className="govuk-grid-column-one-half" autoComplete="off">
+        <form id={formId} className="govuk-grid-column-full" autoComplete="off">
           {
             fieldsWithValues.map((field) => {
               const error = errors?.find((errorField) => errorField.name === field.fieldName);
@@ -232,6 +236,7 @@ const DisplayForm = ({
                       error: error?.message,
                       fieldDetails: field,
                       parentHandleChange: handleChange,
+                      children,
                     })
                   }
                 </div>
@@ -241,10 +246,11 @@ const DisplayForm = ({
           <div className="govuk-button-group">
             <button
               type="button"
-              className="govuk-button"
+              className={isLoading ? 'govuk-button disabled' : 'govuk-button'}
               data-module="govuk-button"
               data-testid="submit-button"
               onClick={(e) => handleValidation(e, { formData })}
+              disabled={isLoading}
             >
               {formActions.submit.label}
             </button>
@@ -290,6 +296,8 @@ DisplayForm.propTypes = {
     }),
   }),
   formType: PropTypes.string.isRequired,
+  isLoading: PropTypes.bool,
   pageHeading: PropTypes.string,
   handleSubmit: PropTypes.func.isRequired,
+  removeApiErrors: PropTypes.func,
 };

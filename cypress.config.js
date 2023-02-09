@@ -2,6 +2,7 @@ const {defineConfig} = require('cypress');
 const createBundler = require('@bahmutov/cypress-esbuild-preprocessor');
 const preprocessor = require('@badeball/cypress-cucumber-preprocessor');
 const createEsbuildPlugin = require('@badeball/cypress-cucumber-preprocessor/esbuild');
+const fs = require('fs');
 
 async function setupNodeEvents(on, config) {
   // This is required for the preprocessor to be able to generate JSON reports after each run, and more,
@@ -28,7 +29,14 @@ async function setupNodeEvents(on, config) {
 
           return null;
         },
-      },
+        //validate file
+        filePresent(filePath) {
+          if (fs.existsSync(`${process.env.PWD}/${filePath}`)) {
+            return true
+          }
+          return false
+        }
+      }
   );
   config.env.MAIL_API_KEY = process.env.DEV_NMSW_MAILSLURP_API_KEY;
   // Make sure to return the config object as it might have been modified by the plugin.
@@ -37,6 +45,7 @@ async function setupNodeEvents(on, config) {
 
 module.exports = defineConfig({
   e2e: {
+    video: false,
     specPattern: '**/*.feature',
     step_definitions: 'cypress/support/step_definitions/',
     watchForFileChanges: false,

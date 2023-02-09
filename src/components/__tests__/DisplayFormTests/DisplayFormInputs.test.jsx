@@ -1,7 +1,7 @@
 import { MemoryRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import DisplayForm from '../DisplayForm';
+import DisplayForm from '../../DisplayForm';
 import {
   DISPLAY_GROUPED,
   FIELD_AUTOCOMPLETE,
@@ -15,8 +15,7 @@ import {
   VALIDATE_EMAIL_ADDRESS,
   VALIDATE_PHONE_NUMBER,
   VALIDATE_REQUIRED,
-} from '../../constants/AppConstants';
-import { YOUR_VOYAGES_URL } from '../../constants/AppUrlConstants';
+} from '../../../constants/AppConstants';
 
 /*
  * These tests check that we can pass a variety of
@@ -36,19 +35,10 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockedUseNavigate,
 }));
 
-describe('Display Form', () => {
+describe('Display Form inputs', () => {
   const handleSubmit = jest.fn();
   const scrollIntoViewMock = jest.fn();
   window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
-  const formActions = {
-    submit: {
-      label: 'Submit test button',
-    },
-    cancel: {
-      label: 'Cancel test button',
-      redirectURL: YOUR_VOYAGES_URL,
-    },
-  };
   const formActionsSubmitOnly = {
     submit: {
       label: 'Submit test button',
@@ -281,60 +271,6 @@ describe('Display Form', () => {
     window.sessionStorage.clear();
   });
 
-  // ACTION BUTTONS
-  it('should render a submit and cancel button if both exist', () => {
-    render(
-      <MemoryRouter>
-        <DisplayForm
-          formId="testForm"
-          fields={formRequiredTextInput}
-          formActions={formActions}
-          formType={SINGLE_PAGE_FORM}
-          handleSubmit={handleSubmit}
-        />
-      </MemoryRouter>,
-    );
-    expect((screen.getByTestId('submit-button')).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Submit test button</button>');
-    expect((screen.getByTestId('cancel-button')).outerHTML).toEqual('<button type="button" class="govuk-button govuk-button--secondary" data-module="govuk-button" data-testid="cancel-button">Cancel test button</button>');
-  });
-
-  it('should render only a submit button if there is no cancel button', () => {
-    render(
-      <MemoryRouter>
-        <DisplayForm
-          formId="testForm"
-          fields={formRequiredTextInput}
-          formActions={formActionsSubmitOnly}
-          formType={SINGLE_PAGE_FORM}
-          handleSubmit={handleSubmit}
-        />
-      </MemoryRouter>,
-    );
-    expect(screen.getByTestId('submit-button').outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Submit test button</button>');
-    expect(screen.getAllByRole('button')).toHaveLength(1);
-  });
-
-  it('should call handleSubmit function if submit button is clicked and there are no errors', async () => {
-    const user = userEvent.setup();
-    render(
-      <MemoryRouter>
-        <DisplayForm
-          formId="testForm"
-          fields={formRequiredTextInput}
-          formActions={formActionsSubmitOnly}
-          formType={SINGLE_PAGE_FORM}
-          handleSubmit={handleSubmit}
-        />
-      </MemoryRouter>,
-    );
-
-    await user.type(screen.getByLabelText('Text input'), 'Hello');
-    expect(screen.getByTestId('submit-button').outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Submit test button</button>');
-    expect(screen.getAllByRole('button')).toHaveLength(1);
-    await user.click(screen.getByRole('button', { name: 'Submit test button' }));
-    expect(handleSubmit).toHaveBeenCalled();
-  });
-
   // INPUTS
   it('should render an autocomplete input', async () => {
     render(
@@ -366,10 +302,8 @@ describe('Display Form', () => {
         />
       </MemoryRouter>,
     );
-    expect(screen.getByLabelText('Country phone code field')).toBeInTheDocument();
-    expect(screen.getByRole('textbox', { name: 'Country phone code field' })).toBeInTheDocument();
-    expect(screen.getByLabelText('Phone number field')).toBeInTheDocument();
-    expect(screen.getByRole('textbox', { name: 'Phone number field' })).toBeInTheDocument();
+    expect(screen.getByLabelText('Phone input')).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: 'Phone input' })).toBeInTheDocument();
     expect(screen.getByText('This is a hint for a phone input').outerHTML).toEqual('<div id="testPhoneField-hint" class="govuk-hint">This is a hint for a phone input</div>');
   });
 

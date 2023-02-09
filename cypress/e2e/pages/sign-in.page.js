@@ -1,16 +1,25 @@
-class SignInPage{
+class SignInPage {
+
+  get password() {
+    return cy.get('#password-input');
+  }
 
   get emailAddress() {
     return cy.get('#email-input');
   }
 
-  get password() {
-   return  cy.get('#password-input');
+  checkSignInLink() {
+    cy.contains('Sign in');
+  }
+
+//sign-in for sign-in page
+  clickSignIn() {
+    cy.get('[data-testid="submit-button"]').click();
   }
 
   checkSignInPage() {
-    cy.url().should('include','sign-in');
-    cy.get('h1').should('have.text','Sign in');
+    cy.url().should('include', 'sign-in');
+    cy.get('h1').should('have.text', 'Sign in');
     cy.contains('create one now');
   }
 
@@ -18,16 +27,26 @@ class SignInPage{
     cy.contains('create one now').click();
   }
 
-  EnterEmailAddress(email) {
-    this.emailAddress.clear().type(email)
+  enterEmailAddress(email) {
+    this.emailAddress.clear().type(email);
+    return this;
   }
 
-  EnterPassword(pwd) {
+  enterPassword(pwd) {
     this.password.clear().type(pwd)
   }
 
-  clickSignIn() {
-    cy.get('[data-testid="submit-button"]').click();
+  checkSignOut() {
+    cy.contains('Sign out');
+  }
+
+  clickSignOut() {
+    cy.intercept('POST', '*/sign-out').as('sign-out');
+    cy.contains('Sign out').click();
+    cy.wait('@sign-out').then(({response}) => {
+      expect(response.statusCode).to.equal(200);
+    })
   }
 }
+
 export default new SignInPage();

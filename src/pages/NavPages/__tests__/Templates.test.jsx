@@ -19,35 +19,35 @@ describe('Template page tests', () => {
   it('should tell the user about the templates and display them', () => {
     render(<MemoryRouter><Templates /></MemoryRouter>);
     expect(screen.getByText('Use the templates provided:')).toBeInTheDocument();
-    expect(screen.getByText('General Declaration (FAL 1) template (xls)')).toBeInTheDocument();
-    expect(screen.getByText('Crew details including supernumeraries (FAL 5) template (xls)')).toBeInTheDocument();
-    expect(screen.getByText('Passenger details (FAL 6) template (xls)')).toBeInTheDocument();
+    expect(screen.getByText('General Declaration (FAL 1) template (xlsx, 31kb)')).toBeInTheDocument();
+    expect(screen.getByText('Crew details including supernumeraries (FAL 5) template (xlsx, 118kb)')).toBeInTheDocument();
+    expect(screen.getByText('Passenger details (FAL 6) template (xlsx, 90kb)')).toBeInTheDocument();
   });
 
   it('should download General declaration (FAL1) on click', async () => {
     const user = userEvent.setup();
     render(<MemoryRouter><Templates /></MemoryRouter>);
 
-    await user.click(screen.getByRole('button', { name: 'General Declaration (FAL 1) template (xls)' }));
+    await user.click(screen.getByRole('button', { name: 'General Declaration (FAL 1) template (xlsx, 31kb)' }));
     expect(DownloadFile).toHaveBeenCalled();
-    expect(DownloadFile).toHaveBeenCalledWith('assets/files/NMSW-FAL-1.xlsx', 'FAL1.xlsx');
+    expect(DownloadFile).toHaveBeenCalledWith('assets/files/General declaration FAL 1.xlsx', 'General declaration FAL 1.xlsx');
   });
 
   it('should download Crew details (FAL5) on click', async () => {
     const user = userEvent.setup();
     render(<MemoryRouter><Templates /></MemoryRouter>);
 
-    await user.click(screen.getByRole('button', { name: 'Crew details including supernumeraries (FAL 5) template (xls)' }));
+    await user.click(screen.getByRole('button', { name: 'Crew details including supernumeraries (FAL 5) template (xlsx, 118kb)' }));
     expect(DownloadFile).toHaveBeenCalled();
-    expect(DownloadFile).toHaveBeenCalledWith('assets/files/NMSW-FAL-5-and-6.xlsx', 'FAL5.xlsx');
+    expect(DownloadFile).toHaveBeenCalledWith('assets/files/Crew details including supernumeraries FAL 5.xlsx', 'Crew details including supernumeraries FAL 5.xlsx');
   });
 
   it('should download Passenger details (FAL 6) on click', async () => {
     const user = userEvent.setup();
     render(<MemoryRouter><Templates /></MemoryRouter>);
 
-    await user.click(screen.getByRole('button', { name: 'Passenger details (FAL 6) template (xls)' }));
+    await user.click(screen.getByRole('button', { name: 'Passenger details (FAL 6) template (xlsx, 90kb)' }));
     expect(DownloadFile).toHaveBeenCalled();
-    expect(DownloadFile).toHaveBeenCalledWith('assets/files/NMSW-FAL-5-and-6.xlsx', 'FAL6.xlsx');
+    expect(DownloadFile).toHaveBeenCalledWith('assets/files/Passenger details FAL 6.xlsx', 'Passenger details FAL 6.xlsx');
   });
 });

@@ -19,3 +19,6 @@ cypress/videos
 cypress/report
 mochawesome-report/
 axe.csv
+
+# Decrypted YAML files
+helm/secrets/*.yaml

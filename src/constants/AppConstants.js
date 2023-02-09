@@ -5,9 +5,11 @@ export const SERVICE_NAME = 'National Maritime Single Window';
 export const DISPLAY_DETAILS = 'details';
 export const DISPLAY_GROUPED = 'grouped';
 export const DISPLAY_SINGLE = 'single';
+export const DISPLAY_PASSWORD = 'password';
 // Forms: identifiers
 export const EXPANDED_DETAILS = 'ExpandedDetails';
 export const MULTI_PAGE_FORM = 'multiPageForm';
+export const PASSWORD_FORM = 'passwordForm';
 export const SIGN_IN_FORM = 'signInForm';
 export const SINGLE_PAGE_FORM = 'singlePageForm';
 // Forms: input types
@@ -15,7 +17,7 @@ export const FIELD_AUTOCOMPLETE = 'autocomplete';
 export const FIELD_CONDITIONAL = 'conditional';
 export const FIELD_EMAIL = 'email';
 export const FIELD_PASSWORD = 'password';
-export const FIELD_PHONE = 'phoneNumber';
+export const FIELD_PHONE = 'tel';
 export const FIELD_TEXT = 'text';
 export const FIELD_RADIO = 'radio';
 // Forms: states

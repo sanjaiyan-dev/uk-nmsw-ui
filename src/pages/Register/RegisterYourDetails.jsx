@@ -12,6 +12,7 @@ import {
 } from '../../constants/AppConstants';
 import { ERROR_VERIFICATION_FAILED_URL, REGISTER_PASSWORD_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
+import { MergePhoneNumberFields } from '../../utils/FormatPhoneNumber';
 
 const RegisterYourDetails = () => {
   const navigate = useNavigate();
@@ -47,17 +48,34 @@ const RegisterYourDetails = () => {
       ],
     },
     {
-      type: FIELD_PHONE,
-      fieldName: 'phoneNumber',
-      label: 'Phone number',
+      type: FIELD_TEXT,
+      label: 'International dialling code',
+      fieldName: 'diallingCode',
+      hint: 'For example, 44 for UK',
       validation: [
         {
           type: VALIDATE_REQUIRED,
-          message: 'Enter your phone number',
+          message: 'Enter an international dialling code',
         },
         {
           type: VALIDATE_PHONE_NUMBER,
-          message: 'Enter your country code and phone number',
+          message: 'Enter an international dialling code in the correct format',
+        },
+      ],
+    },
+    {
+      type: FIELD_PHONE,
+      fieldName: 'telephoneNumber',
+      hint: 'For example, 7123123123',
+      label: 'Telephone number',
+      validation: [
+        {
+          type: VALIDATE_REQUIRED,
+          message: 'Enter a telephone number',
+        },
+        {
+          type: VALIDATE_PHONE_NUMBER,
+          message: 'Enter a telephone number in the correct format',
         },
       ],
     },
@@ -105,7 +123,12 @@ const RegisterYourDetails = () => {
   ];
 
   const handleSubmit = async (formData) => {
-    const dataToSubmit = { ...state?.dataToSubmit, ...formData.formData };
+    const dataToSubmit = {
+      ...state?.dataToSubmit,
+      ...formData.formData,
+      phoneNumber: MergePhoneNumberFields({ diallingCode: formData.formData.diallingCode, telephoneNumber: formData.formData.telephoneNumber }),
+    };
+
     navigate(REGISTER_PASSWORD_URL, { state: { dataToSubmit } });
   };
 

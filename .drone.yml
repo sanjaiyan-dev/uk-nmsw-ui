@@ -27,6 +27,25 @@ steps:
     event:
     - push
 
+- name: sync_staging_secrets
+  pull: always
+  image: quay.io/ukhomeofficedigital/cop-secrets
+  environment:
+    AWS_ACCESS_KEY_ID:
+      from_secret: STAGING_DRONE_AWS_ACCESS_KEY_ID
+    AWS_SECRET_ACCESS_KEY:
+      from_secret: STAGING_DRONE_AWS_SECRET_ACCESS_KEY
+    DEPLOY_ENV: staging
+    DRONE_SERVER: https://drone-gh.acp.homeoffice.gov.uk
+    DRONE_TOKEN:
+      from_secret: DRONE_V1_PUBLIC_TOKEN
+    DRONE_VERSION: ${DRONE_SYSTEM_VERSION}
+  when:
+    event:
+    - promote
+    target:
+    - staging
+
 - name: unit_test
   pull: always
   image: quay.io/ukhomeofficedigital/cop-node:18-alpine
@@ -111,6 +130,7 @@ steps:
   pull: if-not-exists
   image: quay.io/ukhomeofficedigital/helm:latest
   commands:
+  - ./helm/decrypt-secrets.sh dev
   - /run-helm.sh list -n nmsw-dev
   - helm upgrade --install nmsw-ui ./helm -f ./helm/dev.yaml -n nmsw-dev --dry-run
   - helm upgrade --install nmsw-ui ./helm -f ./helm/dev.yaml -n nmsw-dev
@@ -123,11 +143,38 @@ steps:
       from_secret: DEV_NMSW_KUBE_SERVER
     KUBE_TOKEN:
       from_secret: DEV_NMSW_KUBE_TOKEN
+    GPG_KEY:
+      from_secret: DEV_NMSW_GPG_KEY
   when:
     branch:
     - version-*
     event:
     - push
+
+- name: deploy_to_staging
+  pull: if-not-exists
+  image: quay.io/ukhomeofficedigital/helm:latest
+  commands:
+  - ./helm/decrypt-secrets.sh staging
+  - /run-helm.sh list -n nmsw-staging
+  - helm upgrade --install nmsw-ui ./helm -f ./helm/staging.yaml -n nmsw-staging --dry-run
+  - helm upgrade --install nmsw-ui ./helm -f ./helm/staging.yaml -n nmsw-staging
+  environment:
+    KUBE_CERTIFICATE_AUTHORITY_DATA:
+      from_secret: STAGING_NMSW_KUBE_CA_DATA
+    KUBE_CLUSTER_NAME:
+      from_secret: STAGING_NMSW_KUBE_CLUSTER_NAME
+    KUBE_SERVER:
+      from_secret: STAGING_NMSW_KUBE_SERVER
+    KUBE_TOKEN:
+      from_secret: STAGING_NMSW_KUBE_TOKEN
+    GPG_KEY:
+      from_secret: STAGING_NMSW_GPG_KEY
+  when:
+    event:
+    - promote
+    target:
+    - staging
 
 - name: notify
   pull: if-not-exists
@@ -172,15 +219,19 @@ platform:
 steps:
 - name: dev_cypress_test
   pull: if-not-exists
-  image: quay.io/ukhomeofficedigital/cop-cypress:10.3.0-node16
+  image: quay.io/ukhomeofficedigital/cop-cypress:12.2.0-node18
   environment:
-    API_KEY:
+    CYPRESS_MAIL_API_KEY:
       from_secret: DEV_NMSW_MAILSLURP_API_KEY
   commands:
   - ./cypress-extract-env.sh ./helm/dev.yaml
   - cat ./cypress-env.sh
   - export $(cat ./cypress-env.sh | xargs)
-  - apt-get update && apt-get upgrade -y
+  - >-
+    apt-get update && apt-get install -y procps curl;
+    curl -O https://github.com/cucumber/json-formatter/releases/download/v19.0.0/cucumber-json-formatter-linux-amd64;
+    mv ./cucumber-json-formatter-linux-amd64 /usr/local/bin/cucumber-json-formatter;
+    chmod +x /usr/local/bin/cucumber-json-formatter
   - ./drone-cypress-test-script.sh dev
   when:
     branch:
@@ -188,5 +239,28 @@ steps:
     - cypress-drone
     event:
     - push
+  failure: ignore
+
+- name: staging_cypress_test
+  pull: if-not-exists
+  image: quay.io/ukhomeofficedigital/cop-cypress:12.2.0-node18
+  environment:
+    CYPRESS_MAIL_API_KEY:
+      from_secret: STAGING_NMSW_MAILSLURP_API_KEY
+  commands:
+  - ./cypress-extract-env.sh ./helm/staging.yaml
+  - cat ./cypress-env.sh
+  - export $(cat ./cypress-env.sh | xargs)
+  - >-
+    apt-get update && apt-get install -y procps curl;
+    curl -O https://github.com/cucumber/json-formatter/releases/download/v19.0.0/cucumber-json-formatter-linux-amd64;
+    mv ./cucumber-json-formatter-linux-amd64 /usr/local/bin/cucumber-json-formatter;
+    chmod +x /usr/local/bin/cucumber-json-formatter
+  - ./drone-cypress-test-script.sh staging
+  when:
+    event:
+    - promote
+    target:
+    - staging
   failure: ignore
 ...

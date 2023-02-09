@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { REGISTER_ACCOUNT_ENDPOINT, TOKEN_INVALID } from '../../constants/AppAPIConstants';
@@ -27,6 +28,7 @@ const SupportingText = () => (
 const RegisterYourPassword = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
+  const [isLoading, setIsLoading] = useState(false);
   document.title = 'Create a password';
 
   const formActions = {
@@ -78,6 +80,7 @@ const RegisterYourPassword = () => {
   ];
 
   const handleSubmit = async (formData) => {
+    setIsLoading(true);
     // combine data from previous page of form
     const dataMerged = { ...state?.dataToSubmit, ...formData.formData };
     const dataToSubmit = {
@@ -111,6 +114,8 @@ const RegisterYourPassword = () => {
       } else {
         navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: REGISTER_PASSWORD_URL } });
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -120,6 +125,7 @@ const RegisterYourPassword = () => {
       fields={formFields}
       formActions={formActions}
       formType={MULTI_PAGE_FORM}
+      isLoading={isLoading}
       pageHeading="Create a password"
       handleSubmit={handleSubmit}
     >

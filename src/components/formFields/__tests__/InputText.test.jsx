@@ -1,5 +1,10 @@
 import { render, screen } from '@testing-library/react';
-import { FIELD_EMAIL, FIELD_PASSWORD, FIELD_TEXT } from '../../../constants/AppConstants';
+import {
+  FIELD_EMAIL,
+  FIELD_PASSWORD,
+  FIELD_PHONE,
+  FIELD_TEXT,
+} from '../../../constants/AppConstants';
 import InputText from '../InputText';
 
 /*
@@ -81,6 +86,18 @@ describe('Text input field generation', () => {
     );
 
     expect(screen.getByTestId('passwordField')).toHaveAttribute('type', 'password');
+  });
+
+  it('should render the input with type of tel if phone passed', () => {
+    render(
+      <InputText
+        fieldDetails={fieldDetailsAllProps}
+        handleChange={parentHandleChange}
+        type={FIELD_PHONE}
+      />,
+    );
+    expect(screen.getByRole('textbox', { name: '' })).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: '' })).toHaveAttribute('type', 'tel');
   });
 
   it('should render the default value in the input text field when one is provided', () => {

@@ -3,9 +3,15 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { REGISTER_ACCOUNT_ENDPOINT, TOKEN_INVALID } from '../../../constants/AppAPIConstants';
 import {
-  MESSAGE_URL, REGISTER_CONFIRMATION_URL, REGISTER_EMAIL_RESEND_URL, REGISTER_PASSWORD_URL,
+  REGISTER_ACCOUNT_ENDPOINT,
+  TOKEN_INVALID,
+} from '../../../constants/AppAPIConstants';
+import {
+  MESSAGE_URL,
+  REGISTER_CONFIRMATION_URL,
+  REGISTER_EMAIL_RESEND_URL,
+  REGISTER_PASSWORD_URL,
 } from '../../../constants/AppUrlConstants';
 import RegisterYourPassword from '../RegisterYourPassword';
 
