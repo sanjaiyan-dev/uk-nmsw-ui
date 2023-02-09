@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { MAX_FILE_SIZE, MAX_FILE_SIZE_DISPLAY } from '../constants/AppConstants';
-import { SIGN_IN_URL } from '../constants/AppUrlConstants';
+import { LOGGED_IN_LANDING, MESSAGE_URL, SIGN_IN_URL } from '../constants/AppUrlConstants';
 import Auth from '../utils/Auth';
 import { scrollToTop } from '../utils/ScrollToElement';
 
@@ -61,6 +61,16 @@ const FileUploadForm = ({
         if (err?.response?.status === 401 || err?.response?.status === 422) {
           // unauthorised / missing bearer token / token invalidated
           navigate(SIGN_IN_URL, { state: { redirectURL: urlThisPage, declarationId } });
+        } else if (err?.response?.status === 404) {
+          // invalid endpoint, likely missing/invalid declarationId
+          navigate(MESSAGE_URL, {
+            state: {
+              title: 'Something has gone wrong',
+              message: err.response?.data?.message,
+              redirectURL: LOGGED_IN_LANDING,
+              declarationId,
+            },
+          });
         }
       }
     }

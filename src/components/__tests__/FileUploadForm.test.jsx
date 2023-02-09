@@ -5,8 +5,7 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { MAX_FILE_SIZE, MAX_FILE_SIZE_DISPLAY } from '../../constants/AppConstants';
 // import { FILE_MISSING, FILE_TYPE_INVALID_PREFIX } from '../../constants/AppAPIConstants';
-// import { LOGGED_IN_LANDING, MESSAGE_URL, SIGN_IN_URL } from '../../constants/AppUrlConstants';
-import { SIGN_IN_URL } from '../../constants/AppUrlConstants';
+import { LOGGED_IN_LANDING, MESSAGE_URL, SIGN_IN_URL } from '../../constants/AppUrlConstants';
 import FileUploadForm from '../FileUploadForm';
 
 const mockedUseNavigate = jest.fn();
@@ -158,19 +157,19 @@ describe('File upload tests', () => {
     expect(mockedUseNavigate).toHaveBeenCalledWith(SIGN_IN_URL, { state: { redirectURL: '/this-page', declarationId: '123' } });
   });
 
-  // it('should redirect user to message page with state of your voyages page and declaration id if 404 error', async () => {
-  //   const user = userEvent.setup();
-  //   const file = new File(['template'], 'image.png', { type: 'image/png' });
-  //   mockAxios
-  //     .onPost('/specific-endpoint-path-for-filetype')
-  //     .reply(404);
-  //   renderPage();
-  //   const input = screen.getByLabelText('Upload a file');
-  //   await user.upload(input, file);
-  //   expect(input.files[0]).toStrictEqual(file);
-  //   await user.click(screen.getByRole('button', { name: 'Submit text from props' }));
-  //   expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, { state: { redirectURL: LOGGED_IN_LANDING, title: 'Something has gone wrong', declarationId: '123' } });
-  // });
+  it('should redirect user to message page with state of your voyages page and declaration id if 404 error', async () => {
+    const user = userEvent.setup();
+    const file = new File(['template'], 'image.png', { type: 'image/png' });
+    mockAxios
+      .onPost('/specific-endpoint-path-for-filetype')
+      .reply(404);
+    renderPage();
+    const input = screen.getByLabelText('Upload a file');
+    await user.upload(input, file);
+    expect(input.files[0]).toStrictEqual(file);
+    await user.click(screen.getByRole('button', { name: 'Submit text from props' }));
+    expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, { state: { redirectURL: LOGGED_IN_LANDING, title: 'Something has gone wrong', declarationId: '123' } });
+  });
 
   // it('should redirect user to message page with state of this page and declaration id if 500 error', async () => {
   //   const user = userEvent.setup();
