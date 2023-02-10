@@ -17,6 +17,7 @@ export const ENDPOINT_FILE_UPLOAD_GENERAL_DECLARATION_PATH = '/upload-fal1';
 // Responses
 export const FILE_MISSING = 'No file provided';
 export const FILE_TYPE_INVALID_PREFIX = 'Invalid file type';
+export const TOKEN_EXPIRED = 'Token has expired';
 export const TOKEN_INVALID = 'Token is invalid or it has expired';
 export const TOKEN_USED_TO_REGISTER = 'Token was already used';
 export const USER_ALREADY_REGISTERED = 'User is already registered';
