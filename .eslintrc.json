@@ -37,7 +37,6 @@
         "namedComponents": "arrow-function",
         "unnamedComponents": "arrow-function"
     }],
-    "react/jsx-no-useless-fragment": [2, { "allowExpressions": true }],
     "react/jsx-one-expression-per-line":  "off",
     "react/forbid-prop-types": "off",
     "react/require-default-props": "off",
