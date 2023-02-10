@@ -1,7 +1,9 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { DownloadFile } from '../../utils/DownloadFile';
 import {
+  SIGN_IN_URL,
   VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL,
+  VOYAGE_GENERAL_DECLARATION_UPLOAD_URL,
   YOUR_VOYAGES_URL,
 } from '../../constants/AppUrlConstants';
 import Message from '../../components/Message';
@@ -15,7 +17,13 @@ const VoyageUploadGeneralDeclaration = () => {
     console.log('Gen Dec', state?.declarationId);
     // this will be refactored once we have the upload file component
     // for now it just takes the declaration ID and passes it to the next page
-    navigate(VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL, { state: { fileType: 'General Declaration', declarationId: state?.declarationId } });
+
+    // for testing the sign in flow returning declaration ID, adding a redirect to sign in if no token
+    if (!sessionStorage.getItem('token')) {
+      navigate(SIGN_IN_URL, { state: { redirectURL: VOYAGE_GENERAL_DECLARATION_UPLOAD_URL, fileType: 'General Declaration', declarationId: state?.declarationId } });
+    } else {
+      navigate(VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL, { state: { fileType: 'General Declaration', declarationId: state?.declarationId } });
+    }
   };
 
   if (!state?.declarationId) {
