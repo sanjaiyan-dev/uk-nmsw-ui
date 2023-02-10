@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-filename-extension */
 /* istanbul ignore file */
 /* above leaves this file out of the jest test coverage check as we can't test index.js */
 import React from 'react';
