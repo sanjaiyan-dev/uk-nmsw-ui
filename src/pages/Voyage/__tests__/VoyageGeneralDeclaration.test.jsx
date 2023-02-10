@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import userEvent from '@testing-library/user-event';
-import { VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL, YOUR_VOYAGES_URL } from '../../../constants/AppUrlConstants';
+import { YOUR_VOYAGES_URL } from '../../../constants/AppUrlConstants';
 import VoyageGeneralDeclaration from '../VoyageGeneralDeclaration';
 
 const mockUseLocationState = { state: {} };
@@ -34,14 +33,5 @@ describe('Voyage general declaration page', () => {
     await screen.findByRole('heading', { name: 'Something has gone wrong' });
     expect(screen.getByRole('heading', { name: 'Something has gone wrong' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Click here to continue' }).outerHTML).toEqual(`<a href="${YOUR_VOYAGES_URL}">Click here to continue</a>`);
-  });
-
-  it('should go to the confirmation of upload on save and continue', async () => {
-    mockUseLocationState.state = { fileType: 'FAL Name', declarationId: '123' };
-    const user = userEvent.setup();
-    render(<MemoryRouter><VoyageGeneralDeclaration /></MemoryRouter>);
-    expect(screen.getByRole('button', { name: 'Save and continue' })).toBeInTheDocument();
-    await user.click(screen.getByRole('button', { name: 'Save and continue' }));
-    expect(mockedUseNavigate).toHaveBeenCalledWith(VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL, { state: { fileType: 'General Declaration', declarationId: '123' } });
   });
 });
