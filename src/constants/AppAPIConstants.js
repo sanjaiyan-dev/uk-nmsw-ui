@@ -11,6 +11,7 @@ export const SIGN_OUT_ENDPOINT = `${apiUrl}/sign-out`;
 export const CREATE_VOYAGE_ENDPOINT = `${apiUrl}/user/declaration`;
 
 // Responses
+export const TOKEN_EXPIRED = 'Token has expired';
 export const TOKEN_INVALID = 'Token is invalid or it has expired';
 export const TOKEN_USED_TO_REGISTER = 'Token was already used';
 export const USER_ALREADY_REGISTERED = 'User is already registered';

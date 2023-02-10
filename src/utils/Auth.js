@@ -11,6 +11,10 @@ class Auth {
     sessionStorage.clear();
   }
 
+  static removeToken() {
+    sessionStorage.removeItem('token');
+  }
+
   static isAuthorized() {
     return this.retrieveToken();
   }
