@@ -1,4 +1,5 @@
-export const DownloadFile = (file, fileName) => {
+// eslint-disable-next-line import/prefer-default-export
+export const { DownloadFile } = (file, fileName) => {
   fetch(file, {
     method: 'GET',
     headers: {
@@ -20,3 +21,10 @@ export const DownloadFile = (file, fileName) => {
       URL.revokeObjectURL(url);
     });
 };
+
+/* NOTE on disabling the linting rule here:
+ * mocking the download file function for RTL/Jest
+ * testing has proved to be quite difficult
+ * when we use export default here and then import
+ * as a component on the other end
+ */
