@@ -12,7 +12,6 @@ import {
   COOKIE_URL,
   ERROR_ACCOUNT_ALREADY_ACTIVE_URL,
   ERROR_CREW_DETAILS_UPLOAD_URL,
-  ERROR_VERIFICATION_FAILED_URL,
   FORM_CONFIRMATION_URL,
   LANDING_URL,
   MESSAGE_URL,
@@ -52,7 +51,6 @@ import LoadingSpinner from './components/LoadingSpinner';
 const GenericMessage = lazy(() => import('./pages/Message/GenericMessage'));
 // Register/Sign in pages
 const AccountAlreadyActive = lazy(() => import('./pages/Message/AccountAlreadyActive'));
-const VerificationLinkFailed = lazy(() => import('./pages/Message/VerificationLinkFailed'));
 const RegisterConfirmation = lazy(() => import('./pages/Register/RegisterConfirmation'));
 const RegisterEmailAddress = lazy(() => import('./pages/Register/RegisterEmailAddress'));
 const RegisterEmailCheck = lazy(() => import('./pages/Register/RegisterEmailCheck'));
@@ -98,7 +96,6 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
           <Route path={MESSAGE_URL} element={<GenericMessage />} />
 
           <Route path={ERROR_ACCOUNT_ALREADY_ACTIVE_URL} element={<AccountAlreadyActive />} />
-          <Route path={ERROR_VERIFICATION_FAILED_URL} element={<VerificationLinkFailed />} />
           <Route path={REGISTER_CONFIRMATION_URL} element={<RegisterConfirmation />} />
           <Route path={REGISTER_ACCOUNT_URL} element={<RegisterEmailAddress />} />
           <Route path={REGISTER_EMAIL_URL} element={<RegisterEmailAddress />} />

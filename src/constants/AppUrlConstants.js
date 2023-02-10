@@ -54,7 +54,6 @@ export const CHANGE_YOUR_PASSWORD_PAGE_URL = '/change-your-password';
 // Error/message pages
 export const MESSAGE_URL = '/message';
 export const ERROR_ACCOUNT_ALREADY_ACTIVE_URL = '/create-account/account-already-exists';
-export const ERROR_VERIFICATION_FAILED_URL = '/create-account/verification-failed';
 
 // Top level pages - we use this to know to clear form session data
 export const TOP_LEVEL_PAGES = [
@@ -70,11 +69,11 @@ export const TOP_LEVEL_PAGES = [
 // Pages without back links
 export const NO_BACK_LINKS = [
   ...TOP_LEVEL_PAGES,
-  ERROR_VERIFICATION_FAILED_URL,
   FORM_CONFIRMATION_URL,
   GENERIC_CONFIRMATION_URL,
   MESSAGE_URL,
   REGISTER_CONFIRMATION_URL,
+  REGISTER_DETAILS_URL,
   REGISTER_EMAIL_CHECK_URL,
   REGISTER_EMAIL_VERIFIED_URL,
   SIGN_IN_URL,
