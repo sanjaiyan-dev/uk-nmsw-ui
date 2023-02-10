@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
   FIELD_RADIO,
@@ -10,8 +9,9 @@ import {
   VALIDATE_REQUIRED,
   DISPLAY_GROUPED,
 } from '../../constants/AppConstants';
-import { ERROR_VERIFICATION_FAILED_URL, REGISTER_PASSWORD_URL } from '../../constants/AppUrlConstants';
+import { REGISTER_EMAIL_RESEND_URL, REGISTER_PASSWORD_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
+import Message from '../../components/Message';
 import { MergePhoneNumberFields } from '../../utils/FormatPhoneNumber';
 
 const RegisterYourDetails = () => {
@@ -136,14 +136,20 @@ const RegisterYourDetails = () => {
    * Without an email address & token we can't submit the PATCH to update the user account
    * So if a user arrives to this page and we do not have an email address in state
    * we need to direct them to a place where they can deal with that
-   * TODO: once we have email verification flow journey replace REGISTER_EMAIL_URL_VERIFIED
-   * with a more appropriate page
    */
-  useEffect(() => {
-    if (!state || !state.dataToSubmit || !state.dataToSubmit.emailAddress || !state.dataToSubmit.token) {
-      navigate(ERROR_VERIFICATION_FAILED_URL);
-    }
-  }, [state]);
+  if (!state?.dataToSubmit?.emailAddress || !state?.dataToSubmit?.token) {
+    const buttonProps = {
+      buttonLabel: 'Resend confirmation email',
+      buttonNavigateTo: REGISTER_EMAIL_RESEND_URL,
+    };
+    return (
+      <Message
+        button={buttonProps}
+        title="Try again"
+        message="The verification link did not work. Resend the email to try again."
+      />
+    );
+  }
 
   return (
     <DisplayForm
