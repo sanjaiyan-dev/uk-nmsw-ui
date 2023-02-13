@@ -13,7 +13,7 @@ Every input can be displayed as a single field, set of grouped fields, or contai
 
 - [Display types](#display-types)
 
-Standard inputs
+[Standard inputs](#standard-inputs)
 - [Autocomplete](#autocomplete)
 - [Radio buttons](#radio-buttons)
 - [Radio buttons with conditional text field(s)](#conditionals)
@@ -186,6 +186,8 @@ To create one, when you define your input (see input options below) you need to 
 - `displayType: <type>`
 - `linkText: <required/optional>`
 
+If you forget to specify a display type, it will default to `DISPLAY_SINGLE`.
+
 Parameters
 
 ### displayType
@@ -258,6 +260,10 @@ It should NOT be used for the other types as it is redundant for them.
 
 ----
 
+## Standard Inputs
+
+----
+
 ## Autocomplete
 
 Requirements
@@ -307,7 +313,7 @@ An additional key if two fields are required to create a name (e.g. key: `name` 
 
 ## Radio Buttons
 
-TODO:
+TODO in codebase:
 - replace using the className of `govuk-radios` or `govuk-radios govuk-radios--inline` with constants for vertical/horizontal
 - replace need for specifying grouped = true and build that into the DetermineFieldType switch statement for ease (radio buttons are always grouped)
 - use `fieldName` to add the name to the option in InputRadio.jsx, removing the need to repeat it in each radioOption
@@ -372,9 +378,9 @@ When the label is also the h1, set this to true. This ensure the h1 tag and styl
 
 ## Conditional
 
-A list of radio buttons where one or more of the radio options can have an associated text input. The text input is only shown/validated/value stored if it's assocaited radio button is checked.
+A list of radio buttons where one or more of the radio options can have an associated text input. The text input is only shown/validated/value stored if it's associated radio button is checked.
 
-TODO:
+TODO in codebase:
 - replace using the className of `govuk-radios` or `govuk-radios govuk-radios--inline` with constants for vertical/horizontal
 - replace need for specifying grouped = true and build that into the DetermineFieldType switch statement for ease (radio buttons are always grouped)
 - use `fieldName` to add the name to the option in InputRadio.jsx, removing the need to repeat it in each radioOption
@@ -442,8 +448,8 @@ A string that will be shown as the question/label text for the field
 - radioField: set to `false` for this option to be a conditional text input
 - parentFieldValue: the `value` from the associated parent field, this allows us to show/hide/store this field only when parent field is checked
 - hint: (optional) An optional string
-- label: a string that will be shown as the question/label text for the field
-- name: a string that will be used for `name` and to create `id` and other field references
+- label: a string that will be shown as the question/label text for the text input field
+- name: a string that will be used for `name` and to create `id` and other field references for the text input
 
 
 ----
@@ -541,10 +547,6 @@ Import and use `FIELD_PASSWORD` from `src/constants/AppConstants`
 
 ### fieldName
 A string that will be used for `name` and to create `id` and other field references.
-
-### grouped
-Always specify this as `true` as phone number fields are grouped inputs and use a different fieldset/label html structure.
-This is defined within `src/components/formFields/DetermineFieldType` and at some point we will refactor this so that `displayType: DISPLAY_GROUPED,` does not need to be specified within the field object
 
 ### hint (optional)
 An optional string
