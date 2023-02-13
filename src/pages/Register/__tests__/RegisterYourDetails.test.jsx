@@ -1,7 +1,6 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
-import { ERROR_VERIFICATION_FAILED_URL } from '../../../constants/AppUrlConstants';
 import RegisterYourDetails from '../RegisterYourDetails';
 
 let mockUseLocationState = {};
@@ -22,64 +21,73 @@ describe('Register your details tests', () => {
     window.sessionStorage.clear();
   });
 
-  it('should redirect user to other page if there is no state', async () => {
+  it('should show try again message if there is no state', async () => {
     mockUseLocationState = {};
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
-    await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_VERIFICATION_FAILED_URL);
-    });
+    expect(screen.getByRole('heading', { name: 'Try again' })).toBeInTheDocument();
+    expect(screen.getByText('The verification link did not work. Resend the email to try again.')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Resend confirmation email' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Resend confirmation email' }).outerHTML).toEqual('<button class="govuk-button" data-module="govuk-button" type="button">Resend confirmation email</button>');
   });
 
-  it('should redirect user to other page if there is no dataToSubmit object in state', async () => {
+  it('should show try again message if there is no dataToSubmit object in state', async () => {
     mockUseLocationState = { state: {} };
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
-    await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_VERIFICATION_FAILED_URL);
-    });
+    expect(screen.getByRole('heading', { name: 'Try again' })).toBeInTheDocument();
+    expect(screen.getByText('The verification link did not work. Resend the email to try again.')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Resend confirmation email' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Resend confirmation email' }).outerHTML).toEqual('<button class="govuk-button" data-module="govuk-button" type="button">Resend confirmation email</button>');
   });
 
-  it('should redirect user to other page if there is an empty dataToSubmit object in state', async () => {
+  it('should show try again message if there is an empty dataToSubmit object in state', async () => {
     mockUseLocationState = { state: { dataToSubmit: {} } };
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
-    await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_VERIFICATION_FAILED_URL);
-    });
+    expect(screen.getByRole('heading', { name: 'Try again' })).toBeInTheDocument();
+    expect(screen.getByText('The verification link did not work. Resend the email to try again.')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Resend confirmation email' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Resend confirmation email' }).outerHTML).toEqual('<button class="govuk-button" data-module="govuk-button" type="button">Resend confirmation email</button>');
   });
 
-  it('should redirect user to other page if there is no emailAddress in state', async () => {
+  it('should show try again message if there is no emailAddress in state', async () => {
     mockUseLocationState = { state: { dataToSubmit: { toke: '123' } } };
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
-    await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_VERIFICATION_FAILED_URL);
-    });
+    expect(screen.getByRole('heading', { name: 'Try again' })).toBeInTheDocument();
+    expect(screen.getByText('The verification link did not work. Resend the email to try again.')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Resend confirmation email' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Resend confirmation email' }).outerHTML).toEqual('<button class="govuk-button" data-module="govuk-button" type="button">Resend confirmation email</button>');
   });
 
-  it('should redirect user to other page if there is no token in state', async () => {
+  it('should show try again message if there is no token in state', async () => {
     mockUseLocationState = { state: { dataToSubmit: { emailAddress: 'testemail@email.com' } } };
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
-    await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_VERIFICATION_FAILED_URL);
-    });
+    expect(screen.getByRole('heading', { name: 'Try again' })).toBeInTheDocument();
+    expect(screen.getByText('The verification link did not work. Resend the email to try again.')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Resend confirmation email' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Resend confirmation email' }).outerHTML).toEqual('<button class="govuk-button" data-module="govuk-button" type="button">Resend confirmation email</button>');
   });
 
   it('should render h1', async () => {
+    mockUseLocationState = { state: { dataToSubmit: { emailAddress: 'testemail@email.com', token: '123' } } };
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     expect(screen.getByText('Your details')).toBeInTheDocument();
   });
 
   it('should render a full name question', async () => {
+    mockUseLocationState = { state: { dataToSubmit: { emailAddress: 'testemail@email.com', token: '123' } } };
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     expect(screen.getByLabelText('Full name')).toBeInTheDocument();
     expect(screen.getByRole('textbox', { name: 'Full name' }).outerHTML).toEqual('<input class="govuk-input" id="fullName-input" name="fullName" type="text" value="">');
   });
 
   it('should render a company name question', async () => {
+    mockUseLocationState = { state: { dataToSubmit: { emailAddress: 'testemail@email.com', token: '123' } } };
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     expect(screen.getByLabelText('Your company name')).toBeInTheDocument();
     expect(screen.getByRole('textbox', { name: 'Your company name' }).outerHTML).toEqual('<input class="govuk-input" id="companyName-input" name="companyName" type="text" value="">');
   });
 
   it('should render an international dialling code question', async () => {
+    mockUseLocationState = { state: { dataToSubmit: { emailAddress: 'testemail@email.com', token: '123' } } };
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     expect(screen.getByLabelText('International dialling code')).toBeInTheDocument();
     expect(screen.getByText('For example, 44 for UK')).toBeInTheDocument();
@@ -87,6 +95,7 @@ describe('Register your details tests', () => {
   });
 
   it('should render a telephone number question', async () => {
+    mockUseLocationState = { state: { dataToSubmit: { emailAddress: 'testemail@email.com', token: '123' } } };
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     expect(screen.getByLabelText('Telephone number')).toBeInTheDocument();
     expect(screen.getByText('For example, 7123123123')).toBeInTheDocument();
@@ -94,12 +103,14 @@ describe('Register your details tests', () => {
   });
 
   it('should render a country question', async () => {
+    mockUseLocationState = { state: { dataToSubmit: { emailAddress: 'testemail@email.com', token: '123' } } };
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     expect(screen.getByLabelText('Country')).toBeInTheDocument();
     expect(screen.getByRole('textbox', { name: 'Country' }).outerHTML).toEqual('<input class="govuk-input" id="country-input" name="country" type="text" value="">');
   });
 
   it('should render a shipping agent question', async () => {
+    mockUseLocationState = { state: { dataToSubmit: { emailAddress: 'testemail@email.com', token: '123' } } };
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     expect(screen.getByText('Is your company a shipping agent?')).toBeInTheDocument();
     expect(screen.getByText('Yes')).toBeInTheDocument();
@@ -109,11 +120,13 @@ describe('Register your details tests', () => {
   });
 
   it('should render a continue button', async () => {
+    mockUseLocationState = { state: { dataToSubmit: { emailAddress: 'testemail@email.com', token: '123' } } };
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     expect(screen.getByRole('button', { name: 'Continue' }).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Continue</button>');
   });
 
   it('should NOT call the handleSubmit function on button click if there ARE errors', async () => {
+    mockUseLocationState = { state: { dataToSubmit: { emailAddress: 'testemail@email.com', token: '123' } } };
     const user = userEvent.setup();
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     await user.click(screen.getByTestId('submit-button'));
@@ -121,6 +134,7 @@ describe('Register your details tests', () => {
   });
 
   it('should display the Error Summary if there are errors', async () => {
+    mockUseLocationState = { state: { dataToSubmit: { emailAddress: 'testemail@email.com', token: '123' } } };
     const user = userEvent.setup();
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     await user.click(screen.getByTestId('submit-button'));
@@ -128,6 +142,7 @@ describe('Register your details tests', () => {
   });
 
   it('should display the required error messages if required fields are null', async () => {
+    mockUseLocationState = { state: { dataToSubmit: { emailAddress: 'testemail@email.com', token: '123' } } };
     const user = userEvent.setup();
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     await user.click(screen.getByTestId('submit-button'));
@@ -141,6 +156,7 @@ describe('Register your details tests', () => {
   });
 
   it('should display the error messages if fields are formatted incorrectly', async () => {
+    mockUseLocationState = { state: { dataToSubmit: { emailAddress: 'testemail@email.com', token: '123' } } };
     const user = userEvent.setup();
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     await user.type(screen.getByLabelText('International dialling code'), 'abc');
@@ -154,6 +170,7 @@ describe('Register your details tests', () => {
   });
 
   it('should NOT display error messagess if fields are valid', async () => {
+    mockUseLocationState = { state: { dataToSubmit: { emailAddress: 'testemail@email.com', token: '123' } } };
     const user = userEvent.setup();
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     await user.type(screen.getByLabelText('Full name'), 'Joe Bloggs');
@@ -174,6 +191,7 @@ describe('Register your details tests', () => {
   });
 
   it('should NOT clear form session data on submit', async () => {
+    mockUseLocationState = { state: { dataToSubmit: { emailAddress: 'testemail@email.com', token: '123' } } };
     const user = userEvent.setup();
     const expectedStoredData = '{"fullName":"Joe Bloggs","companyName":"Joe Bloggs Company","diallingCode":"44","telephoneNumber":"12345","country":"AUS","shippingAgent":"yes"}';
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
