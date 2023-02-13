@@ -9,7 +9,6 @@ This app has an in built form creator with reusable components for if you wish t
 - [Form action options](#form-action-options)
 
 ## Field types
-Display types
 Every input can be displayed as a single field, set of grouped fields, or contained within a `<details>` component. By default, inputs are treated as single field unless otherwise specified.
 
 - [Display types](#display-types)
