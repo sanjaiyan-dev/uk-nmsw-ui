@@ -132,7 +132,6 @@ steps:
   commands:
   - ./helm/decrypt-secrets.sh dev
   - /run-helm.sh list -n nmsw-dev
-  - helm upgrade --install nmsw-ui ./helm -f ./helm/dev.yaml -n nmsw-dev --dry-run
   - helm upgrade --install nmsw-ui ./helm -f ./helm/dev.yaml -n nmsw-dev
   environment:
     KUBE_CERTIFICATE_AUTHORITY_DATA:
@@ -157,7 +156,6 @@ steps:
   commands:
   - ./helm/decrypt-secrets.sh staging
   - /run-helm.sh list -n nmsw-staging
-  - helm upgrade --install nmsw-ui ./helm -f ./helm/staging.yaml -n nmsw-staging --dry-run
   - helm upgrade --install nmsw-ui ./helm -f ./helm/staging.yaml -n nmsw-staging
   environment:
     KUBE_CERTIFICATE_AUTHORITY_DATA:
