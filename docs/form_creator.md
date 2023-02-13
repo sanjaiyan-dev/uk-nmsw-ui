@@ -178,7 +178,9 @@ The page you want to redirect the user to if they click cancel
 
 Sometimes an input needs to be contained with the GDS `<details>` tags to allow users control over whether to interact with it or not.
 
-Some inputs must be grouped with a fieldset e.g. radio buttons and checkboxes, conditional fields
+Some inputs must be grouped with a fieldset e.g. radio buttons and checkboxes, conditional fields.
+
+_A `DISPLAY_PASSWORD` type exists but it covers a specific use case where we need to display supporting text within the form (see ChangeYourPassword.jsx)_
 
 To create one, when you define your input (see input options below) you need to include the params:
 - `displayType: <type>`
@@ -188,14 +190,71 @@ Parameters
 
 ### displayType
 Import and use
-- `FIELD_DETAILS` for detail components
-- `FIELD_GROUPED` for grouped inputs
-- `FIELD_SINGLE` for everything else
+- `DISPLAY_DETAILS` for detail components
+- `DISPLAY_GROUPED` for grouped inputs
+- `DISPLAY_SINGLE` for everything else
 
 ### linkText
-This is required for a `FIELD_DETAILS` type as this is the text that will show on the detail summary to be clicked on
+This is required for a `DISPLAY_DETAILS` type as this is the text that will show on the detail summary to be clicked on
 
 It should NOT be used for the other types as it is redundant for them.
+
+### examples
+
+#### details
+
+```
+{
+  type: FIELD_EMAIL,
+  displayType: DISPLAY_DETAILS,
+  fieldName: 'emailAddress',
+  label: 'Email address',
+  value: state?.dataToSubmit?.emailAddress,
+  linkText: 'Change where the email was sent',
+  validation: [
+    {
+      type: VALIDATE_REQUIRED,
+      message: 'Enter your email address',
+    },
+    {
+      type: VALIDATE_EMAIL_ADDRESS,
+      message: 'Enter an email address in the correct format, like name@example.com',
+    },
+  ],
+},
+```
+
+#### grouped
+
+```
+{
+  type: FIELD_RADIO,
+  className: 'govuk-radios govuk-radios--inline',
+  displayType: DISPLAY_GROUPED,
+  fieldName: 'shippingAgent',
+  label: 'Is your company a shipping agent?',
+  radioOptions: [
+    {
+      label: 'Yes',
+      name: 'shippingAgent',
+      value: 'yes',
+    },
+    {
+      label: 'No',
+      name: 'shippingAgent',
+      value: 'no',
+    },
+  ],
+  validation: [
+    {
+      type: VALIDATE_REQUIRED,
+      message: 'Select is your company a shipping agent',
+    },
+  ],
+},
+```
+
+
 
 ----
 
