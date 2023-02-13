@@ -57,6 +57,7 @@ Structure:
   formActions={formActions}
   formType=<required>
   isLoading=<optional boolean>
+  keepSessionOnSubmit={state?.redirectURL ? true : false}
   pageHeading=<required>
   removeApiErrors=<optional>
   handleSubmit={handleSubmit}
@@ -107,6 +108,14 @@ When passed to `DisplayForm` as `true`, the submit action button is `disabled`.
 In your container page, set `isLoading` to `false` in your useState so that on page load it is false.
 
 Then set it to `true` before TRYing your API call. This prevents the submit button starting multiple attempts if a user clicks more than once.
+
+### keepSessionOnSubmit
+
+Passed in as `state?.redirectURL ? true : false` this allows the DisplayForm renderer to check if there is a `redirectURL` present in state and persist the session data for use by the next page.
+
+Usually used for when we redirect users to sign-in if their token becomes invalid, as we want them to be able to return to where they were without loss of data.
+
+See more in [Single page forms](#single-page-forms) below.
 
 
 ### pageHeading
@@ -747,8 +756,6 @@ e.g. Single validator
 ```
 
 e.g. Multiple validators
-```
-e.g.
 ```
 {
   type: FIELD_TEXT,
