@@ -57,7 +57,9 @@ Structure:
   fields={formFields}
   formActions={formActions}
   formType=<required>
+  isLoading=<optional boolean>
   pageHeading=<required>
+  removeApiErrors=<optional>
   handleSubmit={handleSubmit}
 />
 ```
@@ -70,7 +72,9 @@ e.g. if you have a SupportingText component you would pass as follows:
   fields={formFields}
   formActions={formActions}
   formType=<required>
+  isLoading=<optional boolean>
   pageHeading=<required>
+  removeApiErrors=<optional>
   handleSubmit={handleSubmit}
 >
   <SupportingText />
@@ -83,19 +87,37 @@ Parameters
 An identifier for your form element
 
 ### formFields
-Must always be {formFields} which you must define within the component that is calling the DisplayForm component. (see Field Types)
+Must always be {formFields} which you must define within the component that is calling the DisplayForm component. (see [Field Types](#field-actions))
 
 ### formAction
-Must always be {formAction} which you must define within the component that is calling the DisplayForm component. (see Form Action Options)
+Must always be {formAction} which you must define within the component that is calling the DisplayForm component. (see [Form Action Options](#form-action-options))
 
 ### formType
-Can be SINGLE_PAGE_FORM - if the form has one page. This will clear any session data for the form when `submit` or `back` are clicked
-Or MULTI_PAGE_FORM - if the form has multiple pages. This will persist session data as the user moves through the form and only clear it when they go to another section of the site.
+Can be `SINGLE_PAGE_FORM` - if the form has one page. This will clear any session data for the form when `submit` or `back` are clicked
+
+Or `MULTI_PAGE_FORM` - if the form has multiple pages. This will persist session data as the user moves through the form and only clear it when they go to another section of the site.
 
 When using MULTI_PAGE_FORM you should add a `sessionStorage.removeItem('formData')` within the handleSubmit of the last page of your form.
 
+We also have `SIGN_IN_FORM` and `PASSWORD_FORM` for some specific use cases. These should not be used for other forms.
+
+### isLoading
+
+When passed to `DisplayForm` as `true`, the submit action button is `disabled`.
+
+In your container page, set `isLoading` to `false` in your useState so that on page load it is false.
+
+Then set it to `true` before TRYing your API call. This prevents the submit button starting multiple attempts if a user clicks more than once.
+
+
 ### pageHeading
 What will be the h1 of your page. We have to pass it to the form to display as any error summary is shown ABOVE the h1
+
+### removeApiError
+
+Currently only used by the /sign-in page where we set a page level error as a result of the API returning a 'username/password combination not valid' error.
+
+This is only useful if you need a specific page level error, and allows us to callback to clear the error state.
 
 ### handleSubmit
 Your handleSubmit action from the page
