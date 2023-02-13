@@ -509,7 +509,7 @@ Object structure
 Parameters
 
 ### type
-Import and use `FIELD_EMAIL` from `src/constants/AppConstants`
+Import and use `FIELD_EMAIL` from `src/constants/AppConstants`. This ensures field type and autocomplete are set to email.
 
 ### fieldName
 A string that will be used for `name` and to create `id` and other field references.
@@ -543,7 +543,7 @@ Object structure
 Parameters
 
 ### type
-Import and use `FIELD_PASSWORD` from `src/constants/AppConstants`
+Import and use `FIELD_PASSWORD` from `src/constants/AppConstants`. This ensures field type is set to password.
 
 ### fieldName
 A string that will be used for `name` and to create `id` and other field references.
@@ -577,8 +577,7 @@ Object structure
 Parameters
 
 ### type
-Import and use `FIELD_PHONE` from `src/constants/AppConstants`
-We use FIELD_PHONE as it provides a specific layout and handles separating the Country phone code from the rest of the phone number, as well as reformatting the number for use within two inputs in the UI as the API will return a single string (with specific formatting)
+Import and use `FIELD_PHONE` from `src/constants/AppConstants`.  This ensures field type and autocomplete are set to tel.
 
 You should always include phone number validation with a phone number field
 
