@@ -212,7 +212,7 @@ Your `Page` must contain
 
 Object structure:
 
-```
+```javascript
 <action>: {
   label: <required>,
 }
@@ -220,7 +220,7 @@ Object structure:
 
 If cancel button include the redirectUrl:
 
-```
+```javascript
 <action>: {
   label: <required>,
   redirectURL: <required>,
@@ -276,7 +276,7 @@ It should NOT be used for the other types as it is redundant for them.
 
 #### details
 
-```
+```javascript
 {
   type: FIELD_EMAIL,
   displayType: DISPLAY_DETAILS,
@@ -299,7 +299,7 @@ It should NOT be used for the other types as it is redundant for them.
 
 #### grouped
 
-```
+```javascript
 {
   type: FIELD_RADIO,
   className: 'govuk-radios govuk-radios--inline',
@@ -343,7 +343,7 @@ Requirements
 
 Object structure
 
-```
+```javascript
 {
   type: FIELD_AUTOCOMPLETE,
   displayType: DISPLAY_SINGLE,
@@ -395,7 +395,7 @@ n/a
 
 Object structure
 
-```
+```javascript
 {
   type: FIELD_RADIO,
   className: <required>,
@@ -462,7 +462,7 @@ n/a
 
 Object structure
 
-```
+```javascript
 {
   type: FIELD_CONDITIONAL,
   className: <required>,
@@ -533,7 +533,7 @@ n/a
 
 Object structure
 
-```
+```javascript
 {
   type: FIELD_TEXT,
   displayType: DISPLAY_SINGLE,
@@ -571,7 +571,7 @@ n/a
 
 Object structure
 
-```
+```javascript
 {
   type: FIELD_EMAIL,
   displayType: DISPLAY_SINGLE,
@@ -605,7 +605,7 @@ n/a
 
 Object structure
 
-```
+```javascript
 {
   type: FIELD_PASSWORD,
   displayType: DISPLAY_SINGLE,
@@ -639,7 +639,7 @@ n/a
 
 Object structure
 
-```
+```javascript
 {
   type: FIELD_PHONE,
   displayType: DISPLAY_SINGLE,
@@ -690,7 +690,7 @@ A field can have no validation array (no rules), an array with one object (rule)
 #### Required
 Field is a mandatory field and cannot be null.
 
-```
+```javascript
 {
   type: VALIDATE_REQUIRED,
   message: <error message to show in UI>
@@ -701,7 +701,7 @@ Field is a mandatory field and cannot be null.
 Field is a conditional field and has one or more rules to be validated if that conditional field is visible (i.e. it's parent radio is checked).
 The validation is run based on the rules entered in the nested `condition` object.
 
-```
+```javascript
 {
   type: VALIDATE_CONDITIONAL,
   condition: {
@@ -717,7 +717,7 @@ The validation is run based on the rules entered in the nested `condition` objec
 Specifically tests if the value entered matches an email pattern.
 This test only runs if there is a value in the field and is ignored if field is null.
 
-```
+```javascript
 {
   type: VALIDATE_EMAIL_ADDRESS,
   message: <error message to show in UI>
@@ -728,7 +728,7 @@ This test only runs if there is a value in the field and is ignored if field is 
 #### Match
 Specifically tests if the value entered matches the value of another field. This matches regardless of case. e.g `AbC` and `abc` return a match.
 
-```
+```javascript
 {
   type: VALIDATE_FIELD_MATCH,
   message: <error message to show in UI>,
@@ -740,7 +740,7 @@ Specifically tests if the value entered matches the value of another field. This
 #### Match Case Sensitive
 Specifically tests if the value entered matches the value of another field including the case. e.g. `AbC` and `abc` do not match.
 
-```
+```javascript
 {
   type: VALIDATE_FIELD_MATCH_CASE_SENSITIVE,
   message: <error message to show in UI>,
@@ -753,7 +753,7 @@ Specifically tests if the value entered matches the value of another field inclu
 Specifically tests if the length of the value entered is > the number specified in the `condition` entry.
 This test only runs if there is a value in the field and is ignored if field is null. 
 
-```
+```javascript
 {
   type: VALIDATE_MAX_LENGTH,
   condition: <maximum length>
@@ -766,7 +766,7 @@ This test only runs if there is a value in the field and is ignored if field is 
 Specifically tests if the length of the value entered is < the number specified in the `condition` entry.
 This test only runs if there is a value in the field and is ignored if field is null.
 
-```
+```javascript
 {
   type: VALIDATE_MIN_LENGTH,
   condition: <minimum length>
@@ -779,7 +779,7 @@ This test only runs if there is a value in the field and is ignored if field is 
 #### No Spaces
 Used mainly for fields like passwords, it checks for a [space] and throws an error if any exist anywhere in the string
 
-```
+```javascript
 {
   type: VALIDATE_NO_SPACES,
   message: <error message to show in UI>
@@ -791,7 +791,7 @@ Used mainly for fields like passwords, it checks for a [space] and throws an err
 Specifically tests if the value entered matches the accepted phone number pattern (numbers and certain characters and spaces).
 This test only runs if there is a value in the field and is ignored if field is null.
 
-```
+```javascript
 {
   type: VALIDATE_PHONE_NUMBER,
   message: <error message to show in UI>
@@ -803,7 +803,7 @@ This test only runs if there is a value in the field and is ignored if field is 
 ### Examples
 
 e.g. Single validator
-```
+```javascript
 {
   type: FIELD_TEXT,
   displayType: DISPLAY_SINGLE,
@@ -819,7 +819,7 @@ e.g. Single validator
 ```
 
 e.g. Multiple validators
-```
+```javascript
 {
   type: FIELD_TEXT,
   displayType: DISPLAY_SINGLE,
@@ -843,7 +843,7 @@ e.g. Multiple validators
 ```
 
 e.g. Conditionals
-```
+```javascript
 {
   type: FIELD_CONDITIONAL,
   label: 'What is your favourite animal',
