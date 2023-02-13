@@ -19,13 +19,12 @@ Every input can be displayed as a single field, set of grouped fields, or contai
 - [Radio buttons with conditional text field(s)](#conditionals)
 - [Text input](#text-input)
 
-Specific inputs
-- TODO: [Date](#date)
+[Specific inputs](#specific-inputs)
 - [Email](#email)
 - [Password](#password)
 - [Phone Number](#phone-number)
 
-Validating fields
+[Validating fields](#validating-fields)
 - [required](#required)
 - [Conditional](#conditional)
 - [Email Format](#email-format)
@@ -488,6 +487,10 @@ A string that will be shown as the question/label text for the field
 
 ----
 
+## Specific Inputs
+
+----
+
 ## Email
 
 Requirements
@@ -592,6 +595,7 @@ A string that will be shown as the question/label text for the field
 
 ----
 
+
 ## Validating Fields
 If a field requires validation you add a validation array to the field object.
 A field can have no validation array (no rules), an array with one object (rule), or an array with multiple objects (rules)
@@ -601,7 +605,10 @@ A field can have no validation array (no rules), an array with one object (rule)
 - [Conditional](#conditional)
 - [Email Format](#email-format)
 - [Match](#match)
+- [Match Case Sensitive](#match-case-sensitive)
+- [Maximum Length](#maximum-length)
 - [Minimum Length](#minimum-length)
+- [No Spaces](#no-spaces)
 - [Phone Number Format](#phone-number-format)
 2. [Examples](#examples)
 
@@ -609,7 +616,7 @@ A field can have no validation array (no rules), an array with one object (rule)
 ### Rules
 
 #### Required
-Field is a mandatory field and cannot be nul
+Field is a mandatory field and cannot be null.
 
 ```
 {
@@ -640,18 +647,30 @@ This test only runs if there is a value in the field and is ignored if field is 
 
 ```
 {
-  type: VALIDATE_EMAIL,
+  type: VALIDATE_EMAIL_ADDRESS,
   message: <error message to show in UI>
   },
 }
 ```
 
 #### Match
-Specifically tests if the value entered matches the value of another field.
+Specifically tests if the value entered matches the value of another field. This matches regardless of case. e.g `AbC` and `abc` return a match.
 
 ```
 {
-  type: VALIDATE_MATCH,
+  type: VALIDATE_FIELD_MATCH,
+  message: <error message to show in UI>,
+  condition: <field name to match>
+  },
+}
+```
+
+#### Match Case Sensitive
+Specifically tests if the value entered matches the value of another field including the case. e.g. `AbC` and `abc` do not match.
+
+```
+{
+  type: VALIDATE_FIELD_MATCH_CASE_SENSITIVE,
   message: <error message to show in UI>,
   condition: <field name to match>
   },
@@ -697,7 +716,7 @@ Used mainly for fields like passwords, it checks for a [space] and throws an err
 ```
 
 #### Phone Number Format
-Specifically tests if the value entered matches the API required phone number pattern.
+Specifically tests if the value entered matches the accepted phone number pattern (numbers and certain characters and spaces).
 This test only runs if there is a value in the field and is ignored if field is null.
 
 ```
@@ -711,7 +730,7 @@ This test only runs if there is a value in the field and is ignored if field is 
 
 ### Examples
 
-e.g.
+e.g. Single validator
 ```
 {
   type: FIELD_TEXT,
@@ -727,9 +746,33 @@ e.g.
 },
 ```
 
-There can be multiple validation rules objects per field, all are placed within the validation array
-
+e.g. Multiple validators
+```
 e.g.
+```
+{
+  type: FIELD_TEXT,
+  displayType: DISPLAY_SINGLE,
+  label: 'Phone number',
+  fieldName: 'phoneNumber',
+  validation: [
+    {
+      type: VALIDATE_REQUIRED,
+      message: 'Enter your phone number',
+    },
+    {
+      type: VALIDATE_MIN_LENGTH,
+      message: 'Phone numbers must be at least 3 digits long',
+    },
+    {
+      type: VALIDATE_PHONE_NUMBER,
+      message: 'Phone numbers must be in the correct format',
+    },
+  ],
+},
+```
+
+e.g. Conditionals
 ```
 {
   type: FIELD_CONDITIONAL,
@@ -756,6 +799,12 @@ e.g.
       name: 'favAnimal',
       value: 'dog',
     },
+    {
+      radioField: false,
+      parentFieldValue: 'dog',
+      label: 'Breed of dog',
+      name: 'breedOfDog',
+    },
   ],
   validation: [
     {
@@ -770,7 +819,16 @@ e.g.
         ruleToTest: VALIDATE_REQUIRED,
         message: 'Enter a breed of cat'
       },
-    }
+    },
+    {
+      type: VALIDATE_CONDITIONAL,
+      condition: {
+        parentValue: 'dog',
+        fieldName: 'breedOfDog',
+        ruleToTest: VALIDATE_REQUIRED,
+        message: 'Enter a breed of dog'
+      },
+    },
   ],
 }
 ```
