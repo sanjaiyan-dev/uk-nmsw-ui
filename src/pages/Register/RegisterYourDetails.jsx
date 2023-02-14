@@ -8,6 +8,7 @@ import {
   VALIDATE_PHONE_NUMBER,
   VALIDATE_REQUIRED,
   DISPLAY_GROUPED,
+  FIELD_AUTOCOMPLETE,
 } from '../../constants/AppConstants';
 import { REGISTER_EMAIL_RESEND_URL, REGISTER_PASSWORD_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
@@ -48,7 +49,9 @@ const RegisterYourDetails = () => {
       ],
     },
     {
-      type: FIELD_TEXT,
+      type: FIELD_AUTOCOMPLETE,
+      dataSet: ['tbd'],
+      responseKey: 'number',
       label: 'International dialling code',
       fieldName: 'diallingCode',
       hint: 'For example, 44 for UK',
