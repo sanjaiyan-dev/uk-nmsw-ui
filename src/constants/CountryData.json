@@ -1,0 +1,1514 @@
+[
+  {
+    "Identifier": 2,
+    "3 digit alpha Code": "AFG",
+    "Country name": "Afghanistan",
+    "Phone dial code": "93"
+  },
+  {
+    "Identifier": 249,
+    "3 digit alpha Code": "ALA",
+    "Country name": "Aland Islands",
+    "Phone dial code": "358"
+  },
+  {
+    "Identifier": 3,
+    "3 digit alpha Code": "ALB",
+    "Country name": "Albania",
+    "Phone dial code": "355"
+  },
+  {
+    "Identifier": 4,
+    "3 digit alpha Code": "DZA",
+    "Country name": "Algeria",
+    "Phone dial code": "213"
+  },
+  {
+    "Identifier": 5,
+    "3 digit alpha Code": "ASM",
+    "Country name": "American Samoa",
+    "Phone dial code": "1-684"
+  },
+  {
+    "Identifier": 6,
+    "3 digit alpha Code": "AND",
+    "Country name": "Andorra",
+    "Phone dial code": "376"
+  },
+  {
+    "Identifier": 7,
+    "3 digit alpha Code": "AGO",
+    "Country name": "Angola",
+    "Phone dial code": "244"
+  },
+  {
+    "Identifier": 8,
+    "3 digit alpha Code": "AIA",
+    "Country name": "Anguilla",
+    "Phone dial code": "1-264"
+  },
+  {
+    "Identifier": 9,
+    "3 digit alpha Code": "ATA",
+    "Country name": "Antarctica",
+    "Phone dial code": "672"
+  },
+  {
+    "Identifier": 10,
+    "3 digit alpha Code": "ATG",
+    "Country name": "Antigua and Barbuda",
+    "Phone dial code": "1-268"
+  },
+  {
+    "Identifier": 11,
+    "3 digit alpha Code": "ARG",
+    "Country name": "Argentina",
+    "Phone dial code": "54"
+  },
+  {
+    "Identifier": 12,
+    "3 digit alpha Code": "ARM",
+    "Country name": "Armenia",
+    "Phone dial code": "374"
+  },
+  {
+    "Identifier": 13,
+    "3 digit alpha Code": "ABW",
+    "Country name": "Aruba",
+    "Phone dial code": "297"
+  },
+  {
+    "Identifier": 14,
+    "3 digit alpha Code": "AUS",
+    "Country name": "Australia",
+    "Phone dial code": "61"
+  },
+  {
+    "Identifier": 15,
+    "3 digit alpha Code": "AUT",
+    "Country name": "Austria",
+    "Phone dial code": "43"
+  },
+  {
+    "Identifier": 16,
+    "3 digit alpha Code": "AZE",
+    "Country name": "Azerbaijan",
+    "Phone dial code": "994"
+  },
+  {
+    "Identifier": 17,
+    "3 digit alpha Code": "BHS",
+    "Country name": "Bahamas (the)",
+    "Phone dial code": "1-242"
+  },
+  {
+    "Identifier": 18,
+    "3 digit alpha Code": "BHR",
+    "Country name": "Bahrain",
+    "Phone dial code": "973"
+  },
+  {
+    "Identifier": 19,
+    "3 digit alpha Code": "BGD",
+    "Country name": "Bangladesh",
+    "Phone dial code": "880"
+  },
+  {
+    "Identifier": 20,
+    "3 digit alpha Code": "BRB",
+    "Country name": "Barbados",
+    "Phone dial code": "1-246"
+  },
+  {
+    "Identifier": 21,
+    "3 digit alpha Code": "BLR",
+    "Country name": "Belarus",
+    "Phone dial code": "375"
+  },
+  {
+    "Identifier": 22,
+    "3 digit alpha Code": "BEL",
+    "Country name": "Belgium",
+    "Phone dial code": "32"
+  },
+  {
+    "Identifier": 23,
+    "3 digit alpha Code": "BLZ",
+    "Country name": "Belize",
+    "Phone dial code": "501"
+  },
+  {
+    "Identifier": 24,
+    "3 digit alpha Code": "BEN",
+    "Country name": "Benin",
+    "Phone dial code": "229"
+  },
+  {
+    "Identifier": 25,
+    "3 digit alpha Code": "BMU",
+    "Country name": "Bermuda",
+    "Phone dial code": "1-441"
+  },
+  {
+    "Identifier": 26,
+    "3 digit alpha Code": "BTN",
+    "Country name": "Bhutan",
+    "Phone dial code": "975"
+  },
+  {
+    "Identifier": 27,
+    "3 digit alpha Code": "BOL",
+    "Country name": "Bolivia (Plurinational State Of)",
+    "Phone dial code": "591"
+  },
+  {
+    "Identifier": 28,
+    "3 digit alpha Code": "BES",
+    "Country name": "Bonaire Sint Eustatius and Saba",
+    "Phone dial code": "599"
+  },
+  {
+    "Identifier": 29,
+    "3 digit alpha Code": "BIH",
+    "Country name": "Bosnia and Herzegovina",
+    "Phone dial code": "387"
+  },
+  {
+    "Identifier": 30,
+    "3 digit alpha Code": "BWA",
+    "Country name": "Botswana",
+    "Phone dial code": "267"
+  },
+  {
+    "Identifier": 31,
+    "3 digit alpha Code": "BVT",
+    "Country name": "Bouvet Island",
+    "Phone dial code": "47"
+  },
+  {
+    "Identifier": 32,
+    "3 digit alpha Code": "BRA",
+    "Country name": "Brazil",
+    "Phone dial code": "55"
+  },
+  {
+    "Identifier": 33,
+    "3 digit alpha Code": "IOT",
+    "Country name": "British Indian Ocean Territory (the)",
+    "Phone dial code": "246"
+  },
+  {
+    "Identifier": 35,
+    "3 digit alpha Code": "BRN",
+    "Country name": "Brunei Darussalam",
+    "Phone dial code": "673"
+  },
+  {
+    "Identifier": 36,
+    "3 digit alpha Code": "BGR",
+    "Country name": "Bulgaria",
+    "Phone dial code": "359"
+  },
+  {
+    "Identifier": 37,
+    "3 digit alpha Code": "BFA",
+    "Country name": "Burkina Faso",
+    "Phone dial code": "226"
+  },
+  {
+    "Identifier": 151,
+    "3 digit alpha Code": "MMR",
+    "Country name": "Burma",
+    "Phone dial code": "95"
+  },
+  {
+    "Identifier": 38,
+    "3 digit alpha Code": "BDI",
+    "Country name": "Burundi",
+    "Phone dial code": "257"
+  },
+  {
+    "Identifier": 40,
+    "3 digit alpha Code": "KHM",
+    "Country name": "Cambodia",
+    "Phone dial code": "855"
+  },
+  {
+    "Identifier": 41,
+    "3 digit alpha Code": "CMR",
+    "Country name": "Cameroon",
+    "Phone dial code": "237"
+  },
+  {
+    "Identifier": 42,
+    "3 digit alpha Code": "CAN",
+    "Country name": "Canada",
+    "Phone dial code": "1"
+  },
+  {
+    "Identifier": 39,
+    "3 digit alpha Code": "CPV",
+    "Country name": "Cape Verde",
+    "Phone dial code": "238"
+  },
+  {
+    "Identifier": 43,
+    "3 digit alpha Code": "CYM",
+    "Country name": "Cayman Islands (the)",
+    "Phone dial code": "1-345"
+  },
+  {
+    "Identifier": 44,
+    "3 digit alpha Code": "CAF",
+    "Country name": "Central African Republic (the)",
+    "Phone dial code": "236"
+  },
+  {
+    "Identifier": 45,
+    "3 digit alpha Code": "TCD",
+    "Country name": "Chad",
+    "Phone dial code": "235"
+  },
+  {
+    "Identifier": 46,
+    "3 digit alpha Code": "CHL",
+    "Country name": "Chile",
+    "Phone dial code": "56"
+  },
+  {
+    "Identifier": 47,
+    "3 digit alpha Code": "CHN",
+    "Country name": "China",
+    "Phone dial code": "86"
+  },
+  {
+    "Identifier": 50,
+    "3 digit alpha Code": "CXR",
+    "Country name": "Christmas Island",
+    "Phone dial code": "61"
+  },
+  {
+    "Identifier": 51,
+    "3 digit alpha Code": "CCK",
+    "Country name": "Cocos (Keeling) Islands (the)",
+    "Phone dial code": "61"
+  },
+  {
+    "Identifier": 52,
+    "3 digit alpha Code": "COL",
+    "Country name": "Colombia",
+    "Phone dial code": "57"
+  },
+  {
+    "Identifier": 53,
+    "3 digit alpha Code": "COM",
+    "Country name": "Comoros (the)",
+    "Phone dial code": "269"
+  },
+  {
+    "Identifier": 64,
+    "3 digit alpha Code": "COD",
+    "Country name": "Congo (the Democratic Republic of the)",
+    "Phone dial code": "243"
+  },
+  {
+    "Identifier": 54,
+    "3 digit alpha Code": "COG",
+    "Country name": "Congo (the)",
+    "Phone dial code": "242"
+  },
+  {
+    "Identifier": 55,
+    "3 digit alpha Code": "COK",
+    "Country name": "Cook Islands (the)",
+    "Phone dial code": "682"
+  },
+  {
+    "Identifier": 56,
+    "3 digit alpha Code": "CRI",
+    "Country name": "Costa Rica",
+    "Phone dial code": "506"
+  },
+  {
+    "Identifier": 57,
+    "3 digit alpha Code": "HRV",
+    "Country name": "Croatia",
+    "Phone dial code": "385"
+  },
+  {
+    "Identifier": 58,
+    "3 digit alpha Code": "CUB",
+    "Country name": "Cuba",
+    "Phone dial code": "53"
+  },
+  {
+    "Identifier": 59,
+    "3 digit alpha Code": "CUW",
+    "Country name": "Curacao",
+    "Phone dial code": "599"
+  },
+  {
+    "Identifier": 60,
+    "3 digit alpha Code": "CYP",
+    "Country name": "Cyprus",
+    "Phone dial code": "357"
+  },
+  {
+    "Identifier": 61,
+    "3 digit alpha Code": "CZE",
+    "Country name": "Czechia",
+    "Phone dial code": "420"
+  },
+  {
+    "Identifier": 65,
+    "3 digit alpha Code": "DNK",
+    "Country name": "Denmark",
+    "Phone dial code": "45"
+  },
+  {
+    "Identifier": 66,
+    "3 digit alpha Code": "DJI",
+    "Country name": "Djibouti",
+    "Phone dial code": "253"
+  },
+  {
+    "Identifier": 67,
+    "3 digit alpha Code": "DMA",
+    "Country name": "Dominica",
+    "Phone dial code": "1-767"
+  },
+  {
+    "Identifier": 68,
+    "3 digit alpha Code": "DOM",
+    "Country name": "Dominican Republic (the)",
+    "Phone dial code": "1-809,1-829,1-849"
+  },
+  {
+    "Identifier": 221,
+    "3 digit alpha Code": "TLS",
+    "Country name": "East Timor",
+    "Phone dial code": "670"
+  },
+  {
+    "Identifier": 69,
+    "3 digit alpha Code": "ECU",
+    "Country name": "Ecuador",
+    "Phone dial code": "593"
+  },
+  {
+    "Identifier": 70,
+    "3 digit alpha Code": "EGY",
+    "Country name": "Egypt",
+    "Phone dial code": "20"
+  },
+  {
+    "Identifier": 71,
+    "3 digit alpha Code": "SLV",
+    "Country name": "El Salvador",
+    "Phone dial code": "503"
+  },
+  {
+    "Identifier": 72,
+    "3 digit alpha Code": "GNQ",
+    "Country name": "Equatorial Guinea",
+    "Phone dial code": "240"
+  },
+  {
+    "Identifier": 73,
+    "3 digit alpha Code": "ERI",
+    "Country name": "Eritrea",
+    "Phone dial code": "291"
+  },
+  {
+    "Identifier": 74,
+    "3 digit alpha Code": "EST",
+    "Country name": "Estonia",
+    "Phone dial code": "372"
+  },
+  {
+    "Identifier": 214,
+    "3 digit alpha Code": "SWZ",
+    "Country name": "Eswatini",
+    "Phone dial code": "268"
+  },
+  {
+    "Identifier": 75,
+    "3 digit alpha Code": "ETH",
+    "Country name": "Ethiopia",
+    "Phone dial code": "251"
+  },
+  {
+    "Identifier": 76,
+    "3 digit alpha Code": "FLK",
+    "Country name": "Falkland Islands (the)",
+    "Phone dial code": "500"
+  },
+  {
+    "Identifier": 77,
+    "3 digit alpha Code": "FRO",
+    "Country name": "Faroe Islands (the)",
+    "Phone dial code": "298"
+  },
+  {
+    "Identifier": 78,
+    "3 digit alpha Code": "FJI",
+    "Country name": "Fiji",
+    "Phone dial code": "679"
+  },
+  {
+    "Identifier": 79,
+    "3 digit alpha Code": "FIN",
+    "Country name": "Finland",
+    "Phone dial code": "358"
+  },
+  {
+    "Identifier": 80,
+    "3 digit alpha Code": "FRA",
+    "Country name": "France (European territory)",
+    "Phone dial code": "33"
+  },
+  {
+    "Identifier": 81,
+    "3 digit alpha Code": "GUF",
+    "Country name": "French Guiana",
+    "Phone dial code": "594"
+  },
+  {
+    "Identifier": 82,
+    "3 digit alpha Code": "PYF",
+    "Country name": "French Polynesia",
+    "Phone dial code": "689"
+  },
+  {
+    "Identifier": 83,
+    "3 digit alpha Code": "ATF",
+    "Country name": "French Southern Territories (the)",
+    "Phone dial code": "262"
+  },
+  {
+    "Identifier": 84,
+    "3 digit alpha Code": "GAB",
+    "Country name": "Gabon",
+    "Phone dial code": "241"
+  },
+  {
+    "Identifier": 85,
+    "3 digit alpha Code": "GMB",
+    "Country name": "Gambia (the)",
+    "Phone dial code": "220"
+  },
+  {
+    "Identifier": 86,
+    "3 digit alpha Code": "GEO",
+    "Country name": "Georgia",
+    "Phone dial code": "995"
+  },
+  {
+    "Identifier": 87,
+    "3 digit alpha Code": "DEU",
+    "Country name": "Germany",
+    "Phone dial code": "49"
+  },
+  {
+    "Identifier": 88,
+    "3 digit alpha Code": "GHA",
+    "Country name": "Ghana",
+    "Phone dial code": "233"
+  },
+  {
+    "Identifier": 89,
+    "3 digit alpha Code": "GIB",
+    "Country name": "Gibraltar",
+    "Phone dial code": "350"
+  },
+  {
+    "Identifier": 90,
+    "3 digit alpha Code": "GRC",
+    "Country name": "Greece",
+    "Phone dial code": "30"
+  },
+  {
+    "Identifier": 91,
+    "3 digit alpha Code": "GRL",
+    "Country name": "Greenland",
+    "Phone dial code": "299"
+  },
+  {
+    "Identifier": 92,
+    "3 digit alpha Code": "GRD",
+    "Country name": "Grenada",
+    "Phone dial code": "1-473"
+  },
+  {
+    "Identifier": 93,
+    "3 digit alpha Code": "GLP",
+    "Country name": "Guadeloupe",
+    "Phone dial code": "590"
+  },
+  {
+    "Identifier": 94,
+    "3 digit alpha Code": "GUM",
+    "Country name": "Guam",
+    "Phone dial code": "1-671"
+  },
+  {
+    "Identifier": 95,
+    "3 digit alpha Code": "GTM",
+    "Country name": "Guatemala",
+    "Phone dial code": "502"
+  },
+  {
+    "Identifier": 96,
+    "3 digit alpha Code": "GGY",
+    "Country name": "Guernsey",
+    "Phone dial code": "44"
+  },
+  {
+    "Identifier": 97,
+    "3 digit alpha Code": "GIN",
+    "Country name": "Guinea",
+    "Phone dial code": "224"
+  },
+  {
+    "Identifier": 98,
+    "3 digit alpha Code": "GNB",
+    "Country name": "Guinea-Bissau",
+    "Phone dial code": "245"
+  },
+  {
+    "Identifier": 99,
+    "3 digit alpha Code": "GUY",
+    "Country name": "Guyana",
+    "Phone dial code": "592"
+  },
+  {
+    "Identifier": 100,
+    "3 digit alpha Code": "HTI",
+    "Country name": "Haiti",
+    "Phone dial code": "509"
+  },
+  {
+    "Identifier": 101,
+    "3 digit alpha Code": "HMD",
+    "Country name": "Heard Island and McDonald Islands",
+    "Phone dial code": "672"
+  },
+  {
+    "Identifier": 103,
+    "3 digit alpha Code": "HND",
+    "Country name": "Honduras",
+    "Phone dial code": "504"
+  },
+  {
+    "Identifier": 48,
+    "3 digit alpha Code": "HKG",
+    "Country name": "Hong Kong",
+    "Phone dial code": "852"
+  },
+  {
+    "Identifier": 104,
+    "3 digit alpha Code": "HUN",
+    "Country name": "Hungary",
+    "Phone dial code": "36"
+  },
+  {
+    "Identifier": 105,
+    "3 digit alpha Code": "ISL",
+    "Country name": "Iceland",
+    "Phone dial code": "354"
+  },
+  {
+    "Identifier": 106,
+    "3 digit alpha Code": "IND",
+    "Country name": "India",
+    "Phone dial code": "91"
+  },
+  {
+    "Identifier": 107,
+    "3 digit alpha Code": "IDN",
+    "Country name": "Indonesia",
+    "Phone dial code": "62"
+  },
+  {
+    "Identifier": 250,
+    "3 digit alpha Code": "XZZ",
+    "Country name": "International Waters",
+    "Phone dial code": "0"
+  },
+  {
+    "Identifier": 108,
+    "3 digit alpha Code": "IRN",
+    "Country name": "Iran (Islamic Republic of)",
+    "Phone dial code": "98"
+  },
+  {
+    "Identifier": 109,
+    "3 digit alpha Code": "IRQ",
+    "Country name": "Iraq",
+    "Phone dial code": "964"
+  },
+  {
+    "Identifier": 110,
+    "3 digit alpha Code": "IRL",
+    "Country name": "Ireland",
+    "Phone dial code": "353"
+  },
+  {
+    "Identifier": 111,
+    "3 digit alpha Code": "IMN",
+    "Country name": "Isle of Man",
+    "Phone dial code": "44"
+  },
+  {
+    "Identifier": 112,
+    "3 digit alpha Code": "ISR",
+    "Country name": "Israel",
+    "Phone dial code": "972"
+  },
+  {
+    "Identifier": 113,
+    "3 digit alpha Code": "ITA",
+    "Country name": "Italy",
+    "Phone dial code": "39"
+  },
+  {
+    "Identifier": 62,
+    "3 digit alpha Code": "CIV",
+    "Country name": "Ivory Coast",
+    "Phone dial code": "225"
+  },
+  {
+    "Identifier": 114,
+    "3 digit alpha Code": "JAM",
+    "Country name": "Jamaica",
+    "Phone dial code": "1-876"
+  },
+  {
+    "Identifier": 115,
+    "3 digit alpha Code": "JPN",
+    "Country name": "Japan",
+    "Phone dial code": "81"
+  },
+  {
+    "Identifier": 116,
+    "3 digit alpha Code": "JEY",
+    "Country name": "Jersey",
+    "Phone dial code": "44"
+  },
+  {
+    "Identifier": 117,
+    "3 digit alpha Code": "JOR",
+    "Country name": "Jordan",
+    "Phone dial code": "962"
+  },
+  {
+    "Identifier": 118,
+    "3 digit alpha Code": "KAZ",
+    "Country name": "Kazakhstan",
+    "Phone dial code": "7"
+  },
+  {
+    "Identifier": 119,
+    "3 digit alpha Code": "KEN",
+    "Country name": "Kenya",
+    "Phone dial code": "254"
+  },
+  {
+    "Identifier": 120,
+    "3 digit alpha Code": "KIR",
+    "Country name": "Kiribati",
+    "Phone dial code": "686"
+  },
+  {
+    "Identifier": 63,
+    "3 digit alpha Code": "PRK",
+    "Country name": "Korea (North)",
+    "Phone dial code": "850"
+  },
+  {
+    "Identifier": 178,
+    "3 digit alpha Code": "KOR",
+    "Country name": "Korea (South)",
+    "Phone dial code": "82"
+  },
+  {
+    "Identifier": 251,
+    "3 digit alpha Code": "RKS",
+    "Country name": "Kosovo",
+    "Phone dial code": "383"
+  },
+  {
+    "Identifier": 121,
+    "3 digit alpha Code": "KWT",
+    "Country name": "Kuwait",
+    "Phone dial code": "965"
+  },
+  {
+    "Identifier": 122,
+    "3 digit alpha Code": "KGZ",
+    "Country name": "Kyrgyzstan",
+    "Phone dial code": "996"
+  },
+  {
+    "Identifier": 123,
+    "3 digit alpha Code": "LAO",
+    "Country name": "Laos",
+    "Phone dial code": "856"
+  },
+  {
+    "Identifier": 124,
+    "3 digit alpha Code": "LVA",
+    "Country name": "Latvia",
+    "Phone dial code": "371"
+  },
+  {
+    "Identifier": 125,
+    "3 digit alpha Code": "LBN",
+    "Country name": "Lebanon",
+    "Phone dial code": "961"
+  },
+  {
+    "Identifier": 126,
+    "3 digit alpha Code": "LSO",
+    "Country name": "Lesotho",
+    "Phone dial code": "266"
+  },
+  {
+    "Identifier": 127,
+    "3 digit alpha Code": "LBR",
+    "Country name": "Liberia",
+    "Phone dial code": "231"
+  },
+  {
+    "Identifier": 128,
+    "3 digit alpha Code": "LBY",
+    "Country name": "Libya",
+    "Phone dial code": "218"
+  },
+  {
+    "Identifier": 129,
+    "3 digit alpha Code": "LIE",
+    "Country name": "Liechtenstein",
+    "Phone dial code": "423"
+  },
+  {
+    "Identifier": 130,
+    "3 digit alpha Code": "LTU",
+    "Country name": "Lithuania",
+    "Phone dial code": "370"
+  },
+  {
+    "Identifier": 131,
+    "3 digit alpha Code": "LUX",
+    "Country name": "Luxembourg",
+    "Phone dial code": "352"
+  },
+  {
+    "Identifier": 49,
+    "3 digit alpha Code": "MAC",
+    "Country name": "Macao",
+    "Phone dial code": "853"
+  },
+  {
+    "Identifier": 132,
+    "3 digit alpha Code": "MDG",
+    "Country name": "Madagascar",
+    "Phone dial code": "261"
+  },
+  {
+    "Identifier": 133,
+    "3 digit alpha Code": "MWI",
+    "Country name": "Malawi",
+    "Phone dial code": "265"
+  },
+  {
+    "Identifier": 134,
+    "3 digit alpha Code": "MYS",
+    "Country name": "Malaysia",
+    "Phone dial code": "60"
+  },
+  {
+    "Identifier": 135,
+    "3 digit alpha Code": "MDV",
+    "Country name": "Maldives",
+    "Phone dial code": "960"
+  },
+  {
+    "Identifier": 136,
+    "3 digit alpha Code": "MLI",
+    "Country name": "Mali",
+    "Phone dial code": "223"
+  },
+  {
+    "Identifier": 137,
+    "3 digit alpha Code": "MLT",
+    "Country name": "Malta",
+    "Phone dial code": "356"
+  },
+  {
+    "Identifier": 138,
+    "3 digit alpha Code": "MHL",
+    "Country name": "Marshall Islands (the)",
+    "Phone dial code": "692"
+  },
+  {
+    "Identifier": 139,
+    "3 digit alpha Code": "MTQ",
+    "Country name": "Martinique",
+    "Phone dial code": "596"
+  },
+  {
+    "Identifier": 140,
+    "3 digit alpha Code": "MRT",
+    "Country name": "Mauritania",
+    "Phone dial code": "222"
+  },
+  {
+    "Identifier": 141,
+    "3 digit alpha Code": "MUS",
+    "Country name": "Mauritius",
+    "Phone dial code": "230"
+  },
+  {
+    "Identifier": 142,
+    "3 digit alpha Code": "MYT",
+    "Country name": "Mayotte",
+    "Phone dial code": "262"
+  },
+  {
+    "Identifier": 143,
+    "3 digit alpha Code": "MEX",
+    "Country name": "Mexico",
+    "Phone dial code": "52"
+  },
+  {
+    "Identifier": 144,
+    "3 digit alpha Code": "FSM",
+    "Country name": "Micronesia (Federated States of)",
+    "Phone dial code": "691"
+  },
+  {
+    "Identifier": 179,
+    "3 digit alpha Code": "MDA",
+    "Country name": "Moldova (the Republic of)",
+    "Phone dial code": "373"
+  },
+  {
+    "Identifier": 145,
+    "3 digit alpha Code": "MCO",
+    "Country name": "Monaco",
+    "Phone dial code": "377"
+  },
+  {
+    "Identifier": 146,
+    "3 digit alpha Code": "MNG",
+    "Country name": "Mongolia",
+    "Phone dial code": "976"
+  },
+  {
+    "Identifier": 147,
+    "3 digit alpha Code": "MNE",
+    "Country name": "Montenegro",
+    "Phone dial code": "382"
+  },
+  {
+    "Identifier": 148,
+    "3 digit alpha Code": "MSR",
+    "Country name": "Montserrat",
+    "Phone dial code": "1-664"
+  },
+  {
+    "Identifier": 149,
+    "3 digit alpha Code": "MAR",
+    "Country name": "Morocco",
+    "Phone dial code": "212"
+  },
+  {
+    "Identifier": 150,
+    "3 digit alpha Code": "MOZ",
+    "Country name": "Mozambique",
+    "Phone dial code": "258"
+  },
+  {
+    "Identifier": 152,
+    "3 digit alpha Code": "NAM",
+    "Country name": "Namibia",
+    "Phone dial code": "264"
+  },
+  {
+    "Identifier": 153,
+    "3 digit alpha Code": "NRU",
+    "Country name": "Nauru",
+    "Phone dial code": "674"
+  },
+  {
+    "Identifier": 154,
+    "3 digit alpha Code": "NPL",
+    "Country name": "Nepal",
+    "Phone dial code": "977"
+  },
+  {
+    "Identifier": 155,
+    "3 digit alpha Code": "NLD",
+    "Country name": "Netherlands (Europe)",
+    "Phone dial code": "31"
+  },
+  {
+    "Identifier": 156,
+    "3 digit alpha Code": "NCL",
+    "Country name": "New Caledonia",
+    "Phone dial code": "687"
+  },
+  {
+    "Identifier": 157,
+    "3 digit alpha Code": "NZL",
+    "Country name": "New Zealand",
+    "Phone dial code": "64"
+  },
+  {
+    "Identifier": 158,
+    "3 digit alpha Code": "NIC",
+    "Country name": "Nicaragua",
+    "Phone dial code": "505"
+  },
+  {
+    "Identifier": 159,
+    "3 digit alpha Code": "NER",
+    "Country name": "Niger (the)",
+    "Phone dial code": "227"
+  },
+  {
+    "Identifier": 160,
+    "3 digit alpha Code": "NGA",
+    "Country name": "Nigeria",
+    "Phone dial code": "234"
+  },
+  {
+    "Identifier": 161,
+    "3 digit alpha Code": "NIU",
+    "Country name": "Niue",
+    "Phone dial code": "683"
+  },
+  {
+    "Identifier": 162,
+    "3 digit alpha Code": "NFK",
+    "Country name": "Norfolk Island",
+    "Phone dial code": "672"
+  },
+  {
+    "Identifier": 220,
+    "3 digit alpha Code": "MKD",
+    "Country name": "North Macedonia",
+    "Phone dial code": "389"
+  },
+  {
+    "Identifier": 163,
+    "3 digit alpha Code": "MNP",
+    "Country name": "Northern Mariana Islands (the)",
+    "Phone dial code": "1-670"
+  },
+  {
+    "Identifier": 164,
+    "3 digit alpha Code": "NOR",
+    "Country name": "Norway",
+    "Phone dial code": "47"
+  },
+  {
+    "Identifier": 165,
+    "3 digit alpha Code": "OMN",
+    "Country name": "Oman",
+    "Phone dial code": "968"
+  },
+  {
+    "Identifier": 166,
+    "3 digit alpha Code": "PAK",
+    "Country name": "Pakistan",
+    "Phone dial code": "92"
+  },
+  {
+    "Identifier": 167,
+    "3 digit alpha Code": "PLW",
+    "Country name": "Palau",
+    "Phone dial code": "680"
+  },
+  {
+    "Identifier": 210,
+    "3 digit alpha Code": "PSE",
+    "Country name": "Palestine, State of",
+    "Phone dial code": "970"
+  },
+  {
+    "Identifier": 168,
+    "3 digit alpha Code": "PAN",
+    "Country name": "Panama",
+    "Phone dial code": "507"
+  },
+  {
+    "Identifier": 169,
+    "3 digit alpha Code": "PNG",
+    "Country name": "Papua New Guinea",
+    "Phone dial code": "675"
+  },
+  {
+    "Identifier": 170,
+    "3 digit alpha Code": "PRY",
+    "Country name": "Paraguay",
+    "Phone dial code": "595"
+  },
+  {
+    "Identifier": 171,
+    "3 digit alpha Code": "PER",
+    "Country name": "Peru",
+    "Phone dial code": "51"
+  },
+  {
+    "Identifier": 172,
+    "3 digit alpha Code": "PHL",
+    "Country name": "Philippines (the)",
+    "Phone dial code": "63"
+  },
+  {
+    "Identifier": 173,
+    "3 digit alpha Code": "PCN",
+    "Country name": "Pitcairn",
+    "Phone dial code": "870"
+  },
+  {
+    "Identifier": 174,
+    "3 digit alpha Code": "POL",
+    "Country name": "Poland",
+    "Phone dial code": "48"
+  },
+  {
+    "Identifier": 175,
+    "3 digit alpha Code": "PRT",
+    "Country name": "Portugal",
+    "Phone dial code": "351"
+  },
+  {
+    "Identifier": 176,
+    "3 digit alpha Code": "PRI",
+    "Country name": "Puerto Rico",
+    "Phone dial code": "1"
+  },
+  {
+    "Identifier": 177,
+    "3 digit alpha Code": "QAT",
+    "Country name": "Qatar",
+    "Phone dial code": "974"
+  },
+  {
+    "Identifier": 183,
+    "3 digit alpha Code": "REU",
+    "Country name": "Reunion",
+    "Phone dial code": "262"
+  },
+  {
+    "Identifier": 180,
+    "3 digit alpha Code": "ROU",
+    "Country name": "Romania",
+    "Phone dial code": "40"
+  },
+  {
+    "Identifier": 181,
+    "3 digit alpha Code": "RUS",
+    "Country name": "Russian Federation (the)",
+    "Phone dial code": "7"
+  },
+  {
+    "Identifier": 182,
+    "3 digit alpha Code": "RWA",
+    "Country name": "Rwanda",
+    "Phone dial code": "250"
+  },
+  {
+    "Identifier": 184,
+    "3 digit alpha Code": "BLM",
+    "Country name": "Saint Barthelemy",
+    "Phone dial code": "590"
+  },
+  {
+    "Identifier": 185,
+    "3 digit alpha Code": "SHN",
+    "Country name": "Saint Helena, Ascension and Tristan da Cunha",
+    "Phone dial code": "290"
+  },
+  {
+    "Identifier": 186,
+    "3 digit alpha Code": "KNA",
+    "Country name": "Saint Kitts And Nevis",
+    "Phone dial code": "1-869"
+  },
+  {
+    "Identifier": 187,
+    "3 digit alpha Code": "LCA",
+    "Country name": "Saint Lucia",
+    "Phone dial code": "1-758"
+  },
+  {
+    "Identifier": 188,
+    "3 digit alpha Code": "MAF",
+    "Country name": "Saint Martin (French part)",
+    "Phone dial code": "590"
+  },
+  {
+    "Identifier": 189,
+    "3 digit alpha Code": "SPM",
+    "Country name": "Saint Pierre And Miquelon",
+    "Phone dial code": "508"
+  },
+  {
+    "Identifier": 190,
+    "3 digit alpha Code": "VCT",
+    "Country name": "Saint Vincent and the Grenadines",
+    "Phone dial code": "1-784"
+  },
+  {
+    "Identifier": 191,
+    "3 digit alpha Code": "WSM",
+    "Country name": "Samoa",
+    "Phone dial code": "685"
+  },
+  {
+    "Identifier": 192,
+    "3 digit alpha Code": "SMR",
+    "Country name": "San Marino",
+    "Phone dial code": "378"
+  },
+  {
+    "Identifier": 193,
+    "3 digit alpha Code": "STP",
+    "Country name": "Sao Tome And Principe",
+    "Phone dial code": "239"
+  },
+  {
+    "Identifier": 194,
+    "3 digit alpha Code": "SAU",
+    "Country name": "Saudi Arabia",
+    "Phone dial code": "966"
+  },
+  {
+    "Identifier": 195,
+    "3 digit alpha Code": "SEN",
+    "Country name": "Senegal",
+    "Phone dial code": "221"
+  },
+  {
+    "Identifier": 196,
+    "3 digit alpha Code": "SRB",
+    "Country name": "Serbia",
+    "Phone dial code": "381"
+  },
+  {
+    "Identifier": 197,
+    "3 digit alpha Code": "SYC",
+    "Country name": "Seychelles",
+    "Phone dial code": "248"
+  },
+  {
+    "Identifier": 198,
+    "3 digit alpha Code": "SLE",
+    "Country name": "Sierra Leone",
+    "Phone dial code": "232"
+  },
+  {
+    "Identifier": 199,
+    "3 digit alpha Code": "SGP",
+    "Country name": "Singapore",
+    "Phone dial code": "65"
+  },
+  {
+    "Identifier": 200,
+    "3 digit alpha Code": "SXM",
+    "Country name": "Sint Maarten (Dutch part)",
+    "Phone dial code": "1-721"
+  },
+  {
+    "Identifier": 201,
+    "3 digit alpha Code": "SVK",
+    "Country name": "Slovakia",
+    "Phone dial code": "421"
+  },
+  {
+    "Identifier": 202,
+    "3 digit alpha Code": "SVN",
+    "Country name": "Slovenia",
+    "Phone dial code": "386"
+  },
+  {
+    "Identifier": 203,
+    "3 digit alpha Code": "SLB",
+    "Country name": "Solomon Islands",
+    "Phone dial code": "677"
+  },
+  {
+    "Identifier": 204,
+    "3 digit alpha Code": "SOM",
+    "Country name": "Somalia",
+    "Phone dial code": "252"
+  },
+  {
+    "Identifier": 205,
+    "3 digit alpha Code": "ZAF",
+    "Country name": "South Africa",
+    "Phone dial code": "27"
+  },
+  {
+    "Identifier": 206,
+    "3 digit alpha Code": "SGS",
+    "Country name": "South Georgia and the South Sandwich Islands",
+    "Phone dial code": "500"
+  },
+  {
+    "Identifier": 207,
+    "3 digit alpha Code": "SSD",
+    "Country name": "South Sudan",
+    "Phone dial code": "211"
+  },
+  {
+    "Identifier": 208,
+    "3 digit alpha Code": "ESP",
+    "Country name": "Spain",
+    "Phone dial code": "34"
+  },
+  {
+    "Identifier": 209,
+    "3 digit alpha Code": "LKA",
+    "Country name": "Sri Lanka",
+    "Phone dial code": "94"
+  },
+  {
+    "Identifier": 211,
+    "3 digit alpha Code": "SDN",
+    "Country name": "Sudan (the)",
+    "Phone dial code": "249"
+  },
+  {
+    "Identifier": 212,
+    "3 digit alpha Code": "SUR",
+    "Country name": "Suriname",
+    "Phone dial code": "597"
+  },
+  {
+    "Identifier": 213,
+    "3 digit alpha Code": "SJM",
+    "Country name": "Svalbard and Jan Mayen",
+    "Phone dial code": "47"
+  },
+  {
+    "Identifier": 215,
+    "3 digit alpha Code": "SWE",
+    "Country name": "Sweden",
+    "Phone dial code": "46"
+  },
+  {
+    "Identifier": 216,
+    "3 digit alpha Code": "CHE",
+    "Country name": "Switzerland",
+    "Phone dial code": "41"
+  },
+  {
+    "Identifier": 217,
+    "3 digit alpha Code": "SYR",
+    "Country name": "Syrian Arab Republic (the)",
+    "Phone dial code": "963"
+  },
+  {
+    "Identifier": 1,
+    "3 digit alpha Code": "TWN",
+    "Country name": "Taiwan (Province of China)",
+    "Phone dial code": "886"
+  },
+  {
+    "Identifier": 218,
+    "3 digit alpha Code": "TJK",
+    "Country name": "Tajikistan",
+    "Phone dial code": "992"
+  },
+  {
+    "Identifier": 235,
+    "3 digit alpha Code": "TZA",
+    "Country name": "Tanzania, the United Republic of",
+    "Phone dial code": "255"
+  },
+  {
+    "Identifier": 219,
+    "3 digit alpha Code": "THA",
+    "Country name": "Thailand",
+    "Phone dial code": "66"
+  },
+  {
+    "Identifier": 222,
+    "3 digit alpha Code": "TGO",
+    "Country name": "Togo",
+    "Phone dial code": "228"
+  },
+  {
+    "Identifier": 223,
+    "3 digit alpha Code": "TKL",
+    "Country name": "Tokelau",
+    "Phone dial code": "690"
+  },
+  {
+    "Identifier": 224,
+    "3 digit alpha Code": "TON",
+    "Country name": "Tonga",
+    "Phone dial code": "676"
+  },
+  {
+    "Identifier": 225,
+    "3 digit alpha Code": "TTO",
+    "Country name": "Trinidad And Tobago",
+    "Phone dial code": "1-868"
+  },
+  {
+    "Identifier": 226,
+    "3 digit alpha Code": "TUN",
+    "Country name": "Tunisia",
+    "Phone dial code": "216"
+  },
+  {
+    "Identifier": 227,
+    "3 digit alpha Code": "TUR",
+    "Country name": "Turkey",
+    "Phone dial code": "90"
+  },
+  {
+    "Identifier": 252,
+    "3 digit alpha Code": "XXT",
+    "Country name": "Turkish Controlled Areas of Cyprus",
+    "Phone dial code": "90"
+  },
+  {
+    "Identifier": 228,
+    "3 digit alpha Code": "TKM",
+    "Country name": "Turkmenistan",
+    "Phone dial code": "993"
+  },
+  {
+    "Identifier": 229,
+    "3 digit alpha Code": "TCA",
+    "Country name": "Turks And Caicos Islands (the)",
+    "Phone dial code": "1-649"
+  },
+  {
+    "Identifier": 230,
+    "3 digit alpha Code": "TUV",
+    "Country name": "Tuvalu",
+    "Phone dial code": "688"
+  },
+  {
+    "Identifier": 231,
+    "3 digit alpha Code": "UGA",
+    "Country name": "Uganda",
+    "Phone dial code": "256"
+  },
+  {
+    "Identifier": 232,
+    "3 digit alpha Code": "UKR",
+    "Country name": "Ukraine",
+    "Phone dial code": "380"
+  },
+  {
+    "Identifier": 233,
+    "3 digit alpha Code": "ARE",
+    "Country name": "United Arab Emirates (the)",
+    "Phone dial code": "971"
+  },
+  {
+    "Identifier": 234,
+    "3 digit alpha Code": "GBR",
+    "Country name": "United Kingdom of Great Britain and Northern Ireland",
+    "Phone dial code": "44"
+  },
+  {
+    "Identifier": 236,
+    "3 digit alpha Code": "UMI",
+    "Country name": "United States Minor Outlying Islands (the)",
+    "Phone dial code": "246"
+  },
+  {
+    "Identifier": 238,
+    "3 digit alpha Code": "USA",
+    "Country name": "United States of America (the)",
+    "Phone dial code": "1"
+  },
+  {
+    "Identifier": 239,
+    "3 digit alpha Code": "URY",
+    "Country name": "Uruguay",
+    "Phone dial code": "598"
+  },
+  {
+    "Identifier": 240,
+    "3 digit alpha Code": "UZB",
+    "Country name": "Uzbekistan",
+    "Phone dial code": "998"
+  },
+  {
+    "Identifier": 241,
+    "3 digit alpha Code": "VUT",
+    "Country name": "Vanuatu",
+    "Phone dial code": "678"
+  },
+  {
+    "Identifier": 102,
+    "3 digit alpha Code": "VAT",
+    "Country name": "Vatican City",
+    "Phone dial code": "39-06"
+  },
+  {
+    "Identifier": 242,
+    "3 digit alpha Code": "VEN",
+    "Country name": "Venezuela (Bolivarian Republic of)",
+    "Phone dial code": "58"
+  },
+  {
+    "Identifier": 243,
+    "3 digit alpha Code": "VNM",
+    "Country name": "Vietnam",
+    "Phone dial code": "84"
+  },
+  {
+    "Identifier": 34,
+    "3 digit alpha Code": "VGB",
+    "Country name": "Virgin Islands (British)",
+    "Phone dial code": "1-284"
+  },
+  {
+    "Identifier": 237,
+    "3 digit alpha Code": "VIR",
+    "Country name": "Virgin Islands (U.S.)",
+    "Phone dial code": "1-340"
+  },
+  {
+    "Identifier": 244,
+    "3 digit alpha Code": "WLF",
+    "Country name": "Wallis And Futuna",
+    "Phone dial code": "681"
+  },
+  {
+    "Identifier": 245,
+    "3 digit alpha Code": "ESH",
+    "Country name": "Western Sahara",
+    "Phone dial code": "212"
+  },
+  {
+    "Identifier": 246,
+    "3 digit alpha Code": "YEM",
+    "Country name": "Yemen",
+    "Phone dial code": "967"
+  },
+  {
+    "Identifier": 247,
+    "3 digit alpha Code": "ZMB",
+    "Country name": "Zambia",
+    "Phone dial code": "260"
+  },
+  {
+    "Identifier": 248,
+    "3 digit alpha Code": "ZWE",
+    "Country name": "Zimbabwe",
+    "Phone dial code": "263"
+  }
+ ]
