@@ -16,12 +16,12 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
   const defaultValue = fieldDetails.value || '';
   const sessionData = JSON.parse(sessionStorage.getItem('formData'));
 
-  const responseKeyPrefix = fieldDetails.responseKeyPrefix || '';
-  const responseKeySuffix = fieldDetails.responseKeySuffix || '';
-  const additionalKeyPrefix = fieldDetails.additionalKeyPrefix || '';
-  const additionalKeySuffix = fieldDetails.additionalKeySuffix || '';
-
   const formatText = ({ result, additionalKey }) => {
+    const responseKeyPrefix = fieldDetails.responseKeyPrefix || '';
+    const responseKeySuffix = fieldDetails.responseKeySuffix || '';
+    const additionalKeyPrefix = fieldDetails.additionalKeyPrefix || '';
+    const additionalKeySuffix = fieldDetails.additionalKeySuffix || '';
+
     if (additionalKey) {
       return `${responseKeyPrefix}${result[fieldDetails.responseKey]}${responseKeySuffix} ${additionalKeyPrefix}${result[fieldDetails.additionalKey]}${additionalKeySuffix}`;
     }
@@ -215,12 +215,11 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
 
 InputAutocomplete.propTypes = {
   fieldDetails: PropTypes.shape({
-    // dataAPIEndpoint: PropTypes.string.isRequired, // when we implement the endpoint
-    dataSet: PropTypes.array.isRequired, // for while we're passing in a mocked array of data
+    dataSet: PropTypes.array.isRequired,
     fieldName: PropTypes.string.isRequired,
     hint: PropTypes.string,
     responseKey: PropTypes.string.isRequired, // a field that always exists in the dataset that we can use as a key for returning results
-    additionalKey: PropTypes.string, // optional other field that we want to append to the returned result if it exists in the dataset (e.g. country ISO code, unlocode)
+    additionalKey: PropTypes.string, // optional other field that we want to search on and possibly display in results
     displayAdditionalKey: PropTypes.bool.isRequired, // determines if the additionalKey is for searching only or if it also displays in field
     responseKeyPrefix: PropTypes.string,
     responseKeySuffix: PropTypes.string,
