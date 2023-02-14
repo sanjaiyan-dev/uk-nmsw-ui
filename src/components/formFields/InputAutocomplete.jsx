@@ -21,6 +21,13 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
   const additionalKeyPrefix = fieldDetails.additionalKeyPrefix || '';
   const additionalKeySuffix = fieldDetails.additionalKeySuffix || '';
 
+  const formatText = ({ result, additionalKey }) => {
+    if (additionalKey) {
+      return `${responseKeyPrefix}${result[fieldDetails.responseKey]}${responseKeySuffix} ${additionalKeyPrefix}${result[fieldDetails.additionalKey]}${additionalKeySuffix}`;
+    }
+    return `${responseKeyPrefix}${result[fieldDetails.responseKey]}${responseKeySuffix}`;
+  };
+
   const suggest = (userQuery, populateResults) => {
     if (!userQuery) { return; }
 
@@ -52,9 +59,9 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
     if (result && result[fieldDetails.responseKey]) {
       // this occurs when user has typed in the field
       if (fieldDetails.displayAdditionalKey && result[fieldDetails.additionalKey]) {
-        response = `${responseKeyPrefix}${result[fieldDetails.responseKey]}${responseKeySuffix} ${additionalKeyPrefix}${result[fieldDetails.additionalKey]}${additionalKeySuffix}`;
+        response = formatText({ result, additionalKey: true });
       } else {
-        response = `${responseKeyPrefix}${result[fieldDetails.responseKey]}${responseKeySuffix}`;
+        response = formatText({ result, additionalKey: false });
       }
     } else if (sessionData) {
       // on page load this handles if there is a session to prepopulate the value from
@@ -87,8 +94,8 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
       // IF it does NOT we do not include it to avoid 'undefined' showing in the UI
       const objectExpandedItem = sessionData[`${fieldDetails.fieldName}ExpandedDetails`][fieldDetails.fieldName];
       valueToTest = objectExpandedItem[fieldDetails.additionalKey]
-        ? `${responseKeyPrefix}${objectExpandedItem[fieldDetails.responseKey]}${responseKeySuffix} ${additionalKeyPrefix}${objectExpandedItem[fieldDetails.additionalKey]}${additionalKeySuffix}`
-        : `${responseKeyPrefix}${objectExpandedItem[fieldDetails.responseKey]}${responseKeySuffix}`;
+        ? formatText({ result: objectExpandedItem, additionalKey: true })
+        : formatText({ result: objectExpandedItem, additionalKey: false });
     } else {
       valueToTest = defaultValue;
     }
@@ -130,9 +137,9 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
      * THEN: we set the displayValue to just have the responseKey value
      */
     if (fieldDetails.displayAdditionalKey && retrievedValue[fieldDetails.additionalKey]) {
-      displayValue = `${responseKeyPrefix}${retrievedValue[fieldDetails.responseKey]}${responseKeySuffix} ${additionalKeyPrefix}${retrievedValue[fieldDetails.additionalKey]}${additionalKeySuffix}`;
+      displayValue = formatText({ result: retrievedValue, additionalKey: true });
     } else {
-      displayValue = `${responseKeyPrefix}${retrievedValue[fieldDetails.responseKey]}${responseKeySuffix}`;
+      displayValue = formatText({ result: retrievedValue, additionalKey: false });
     }
 
     /*
