@@ -91,7 +91,8 @@ describe('Register your details tests', () => {
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     expect(screen.getByLabelText('International dialling code')).toBeInTheDocument();
     expect(screen.getByText('For example, 44 for UK')).toBeInTheDocument();
-    expect(screen.getByRole('textbox', { name: 'International dialling code' })).toBeInTheDocument();
+    expect(screen.getByRole('combobox', { name: 'International dialling code' })).toBeInTheDocument();
+    expect(screen.getByRole('combobox', { name: 'International dialling code' }).outerHTML).toEqual('<input aria-expanded="false" aria-activedescendant="false" aria-owns="dialCode-input__listbox" aria-autocomplete="list" aria-describedby="dialCode-input__assistiveHint" autocomplete="off" class="autocomplete__input autocomplete__input--default" id="dialCode-input" name="dialCode" placeholder="" type="text" role="combobox" value="">');
   });
 
   it('should render a telephone number question', async () => {
@@ -106,7 +107,7 @@ describe('Register your details tests', () => {
     mockUseLocationState = { state: { dataToSubmit: { emailAddress: 'testemail@email.com', token: '123' } } };
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     expect(screen.getByLabelText('Country')).toBeInTheDocument();
-    expect(screen.getByRole('textbox', { name: 'Country' }).outerHTML).toEqual('<input class="govuk-input" id="country-input" name="country" type="text" value="">');
+    expect(screen.getByRole('combobox', { name: 'Country' }).outerHTML).toEqual('<input aria-expanded="false" aria-activedescendant="false" aria-owns="country-input__listbox" aria-autocomplete="list" aria-describedby="country-input__assistiveHint" autocomplete="off" class="autocomplete__input autocomplete__input--default" id="country-input" name="country" placeholder="" type="text" role="combobox" value="">');
   });
 
   it('should render a shipping agent question', async () => {
@@ -165,8 +166,6 @@ describe('Register your details tests', () => {
     await user.click(screen.getByTestId('submit-button'));
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
     expect(screen.getAllByText('Enter a telephone number in the correct format')).toHaveLength(2);
-    expect(screen.getAllByText('Enter an international dialling code in the correct format')).toHaveLength(2);
-    expect(screen.getAllByText('Enter 3 digit country code')).toHaveLength(2);
   });
 
   it('should NOT display error messagess if fields are valid', async () => {
@@ -175,10 +174,13 @@ describe('Register your details tests', () => {
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
     await user.type(screen.getByLabelText('Full name'), 'Joe Bloggs');
     await user.type(screen.getByLabelText('Your company name'), 'Joe Bloggs Company');
-    await user.type(screen.getByLabelText('International dialling code'), '+44');
     await user.type(screen.getByLabelText('Telephone number'), '(123)-123.456+123 12'); // all these characters should be valid
-    await user.type(screen.getByLabelText('Country'), 'AUS');
     await user.click(screen.getByRole('radio', { name: 'Yes' }));
+    await user.type(screen.getByRole('combobox', { name: 'International dialling code' }), '44');
+    await user.click(screen.getByText('44 United Kingdom of Great Britain and Northern Ireland'));
+    await user.type(screen.getByRole('combobox', { name: 'Country' }), 'Aus');
+    await user.click(screen.getByText('Australia AUS'));
+
     await user.click(screen.getByTestId('submit-button'));
     expect(screen.queryByText('There is a problem')).not.toBeInTheDocument();
     expect(screen.queryByText('Enter your full name')).not.toBeInTheDocument();
@@ -193,15 +195,17 @@ describe('Register your details tests', () => {
   it('should NOT clear form session data on submit', async () => {
     mockUseLocationState = { state: { dataToSubmit: { emailAddress: 'testemail@email.com', token: '123' } } };
     const user = userEvent.setup();
-    const expectedStoredData = '{"fullName":"Joe Bloggs","companyName":"Joe Bloggs Company","diallingCode":"44","telephoneNumber":"12345","country":"AUS","shippingAgent":"yes"}';
+    const expectedStoredData = '{"fullName":"Joe Bloggs","companyName":"Joe Bloggs Company","telephoneNumber":"12345","shippingAgent":"yes","dialCode":"44 United Kingdom of Great Britain and Northern Ireland","dialCodeExpandedDetails":{"dialCode":{"Identifier":234,"alphaCode":"GBR","countryName":"United Kingdom of Great Britain and Northern Ireland","dialCode":"44"}},"country":"Australia AUS","countryExpandedDetails":{"country":{"Identifier":14,"alphaCode":"AUS","countryName":"Australia","dialCode":"61"}}}';
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
 
     await user.type(screen.getByLabelText('Full name'), 'Joe Bloggs');
     await user.type(screen.getByLabelText('Your company name'), 'Joe Bloggs Company');
-    await user.type(screen.getByLabelText('International dialling code'), '44');
     await user.type(screen.getByLabelText('Telephone number'), '12345');
-    await user.type(screen.getByLabelText('Country'), 'AUS');
     await user.click(screen.getByRole('radio', { name: 'Yes' }));
+    await user.type(screen.getByRole('combobox', { name: 'International dialling code' }), '44');
+    await user.click(screen.getByText('44 United Kingdom of Great Britain and Northern Ireland'));
+    await user.type(screen.getByRole('combobox', { name: 'Country' }), 'Aus');
+    await user.click(screen.getByText('Australia AUS'));
 
     await user.click(screen.getByTestId('submit-button'));
     expect(window.sessionStorage.getItem('formData')).toStrictEqual(expectedStoredData);

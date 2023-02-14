@@ -54,6 +54,7 @@ const RegisterYourDetails = () => {
       responseKey: 'dialCode',
       label: 'International dialling code',
       fieldName: 'dialCode',
+      additionalKey: 'countryName',
       hint: 'For example, 44 for UK',
       validation: [
         {
