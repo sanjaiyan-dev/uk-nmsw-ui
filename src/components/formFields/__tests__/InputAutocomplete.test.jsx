@@ -12,7 +12,7 @@ describe('Text input field generation', () => {
   const parentHandleChange = jest.fn();
   const fieldDetailsBasic = {
     // dataAPIEndpoint: 'theEndpointUrl' // when we implement the endpoint
-    dataAPIEndpoint: [
+    dataSet: [
       {
         name: 'ObjectOne',
         identifier: 'one',
@@ -31,7 +31,7 @@ describe('Text input field generation', () => {
   };
   const fieldDetailsAllProps = {
     // dataAPIEndpoint: 'theEndpointUrl' // when we implement the endpoint
-    dataAPIEndpoint: [
+    dataSet: [
       {
         name: 'ObjectOne',
         identifier: 'one',
@@ -52,7 +52,7 @@ describe('Text input field generation', () => {
   };
   const fieldDetailsOneResponseKey = {
     // dataAPIEndpoint: 'theEndpointUrl' // when we implement the endpoint
-    dataAPIEndpoint: [
+    dataSet: [
       {
         name: 'ObjectOne',
         identifier: 'one',
@@ -71,7 +71,7 @@ describe('Text input field generation', () => {
   };
   const fieldDetailsTwoResponseKeys = {
     // dataAPIEndpoint: 'theEndpointUrl' // when we implement the endpoint
-    dataAPIEndpoint: [
+    dataSet: [
       {
         name: 'ObjectOne',
         identifier: 'one',

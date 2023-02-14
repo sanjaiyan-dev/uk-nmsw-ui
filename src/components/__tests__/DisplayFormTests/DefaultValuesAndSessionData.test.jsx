@@ -84,7 +84,7 @@ describe('Display Form default values and session data', () => {
       label: 'Autocomplete input',
       fieldName: 'items',
       hint: 'Hint for Autocomplete input',
-      dataAPIEndpoint: [
+      dataSet: [
         {
           name: 'ObjectOne',
           identifier: 'one',

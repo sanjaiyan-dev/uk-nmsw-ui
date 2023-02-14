@@ -12,7 +12,7 @@ import Autocomplete from 'accessible-autocomplete/react';
  * some explanation of aria-activedescendant: https://www.holisticseo.digital/technical-seo/web-accessibility/aria-activedescendant/
 */
 const InputAutocomplete = ({ fieldDetails, handleChange }) => {
-  const apiResponseData = fieldDetails.dataAPIEndpoint;
+  const apiResponseData = fieldDetails.dataSet;
   const defaultValue = fieldDetails.value || '';
   const sessionData = JSON.parse(sessionStorage.getItem('formData'));
 
@@ -20,7 +20,7 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
     if (!userQuery) { return; }
     // TODO: We should look at using lodash.debounce to prevent calls being made too fast as user types
     // TODO: apiResponseData will be replaced with the api call to return the first [x] values of the dataset
-    // const apiResponseData = fieldDetails.dataAPIEndpoint;
+    // const apiResponseData = fieldDetails.dataSet;
 
     // adding a filter in here to mimic the userQuery being used to get a response
     // TODO: filteredResults will be replaced with the api call to return a filtered dataset based on the userQuery
@@ -188,7 +188,7 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
 InputAutocomplete.propTypes = {
   fieldDetails: PropTypes.shape({
     // dataAPIEndpoint: PropTypes.string.isRequired, // when we implement the endpoint
-    dataAPIEndpoint: PropTypes.array.isRequired, // for while we're passing in a mocked array of data
+    dataSet: PropTypes.array.isRequired, // for while we're passing in a mocked array of data
     fieldName: PropTypes.string.isRequired,
     hint: PropTypes.string,
     responseKey: PropTypes.string.isRequired, // a field that always exists in the dataset that we can use as a key for returning results

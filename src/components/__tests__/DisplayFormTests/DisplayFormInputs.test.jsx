@@ -50,7 +50,7 @@ describe('Display Form inputs', () => {
       label: 'Autocomplete input',
       fieldName: 'items',
       hint: 'Hint for Autocomplete input',
-      dataAPIEndpoint: [
+      dataSet: [
         {
           name: 'ObjectOne',
           identifier: 'one',
@@ -180,7 +180,7 @@ describe('Display Form inputs', () => {
       label: 'Autocomplete input',
       fieldName: 'items',
       hint: 'Hint for Autocomplete input',
-      dataAPIEndpoint: [
+      dataSet: [
         {
           name: 'ObjectOne',
           identifier: 'one',
