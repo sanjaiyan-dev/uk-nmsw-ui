@@ -9,9 +9,8 @@ export const MergePhoneNumberFields = ({ diallingCode, telephoneNumber }) => {
      * and add it to the raw data set to be passed on
      */
 
-  const strippedDiallingCode = diallingCode.replace(/[()+-. ]/g, '');
   const strippedTelephoneNumber = telephoneNumber.replace(/[()+-. ]/g, '');
-  const combinedPhoneNumber = `(${strippedDiallingCode})${strippedTelephoneNumber}`;
+  const combinedPhoneNumber = `(${diallingCode})${strippedTelephoneNumber}`;
 
   return combinedPhoneNumber;
 };
