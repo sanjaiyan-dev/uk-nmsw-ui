@@ -43,9 +43,10 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
 
   const template = (result) => {
     let response;
+
     if (result && result[fieldDetails.responseKey]) {
       // this occurs when user has typed in the field
-      if (fieldDetails.additionalKey && result[fieldDetails.additionalKey]) {
+      if (fieldDetails.displayAdditionalKey && result[fieldDetails.additionalKey]) {
         response = `${result[fieldDetails.responseKey]} ${result[fieldDetails.additionalKey]}`;
       } else {
         response = result[fieldDetails.responseKey];
@@ -68,15 +69,17 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
     let valueToTest;
 
     /*
+     * SCENARIO: do not lose expanded data from session
      * GIVEN: there is session data for this field
-     * WHEN: the user clicks on the input
+     * WHEN: the user clicks on the input without entering anything
      * THEN: the list shows only the item related to the session value
      * AND: if they click on that item
      * THEN: the value and it's expanded data must persist
      */
-    if (sessionData && sessionData[fieldDetails.fieldName] && fieldDetails.additionalKey) {
-      // If a field has an additional key, when it has a value we include that in the item value
-      // when it does not we do not include it to avoid 'undefined' showing in the UI
+    if (sessionData && sessionData[fieldDetails.fieldName] && fieldDetails.displayAdditionalKey) {
+    // If a field has an additional key AND displayAdditionalKey is true, we check the data to get the value for that key
+    // IF it has a value we include that in the item value
+    // IF it does NOT we do not include it to avoid 'undefined' showing in the UI
       const objectExpandedItem = sessionData[`${fieldDetails.fieldName}ExpandedDetails`][fieldDetails.fieldName];
       valueToTest = objectExpandedItem[fieldDetails.additionalKey]
         ? `${objectExpandedItem[fieldDetails.responseKey]} ${objectExpandedItem[fieldDetails.additionalKey]}`
@@ -113,13 +116,13 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
 
     /*
      * GIVEN: an item on the list has been clicked and we have retrieved its object
-     * WHEN: the field has an additionalKey and the retrieved object has a value for that additionalKey
+     * WHEN: the field has displayAdditionalKey set to true and the retrieved object has a value for that additionalKey
      * THEN: we concatenate the responseKey value and the additionalKey value together as the displayValue to show in the UI
      *
      * WHEN: the field does not have an additionalKey OR it has an additionalKey but the object has no value for this
      * THEN: we set the displayValue to just have the responseKey value
      */
-    if (fieldDetails.additionalKey && retrievedValue[fieldDetails.additionalKey]) {
+    if (fieldDetails.displayAdditionalKey && retrievedValue[fieldDetails.additionalKey]) {
       displayValue = `${retrievedValue[fieldDetails.responseKey]} ${retrievedValue[fieldDetails.additionalKey]}`;
     } else {
       displayValue = retrievedValue[fieldDetails.responseKey];
@@ -204,6 +207,7 @@ InputAutocomplete.propTypes = {
     hint: PropTypes.string,
     responseKey: PropTypes.string.isRequired, // a field that always exists in the dataset that we can use as a key for returning results
     additionalKey: PropTypes.string, // optional other field that we want to append to the returned result if it exists in the dataset (e.g. country ISO code, unlocode)
+    displayAdditionalKey: PropTypes.bool.isRequired, // determines if the additionalKey is for searching only or if it also displays in field
     value: PropTypes.string,
   }).isRequired,
   handleChange: PropTypes.func.isRequired,

@@ -179,7 +179,7 @@ describe('Register your details tests', () => {
     await user.type(screen.getByRole('combobox', { name: 'International dialling code' }), '44');
     await user.click(screen.getByText('44 United Kingdom of Great Britain and Northern Ireland'));
     await user.type(screen.getByRole('combobox', { name: 'Country' }), 'Aus');
-    await user.click(screen.getByText('Australia AUS'));
+    await user.click(screen.getByText('Australia'));
 
     await user.click(screen.getByTestId('submit-button'));
     expect(screen.queryByText('There is a problem')).not.toBeInTheDocument();
@@ -195,7 +195,7 @@ describe('Register your details tests', () => {
   it('should NOT clear form session data on submit', async () => {
     mockUseLocationState = { state: { dataToSubmit: { emailAddress: 'testemail@email.com', token: '123' } } };
     const user = userEvent.setup();
-    const expectedStoredData = '{"fullName":"Joe Bloggs","companyName":"Joe Bloggs Company","telephoneNumber":"12345","shippingAgent":"yes","dialCode":"44 United Kingdom of Great Britain and Northern Ireland","dialCodeExpandedDetails":{"dialCode":{"Identifier":234,"alphaCode":"GBR","countryName":"United Kingdom of Great Britain and Northern Ireland","dialCode":"44"}},"country":"Australia AUS","countryExpandedDetails":{"country":{"Identifier":14,"alphaCode":"AUS","countryName":"Australia","dialCode":"61"}}}';
+    const expectedStoredData = '{"fullName":"Joe Bloggs","companyName":"Joe Bloggs Company","telephoneNumber":"12345","shippingAgent":"yes","dialCode":"44 United Kingdom of Great Britain and Northern Ireland","dialCodeExpandedDetails":{"dialCode":{"Identifier":234,"alphaCode":"GBR","countryName":"United Kingdom of Great Britain and Northern Ireland","dialCode":"44"}},"country":"Australia","countryExpandedDetails":{"country":{"Identifier":14,"alphaCode":"AUS","countryName":"Australia","dialCode":"61"}}}';
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
 
     await user.type(screen.getByLabelText('Full name'), 'Joe Bloggs');
@@ -205,7 +205,7 @@ describe('Register your details tests', () => {
     await user.type(screen.getByRole('combobox', { name: 'International dialling code' }), '44');
     await user.click(screen.getByText('44 United Kingdom of Great Britain and Northern Ireland'));
     await user.type(screen.getByRole('combobox', { name: 'Country' }), 'Aus');
-    await user.click(screen.getByText('Australia AUS'));
+    await user.click(screen.getByText('Australia'));
 
     await user.click(screen.getByTestId('submit-button'));
     expect(window.sessionStorage.getItem('formData')).toStrictEqual(expectedStoredData);

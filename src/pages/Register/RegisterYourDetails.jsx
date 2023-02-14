@@ -55,6 +55,7 @@ const RegisterYourDetails = () => {
       label: 'International dialling code',
       fieldName: 'dialCode',
       additionalKey: 'countryName',
+      displayAdditionalKey: true,
       hint: 'For example, 44 for UK',
       validation: [
         {
@@ -85,6 +86,7 @@ const RegisterYourDetails = () => {
       dataSet: countries,
       responseKey: 'countryName',
       additionalKey: 'alphaCode',
+      displayAdditionalKey: false,
       label: 'Country',
       validation: [
         {

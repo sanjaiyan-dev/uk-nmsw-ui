@@ -28,6 +28,7 @@ describe('Text input field generation', () => {
     ], // for while we're passing in a mocked array of data
     fieldName: 'fullFieldName',
     responseKey: 'name',
+    displayAdditionalKey: false,
   };
   const fieldDetailsAllProps = {
     // dataAPIEndpoint: 'theEndpointUrl' // when we implement the endpoint
@@ -49,6 +50,7 @@ describe('Text input field generation', () => {
     hint: 'The hint text',
     responseKey: 'name',
     additionalKey: 'identifier',
+    displayAdditionalKey: false,
   };
   const fieldDetailsOneResponseKey = {
     // dataAPIEndpoint: 'theEndpointUrl' // when we implement the endpoint
@@ -68,8 +70,9 @@ describe('Text input field generation', () => {
     ], // for while we're passing in a mocked array of data
     fieldName: 'fullFieldName',
     responseKey: 'name',
+    displayAdditionalKey: false,
   };
-  const fieldDetailsTwoResponseKeys = {
+  const fieldDetailsTwoResponseKeysDisplayTrue = {
     // dataAPIEndpoint: 'theEndpointUrl' // when we implement the endpoint
     dataSet: [
       {
@@ -88,6 +91,28 @@ describe('Text input field generation', () => {
     fieldName: 'fullFieldName',
     responseKey: 'name',
     additionalKey: 'identifier',
+    displayAdditionalKey: true,
+  };
+  const fieldDetailsTwoResponseKeysDisplayFalse = {
+    // dataAPIEndpoint: 'theEndpointUrl' // when we implement the endpoint
+    dataSet: [
+      {
+        name: 'ObjectOne',
+        identifier: 'one',
+      },
+      {
+        name: 'ObjectTwo',
+        identifier: 'two',
+      },
+      {
+        name: 'ObjectThree',
+        identifier: 'three',
+      },
+    ], // for while we're passing in a mocked array of data
+    fieldName: 'fullFieldName',
+    responseKey: 'name',
+    additionalKey: 'identifier',
+    displayAdditionalKey: false,
   };
 
   beforeEach(() => {
@@ -138,11 +163,11 @@ describe('Text input field generation', () => {
     expect(screen.getByText('ObjectThree')).toBeInTheDocument();
   });
 
-  it('should return the concatenated value when the field has two response keys', async () => {
+  it('should return the concatenated value when the field has two response keys and displayAdditionalKey is set to true', async () => {
     const user = userEvent.setup();
     render(
       <InputAutocomplete
-        fieldDetails={fieldDetailsTwoResponseKeys}
+        fieldDetails={fieldDetailsTwoResponseKeysDisplayTrue}
         handleChange={parentHandleChange}
       />,
     );
@@ -155,11 +180,28 @@ describe('Text input field generation', () => {
     expect(screen.getByText('ObjectThree three')).toBeInTheDocument();
   });
 
+  it('should return the responseKey value when the field has two response keys but has displayAdditionalKey set to false', async () => {
+    const user = userEvent.setup();
+    render(
+      <InputAutocomplete
+        fieldDetails={fieldDetailsTwoResponseKeysDisplayFalse}
+        handleChange={parentHandleChange}
+      />,
+    );
+    expect(screen.getByRole('combobox', { name: '' })).toBeInTheDocument();
+    expect(screen.getByRole('listbox', { name: '' })).toBeInTheDocument();
+
+    await user.type(screen.getByRole('combobox', { name: '' }), 'Object');
+    expect(screen.getByText('ObjectOne')).toBeInTheDocument();
+    expect(screen.getByText('ObjectTwo')).toBeInTheDocument();
+    expect(screen.getByText('ObjectThree')).toBeInTheDocument();
+  });
+
   it('should update the value of the input if a selection is made from the list', async () => {
     const user = userEvent.setup();
     render(
       <InputAutocomplete
-        fieldDetails={fieldDetailsTwoResponseKeys}
+        fieldDetails={fieldDetailsTwoResponseKeysDisplayTrue}
         handleChange={parentHandleChange}
       />,
     );
@@ -175,7 +217,7 @@ describe('Text input field generation', () => {
     const user = userEvent.setup();
     render(
       <InputAutocomplete
-        fieldDetails={fieldDetailsTwoResponseKeys}
+        fieldDetails={fieldDetailsTwoResponseKeysDisplayTrue}
         handleChange={parentHandleChange}
       />,
     );
@@ -198,7 +240,7 @@ describe('Text input field generation', () => {
     const user = userEvent.setup();
     render(
       <InputAutocomplete
-        fieldDetails={fieldDetailsTwoResponseKeys}
+        fieldDetails={fieldDetailsTwoResponseKeysDisplayTrue}
         handleChange={parentHandleChange}
       />,
     );
