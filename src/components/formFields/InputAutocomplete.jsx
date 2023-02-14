@@ -5,7 +5,7 @@ import Autocomplete from 'accessible-autocomplete/react';
 /* there is an open PR to fix the aria-activedescendent issue:
  * https://github.com/alphagov/accessible-autocomplete/issues/434
  * https://github.com/alphagov/accessible-autocomplete/pull/553/files
- * The aria-activedescendent looks to work correctly, if you use your mouse to select an item from the list
+ * The aria-activedescendent looks to work correctly, if you use your mouse or keyboard to select an item from the list
  * then aria-activedescendent's value changes and voice over reads it out correctly
  * The error occurs because when the combobox pop up (list) is closed, the value of aria-activedescendent is set to = 'false'
  * and false is an invalid value for it.
@@ -19,10 +19,11 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
   const suggest = (userQuery, populateResults) => {
     if (!userQuery) { return; }
 
-    // The if statements below will be replaced by a call to an API endpoint with a filter function
-    // which we will trigger on 2+ keypresses, and then populateResults with the results it returns
-    // we may need to create a second InputAutoCompleteFromAPIData component if we have a need to maintain
-    // the local dataset version below
+    /* The if statements below will be replaced by a call to an API endpoint with a filter function
+     * which we will trigger on 2+ keypresses, and then populateResults with the results it returns
+     * we may need to create a second InputAutoCompleteFromAPIData component if we have a need to maintain
+     * the local dataset version below
+     */
     const filteredResults = dataSet.filter((item) => {
       let checkedResult;
 
