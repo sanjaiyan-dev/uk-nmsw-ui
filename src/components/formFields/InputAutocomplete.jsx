@@ -19,6 +19,10 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
   const suggest = (userQuery, populateResults) => {
     if (!userQuery) { return; }
 
+    // The if statements below will be replaced by a call to an API endpoint with a filter function
+    // which we will trigger on 2+ keypresses, and then populateResults with the results it returns
+    // we may need to create a second InputAutoCompleteFromAPIData component if we have a need to maintain
+    // the local dataset version below
     const filteredResults = dataSet.filter((item) => {
       let checkedResult;
 

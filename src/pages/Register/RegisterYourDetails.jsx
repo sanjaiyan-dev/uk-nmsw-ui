@@ -4,7 +4,6 @@ import {
   FIELD_TEXT,
   FIELD_PHONE,
   MULTI_PAGE_FORM,
-  VALIDATE_MAX_LENGTH,
   VALIDATE_PHONE_NUMBER,
   VALIDATE_REQUIRED,
   DISPLAY_GROUPED,
@@ -61,10 +60,6 @@ const RegisterYourDetails = () => {
           type: VALIDATE_REQUIRED,
           message: 'Enter an international dialling code',
         },
-        {
-          type: VALIDATE_PHONE_NUMBER,
-          message: 'Enter an international dialling code in the correct format',
-        },
       ],
     },
     {
@@ -94,11 +89,6 @@ const RegisterYourDetails = () => {
         {
           type: VALIDATE_REQUIRED,
           message: 'Enter country',
-        },
-        {
-          type: VALIDATE_MAX_LENGTH,
-          message: 'Enter 3 digit country code',
-          condition: 3,
         },
       ],
     },
