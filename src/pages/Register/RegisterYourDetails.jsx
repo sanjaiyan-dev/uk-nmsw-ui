@@ -11,7 +11,7 @@ import {
   FIELD_AUTOCOMPLETE,
 } from '../../constants/AppConstants';
 import { REGISTER_EMAIL_RESEND_URL, REGISTER_PASSWORD_URL } from '../../constants/AppUrlConstants';
-import CountryData from '../../constants/CountryData.json';
+import { countries } from '../../constants/CountryData';
 import { MergePhoneNumberFields } from '../../utils/FormatPhoneNumber';
 import DisplayForm from '../../components/DisplayForm';
 import Message from '../../components/Message';
@@ -51,10 +51,10 @@ const RegisterYourDetails = () => {
     },
     {
       type: FIELD_AUTOCOMPLETE,
-      dataSet: CountryData,
-      responseKey: 'number',
+      dataSet: countries,
+      responseKey: 'dialCode',
       label: 'International dialling code',
-      fieldName: 'diallingCode',
+      fieldName: 'dialCode',
       hint: 'For example, 44 for UK',
       validation: [
         {
@@ -84,8 +84,11 @@ const RegisterYourDetails = () => {
       ],
     },
     {
-      type: FIELD_TEXT,
+      type: FIELD_AUTOCOMPLETE,
       fieldName: 'country',
+      dataSet: countries,
+      responseKey: 'countryName',
+      additionalKey: 'alphaCode',
       label: 'Country',
       validation: [
         {
