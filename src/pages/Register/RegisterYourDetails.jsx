@@ -56,6 +56,9 @@ const RegisterYourDetails = () => {
       fieldName: 'dialCode',
       additionalKey: 'countryName',
       displayAdditionalKey: true,
+      responseKeyPrefix: '+',
+      additionalKeyPrefix: '(',
+      additionalKeySuffix: ')',
       hint: 'For example, 44 for UK',
       validation: [
         {
