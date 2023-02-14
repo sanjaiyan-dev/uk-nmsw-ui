@@ -11,9 +11,10 @@ import {
   FIELD_AUTOCOMPLETE,
 } from '../../constants/AppConstants';
 import { REGISTER_EMAIL_RESEND_URL, REGISTER_PASSWORD_URL } from '../../constants/AppUrlConstants';
+import CountryData from '../../constants/CountryData.json';
+import { MergePhoneNumberFields } from '../../utils/FormatPhoneNumber';
 import DisplayForm from '../../components/DisplayForm';
 import Message from '../../components/Message';
-import { MergePhoneNumberFields } from '../../utils/FormatPhoneNumber';
 
 const RegisterYourDetails = () => {
   const navigate = useNavigate();
@@ -50,7 +51,7 @@ const RegisterYourDetails = () => {
     },
     {
       type: FIELD_AUTOCOMPLETE,
-      dataSet: ['tbd'],
+      dataSet: CountryData,
       responseKey: 'number',
       label: 'International dialling code',
       fieldName: 'diallingCode',
