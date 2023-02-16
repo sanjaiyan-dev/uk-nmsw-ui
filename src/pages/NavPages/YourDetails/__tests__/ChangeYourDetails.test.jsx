@@ -41,7 +41,7 @@ describe('Change your details tests', () => {
     render(<MemoryRouter><ChangeYourDetails /></MemoryRouter>);
     expect(screen.getByLabelText('International dialling code')).toBeInTheDocument();
     expect(screen.getByRole('combobox', { name: 'International dialling code' })).toBeInTheDocument();
-    expect(screen.getByRole('combobox', { name: 'International dialling code' }).outerHTML).toEqual('<input aria-expanded="false" aria-activedescendant="false" aria-owns="dialCode-input__listbox" aria-autocomplete="list" aria-describedby="dialCode-input__assistiveHint" autocomplete="off" class="autocomplete__input autocomplete__input--default" id="dialCode-input" name="dialCode" placeholder="" type="text" role="combobox" value="">');
+    expect(screen.getByRole('combobox', { name: 'International dialling code' }).outerHTML).toEqual('<input aria-expanded="false" aria-activedescendant="false" aria-owns="diallingCode-input__listbox" aria-autocomplete="list" aria-describedby="diallingCode-input__assistiveHint" autocomplete="off" class="autocomplete__input autocomplete__input--default" id="diallingCode-input" name="diallingCode" placeholder="" type="text" role="combobox" value="">');
   });
 
   it('should render a phone number question', () => {

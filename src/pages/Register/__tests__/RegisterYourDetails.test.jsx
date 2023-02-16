@@ -92,7 +92,7 @@ describe('Register your details tests', () => {
     expect(screen.getByLabelText('International dialling code')).toBeInTheDocument();
     expect(screen.getByText('For example, 44 for UK')).toBeInTheDocument();
     expect(screen.getByRole('combobox', { name: 'International dialling code' })).toBeInTheDocument();
-    expect(screen.getByRole('combobox', { name: 'International dialling code' }).outerHTML).toEqual('<input aria-expanded="false" aria-activedescendant="false" aria-owns="dialCode-input__listbox" aria-autocomplete="list" aria-describedby="dialCode-input__assistiveHint" autocomplete="off" class="autocomplete__input autocomplete__input--default" id="dialCode-input" name="dialCode" placeholder="" type="text" role="combobox" value="">');
+    expect(screen.getByRole('combobox', { name: 'International dialling code' }).outerHTML).toEqual('<input aria-expanded="false" aria-activedescendant="false" aria-owns="diallingCode-input__listbox" aria-autocomplete="list" aria-describedby="diallingCode-input__assistiveHint" autocomplete="off" class="autocomplete__input autocomplete__input--default" id="diallingCode-input" name="diallingCode" placeholder="" type="text" role="combobox" value="">');
   });
 
   it('should render a telephone number question', async () => {
@@ -195,7 +195,7 @@ describe('Register your details tests', () => {
   it('should NOT clear form session data on submit', async () => {
     mockUseLocationState = { state: { dataToSubmit: { emailAddress: 'testemail@email.com', token: '123' } } };
     const user = userEvent.setup();
-    const expectedStoredData = '{"fullName":"Joe Bloggs","companyName":"Joe Bloggs Company","telephoneNumber":"12345","shippingAgent":"yes","dialCode":"+44 (United Kingdom of Great Britain and Northern Ireland)","dialCodeExpandedDetails":{"dialCode":{"Identifier":234,"alphaCode":"GBR","countryName":"United Kingdom of Great Britain and Northern Ireland","dialCode":"44"}},"country":"Australia","countryExpandedDetails":{"country":{"Identifier":14,"alphaCode":"AUS","countryName":"Australia","dialCode":"61"}}}';
+    const expectedStoredData = '{"fullName":"Joe Bloggs","companyName":"Joe Bloggs Company","telephoneNumber":"12345","shippingAgent":"yes","diallingCode":"+44 (United Kingdom of Great Britain and Northern Ireland)","diallingCodeExpandedDetails":{"diallingCode":{"Identifier":234,"alphaCode":"GBR","countryName":"United Kingdom of Great Britain and Northern Ireland","dialCode":"44"}},"country":"Australia","countryExpandedDetails":{"country":{"Identifier":14,"alphaCode":"AUS","countryName":"Australia","dialCode":"61"}}}';
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
 
     await user.type(screen.getByLabelText('Full name'), 'Joe Bloggs');

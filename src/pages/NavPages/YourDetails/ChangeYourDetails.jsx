@@ -52,7 +52,7 @@ const ChangeYourDetails = () => {
       dataSet: countries,
       responseKey: 'dialCode',
       label: 'International dialling code',
-      fieldName: 'dialCode',
+      fieldName: 'diallingCode',
       additionalKey: 'countryName',
       displayAdditionalKey: true,
       responseKeyPrefix: '+',
