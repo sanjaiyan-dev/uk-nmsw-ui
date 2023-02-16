@@ -81,7 +81,7 @@ describe('Text input field generation', () => {
     expect(screen.getByRole('listbox', { name: '' }).outerHTML).toEqual('<ul class="autocomplete__menu autocomplete__menu--inline autocomplete__menu--hidden" id="fullFieldName-input__listbox" role="listbox"></ul>');
   });
 
-  it('should render the list options based on what the user enters', async () => {
+  it('should render the list options based on what the user enters when it matches the responseKey', async () => {
     const user = userEvent.setup();
     render(
       <InputAutocomplete
@@ -97,6 +97,22 @@ describe('Text input field generation', () => {
     expect(screen.getByText('FirstObject')).toBeInTheDocument();
     expect(screen.getByText('SecondObject')).toBeInTheDocument();
     expect(screen.getByText('ThirdObject')).toBeInTheDocument();
+  });
+
+  it('should render the list options based on what the user enters when it matches the additionalKey', async () => {
+    const user = userEvent.setup();
+    render(
+      <InputAutocomplete
+        fieldDetails={{ ...fieldDetailsAllProps, displayAdditionalKey: true }}
+        handleChange={parentHandleChange}
+      />,
+    );
+    expect(screen.getByRole('combobox', { name: '' })).toBeInTheDocument();
+    expect(screen.getByRole('listbox', { name: '' })).toBeInTheDocument();
+
+    await user.type(screen.getByRole('combobox', { name: '' }), 'thre');
+    expect(screen.getByRole('combobox', { name: '' })).toHaveValue('thre');
+    expect(screen.getByText('ThirdObject three')).toBeInTheDocument();
   });
 
   it('should return the concatenated value when the field has two response keys and displayAdditionalKey is set to true', async () => {
