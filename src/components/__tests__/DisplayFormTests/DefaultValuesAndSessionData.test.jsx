@@ -97,8 +97,9 @@ describe('Display Form default values and session data', () => {
           name: 'ObjectThree',
           identifier: 'three',
         },
-      ], // for while we're passing in a mocked array of data
+      ],
       responseKey: 'name',
+      displayAdditionalKey: false,
     },
     {
       type: FIELD_TEXT,
@@ -295,6 +296,40 @@ describe('Display Form default values and session data', () => {
     expect(screen.getByLabelText('Conditional text input')).toHaveValue('world');
     expect(screen.getByRole('textbox', { name: 'Dialling code input' })).toHaveValue('+44');
     expect(screen.getByRole('textbox', { name: 'Phone input' })).toHaveValue('(123)1.2 3+4-5');
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual(expectedStoredData);
+  });
+
+  it('should persist Autocomplete field expanded data if the page is refreshed and user clicks on combo box and reselects existing value', async () => {
+    const user = userEvent.setup();
+    window.sessionStorage.setItem('formData', JSON.stringify({
+      items: 'ObjectTwo',
+      itemsExpandedDetails: {
+        items: {
+          identifier: 'two',
+          name: 'ObjectTwo',
+        },
+      },
+    }));
+    const expectedStoredData = '{"items":"ObjectTwo","itemsExpandedDetails":{"items":{"name":"ObjectTwo","identifier":"two"}}}';
+    render(
+      <MemoryRouter>
+        <DisplayForm
+          formId="testForm"
+          fields={formWithMultipleFields}
+          formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
+          handleSubmit={handleSubmit}
+        />
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByRole('combobox', { name: 'Autocomplete input' })).toHaveValue('ObjectTwo');
+    await user.click(screen.getByRole('combobox', { name: 'Autocomplete input' }));
+    expect(screen.getByText('ObjectTwo')).toBeInTheDocument();
+    expect(screen.queryByText('ObjectOne')).not.toBeInTheDocument();
+    expect(screen.queryByText('ObjectThree')).not.toBeInTheDocument();
+    await user.click(screen.getByText('ObjectTwo'));
+
     expect(window.sessionStorage.getItem('formData')).toStrictEqual(expectedStoredData);
   });
 
