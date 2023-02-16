@@ -210,4 +210,57 @@ describe('Register your details tests', () => {
     await user.click(screen.getByTestId('submit-button'));
     expect(window.sessionStorage.getItem('formData')).toStrictEqual(expectedStoredData);
   });
+
+  it('should display international dialling code question with the format +nn (xxxx)', async () => {
+    const user = userEvent.setup();
+    mockUseLocationState = { state: { dataToSubmit: { emailAddress: 'testemail@email.com', token: '123' } } };
+    render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
+    await user.type(screen.getByRole('combobox', { name: 'International dialling code' }), '44');
+
+    expect(screen.getByText('+244 (Angola)')).toBeInTheDocument();
+    expect(screen.getByText('+1-441 (Bermuda)')).toBeInTheDocument();
+    expect(screen.getByText('+44 (Guernsey)')).toBeInTheDocument();
+    expect(screen.getByText('+44 (Isle of Man)')).toBeInTheDocument();
+    expect(screen.getByText('+44 (Jersey)')).toBeInTheDocument();
+    expect(screen.getByText('+44 (United Kingdom of Great Britain and Northern Ireland)')).toBeInTheDocument();
+    expect(screen.queryByText('+61 (Australia)')).not.toBeInTheDocument();
+  });
+
+  it('should return a dialling code when the country name is typed', async () => {
+    const user = userEvent.setup();
+    mockUseLocationState = { state: { dataToSubmit: { emailAddress: 'testemail@email.com', token: '123' } } };
+    render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
+    await user.type(screen.getByRole('combobox', { name: 'International dialling code' }), 'Aus');
+
+    expect(screen.getByText('+61 (Australia)')).toBeInTheDocument();
+    expect(screen.getByText('+43 (Austria)')).toBeInTheDocument();
+    expect(screen.queryByText('+1-441 (Bermuda)')).not.toBeInTheDocument();
+  });
+
+  it('should return a country when the name is typed', async () => {
+    const user = userEvent.setup();
+    mockUseLocationState = { state: { dataToSubmit: { emailAddress: 'testemail@email.com', token: '123' } } };
+    render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
+    await user.type(screen.getByRole('combobox', { name: 'Country' }), 'Uni');
+
+    expect(screen.getByText('United Arab Emirates (the)')).toBeInTheDocument();
+    expect(screen.getByText('Reunion')).toBeInTheDocument();
+    expect(screen.getByText('Tanzania, the United Republic of')).toBeInTheDocument();
+    expect(screen.getByText('Tunisia')).toBeInTheDocument();
+    expect(screen.getByText('United Kingdom of Great Britain and Northern Ireland')).toBeInTheDocument();
+    expect(screen.getByText('United States Minor Outlying Islands (the)')).toBeInTheDocument();
+    expect(screen.getByText('United States of America (the)')).toBeInTheDocument();
+    expect(screen.queryByText('Burundi')).not.toBeInTheDocument();
+  });
+
+  it('should return a country when the alphacode is typed', async () => {
+    const user = userEvent.setup();
+    mockUseLocationState = { state: { dataToSubmit: { emailAddress: 'testemail@email.com', token: '123' } } };
+    render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
+    await user.type(screen.getByRole('combobox', { name: 'Country' }), 'GB');
+
+    expect(screen.getByText('United Kingdom of Great Britain and Northern Ireland')).toBeInTheDocument();
+    expect(screen.getByText('Virgin Islands (British)')).toBeInTheDocument();
+    expect(screen.queryByText('Australia')).not.toBeInTheDocument();
+  });
 });
