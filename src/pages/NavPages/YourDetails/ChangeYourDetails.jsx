@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import DisplayForm from '../../../components/DisplayForm';
 import {
+  FIELD_AUTOCOMPLETE,
   FIELD_PHONE,
   FIELD_TEXT,
   SINGLE_PAGE_FORM,
-  VALIDATE_MAX_LENGTH,
   VALIDATE_PHONE_NUMBER,
   VALIDATE_REQUIRED,
 } from '../../../constants/AppConstants';
@@ -13,6 +13,7 @@ import {
   GENERIC_CONFIRMATION_URL,
   YOUR_DETAILS_PAGE_URL,
 } from '../../../constants/AppUrlConstants';
+import { countries } from '../../../constants/CountryData';
 import { MergePhoneNumberFields } from '../../../utils/FormatPhoneNumber';
 
 const ChangeYourDetails = () => {
@@ -47,18 +48,21 @@ const ChangeYourDetails = () => {
       ],
     },
     {
-      type: FIELD_TEXT,
+      type: FIELD_AUTOCOMPLETE,
+      dataSet: countries,
+      responseKey: 'dialCode',
       label: 'International dialling code',
-      fieldName: 'diallingCode',
+      fieldName: 'dialCode',
+      additionalKey: 'countryName',
+      displayAdditionalKey: true,
+      responseKeyPrefix: '+',
+      additionalKeyPrefix: '(',
+      additionalKeySuffix: ')',
       hint: 'For example, 44 for UK',
       validation: [
         {
           type: VALIDATE_REQUIRED,
           message: 'Enter an international dialling code',
-        },
-        {
-          type: VALIDATE_PHONE_NUMBER,
-          message: 'Enter an international dialling code in the correct format',
         },
       ],
     },
@@ -79,18 +83,17 @@ const ChangeYourDetails = () => {
       ],
     },
     {
-      type: FIELD_TEXT,
+      type: FIELD_AUTOCOMPLETE,
       fieldName: 'country',
+      dataSet: countries,
+      responseKey: 'countryName',
+      additionalKey: 'alphaCode',
+      displayAdditionalKey: false,
       label: 'Country',
       validation: [
         {
           type: VALIDATE_REQUIRED,
           message: 'Enter country',
-        },
-        {
-          type: VALIDATE_MAX_LENGTH,
-          message: 'Enter 3 digit country code',
-          condition: 3,
         },
       ],
     },
