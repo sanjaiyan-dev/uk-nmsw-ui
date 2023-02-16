@@ -14,7 +14,7 @@ This is the front end, and will connect to the data-api when available
 * [Run Cypress tests](#run-cypress-tests)
 
 ## Form Creator
-<a href="https://github.com/UKHomeOffice/nmsw-ui/blob/main/docs/form_creator.md">hHow to create a new form component and a form</a>
+<a href="https://github.com/UKHomeOffice/nmsw-ui/blob/main/docs/form_creator.md">How to create a new form component and a form</a>
 
 ----
 

@@ -107,12 +107,13 @@ Add an item to the switch statement in `DetermineFieldType`
 
 switch (fieldDetails.type) {
 
-    case FIELD_DATE: fieldToReturn =
+    case FIELD_DATE: fieldToReturn = (
       <InputDate
         error={error} // if error true, error styling applied to input
         fieldDetails={fieldDetails}
         handleChange={parentHandleChange}
-      />;
+      />
+    );
       break;
 ...
 ```

@@ -10,8 +10,6 @@ Below is a step by step example of creating a new form using the creator compone
 4. [Add handleSubmit ](#AddHandleSubmit)
 6. [Add <DisplayForm> to your return](#AddDisplayForm)
 
-_TODO: refactor Add formActions in DisplayForm to map the form actions rather than specify directly. And then update these docs_
-
 ### 1. <a id="AddFormActions"></a>Add formActions
 
 Go to the page or component file you want to add your form to (or create your page if it's for a new page).
@@ -19,12 +17,6 @@ Go to the page or component file you want to add your form to (or create your pa
 Determine which form actions you need
  - submit
  - cancel
- - save and come back later **NOT YET ADDED TO CODE**
-
-Determine which styling each requires
- - primary button (usually for main submit)
- - secondary button (usually for cancel)
- - text button (usually for save and come back later type submits)
 
 Create an object of formActions for your form
 
@@ -44,59 +36,53 @@ Create an object of formActions for your form
 
 Create an object of formFields for your form
 
-_For this example we'll add a text input of type text, a set of 3 radio buttons, and our new date input_
+_For this example we'll add a text input of type text and a set of 3 radio buttons_
 
 ```javascript
 const formFields = [
     {
       type: FIELD_TEXT,
-      label: 'First name',
-      hint: 'Enter your first name',
+      displayType: DISPLAY_SINGLE,
       fieldName: 'firstName',
+      hint: 'Enter your first name',
+      label: 'First name',
     },
     {
       type: FIELD_RADIO,
-      label: 'What is your favourite colour',
-      fieldName: 'favouriteColour',
       className: 'govuk-radios',
       displayType: DISPLAY_GROUPED,
+      fieldName: 'favouriteColour',
+      label: 'What is your favourite colour',
       radioOptions: [
         {
+          checked: CHECKED_FALSE,
+          id: 'red',
           label: 'Red',
           name: 'favouriteColour',
-          id: 'red',
           value: 'red',
-          checked: CHECKED_FALSE
         },
         {
+          checked: CHECKED_FALSE,
+          id: 'blue',
           label: 'Blue',
           name: 'favouriteColour',
-          id: 'blue',
           value: 'blue',
-          checked: CHECKED_FALSE
         },
         {
+          checked: CHECKED_FALSE,
+          id: 'green',
           label: 'Green',
           name: 'favouriteColour',
-          id: 'green',
           value: 'green',
-          checked: CHECKED_FALSE
         },
         {
+          checked: CHECKED_FALSE,
+          id: 'other',
           label: 'Other',
           name: 'favouriteColour',
-          id: 'other',
           value: 'other',
-          checked: CHECKED_FALSE
         },
       ],
-    },
-    {
-      type: FIELD_DATE,
-      label: 'Sample date field',
-      hint: 'Enter a date',
-      fieldName: 'myDate',
-      displayType: DISPLAY_GROUPED,
     },
   ];
 
@@ -196,10 +182,9 @@ const formFields = [
 _TODO: Add an example API call once those are built_
 
 Add your handleSubmit function. You need to include:
-- calling the Validator and setting any errors it returns
-- scrolling to the form element (so user is taken to where the errors display) if there are errors
-- where to navigate to if there are not errors
 - what to do with the data from the form (PATCH, POST, etc.)
+- where to navigate to if the action completes successfully
+- what to do if the action fails
 
 If you use a confirmation page
 - you must include the form name
@@ -207,25 +192,27 @@ If you use a confirmation page
 - you *may* include a reference number if you have one available
 
 ```javascript
- const handleSubmit = async (e, formData) => {
-    e.preventDefault();
-    const formErrors = await Validator({ formData: formData.formData, formFields: formFields });
-    setErrors(formErrors);
+ const handleSubmit = async (formData) => {
+    setIsLoading(true);
+    const dataToSubmit = {
+      email: formData.formData.emailAddress,
+    };
 
-    if (formErrors.length < 1) {
-      navigate(
-        FORM_CONFIRMATION_URL,
-        {
-          state: {
-            formName: 'Example form',
-            nextPageLink: YOUR_VOYAGES_URL,
-            nextPageName: YOUR_VOYAGES_PAGE_NAME,
-            // referenceNumber: referenceNumber // only include referenceNumber if you will receive one from your API POST/PATCH call, otherwise leave this out
-          }
-        }
-      );
-    } else {
-      scrollToElementId('formSecondPage');
+    try {
+      const response = await axios.post('/to-my-endpoint', dataToSubmit);
+      navigate(FORM_CONFIRMATION_URL, { state: { 
+        formName: 'Email form', 
+        nextPageLink: HOME_PAGE_URL,
+        nextPageName: HOME_PAGE_NAME, 
+        referenceNumber: response?.data?.referenceNumber
+      } } );
+      setIsLoading(false);
+    } catch (err) {
+      navigate(GENERIC_MESSAGE_URL, { state: { 
+        title: 'Something went wrong', 
+        message: err?.data?.message,
+        redirectURL: THIS_PAGE,
+      } } );
     }
   };
 ```
@@ -236,17 +223,16 @@ Add the DisplayForm component to your return
 
 ```javascript
   return (
-    <div className="govuk-grid-row">
-      <h1>Second page</h1>
-      <DisplayForm
-        formId='formSecondPage'
-        errors={errors}
-        fields={formFields}
-        formActions={formActions}
-        handleSubmit={handleSubmit}
-        setErrors={setErrors}
-      />
-    </div >
+    <DisplayForm
+      formId='myForm'
+      fields={formFields}
+      formActions={formActions}
+      formType={SINGLE_PAGE_FORM}
+      isLoading={isLoading}
+      keepSessionOnSubmit={state?.redirectURL ? true : false}
+      pageHeading='My form'
+      handleSubmit={handleSubmit}
+    />
   );
 ```
 
@@ -254,24 +240,30 @@ Add the DisplayForm component to your return
 
 ```javascript
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import {
-  FIELD_DATE,
+  CHECKED_FALSE,
+  DISPLAY_GROUPED,
+  DISPLAY_SINGLE,
   FIELD_RADIO,
   FIELD_TEXT,
-  CHECKED_FALSE,
+  SINGLE_PAGE_FORM,
   VALIDATE_MIN_LENGTH,
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
-import { YOUR_VOYAGES_PAGE_NAME, YOUR_VOYAGES_URL, FORM_CONFIRMATION_URL } from '../../constants/AppUrlConstants';
+import {
+  FORM_CONFIRMATION_URL,
+  LOGGED_IN_LANDING,
+  MESSAGE_URL,
+  YOUR_VOYAGES_URL,
+} from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
-import { scrollToElementId } from '../../utils/ScrollToElementId';
-import Validator from '../../utils/Validator';
 
-const SecondPage = () => {
+const MyForm = () => {
+  const { state } = useLocation();
   const navigate = useNavigate();
-  const [errors, setErrors] = useState();
-  const referenceNumber = '123';
+  const [isLoading, setIsLoading] = useState(false);
 
   const formActions = {
     submit: {
@@ -279,15 +271,17 @@ const SecondPage = () => {
     },
     cancel: {
       label: 'Cancel',
-      redirectURL: YOUR_VOYAGES_URL,
-    }
+      redirect_URL: YOUR_VOYAGES_URL,
+    },
   };
+
   const formFields = [
     {
       type: FIELD_TEXT,
-      label: 'First name',
-      hint: 'Enter your first name',
+      displayType: DISPLAY_SINGLE,
       fieldName: 'firstName',
+      hint: 'Enter your first name',
+      label: 'First name',
       validation: [
         {
           type: VALIDATE_REQUIRED,
@@ -302,83 +296,85 @@ const SecondPage = () => {
     },
     {
       type: FIELD_RADIO,
-      label: 'What is your favourite colour',
-      fieldName: 'favouriteColour',
       className: 'govuk-radios',
       displayType: DISPLAY_GROUPED,
+      fieldName: 'favouriteColour',
+      label: 'What is your favourite colour',
       radioOptions: [
         {
+          checked: CHECKED_FALSE,
+          id: 'red',
           label: 'Red',
           name: 'favouriteColour',
-          id: 'red',
           value: 'red',
-          checked: CHECKED_FALSE
         },
         {
+          checked: CHECKED_FALSE,
+          id: 'blue',
           label: 'Blue',
           name: 'favouriteColour',
-          id: 'blue',
           value: 'blue',
-          checked: CHECKED_FALSE
         },
         {
+          checked: CHECKED_FALSE,
+          id: 'green',
           label: 'Green',
           name: 'favouriteColour',
-          id: 'green',
           value: 'green',
-          checked: CHECKED_FALSE
         },
         {
+          checked: CHECKED_FALSE,
+          id: 'other',
           label: 'Other',
           name: 'favouriteColour',
-          id: 'other',
           value: 'other',
-          checked: CHECKED_FALSE
-        },
-      ],
-    },
-    {
-      type: FIELD_DATE,
-      label: 'Sample date field',
-      hint: 'Enter a date',
-      fieldName: 'myDate',
-      displayType: DISPLAY_GROUPED,
-      validation: [
-        {
-          type: VALIDATE_REQUIRED,
-          message: 'Enter your date',
         },
       ],
     },
   ];
 
-  const handleSubmit = async (e, formData) => {
-    e.preventDefault();
-    navigate(
-      FORM_CONFIRMATION_URL,
-      {
+  const handleSubmit = async (formData) => {
+    setIsLoading(true);
+    const dataToSubmit = {
+      email: formData.formData.emailAddress,
+    };
+
+    try {
+      const response = await axios.post('/to-my-endpoint', dataToSubmit);
+      navigate(FORM_CONFIRMATION_URL, {
         state: {
-          formName: 'Example form',
-          nextPageLink: YOUR_VOYAGES_URL,
-          nextPageName: YOUR_VOYAGES_PAGE_NAME,
-          referenceNumber: referenceNumber
-        }
-      }
-    );
+          formName: 'Email form',
+          nextPageLink: LOGGED_IN_LANDING,
+          nextPageName: LOGGED_IN_LANDING,
+          referenceNumber: response?.data?.referenceNumber,
+        },
+      });
+      setIsLoading(false);
+    } catch (err) {
+      navigate(MESSAGE_URL, {
+        state: {
+          title: 'Something went wrong',
+          message: err?.data?.message,
+          redirectURL: YOUR_VOYAGES_URL,
+        },
+      });
+    }
   };
 
   return (
-    <div className="govuk-grid-row">
-      <DisplayForm
-        formId='formSecondPage'
-        fields={formFields}
-        formActions={formActions}
-        pageHeading='Second page'
-        handleSubmit={handleSubmit}
-      />
-    </div >
+    <DisplayForm
+      formId="myForm"
+      fields={formFields}
+      formActions={formActions}
+      formType={SINGLE_PAGE_FORM}
+      isLoading={isLoading}
+      keepSessionOnSubmit={state?.redirectURL}
+      pageHeading="My form"
+      handleSubmit={handleSubmit}
+    />
   );
 };
 
-export default SecondPage;
+export default MyForm;
+
 ```
