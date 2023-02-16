@@ -63,8 +63,9 @@ describe('Display Form inputs', () => {
           name: 'ObjectThree',
           identifier: 'three',
         },
-      ], // for while we're passing in a mocked array of data
+      ],
       responseKey: 'name',
+      displayAdditionalKey: false,
       validation: [
         {
           type: VALIDATE_REQUIRED,
