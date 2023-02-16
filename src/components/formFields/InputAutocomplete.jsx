@@ -17,39 +17,26 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
   const sessionData = JSON.parse(sessionStorage.getItem('formData'));
 
   const formatText = ({ result, additionalKey }) => {
-    const responseKeyPrefix = fieldDetails.responseKeyPrefix || '';
-    const responseKeySuffix = fieldDetails.responseKeySuffix || '';
-    const additionalKeyPrefix = fieldDetails.additionalKeyPrefix || '';
-    const additionalKeySuffix = fieldDetails.additionalKeySuffix || '';
+    const rkPrefix = fieldDetails.responseKeyPrefix || '';
+    const rkSuffix = fieldDetails.responseKeySuffix || '';
+    const akPrefix = fieldDetails.additionalKeyPrefix || '';
+    const akSuffix = fieldDetails.additionalKeySuffix || '';
 
     if (additionalKey) {
-      return `${responseKeyPrefix}${result[fieldDetails.responseKey]}${responseKeySuffix} ${additionalKeyPrefix}${result[fieldDetails.additionalKey]}${additionalKeySuffix}`;
+      return `${rkPrefix}${result[fieldDetails.responseKey]}${rkSuffix} ${akPrefix}${result[fieldDetails.additionalKey]}${akSuffix}`;
     }
-    return `${responseKeyPrefix}${result[fieldDetails.responseKey]}${responseKeySuffix}`;
+    return `${rkPrefix}${result[fieldDetails.responseKey]}${rkSuffix}`;
   };
 
   const suggest = (userQuery, populateResults) => {
     if (!userQuery) { return; }
-
     /* The if statements below will be replaced by a call to an API endpoint with a filter function
      * which we will trigger on 2+ keypresses, and then populateResults with the results it returns
      * we may need to create a second InputAutoCompleteFromAPIData component if we have a need to maintain
      * the local dataset version below
      */
-    const filteredResults = dataSet.filter((item) => {
-      let checkedResult;
-
-      if (fieldDetails.additionalKey) {
-        if (item[fieldDetails.responseKey].toLowerCase().includes(userQuery.toLowerCase()) || item[fieldDetails.additionalKey]?.toLowerCase().includes(userQuery.toLowerCase())) {
-          checkedResult = item;
-        }
-      } else {
-        checkedResult = item[fieldDetails.responseKey].toLowerCase().includes(userQuery.toLowerCase());
-      }
-      return checkedResult;
-    });
-
-    // this is part of the Autocomplete componet and how we return results to the list
+    const filteredResults = dataSet.filter((item) => item[fieldDetails.responseKey].toLowerCase().includes(userQuery.toLowerCase()) || item[fieldDetails.additionalKey]?.toLowerCase().includes(userQuery.toLowerCase()));
+    // populateResults is part of the Autocomplete componet and how we return results to the list
     populateResults(filteredResults);
   };
 
