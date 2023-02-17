@@ -4,15 +4,16 @@ import {
   FIELD_TEXT,
   FIELD_PHONE,
   MULTI_PAGE_FORM,
-  VALIDATE_MAX_LENGTH,
   VALIDATE_PHONE_NUMBER,
   VALIDATE_REQUIRED,
   DISPLAY_GROUPED,
+  FIELD_AUTOCOMPLETE,
 } from '../../constants/AppConstants';
 import { REGISTER_EMAIL_RESEND_URL, REGISTER_PASSWORD_URL } from '../../constants/AppUrlConstants';
+import { countries } from '../../constants/CountryData';
+import { MergePhoneNumberFields } from '../../utils/FormatPhoneNumber';
 import DisplayForm from '../../components/DisplayForm';
 import Message from '../../components/Message';
-import { MergePhoneNumberFields } from '../../utils/FormatPhoneNumber';
 
 const RegisterYourDetails = () => {
   const navigate = useNavigate();
@@ -48,18 +49,21 @@ const RegisterYourDetails = () => {
       ],
     },
     {
-      type: FIELD_TEXT,
+      type: FIELD_AUTOCOMPLETE,
+      dataSet: countries,
+      responseKey: 'dialCode',
       label: 'International dialling code',
       fieldName: 'diallingCode',
+      additionalKey: 'countryName',
+      displayAdditionalKey: true,
+      responseKeyPrefix: '+',
+      additionalKeyPrefix: '(',
+      additionalKeySuffix: ')',
       hint: 'For example, 44 for UK',
       validation: [
         {
           type: VALIDATE_REQUIRED,
           message: 'Enter an international dialling code',
-        },
-        {
-          type: VALIDATE_PHONE_NUMBER,
-          message: 'Enter an international dialling code in the correct format',
         },
       ],
     },
@@ -80,18 +84,17 @@ const RegisterYourDetails = () => {
       ],
     },
     {
-      type: FIELD_TEXT,
+      type: FIELD_AUTOCOMPLETE,
       fieldName: 'country',
+      dataSet: countries,
+      responseKey: 'countryName',
+      additionalKey: 'alphaCode',
+      displayAdditionalKey: false,
       label: 'Country',
       validation: [
         {
           type: VALIDATE_REQUIRED,
           message: 'Enter country',
-        },
-        {
-          type: VALIDATE_MAX_LENGTH,
-          message: 'Enter 3 digit country code',
-          condition: 3,
         },
       ],
     },

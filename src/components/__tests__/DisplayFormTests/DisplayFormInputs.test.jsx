@@ -50,7 +50,7 @@ describe('Display Form inputs', () => {
       label: 'Autocomplete input',
       fieldName: 'items',
       hint: 'Hint for Autocomplete input',
-      dataAPIEndpoint: [
+      dataSet: [
         {
           name: 'ObjectOne',
           identifier: 'one',
@@ -63,8 +63,9 @@ describe('Display Form inputs', () => {
           name: 'ObjectThree',
           identifier: 'three',
         },
-      ], // for while we're passing in a mocked array of data
+      ],
       responseKey: 'name',
+      displayAdditionalKey: false,
       validation: [
         {
           type: VALIDATE_REQUIRED,
@@ -180,7 +181,7 @@ describe('Display Form inputs', () => {
       label: 'Autocomplete input',
       fieldName: 'items',
       hint: 'Hint for Autocomplete input',
-      dataAPIEndpoint: [
+      dataSet: [
         {
           name: 'ObjectOne',
           identifier: 'one',

@@ -84,7 +84,7 @@ describe('Display Form default values and session data', () => {
       label: 'Autocomplete input',
       fieldName: 'items',
       hint: 'Hint for Autocomplete input',
-      dataAPIEndpoint: [
+      dataSet: [
         {
           name: 'ObjectOne',
           identifier: 'one',
@@ -97,8 +97,9 @@ describe('Display Form default values and session data', () => {
           name: 'ObjectThree',
           identifier: 'three',
         },
-      ], // for while we're passing in a mocked array of data
+      ],
       responseKey: 'name',
+      displayAdditionalKey: false,
     },
     {
       type: FIELD_TEXT,
@@ -189,6 +190,31 @@ describe('Display Form default values and session data', () => {
           message: 'Enter your text input value',
         },
       ],
+    },
+  ];
+  const formWithAutocompleteAndAdditionalKey = [
+    {
+      type: FIELD_AUTOCOMPLETE,
+      label: 'Autocomplete input',
+      fieldName: 'myItems',
+      hint: 'Hint for Autocomplete input',
+      dataSet: [
+        {
+          primary: 'ObjectOne',
+          other: 'oneAC',
+        },
+        {
+          primary: 'ObjectTwo',
+          other: 'twoAC',
+        },
+        {
+          primary: 'ObjectThree',
+          other: 'threeAC',
+        },
+      ],
+      responseKey: 'primary',
+      additionalKey: 'other',
+      displayAdditionalKey: true,
     },
   ];
 
@@ -295,6 +321,74 @@ describe('Display Form default values and session data', () => {
     expect(screen.getByLabelText('Conditional text input')).toHaveValue('world');
     expect(screen.getByRole('textbox', { name: 'Dialling code input' })).toHaveValue('+44');
     expect(screen.getByRole('textbox', { name: 'Phone input' })).toHaveValue('(123)1.2 3+4-5');
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual(expectedStoredData);
+  });
+
+  it('should persist Autocomplete field expanded data if the page is refreshed and user clicks on combo box and reselects existing value', async () => {
+    const user = userEvent.setup();
+    window.sessionStorage.setItem('formData', JSON.stringify({
+      items: 'ObjectTwo',
+      itemsExpandedDetails: {
+        items: {
+          identifier: 'two',
+          name: 'ObjectTwo',
+        },
+      },
+    }));
+    const expectedStoredData = '{"items":"ObjectTwo","itemsExpandedDetails":{"items":{"name":"ObjectTwo","identifier":"two"}}}';
+    render(
+      <MemoryRouter>
+        <DisplayForm
+          formId="testForm"
+          fields={formWithMultipleFields}
+          formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
+          handleSubmit={handleSubmit}
+        />
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByRole('combobox', { name: 'Autocomplete input' })).toHaveValue('ObjectTwo');
+    await user.click(screen.getByRole('combobox', { name: 'Autocomplete input' }));
+    expect(screen.getByText('ObjectTwo')).toBeInTheDocument();
+    expect(screen.queryByText('ObjectOne')).not.toBeInTheDocument();
+    expect(screen.queryByText('ObjectThree')).not.toBeInTheDocument();
+    await user.click(screen.getByText('ObjectTwo'));
+
+    expect(window.sessionStorage.getItem('formData')).toStrictEqual(expectedStoredData);
+  });
+
+  it('should persist Autocomplete field expanded data if the page is refreshed and user clicks on combo box and reselects existing value AND there is an additionalKey displayed', async () => {
+    const user = userEvent.setup();
+    window.sessionStorage.setItem('formData', JSON.stringify({
+      myItems: 'ObjectTwo twoAC',
+      myItemsExpandedDetails: {
+        myItems: {
+          primary: 'ObjectTwo',
+          other: 'twoAC',
+        },
+      },
+    }));
+    const expectedStoredData = '{"myItems":"ObjectTwo twoAC","myItemsExpandedDetails":{"myItems":{"primary":"ObjectTwo","other":"twoAC"}}}';
+    render(
+      <MemoryRouter>
+        <DisplayForm
+          formId="testForm"
+          fields={formWithAutocompleteAndAdditionalKey}
+          formActions={formActionsSubmitOnly}
+          formType={SINGLE_PAGE_FORM}
+          handleSubmit={handleSubmit}
+        />
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByRole('combobox', { name: 'Autocomplete input' })).toHaveValue('ObjectTwo twoAC');
+    await user.click(screen.getByRole('combobox', { name: 'Autocomplete input' }));
+    expect(screen.getByText('ObjectTwo twoAC')).toBeInTheDocument();
+    expect(screen.queryByText('ObjectOne oneAC')).not.toBeInTheDocument();
+    expect(screen.queryByText('ObjectThree threeAC')).not.toBeInTheDocument();
+    await user.click(screen.getByText('ObjectTwo twoAC'));
+
     expect(window.sessionStorage.getItem('formData')).toStrictEqual(expectedStoredData);
   });
 

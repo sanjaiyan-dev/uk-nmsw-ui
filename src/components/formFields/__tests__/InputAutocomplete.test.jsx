@@ -11,83 +11,44 @@ import InputAutocomplete from '../InputAutocomplete';
 describe('Text input field generation', () => {
   const parentHandleChange = jest.fn();
   const fieldDetailsBasic = {
-    // dataAPIEndpoint: 'theEndpointUrl' // when we implement the endpoint
-    dataAPIEndpoint: [
+    dataSet: [
       {
-        name: 'ObjectOne',
+        name: 'FirstObject',
         identifier: 'one',
       },
       {
-        name: 'ObjectTwo',
+        name: 'SecondObject',
         identifier: 'two',
       },
       {
-        name: 'ObjectThree',
+        name: 'ThirdObject',
         identifier: 'three',
       },
-    ], // for while we're passing in a mocked array of data
+    ],
     fieldName: 'fullFieldName',
     responseKey: 'name',
+    displayAdditionalKey: false,
   };
   const fieldDetailsAllProps = {
-    // dataAPIEndpoint: 'theEndpointUrl' // when we implement the endpoint
-    dataAPIEndpoint: [
+    dataSet: [
       {
-        name: 'ObjectOne',
+        name: 'FirstObject',
         identifier: 'one',
       },
       {
-        name: 'ObjectTwo',
+        name: 'SecondObject',
         identifier: 'two',
       },
       {
-        name: 'ObjectThree',
+        name: 'ThirdObject',
         identifier: 'three',
       },
-    ], // for while we're passing in a mocked array of data
+    ],
     fieldName: 'fullFieldName',
     hint: 'The hint text',
     responseKey: 'name',
     additionalKey: 'identifier',
-  };
-  const fieldDetailsOneResponseKey = {
-    // dataAPIEndpoint: 'theEndpointUrl' // when we implement the endpoint
-    dataAPIEndpoint: [
-      {
-        name: 'ObjectOne',
-        identifier: 'one',
-      },
-      {
-        name: 'ObjectTwo',
-        identifier: 'two',
-      },
-      {
-        name: 'ObjectThree',
-        identifier: 'three',
-      },
-    ], // for while we're passing in a mocked array of data
-    fieldName: 'fullFieldName',
-    responseKey: 'name',
-  };
-  const fieldDetailsTwoResponseKeys = {
-    // dataAPIEndpoint: 'theEndpointUrl' // when we implement the endpoint
-    dataAPIEndpoint: [
-      {
-        name: 'ObjectOne',
-        identifier: 'one',
-      },
-      {
-        name: 'ObjectTwo',
-        identifier: 'two',
-      },
-      {
-        name: 'ObjectThree',
-        identifier: 'three',
-      },
-    ], // for while we're passing in a mocked array of data
-    fieldName: 'fullFieldName',
-    responseKey: 'name',
-    additionalKey: 'identifier',
+    displayAdditionalKey: true,
   };
 
   beforeEach(() => {
@@ -120,11 +81,11 @@ describe('Text input field generation', () => {
     expect(screen.getByRole('listbox', { name: '' }).outerHTML).toEqual('<ul class="autocomplete__menu autocomplete__menu--inline autocomplete__menu--hidden" id="fullFieldName-input__listbox" role="listbox"></ul>');
   });
 
-  it('should render the list options based on what the user enters', async () => {
+  it('should render the list options based on what the user enters when it matches the responseKey', async () => {
     const user = userEvent.setup();
     render(
       <InputAutocomplete
-        fieldDetails={fieldDetailsOneResponseKey}
+        fieldDetails={fieldDetailsBasic}
         handleChange={parentHandleChange}
       />,
     );
@@ -133,16 +94,32 @@ describe('Text input field generation', () => {
 
     await user.type(screen.getByRole('combobox', { name: '' }), 'Obje');
     expect(screen.getByRole('combobox', { name: '' })).toHaveValue('Obje');
-    expect(screen.getByText('ObjectOne')).toBeInTheDocument();
-    expect(screen.getByText('ObjectTwo')).toBeInTheDocument();
-    expect(screen.getByText('ObjectThree')).toBeInTheDocument();
+    expect(screen.getByText('FirstObject')).toBeInTheDocument();
+    expect(screen.getByText('SecondObject')).toBeInTheDocument();
+    expect(screen.getByText('ThirdObject')).toBeInTheDocument();
   });
 
-  it('should return the concatenated value when the field has two response keys', async () => {
+  it('should render the list options based on what the user enters when it matches the additionalKey', async () => {
     const user = userEvent.setup();
     render(
       <InputAutocomplete
-        fieldDetails={fieldDetailsTwoResponseKeys}
+        fieldDetails={{ ...fieldDetailsAllProps, displayAdditionalKey: true }}
+        handleChange={parentHandleChange}
+      />,
+    );
+    expect(screen.getByRole('combobox', { name: '' })).toBeInTheDocument();
+    expect(screen.getByRole('listbox', { name: '' })).toBeInTheDocument();
+
+    await user.type(screen.getByRole('combobox', { name: '' }), 'thre');
+    expect(screen.getByRole('combobox', { name: '' })).toHaveValue('thre');
+    expect(screen.getByText('ThirdObject three')).toBeInTheDocument();
+  });
+
+  it('should return the concatenated value when the field has two response keys and displayAdditionalKey is set to true', async () => {
+    const user = userEvent.setup();
+    render(
+      <InputAutocomplete
+        fieldDetails={{ ...fieldDetailsAllProps, displayAdditionalKey: true }}
         handleChange={parentHandleChange}
       />,
     );
@@ -150,16 +127,60 @@ describe('Text input field generation', () => {
     expect(screen.getByRole('listbox', { name: '' })).toBeInTheDocument();
 
     await user.type(screen.getByRole('combobox', { name: '' }), 'Object');
-    expect(screen.getByText('ObjectOne one')).toBeInTheDocument();
-    expect(screen.getByText('ObjectTwo two')).toBeInTheDocument();
-    expect(screen.getByText('ObjectThree three')).toBeInTheDocument();
+    expect(screen.getByText('FirstObject one')).toBeInTheDocument();
+    expect(screen.getByText('SecondObject two')).toBeInTheDocument();
+    expect(screen.getByText('ThirdObject three')).toBeInTheDocument();
+  });
+
+  it('should return the responseKey value when the field has two response keys but has displayAdditionalKey set to false', async () => {
+    const user = userEvent.setup();
+    render(
+      <InputAutocomplete
+        fieldDetails={{ ...fieldDetailsAllProps, displayAdditionalKey: false }}
+        handleChange={parentHandleChange}
+      />,
+    );
+    expect(screen.getByRole('combobox', { name: '' })).toBeInTheDocument();
+    expect(screen.getByRole('listbox', { name: '' })).toBeInTheDocument();
+
+    await user.type(screen.getByRole('combobox', { name: '' }), 'Object');
+    expect(screen.getByText('FirstObject')).toBeInTheDocument();
+    expect(screen.getByText('SecondObject')).toBeInTheDocument();
+    expect(screen.getByText('ThirdObject')).toBeInTheDocument();
+  });
+
+  it('should display prefixes and suffixes when available', async () => {
+    const user = userEvent.setup();
+    render(
+      <InputAutocomplete
+        fieldDetails={{
+          ...fieldDetailsAllProps,
+          displayAdditionalKey: true,
+          responseKeyPrefix: '+',
+          responseKeySuffix: '-',
+          additionalKeyPrefix: '(',
+          additionalKeySuffix: ')',
+        }}
+        handleChange={parentHandleChange}
+      />,
+    );
+    expect(screen.getByRole('combobox', { name: '' })).toBeInTheDocument();
+    expect(screen.getByRole('listbox', { name: '' })).toBeInTheDocument();
+
+    await user.type(screen.getByRole('combobox', { name: '' }), 'Object');
+    expect(screen.getByText('+FirstObject- (one)')).toBeInTheDocument();
+    expect(screen.getByText('+SecondObject- (two)')).toBeInTheDocument();
+    expect(screen.getByText('+ThirdObject- (three)')).toBeInTheDocument();
+
+    await user.click(screen.getByText('+SecondObject- (two)'));
+    expect(screen.getByRole('combobox', { name: '' })).toHaveValue('+SecondObject- (two)');
   });
 
   it('should update the value of the input if a selection is made from the list', async () => {
     const user = userEvent.setup();
     render(
       <InputAutocomplete
-        fieldDetails={fieldDetailsTwoResponseKeys}
+        fieldDetails={{ ...fieldDetailsAllProps, displayAdditionalKey: true }}
         handleChange={parentHandleChange}
       />,
     );
@@ -167,15 +188,15 @@ describe('Text input field generation', () => {
     expect(screen.getByRole('listbox', { name: '' })).toBeInTheDocument();
 
     await user.type(screen.getByRole('combobox', { name: '' }), 'Object');
-    await user.click(screen.getByText('ObjectTwo two'));
-    expect(screen.getByRole('combobox', { name: '' })).toHaveValue('ObjectTwo two');
+    await user.click(screen.getByText('SecondObject two'));
+    expect(screen.getByRole('combobox', { name: '' })).toHaveValue('SecondObject two');
   });
 
   it('should call handleChange function if user clears field via backspace key', async () => {
     const user = userEvent.setup();
     render(
       <InputAutocomplete
-        fieldDetails={fieldDetailsTwoResponseKeys}
+        fieldDetails={{ ...fieldDetailsAllProps, displayAdditionalKey: true }}
         handleChange={parentHandleChange}
       />,
     );
@@ -185,10 +206,10 @@ describe('Text input field generation', () => {
     const input = screen.getByRole('combobox', { name: '' });
 
     await user.type(screen.getByRole('combobox', { name: '' }), 'Object');
-    await user.click(screen.getByText('ObjectTwo two'));
-    expect(input).toHaveValue('ObjectTwo two');
+    await user.click(screen.getByText('SecondObject two'));
+    expect(input).toHaveValue('SecondObject two');
 
-    input.setSelectionRange(0, 14);
+    input.setSelectionRange(0, 17);
     await user.keyboard('{backspace}');
     expect(input).toHaveValue('');
     expect(parentHandleChange).toHaveBeenCalled();
@@ -198,7 +219,7 @@ describe('Text input field generation', () => {
     const user = userEvent.setup();
     render(
       <InputAutocomplete
-        fieldDetails={fieldDetailsTwoResponseKeys}
+        fieldDetails={{ ...fieldDetailsAllProps, displayAdditionalKey: true }}
         handleChange={parentHandleChange}
       />,
     );
@@ -208,10 +229,10 @@ describe('Text input field generation', () => {
     const input = screen.getByRole('combobox', { name: '' });
 
     await user.type(screen.getByRole('combobox', { name: '' }), 'Object');
-    await user.click(screen.getByText('ObjectOne one'));
-    expect(input).toHaveValue('ObjectOne one');
+    await user.click(screen.getByText('FirstObject one'));
+    expect(input).toHaveValue('FirstObject one');
 
-    input.setSelectionRange(0, 14);
+    input.setSelectionRange(0, 16);
     await user.keyboard('{delete}');
     expect(input).toHaveValue('');
     expect(parentHandleChange).toHaveBeenCalled();
