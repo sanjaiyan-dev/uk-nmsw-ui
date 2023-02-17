@@ -182,20 +182,25 @@ It should NOT be used for the other types as it is redundant for them.
 
 Requirements
 
-- The API endpoint that allows GETting the data for this field. It must be an endpoint that allows for search/filter based on a string passed to it
+- A dataset to search on
+
+_Note the current InputAutocomplete works with a local dataset, in future we will have one that works with an API endpoint_
 
 Object structure
 
 ```
 {
   type: FIELD_AUTOCOMPLETE,
-  displayType: DISPLAY_SINGLE,
-  dataAPIEndpoint: <required>,
-  fieldName: <required>,
+  dataSet: <required>,
+  fieldName: <required>
   hint: <optional>
-  label: <required>,
-  responseKey: <required>,
-  additionalKey: <OPTIONAL: additional data key>,
+  label: <required>
+  responseKey: <required>
+  additionalKey: <optional>
+  displayAdditionalKey: <boolean required>
+  responseKeyPrefix: <optional>
+  additionalKeyPrefix: <optional>
+  additionalKeySuffix: <optional>
 }
 ```
 
@@ -204,9 +209,8 @@ Parameters
 ### type
 Import and use `FIELD_AUTOCOMPLETE` from `src/constants/AppConstants`
 
-### dataAPIEndpoint
-The url for the API where we can get the list of options to display within the autocomplete field.
-It must be an endpoint setup to allow for search/filter based on what the user has typed into the autocomplete field.
+### dataSet
+Import your dataset and use it here
 
 ### fieldName
 A string that will be used for `name` and to create `id` and other field references.
@@ -220,8 +224,38 @@ A string that will be shown as the question/label text for the field
 ### responseKey
 The key from the API data set returned that lets us find the value to display in the input (e.g. `name` )
 
-### additionalResponseKey (optional)
+### additionalKey (optional)
 An additional key if two fields are required to create a name (e.g. key: `name` and additionalKey: `unlocode` for ports)
+
+### displayAdditionalKey
+If no additionalKey always set this to `false`
+Otherwise if you HAVE an additional key the options are:
+
+- `true` : the additionalKey will be used for both searching and in the display
+- `false` : the additionalKey will only be used for searching and will not be displayed to a user
+
+### responseKeyPrefix (optional)
+If defined, this string will appear before the responseKey's value that is returned from the dataset
+
+_e.g. responseKeyPrefix = '-', responseKey.value = 'abc' then the display in the combobox/list will show '-abc'_
+
+### responseKeySuffix (optional)
+If defined, this string will appear after the responseKey's value that is returned from the dataset
+
+_e.g. responseKeySuffix = '.', responseKey.value = 'abc' then the display in the combobox/list will show 'abc.'_
+
+### additionalKeyPrefix (optional)
+If defined, this string will appear before the additionalKey's value that is returned from the dataset
+
+_e.g. additionalKeyPrefix = '+', additionalKey.value = '12' then the display in the combobox/list will show '+12'_
+
+### additionalKeySuffix (optional)
+If defined, this string will appear after the additionalKey's value that is returned from the dataset
+
+_e.g. additionalKeySuffix = ' ', additionalKey.value = '12' then the display in the combobox/list will show '12 '_
+
+If you combine all prefix/suffix options shown above your display will have '+12 -abc.'
+
 
 ----
 
