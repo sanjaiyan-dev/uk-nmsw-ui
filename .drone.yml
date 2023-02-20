@@ -68,6 +68,10 @@ steps:
   pull: always
   image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
   commands:
+    - chmod +x extract-env.sh
+    - ./extract-env.sh ./helm/dev.yaml
+    - cat ./.env
+    - export $(cat ./.env | xargs)
     - /usr/local/bin/wait
     - docker build -t nmsw-ui:$${DRONE_COMMIT_SHA} .
   when:
