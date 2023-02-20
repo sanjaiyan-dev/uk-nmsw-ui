@@ -77,9 +77,10 @@ module.exports = {
       },
     ),
     // This allows to pass env vars on runtime, see /nginx/run.sh and Dockerfile
-    new webpack.EnvironmentPlugin({
-      NMSW_DATA_API_BASE_URL: 'http://localhost:5000',
-    }),
+    new webpack.EnvironmentPlugin([
+      'NMSW_DATA_API_BASE_URL',
+      'GA_TOKEN',
+    ]),
   ].concat(devMode ? [] : [new MiniCssExtractPlugin({
     filename: '[name]-[hash].css',
     chunkFilename: '[id]-[hash].css',
