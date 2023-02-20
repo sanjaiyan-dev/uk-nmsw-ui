@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 const webpack = require('webpack');
+const env = require('./exportProcessEnv');
 
 const devMode = process.env.NODE_ENV !== 'production';
 
@@ -64,6 +65,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'public', 'index.html'),
       favicon: './src/assets/images/favicon.ico',
+      api: env.NMSW_DATA_API_BASE_URL,
     }),
     new CopyPlugin(
       {
