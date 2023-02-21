@@ -13,7 +13,6 @@ printHelp()
 	echo
 }
 
-
 if [[ ! -s "$VAL_FILE" ]]; then
 	echo "Please enter the correct number of arguments."
 	echo "Helm values file \"${VAL_FILE}\" could not be opened."
@@ -24,8 +23,6 @@ elif [[ -z $OUTPUT_FILE ]]; then
 	printHelp
 	exit 1
 fi
-	
-
 
 echo "Extracting environment variables from Helm chart variables file."
 
