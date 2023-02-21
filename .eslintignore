@@ -5,3 +5,4 @@ dist/**
 cypress/**
 cypress.config.js
 setupTests.js
+/src/utils/DownloadFile.js
