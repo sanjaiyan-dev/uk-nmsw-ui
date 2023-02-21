@@ -198,6 +198,6 @@ describe('File upload tests', () => {
     await user.upload(input, file);
     expect(input.files[0]).toStrictEqual(file);
     await user.click(screen.getByRole('button', { name: 'Submit text from props' }));
-    expect(mockedUseNavigate).toHaveBeenCalledWith('/success-page', { state: { declarationId: '123' } });
+    expect(mockedUseNavigate).toHaveBeenCalledWith('/success-page', { state: { declarationId: '123', fileName: 'image.png' } });
   });
 });
