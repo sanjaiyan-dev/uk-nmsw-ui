@@ -57,7 +57,7 @@ const FileUploadForm = ({
         });
 
         if (response.status === 200) {
-          navigate(urlSuccessPage, { state: { declarationId } });
+          navigate(urlSuccessPage, { state: { declarationId, fileName: selectedFile?.file?.name } });
         }
       } catch (err) {
         if (err?.response?.status === 401 || err?.response?.status === 422) {

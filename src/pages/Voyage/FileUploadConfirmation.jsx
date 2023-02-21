@@ -7,7 +7,7 @@ const FileUploadConfirmation = () => {
   const navigate = useNavigate();
   document.title = 'No errors found';
 
-  if (!state?.declarationId || !state?.fileType) {
+  if (!state?.declarationId || !state?.fileName) {
     return (
       <Message title="Something has gone wrong" redirectURL={YOUR_VOYAGES_URL} />
     );
@@ -30,7 +30,7 @@ const FileUploadConfirmation = () => {
             </div>
             <div className="govuk-notification-banner__content">
               <h3 className="govuk-notification-banner__heading">
-                {`${state?.fileType ? state?.fileType : ''} uploaded`}
+                {`${state?.fileName ? state?.fileName : ''} uploaded`}
               </h3>
             </div>
           </div>
