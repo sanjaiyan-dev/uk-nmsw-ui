@@ -240,7 +240,6 @@ steps:
     - cypress-drone
     event:
     - push
-  failure: ignore
 
 - name: staging_cypress_test
   pull: if-not-exists
