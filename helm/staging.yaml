@@ -90,7 +90,7 @@ autoscaling:
 env:
   application:
     - name: NMSW_DATA_API_BASE_URL
-      value: "https://nmsw-api.staging.nmsw.homeoffice.gov.uk"
+      value: "https://nmsw-api.nmsw-staging.svc.cluster.local"
     - name: NMSW_MAINTENANCE
       value: "false"
     - name: GOV_NOTIFY_SUPPORT_EMAIL
