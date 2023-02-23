@@ -42,6 +42,7 @@ service:
   targetPort: 10443
 
 ingress:
+  enabled: true
   host: www.staging.nmsw.homeoffice.gov.uk
   path: /
   pathType: ImplementationSpecific
