@@ -14,6 +14,7 @@ import { NO_BACK_LINKS, TOP_LEVEL_PAGES } from './constants/AppUrlConstants';
 const App = () => {
   const cookiePreference = cookieToFind('cookiePreference');
   const [isCookieBannerShown, setIsCookieBannerShown] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const topLevelPage = TOP_LEVEL_PAGES.includes(pathname);
@@ -24,6 +25,7 @@ const App = () => {
     if (cookiePreference !== null) {
       setIsCookieBannerShown(false);
     }
+    setIsLoading(false);
   }, [cookiePreference]);
 
   useEffect(() => {
@@ -32,6 +34,8 @@ const App = () => {
       sessionStorage.removeItem('formData');
     }
   }, [pathname]);
+
+  if (isLoading) { return null; }
 
   return (
     <>

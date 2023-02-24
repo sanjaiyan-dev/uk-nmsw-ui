@@ -21,4 +21,6 @@ spec:
     matchLabels:
       {{- include "helm.selectorLabels" . | nindent 6 }}
   policyTypes:
+    {{- if .Values.ingress.enabled }}
     - Ingress
+    {{- end }}

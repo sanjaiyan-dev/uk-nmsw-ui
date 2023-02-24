@@ -20,7 +20,7 @@ describe('File upload success confirmation page', () => {
   });
 
   it('should render the page with state', async () => {
-    mockUseLocationState.state = { fileType: 'FAL Name', declarationId: '123' };
+    mockUseLocationState.state = { fileName: 'FAL Name', declarationId: '123' };
     render(<MemoryRouter><FileUploadConfirmation /></MemoryRouter>);
     expect(screen.getByRole('heading', { name: 'No errors found' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Success' }).outerHTML).toEqual('<h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">Success</h2>');
@@ -38,7 +38,7 @@ describe('File upload success confirmation page', () => {
 
   it('should go to the voyage task list page on button click', async () => {
     const user = userEvent.setup();
-    mockUseLocationState.state = { fileType: 'FAL Name', declarationId: '123' };
+    mockUseLocationState.state = { fileName: 'FAL Name', declarationId: '123' };
     render(<MemoryRouter><FileUploadConfirmation /></MemoryRouter>);
     expect(screen.getByRole('button', { name: 'Save and continue' })).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Save and continue' }));

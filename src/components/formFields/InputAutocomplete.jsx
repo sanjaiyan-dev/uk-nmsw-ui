@@ -5,39 +5,50 @@ import Autocomplete from 'accessible-autocomplete/react';
 /* there is an open PR to fix the aria-activedescendent issue:
  * https://github.com/alphagov/accessible-autocomplete/issues/434
  * https://github.com/alphagov/accessible-autocomplete/pull/553/files
- * The aria-activedescendent looks to work correctly, if you use your mouse to select an item from the list
+ * The aria-activedescendent looks to work correctly, if you use your mouse or keyboard to select an item from the list
  * then aria-activedescendent's value changes and voice over reads it out correctly
  * The error occurs because when the combobox pop up (list) is closed, the value of aria-activedescendent is set to = 'false'
  * and false is an invalid value for it.
  * some explanation of aria-activedescendant: https://www.holisticseo.digital/technical-seo/web-accessibility/aria-activedescendant/
 */
 const InputAutocomplete = ({ fieldDetails, handleChange }) => {
-  const apiResponseData = fieldDetails.dataAPIEndpoint;
+  const { dataSet } = fieldDetails;
   const defaultValue = fieldDetails.value || '';
   const sessionData = JSON.parse(sessionStorage.getItem('formData'));
 
+  const formatText = ({ result, additionalKey }) => {
+    const rkPrefix = fieldDetails.responseKeyPrefix || '';
+    const rkSuffix = fieldDetails.responseKeySuffix || '';
+    const akPrefix = fieldDetails.additionalKeyPrefix || '';
+    const akSuffix = fieldDetails.additionalKeySuffix || '';
+
+    if (additionalKey) {
+      return `${rkPrefix}${result[fieldDetails.responseKey]}${rkSuffix} ${akPrefix}${result[fieldDetails.additionalKey]}${akSuffix}`;
+    }
+    return `${rkPrefix}${result[fieldDetails.responseKey]}${rkSuffix}`;
+  };
+
   const suggest = (userQuery, populateResults) => {
     if (!userQuery) { return; }
-    // TODO: We should look at using lodash.debounce to prevent calls being made too fast as user types
-    // TODO: apiResponseData will be replaced with the api call to return the first [x] values of the dataset
-    // const apiResponseData = fieldDetails.dataAPIEndpoint;
-
-    // adding a filter in here to mimic the userQuery being used to get a response
-    // TODO: filteredResults will be replaced with the api call to return a filtered dataset based on the userQuery
-    const filteredResults = apiResponseData.filter((o) => Object.keys(o).some((k) => o[k].toLowerCase().includes(userQuery.toLowerCase())));
-    // console.log(filteredResults)
-    // this is part of the Autocomplete componet and how we return results to the list
+    /* The if statements below will be replaced by a call to an API endpoint with a filter function
+     * which we will trigger on 2+ keypresses, and then populateResults with the results it returns
+     * we may need to create a second InputAutoCompleteFromAPIData component if we have a need to maintain
+     * the local dataset version below
+     */
+    const filteredResults = dataSet.filter((item) => item[fieldDetails.responseKey].toLowerCase().includes(userQuery.toLowerCase()) || item[fieldDetails.additionalKey]?.toLowerCase().includes(userQuery.toLowerCase()));
+    // populateResults is part of the Autocomplete componet and how we return results to the list
     populateResults(filteredResults);
   };
 
   const template = (result) => {
     let response;
+
     if (result && result[fieldDetails.responseKey]) {
       // this occurs when user has typed in the field
-      if (fieldDetails.additionalKey && result[fieldDetails.additionalKey]) {
-        response = `${result[fieldDetails.responseKey]} ${result[fieldDetails.additionalKey]}`;
+      if (fieldDetails.displayAdditionalKey && result[fieldDetails.additionalKey]) {
+        response = formatText({ result, additionalKey: true });
       } else {
-        response = result[fieldDetails.responseKey];
+        response = formatText({ result, additionalKey: false });
       }
     } else if (sessionData) {
       // on page load this handles if there is a session to prepopulate the value from
@@ -57,19 +68,21 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
     let valueToTest;
 
     /*
+     * SCENARIO: do not lose expanded data from session
      * GIVEN: there is session data for this field
-     * WHEN: the user clicks on the input
+     * WHEN: the user clicks on the input without entering anything
      * THEN: the list shows only the item related to the session value
      * AND: if they click on that item
      * THEN: the value and it's expanded data must persist
      */
-    if (sessionData && sessionData[fieldDetails.fieldName] && fieldDetails.additionalKey) {
-      // If a field has an additional key, when it has a value we include that in the item value
-      // when it does not we do not include it to avoid 'undefined' showing in the UI
+    if (sessionData && sessionData[fieldDetails.fieldName] && fieldDetails.displayAdditionalKey) {
+      // If a field has an additional key AND displayAdditionalKey is true, we check the data to get the value for that key
+      // IF it has a value we include that in the item value
+      // IF it does NOT we do not include it to avoid 'undefined' showing in the UI
       const objectExpandedItem = sessionData[`${fieldDetails.fieldName}ExpandedDetails`][fieldDetails.fieldName];
       valueToTest = objectExpandedItem[fieldDetails.additionalKey]
-        ? `${objectExpandedItem[fieldDetails.responseKey]} ${objectExpandedItem[fieldDetails.additionalKey]}`
-        : objectExpandedItem[fieldDetails.responseKey];
+        ? formatText({ result: objectExpandedItem, additionalKey: true })
+        : formatText({ result: objectExpandedItem, additionalKey: false });
     } else {
       valueToTest = defaultValue;
     }
@@ -92,9 +105,9 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
     if (e === valueToTest) {
       if (fieldDetails.additionalKey) {
         const termToSearchOn = sessionData[`${fieldDetails.fieldName}ExpandedDetails`][fieldDetails.fieldName][fieldDetails.responseKey];
-        retrievedValue = apiResponseData.find((o) => o[fieldDetails.responseKey] === termToSearchOn);
+        retrievedValue = dataSet.find((o) => o[fieldDetails.responseKey] === termToSearchOn);
       } else {
-        retrievedValue = apiResponseData.find((o) => o[fieldDetails.responseKey] === defaultValue);
+        retrievedValue = dataSet.find((o) => o[fieldDetails.responseKey] === defaultValue);
       }
     } else {
       retrievedValue = e;
@@ -102,16 +115,18 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
 
     /*
      * GIVEN: an item on the list has been clicked and we have retrieved its object
-     * WHEN: the field has an additionalKey and the retrieved object has a value for that additionalKey
+     * WHEN: the field has displayAdditionalKey set to true
+     * AND: the retrieved object has a value for that additionalKey
      * THEN: we concatenate the responseKey value and the additionalKey value together as the displayValue to show in the UI
      *
-     * WHEN: the field does not have an additionalKey OR it has an additionalKey but the object has no value for this
+     * WHEN: the field has displayAdditionalKey set to false
+     * OR: it has displayAdditionalKey set to true but the object has no value for this
      * THEN: we set the displayValue to just have the responseKey value
      */
-    if (fieldDetails.additionalKey && retrievedValue[fieldDetails.additionalKey]) {
-      displayValue = `${retrievedValue[fieldDetails.responseKey]} ${retrievedValue[fieldDetails.additionalKey]}`;
+    if (fieldDetails.displayAdditionalKey && retrievedValue[fieldDetails.additionalKey]) {
+      displayValue = formatText({ result: retrievedValue, additionalKey: true });
     } else {
-      displayValue = retrievedValue[fieldDetails.responseKey];
+      displayValue = formatText({ result: retrievedValue, additionalKey: false });
     }
 
     /*
@@ -187,12 +202,16 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
 
 InputAutocomplete.propTypes = {
   fieldDetails: PropTypes.shape({
-    // dataAPIEndpoint: PropTypes.string.isRequired, // when we implement the endpoint
-    dataAPIEndpoint: PropTypes.array.isRequired, // for while we're passing in a mocked array of data
+    dataSet: PropTypes.array.isRequired,
     fieldName: PropTypes.string.isRequired,
     hint: PropTypes.string,
     responseKey: PropTypes.string.isRequired, // a field that always exists in the dataset that we can use as a key for returning results
-    additionalKey: PropTypes.string, // optional other field that we want to append to the returned result if it exists in the dataset (e.g. country ISO code, unlocode)
+    additionalKey: PropTypes.string, // optional other field that we want to search on and possibly display in results
+    displayAdditionalKey: PropTypes.bool.isRequired, // determines if the additionalKey is for searching only or if it also displays in field
+    responseKeyPrefix: PropTypes.string,
+    responseKeySuffix: PropTypes.string,
+    additionalKeyPrefix: PropTypes.string,
+    additionalKeySuffix: PropTypes.string,
     value: PropTypes.string,
   }).isRequired,
   handleChange: PropTypes.func.isRequired,

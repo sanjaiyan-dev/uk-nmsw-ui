@@ -1,18 +1,19 @@
-import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
   FIELD_RADIO,
   FIELD_TEXT,
   FIELD_PHONE,
   MULTI_PAGE_FORM,
-  VALIDATE_MAX_LENGTH,
   VALIDATE_PHONE_NUMBER,
   VALIDATE_REQUIRED,
   DISPLAY_GROUPED,
+  FIELD_AUTOCOMPLETE,
 } from '../../constants/AppConstants';
-import { ERROR_VERIFICATION_FAILED_URL, REGISTER_PASSWORD_URL } from '../../constants/AppUrlConstants';
-import DisplayForm from '../../components/DisplayForm';
+import { REGISTER_EMAIL_RESEND_URL, REGISTER_PASSWORD_URL } from '../../constants/AppUrlConstants';
+import { countries } from '../../constants/CountryData';
 import { MergePhoneNumberFields } from '../../utils/FormatPhoneNumber';
+import DisplayForm from '../../components/DisplayForm';
+import Message from '../../components/Message';
 
 const RegisterYourDetails = () => {
   const navigate = useNavigate();
@@ -48,18 +49,21 @@ const RegisterYourDetails = () => {
       ],
     },
     {
-      type: FIELD_TEXT,
+      type: FIELD_AUTOCOMPLETE,
+      dataSet: countries,
+      responseKey: 'dialCode',
       label: 'International dialling code',
       fieldName: 'diallingCode',
+      additionalKey: 'countryName',
+      displayAdditionalKey: true,
+      responseKeyPrefix: '+',
+      additionalKeyPrefix: '(',
+      additionalKeySuffix: ')',
       hint: 'For example, 44 for UK',
       validation: [
         {
           type: VALIDATE_REQUIRED,
           message: 'Enter an international dialling code',
-        },
-        {
-          type: VALIDATE_PHONE_NUMBER,
-          message: 'Enter an international dialling code in the correct format',
         },
       ],
     },
@@ -80,18 +84,17 @@ const RegisterYourDetails = () => {
       ],
     },
     {
-      type: FIELD_TEXT,
+      type: FIELD_AUTOCOMPLETE,
       fieldName: 'country',
+      dataSet: countries,
+      responseKey: 'countryName',
+      additionalKey: 'alphaCode',
+      displayAdditionalKey: false,
       label: 'Country',
       validation: [
         {
           type: VALIDATE_REQUIRED,
           message: 'Enter country',
-        },
-        {
-          type: VALIDATE_MAX_LENGTH,
-          message: 'Enter 3 digit country code',
-          condition: 3,
         },
       ],
     },
@@ -136,14 +139,20 @@ const RegisterYourDetails = () => {
    * Without an email address & token we can't submit the PATCH to update the user account
    * So if a user arrives to this page and we do not have an email address in state
    * we need to direct them to a place where they can deal with that
-   * TODO: once we have email verification flow journey replace REGISTER_EMAIL_URL_VERIFIED
-   * with a more appropriate page
    */
-  useEffect(() => {
-    if (!state || !state.dataToSubmit || !state.dataToSubmit.emailAddress || !state.dataToSubmit.token) {
-      navigate(ERROR_VERIFICATION_FAILED_URL);
-    }
-  }, [state]);
+  if (!state?.dataToSubmit?.emailAddress || !state?.dataToSubmit?.token) {
+    const buttonProps = {
+      buttonLabel: 'Resend confirmation email',
+      buttonNavigateTo: REGISTER_EMAIL_RESEND_URL,
+    };
+    return (
+      <Message
+        button={buttonProps}
+        title="Try again"
+        message="The verification link did not work. Resend the email to try again."
+      />
+    );
+  }
 
   return (
     <DisplayForm

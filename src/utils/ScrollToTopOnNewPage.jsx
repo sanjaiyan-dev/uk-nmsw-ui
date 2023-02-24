@@ -9,6 +9,7 @@ const ScrollToTopOnNewPage = ({ children }) => {
     document.activeElement.blur(); // deselect the link so it doesn't remain in the focus state when page loads
   }, [location.pathname]);
 
+  // eslint-disable-next-line react/jsx-no-useless-fragment
   return <>{children}</>;
 };
 

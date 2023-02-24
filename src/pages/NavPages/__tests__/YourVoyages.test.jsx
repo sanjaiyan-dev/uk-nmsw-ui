@@ -3,7 +3,7 @@ import { MemoryRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { CREATE_VOYAGE_ENDPOINT } from '../../../constants/AppAPIConstants';
+import { CREATE_VOYAGE_ENDPOINT, TOKEN_EXPIRED } from '../../../constants/AppAPIConstants';
 import {
   SIGN_IN_URL,
   VOYAGE_GENERAL_DECLARATION_UPLOAD_URL,
@@ -81,6 +81,21 @@ describe('Your voyages page tests', () => {
     user.click(screen.getByRole('button', { name: 'Report a voyage' }));
     await waitFor(() => {
       expect(mockedUseNavigate).toHaveBeenCalledWith(SIGN_IN_URL, { state: { redirectURL: YOUR_VOYAGES_URL } });
+    });
+  });
+
+  it('should redirect to sign in if Report a voyage button click returns a 401 token expired', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onPost(CREATE_VOYAGE_ENDPOINT)
+      .reply(401, { msg: TOKEN_EXPIRED });
+
+    render(<MemoryRouter><YourVoyages /></MemoryRouter>);
+    await screen.findByRole('button', { name: 'Report a voyage' });
+    user.click(screen.getByRole('button', { name: 'Report a voyage' }));
+    await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith(SIGN_IN_URL, { state: { redirectURL: YOUR_VOYAGES_URL } });
+      expect(sessionStorage.getItem('token')).toBe(null);
     });
   });
 

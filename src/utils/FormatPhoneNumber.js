@@ -9,7 +9,7 @@ export const MergePhoneNumberFields = ({ diallingCode, telephoneNumber }) => {
      * and add it to the raw data set to be passed on
      */
 
-  const strippedDiallingCode = diallingCode.replace(/[()+-. ]/g, '');
+  const strippedDiallingCode = diallingCode.split('+').pop().split(' ')[0];
   const strippedTelephoneNumber = telephoneNumber.replace(/[()+-. ]/g, '');
   const combinedPhoneNumber = `(${strippedDiallingCode})${strippedTelephoneNumber}`;
 
@@ -17,7 +17,7 @@ export const MergePhoneNumberFields = ({ diallingCode, telephoneNumber }) => {
 };
 
 export const SplitPhoneNumberFields = (phoneNumber) => {
-  const diallingCode = phoneNumber.split('(').pop().split(')')[0];
+  const diallingCode = phoneNumber.replace('(', '+').split(')')[0];
   const telephoneNumber = phoneNumber.split(')')[1];
 
   return ({ diallingCode, telephoneNumber });

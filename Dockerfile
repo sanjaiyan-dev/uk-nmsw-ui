@@ -12,6 +12,7 @@ COPY . /src
 
 # This allows to pass env vars on runtime, see webpack.config.js:58 and run.sh
 ENV NMSW_DATA_API_BASE_URL=REPLACE_NMSW_DATA_API_BASE_URL
+ENV GA_TOKEN=REPLACE_GA_TOKEN
 
 RUN npm run build
 

@@ -68,6 +68,9 @@ steps:
   pull: always
   image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
   commands:
+    - ./extract-env-vars.sh ./helm/dev.yaml ./.env
+    - cat ./.env
+    - export $(cat ./.env | xargs)
     - /usr/local/bin/wait
     - docker build -t nmsw-ui:$${DRONE_COMMIT_SHA} .
   when:
@@ -132,7 +135,6 @@ steps:
   commands:
   - ./helm/decrypt-secrets.sh dev
   - /run-helm.sh list -n nmsw-dev
-  - helm upgrade --install nmsw-ui ./helm -f ./helm/dev.yaml -n nmsw-dev --dry-run
   - helm upgrade --install nmsw-ui ./helm -f ./helm/dev.yaml -n nmsw-dev
   environment:
     KUBE_CERTIFICATE_AUTHORITY_DATA:
@@ -157,8 +159,7 @@ steps:
   commands:
   - ./helm/decrypt-secrets.sh staging
   - /run-helm.sh list -n nmsw-staging
-  - helm upgrade --install nmsw-ui ./helm -f ./helm/staging.yaml -n nmsw-staging --dry-run
-  - helm upgrade --install nmsw-ui ./helm -f ./helm/staging.yaml -n nmsw-staging
+  - helm upgrade --install nmsw-ui ./helm -f ./helm/staging.yaml -n nmsw-staging --set image.tag="$DRONE_COMMIT_SHA"
   environment:
     KUBE_CERTIFICATE_AUTHORITY_DATA:
       from_secret: STAGING_NMSW_KUBE_CA_DATA
@@ -224,7 +225,7 @@ steps:
     CYPRESS_MAIL_API_KEY:
       from_secret: DEV_NMSW_MAILSLURP_API_KEY
   commands:
-  - ./cypress-extract-env.sh ./helm/dev.yaml
+  - ./extract-env-vars.sh ./helm/dev.yaml cypress-env.sh
   - cat ./cypress-env.sh
   - export $(cat ./cypress-env.sh | xargs)
   - >-
@@ -248,7 +249,7 @@ steps:
     CYPRESS_MAIL_API_KEY:
       from_secret: STAGING_NMSW_MAILSLURP_API_KEY
   commands:
-  - ./cypress-extract-env.sh ./helm/staging.yaml
+  - ./extract-env-vars.sh ./helm/staging.yaml cypress-env.sh
   - cat ./cypress-env.sh
   - export $(cat ./cypress-env.sh | xargs)
   - >-
