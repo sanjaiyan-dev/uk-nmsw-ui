@@ -63,5 +63,16 @@
   <div id="root" class="govuk-body"></div>
   <script src="/javascript/all.js"></script>   
   <script>window.GOVUKFrontend.initAll()</script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=<%=htmlWebpackPlugin.options.gaTokenValue%>"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      window['ga-disable-<%= htmlWebpackPlugin.options.gaTokenValue %>']
+  
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+  
+      gtag('config', '<%= htmlWebpackPlugin.options.gaTokenValue %>', {'debug_mode': true});
+    </script>
 </body> 
 </html>
