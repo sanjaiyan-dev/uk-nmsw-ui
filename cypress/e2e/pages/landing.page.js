@@ -8,6 +8,10 @@ class LandingPage {
     cy.contains('create an account').should('be.visible').click();
   }
 
+  checkStartNowButton() {
+    cy.contains('Start now');
+  }
+
   clickStartNow() {
     cy.get('.govuk-button--start').should('have.text', 'Start now').click();
   }

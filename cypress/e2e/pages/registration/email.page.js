@@ -75,7 +75,7 @@ class EmailPage {
   }
 
   clickChangeWhereEmailSent() {
-    cy.contains('Change where the email was sent').click();
+    cy.contains('Change the contact email address you want to use').click();
   }
 
 }

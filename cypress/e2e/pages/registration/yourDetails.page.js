@@ -8,16 +8,16 @@ class yourDetailsPage {
     cy.get('input#companyName-input').clear().type(companyName);
   }
 
-  typePhoneCode(phCode) {
-    cy.get('input#diallingCode-input').clear().type(phCode);
+  typePhoneCode(phCode,id) {
+    cy.get('input#diallingCode-input').clear().type(phCode).get(`li[id=${id}]`).click();
   }
 
   typePhoneNumber(phNumber) {
     cy.get('input#telephoneNumber-input').clear().type(phNumber);
   }
 
-  typeCountry(country) {
-    cy.get('#country-input').clear().type(country);
+  typeCountry(country,id) {
+    cy.get('#country-input').clear().type(country).get(`li[id=${id}]`).click();
   }
 
   isShippingAgentYes() {

@@ -8,6 +8,10 @@ class BasePage {
     cy.contains('Send confirmation email').should('be.enabled').click({force: true});
   }
 
+  clickRequestNewLink() {
+    cy.contains('Request a new link').should('be.enabled').click({force: true});
+  }
+
 // sign-in for other pages
   clickSignIn() {
     cy.contains('Sign in').click();
