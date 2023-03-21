@@ -1,5 +1,6 @@
 @import '~govuk-frontend/govuk/all';
 @import "accessible-autocomplete";
+@import './feedbackBanner.scss';
 @import './loadingSpinner.scss';
 @import './table.scss';
 
@@ -148,6 +149,10 @@ body {
   margin-bottom: 20px
 }
 
+.text-align--left {
+  text-align: left,
+}
+
 
 // ================================================
 // Task list patterns from 
@@ -229,29 +234,17 @@ body {
 // Styles for displaying declarations on /your-voyages page
 // ================================================
 
-.declaration-filter__flex {
+.your-voyages__flex {
   display: flex;
   flex-direction: column;
 }
 
-.declaration-spacing {
-  width: 100%;
-  padding-left: 0;
-}
-
-.declaration-filter__container {
-  max-width: 310px;
-  margin-right: 30px;
-  padding-right: 15px;
-  padding-left: 0;
-}
-
-.declaration-filter__border {
+.light-grey__border {
   border-bottom: 1px solid #b1b4b6;
-  padding-bottom: 10px;
+  margin: 0
 }
 
-.filter-results__border {
+.dark-grey__border {
   border-bottom: solid 1px #0b0c0c;
 }
 
@@ -279,13 +272,13 @@ body {
   background-color: #f3f2f1;
 }
 
-.filter-results__layout {
-  border-bottom: 1px solid rgb(177, 180, 182);
-}
-
-.filter-results__text {
+.reported-voyages__text {
   width: 100%;
   margin-bottom: 10px;
+}
+
+.reported-voyages-margin--top {
+  margin-top: 15px;
 }
 
 .govuk-tag {
@@ -293,32 +286,26 @@ body {
   overflow-wrap: break-word;
 }
 
-@media (min-width: 769px) {
-  .declaration-filter__flex {
-    display: flex;
-    flex-direction: row;
-  }
-
-  .declaration-filter__container {
-    max-width: 310px;
-    margin-right: 30px;
-    margin-bottom: 15px;
-    padding: 0 15px 15px 20px;
-  }
+@media (min-width: 641px) {
+    .your-voyages__flex {
+      display: flex;
+      flex-direction: row;
+    }
 
   .facet-tags__group {
     background-color: #f3f2f1;
-    padding: 5px;
     display: block;
   }
 
-  .filter-results__text {
-    width: 20%;
-    margin-bottom: 0;
+  .reported-voyages-margin--top {
+    margin-top: 0;
   }
 
-  .declaration-spacing {
-    padding-left: 50px;
-    padding-right: 0;
+  .reported-voyages__columns {
+    width: 20%;
+  }
+
+  .small-link-text {
+    font-size: 1rem;
   }
 }

@@ -21,6 +21,6 @@ describe('Phase Banner tests', () => {
   it('should contain this feedback url', async () => {
     await waitFor(() => { render(<PhaseBanner />); });
     const checkPhaseBannerLink = screen.getByText('feedback');
-    expect(checkPhaseBannerLink.outerHTML).toEqual('<a class="govuk-link" href="/">feedback</a>');
+    expect(checkPhaseBannerLink.outerHTML).toEqual('<a class="govuk-link" href="https://www.homeofficesurveys.homeoffice.gov.uk/s/6MBWPJ/">feedback</a>');
   });
 });

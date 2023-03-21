@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { REGISTER_ACCOUNT_ENDPOINT, TOKEN_INVALID } from '../../constants/AppAPIConstants';
+import {
+  REGISTER_ACCOUNT_ENDPOINT,
+  TOKEN_INVALID,
+  TOKEN_USED_TO_REGISTER,
+} from '../../constants/AppAPIConstants';
 import {
   FIELD_PASSWORD,
   MULTI_PAGE_FORM,
@@ -11,7 +15,12 @@ import {
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
 import {
-  MESSAGE_URL, PASSWORD_GUIDENCE_URL, REGISTER_CONFIRMATION_URL, REGISTER_EMAIL_RESEND_URL, REGISTER_PASSWORD_URL,
+  ERROR_ACCOUNT_ALREADY_ACTIVE_URL,
+  MESSAGE_URL,
+  PASSWORD_GUIDENCE_URL,
+  REGISTER_CONFIRMATION_URL,
+  REGISTER_EMAIL_RESEND_URL,
+  REGISTER_PASSWORD_URL,
 } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
 import Auth from '../../utils/Auth';
@@ -20,7 +29,7 @@ const SupportingText = () => (
   <div className="govuk-inset-text">
     <p className="govuk-body">Your password must be at least 10 characters long. There is no restriction on the characters you use.</p>
     <p className="govuk-body">
-      To create a long and strong password, the National Cyber Security Centre recommends using <a href={PASSWORD_GUIDENCE_URL} target="_blank" rel="noreferrer">3 random words</a>.
+      To create a long and strong password, the National Cyber Security Centre recommends using <a href={PASSWORD_GUIDENCE_URL} target="_blank" rel="noreferrer">3 random words (opens in new tab)</a>.
     </p>
   </div>
 );
@@ -33,11 +42,7 @@ const RegisterYourPassword = () => {
 
   const formActions = {
     submit: {
-      className: 'govuk-button',
-      dataModule: 'govuk-button',
-      dataTestid: 'submit-button',
       label: 'Continue',
-      type: 'button',
     },
   };
   const formFields = [
@@ -86,7 +91,7 @@ const RegisterYourPassword = () => {
     const dataToSubmit = {
       email: dataMerged.emailAddress,
       fullName: dataMerged.fullName,
-      country: dataMerged.country, // max 3 characters (country code)
+      country: dataMerged.countryCode, // max 3 characters (country code)
       phoneNumber: dataMerged.phoneNumber,
       password: dataMerged.requirePassword,
       groupName: dataMerged.companyName,
@@ -98,7 +103,7 @@ const RegisterYourPassword = () => {
       const response = await axios.patch(REGISTER_ACCOUNT_ENDPOINT, dataToSubmit, {
         headers: { Authorization: `Bearer ${Auth.retrieveToken()}` },
       });
-      navigate(REGISTER_CONFIRMATION_URL, { state: { companyName: response.data.groupName } });
+      navigate(REGISTER_CONFIRMATION_URL, { state: { companyName: response.data.groupName, fullName: response.data.fullName, email: response.data.email } });
       sessionStorage.removeItem('formData');
     } catch (err) {
       if (err.response?.data?.message === TOKEN_INVALID) {
@@ -111,6 +116,8 @@ const RegisterYourPassword = () => {
             },
           },
         });
+      } else if (err.response?.data?.message === TOKEN_USED_TO_REGISTER) {
+        navigate(ERROR_ACCOUNT_ALREADY_ACTIVE_URL, { state: { dataToSubmit: { emailAddress: dataToSubmit.email } } });
       } else {
         navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: REGISTER_PASSWORD_URL } });
       }

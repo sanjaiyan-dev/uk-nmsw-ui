@@ -59,6 +59,7 @@ describe('Change your password tests', () => {
     const user = userEvent.setup();
     render(<MemoryRouter><ChangeYourPassword /></MemoryRouter>);
     await user.click(screen.getByTestId('submit-button'));
+    await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
   });
 
@@ -66,6 +67,7 @@ describe('Change your password tests', () => {
     const user = userEvent.setup();
     render(<MemoryRouter><ChangeYourPassword /></MemoryRouter>);
     await user.click(screen.getByTestId('submit-button'));
+    await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
     expect(screen.getAllByText('Enter a password')).toHaveLength(2);
     // This text is also in the 'hint' text so occurs 3 times
@@ -79,6 +81,7 @@ describe('Change your password tests', () => {
     await user.type(screen.getByLabelText('New password'), 'Password123');
     await user.type(screen.getByLabelText('Confirm new password'), 'Password1234');
     await user.click(screen.getByTestId('submit-button'));
+    await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
     expect(screen.getAllByText('Passwords must match')).toHaveLength(2);
   });
@@ -89,6 +92,7 @@ describe('Change your password tests', () => {
     await user.type(screen.getByLabelText('New password'), 'Password');
     await user.type(screen.getByLabelText('Confirm new password'), 'Password');
     await user.click(screen.getByTestId('submit-button'));
+    await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
     expect(screen.getAllByText('Passwords must be at least 10 characters long')).toHaveLength(2);
   });
@@ -98,6 +102,7 @@ describe('Change your password tests', () => {
     render(<MemoryRouter><ChangeYourPassword /></MemoryRouter>);
     await user.type(screen.getByLabelText('New password'), 'Password12 34');
     await user.click(screen.getByTestId('submit-button'));
+    await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
     expect(screen.getAllByText('Enter a password that does not contain spaces')).toHaveLength(2);
   });

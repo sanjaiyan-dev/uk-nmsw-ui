@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { AUTOCOMPLETE_DIALCODE } from '../../../constants/AppConstants';
 import InputAutocomplete from '../InputAutocomplete';
 
 /*
@@ -49,6 +50,25 @@ describe('Text input field generation', () => {
     responseKey: 'name',
     additionalKey: 'identifier',
     displayAdditionalKey: true,
+  };
+  const fieldDetailsDialCode = {
+    dataSet: [
+      {
+        dialCode: 'FirstObject',
+        identifier: 'one',
+      },
+      {
+        dialCode: 'SecondObject',
+        identifier: 'two',
+      },
+      {
+        dialCode: 'ThirdObject',
+        identifier: 'three',
+      },
+    ],
+    fieldName: 'fullFieldName',
+    responseKey: AUTOCOMPLETE_DIALCODE,
+    displayAdditionalKey: false,
   };
 
   beforeEach(() => {
@@ -113,6 +133,24 @@ describe('Text input field generation', () => {
     await user.type(screen.getByRole('combobox', { name: '' }), 'thre');
     expect(screen.getByRole('combobox', { name: '' })).toHaveValue('thre');
     expect(screen.getByText('ThirdObject three')).toBeInTheDocument();
+  });
+
+  it('should render the list options for a dialcode even if a user enters +', async () => {
+    const user = userEvent.setup();
+    render(
+      <InputAutocomplete
+        fieldDetails={fieldDetailsDialCode}
+        handleChange={parentHandleChange}
+      />,
+    );
+    expect(screen.getByRole('combobox', { name: '' })).toBeInTheDocument();
+    expect(screen.getByRole('listbox', { name: '' })).toBeInTheDocument();
+
+    await user.type(screen.getByRole('combobox', { name: '' }), '+Obje');
+    expect(screen.getByRole('combobox', { name: '' })).toHaveValue('+Obje');
+    expect(screen.getByText('FirstObject')).toBeInTheDocument();
+    expect(screen.getByText('SecondObject')).toBeInTheDocument();
+    expect(screen.getByText('ThirdObject')).toBeInTheDocument();
   });
 
   it('should return the concatenated value when the field has two response keys and displayAdditionalKey is set to true', async () => {

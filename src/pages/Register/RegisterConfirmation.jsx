@@ -12,14 +12,20 @@ const RegisterConfirmation = () => {
           <h1 className="govuk-panel__title">
             Account created
           </h1>
-          {state?.companyName
+          {state?.companyName && state?.fullName
             && (
               <div className="govuk-panel__body">
-                {state?.companyName && `${state.companyName} has been setup.`}
+                {state?.fullName && state?.companyName
+                  && (
+                  <>
+                    <div className="govuk-!-margin-bottom-4">{`For ${state?.fullName}`}</div>
+                    <div>{`Now a team member at ${state.companyName}`}</div>
+                  </>
+                  )}
               </div>
             )}
         </div>
-        <h2 className="govuk-heading-m">What happens next</h2>
+        {state?.email && <p className="govuk-body">We have sent a confirmation email to <strong>{state?.email}</strong>.</p>}
 
         <p className="govuk-body">
           <Link to={SIGN_IN_URL}>Sign in</Link> to start using this service.

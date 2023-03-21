@@ -15,7 +15,6 @@ describe('Template page tests', () => {
     expect(screen.getByText(TEMPLATE_PAGE_NAME)).toBeInTheDocument();
   });
 
-  // Will need to update below tests with new template names and file size when new templates are ready
   it('should tell the user about the templates and display them', () => {
     render(<MemoryRouter><Templates /></MemoryRouter>);
     expect(screen.getByText('Use the templates provided:')).toBeInTheDocument();

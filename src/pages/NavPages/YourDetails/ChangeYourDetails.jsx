@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import DisplayForm from '../../../components/DisplayForm';
 import {
+  AUTOCOMPLETE_DIALCODE,
   FIELD_AUTOCOMPLETE,
   FIELD_PHONE,
   FIELD_TEXT,
@@ -50,7 +51,7 @@ const ChangeYourDetails = () => {
     {
       type: FIELD_AUTOCOMPLETE,
       dataSet: countries,
-      responseKey: 'dialCode',
+      responseKey: AUTOCOMPLETE_DIALCODE,
       label: 'International dialling code',
       fieldName: 'diallingCode',
       additionalKey: 'countryName',
@@ -103,6 +104,7 @@ const ChangeYourDetails = () => {
     // Format data in preparation for when we add the PATCH
     const dataToSubmit = {
       ...formData.formData,
+      countryCode: formData.formData.countryExpandedDetails.country.alphaCode,
       phoneNumber: MergePhoneNumberFields({ diallingCode: formData.formData.diallingCode, telephoneNumber: formData.formData.telephoneNumber }),
     };
     console.log(dataToSubmit);

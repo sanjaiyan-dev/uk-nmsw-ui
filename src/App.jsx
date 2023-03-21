@@ -10,6 +10,7 @@ import PhaseBanner from './layout/PhaseBanner';
 import cookieToFind from './utils/cookieToFind';
 import setAnalyticCookie from './utils/setAnalyticCookie';
 import { NO_BACK_LINKS, TOP_LEVEL_PAGES } from './constants/AppUrlConstants';
+import FeedbackBanner from './layout/FeedbackBanner';
 
 const App = () => {
   const cookiePreference = cookieToFind('cookiePreference');
@@ -47,12 +48,22 @@ const App = () => {
         {!pageWithoutBackLink
           && (
             <nav aria-label="Back link" id="backLink">
-              <a href="#back" className="govuk-back-link" onClick={() => { navigate(-1); }}>Back</a>
+              <a
+                href="#back"
+                className="govuk-back-link"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate(-1);
+                }}
+              >
+                Back
+              </a>
             </nav>
           )}
         <main className="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="content" role="main">
           <AppRouter setIsCookieBannerShown={setIsCookieBannerShown} />
         </main>
+        <FeedbackBanner />
       </div>
       <Footer />
     </>

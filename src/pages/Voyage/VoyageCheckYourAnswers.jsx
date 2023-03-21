@@ -1,122 +1,173 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import Message from '../../components/Message';
+import { countries } from '../../constants/CountryData';
 import {
+  MESSAGE_URL,
+  SIGN_IN_URL,
+  VOYAGE_CHECK_YOUR_ANSWERS,
   VOYAGE_CREW_UPLOAD_URL,
   VOYAGE_GENERAL_DECLARATION_UPLOAD_URL,
   VOYAGE_PASSENGERS_URL,
   VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
   YOUR_VOYAGES_URL,
 } from '../../constants/AppUrlConstants';
-import Message from '../../components/Message';
+import GetDeclaration from '../../utils/GetDeclaration';
 
 const VoyageCheckYourAnswers = () => {
-  const { state } = useLocation();
-  const declarationId = state?.declarationId;
+  dayjs.extend(customParseFormat);
+  const navigate = useNavigate();
+  const { declarationId } = useParams();
+  const [isLoading, setIsLoading] = useState(false);
+  const [voyageDetails, setVoyageDetails] = useState([]);
+
+  document.title = 'Check your answers';
 
   // values of this array will be populated by GET request when available
-  const voyageDetails = [
-    {
-      title: 'Voyage type',
-      value: '',
-    },
-    {
-      title: 'Ship name',
-      value: '',
-    },
-    {
-      title: 'IMO number',
-      value: '',
-    },
-    {
-      title: 'Call sign',
-      value: '',
-    },
-    {
-      title: 'Flag state of ship',
-      value: '',
-    },
-    {
-      title: 'Departure details',
-      value: [
-        {
-          id: 1, // adding ID to ensure we have a unique key for mapping between here and arrival details
-          label: 'Name of departure port',
-          item: '',
-        },
-        {
-          id: 2,
-          label: 'Date of departure',
-          item: '',
-        },
-        {
-          id: 3,
-          label: 'Time of departure',
-          item: '',
-        },
-      ],
-    },
-    {
-      title: 'Arrival details',
-      value: [
-        {
-          id: 4,
-          label: 'Name of arrival port',
-          item: '',
-        },
-        {
-          id: 5,
-          label: 'Date of arrival',
-          item: '',
-        },
-        {
-          id: 6,
-          label: 'Time of arrival',
-          item: '',
-        },
-      ],
-    },
-    {
-      title: 'Next port of call',
-      value: '',
-    },
-    {
-      title: 'Brief description of the cargo',
-      value: '',
-    },
-  ];
   const uploadedDocuments = [
     {
       id: 'crewDetails',
       title: 'Crew details',
       value: '',
       fileLink: '',
-      changeLink: VOYAGE_CREW_UPLOAD_URL,
+      changeLink: `${VOYAGE_CREW_UPLOAD_URL}/${declarationId}`,
     },
     {
       id: 'passengerDetails',
       title: 'Passenger details',
       value: '',
       fileLink: '',
-      changeLink: VOYAGE_PASSENGERS_URL,
+      changeLink: `${VOYAGE_PASSENGERS_URL}/${declarationId}`,
     },
     {
       id: 'supportingDocuments',
       title: 'Supporting documents',
       value: '',
       fileLink: '',
-      changeLink: VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
+      changeLink: `${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}/${declarationId}`,
     },
   ];
 
-  const handleSubmit = () => {
-    console.log('submit clicked for id', state?.declarationId);
+  /* until we have a unlocode lookup API we need to format it here */
+  const formatUnlocode = (code) => {
+    const formattedCode = `${code.substr(0, 2)} ${code.substr(2)}`;
+    return formattedCode;
   };
 
-  if (!state?.declarationId) {
+  /* until we have a country lookup API we need to map the code to name here */
+  const formatCountry = (code) => {
+    const result = countries.find((country) => country.alphaCode === code);
+    const countryName = result?.countryName ? result.countryName : code;
+    return countryName;
+  };
+
+  const updateDeclarationData = async () => {
+    const response = await GetDeclaration({ declarationId });
+    if (response.data) {
+      setVoyageDetails([
+        {
+          title: 'Voyage type',
+          value: response.data.FAL1.departureFromUk ? 'Departure from the UK' : 'Arrival to the UK',
+        },
+        {
+          title: 'Ship name',
+          value: response.data.FAL1.nameOfShip,
+        },
+        {
+          title: 'IMO number',
+          value: response.data.FAL1.imoNumber,
+        },
+        {
+          title: 'Call sign',
+          value: response.data.FAL1.callSign,
+        },
+        {
+          title: 'Flag state of ship',
+          value: formatCountry(response.data.FAL1.flagState),
+        },
+        {
+          title: 'Departure details',
+          value: [
+            {
+              label: 'Departure port LOCODE',
+              item: formatUnlocode(response.data.FAL1.departurePortUnlocode),
+            },
+            {
+              label: 'Date of departure',
+              item: dayjs(response.data.FAL1.departureDate).format('DD MMMM YYYY'),
+            },
+            {
+              label: 'Time of departure',
+              item: dayjs(response.data.FAL1.departureTime, 'HH:mm:ss').format('HH:mm'),
+            },
+          ],
+        },
+        {
+          title: 'Arrival details',
+          value: [
+            {
+              label: 'Arrival port LOCODE',
+              item: formatUnlocode(response.data.FAL1.arrivalPortUnlocode),
+            },
+            {
+              label: 'Date of arrival',
+              item: dayjs(response.data.FAL1.arrivalDate).format('DD MMMM YYYY'),
+            },
+            {
+              label: 'Time of arrival',
+              item: dayjs(response.data.FAL1.arrivalTime, 'HH:mm:ss').format('HH:mm'),
+            },
+          ],
+        },
+        {
+          title: 'Next port of call',
+          value: formatUnlocode(response.data.FAL1.nextPortUnlocode),
+        },
+        {
+          title: 'Brief description of the cargo',
+          value: response.data.FAL1.cargo,
+        },
+      ]);
+      setIsLoading(false);
+    } else {
+      switch (response?.status) {
+        case 401:
+        case 422:
+          navigate(SIGN_IN_URL, { state: { redirectURL: `${VOYAGE_CHECK_YOUR_ANSWERS}/${declarationId}` } });
+          break;
+        default: navigate(MESSAGE_URL, {
+          state: {
+            title: 'Something has gone wrong',
+            message: response?.message,
+            redirectURL: YOUR_VOYAGES_URL,
+          },
+        });
+      }
+    }
+    setIsLoading(false);
+  };
+
+  const handleSubmit = () => {
+    console.log('submit clicked for id', declarationId);
+  };
+
+  useEffect(() => {
+    if (declarationId) {
+      setIsLoading(true);
+      updateDeclarationData();
+    }
+  }, [declarationId]);
+
+  if (!declarationId) {
     return (
       <Message title="Something has gone wrong" redirectURL={YOUR_VOYAGES_URL} />
     );
   }
+
+  if (isLoading) { return (<LoadingSpinner />); }
 
   return (
     <>
@@ -135,10 +186,8 @@ const VoyageCheckYourAnswers = () => {
               <dd className="govuk-summary-list__value" />
               <dd className="govuk-summary-list__actions">
                 <Link
-                  to={VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}
+                  to={`${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}/${declarationId}`}
                   aria-describedby="voyageDetails"
-                  data-testid="changeGeneralDeclarationLink"
-                  state={{ declarationId }}
                 >
                   Change<span className="govuk-visually-hidden"> change voyage details</span>
                 </Link>
@@ -153,7 +202,7 @@ const VoyageCheckYourAnswers = () => {
                   {
                     Array.isArray(item.value)
                       ? item.value.map((subItem) => (
-                        <React.Fragment key={subItem.id}>
+                        <React.Fragment key={subItem.label}>
                           <span>{subItem.label}</span>
                           <p className="govuk-!-margin-bottom-2 govuk-!-margin-top-0">{subItem.item}</p>
                         </React.Fragment>
@@ -180,8 +229,6 @@ const VoyageCheckYourAnswers = () => {
                   <Link
                     to={item.changeLink}
                     aria-describedby={item.id}
-                    data-testid={`change${item.id}`}
-                    state={{ declarationId }}
                   >
                     Change<span className="govuk-visually-hidden">{` change ${item.title}`}</span>
                   </Link>

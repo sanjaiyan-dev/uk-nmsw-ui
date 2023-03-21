@@ -26,23 +26,18 @@ import Auth from '../../utils/Auth';
 
 const SupportingText = () => (
   <div className="govuk-inset-text">
-    <p className="govuk-body">This will only be used if you need to recover your sign in details.</p>
-    <p className="govuk-body">To confirm it is your email address we will send you a verification link.</p>
+    <p className="govuk-body">We may use these details to contact you if we have questions about reports that you submit.</p>
   </div>
 );
 
 const RegisterEmailAddress = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  document.title = 'What is your email address';
+  document.title = 'What is your email address?';
 
   const formActions = {
     submit: {
-      className: 'govuk-button',
-      dataModule: 'govuk-button',
-      dataTestid: 'submit-button',
       label: 'Send confirmation email',
-      type: 'button',
     },
   };
   const formFields = [
@@ -137,7 +132,7 @@ const RegisterEmailAddress = () => {
       formActions={formActions}
       formType={SINGLE_PAGE_FORM}
       isLoading={isLoading}
-      pageHeading="What is your email address"
+      pageHeading="What is your email address?"
       handleSubmit={handleSubmit}
     >
       <SupportingText />

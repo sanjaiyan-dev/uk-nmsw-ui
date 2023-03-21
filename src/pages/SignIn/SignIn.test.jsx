@@ -1,11 +1,13 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import SignIn from './SignIn';
 import {
+  REGISTER_RESEND_VERIFICATION_EMAIL_ENDPOINT,
   SIGN_IN_ENDPOINT,
+  USER_ALREADY_VERIFIED,
   USER_NOT_VERIFIED,
   USER_SIGN_IN_DETAILS_INVALID,
 } from '../../constants/AppAPIConstants';
@@ -14,6 +16,8 @@ import {
   REGISTER_EMAIL_RESEND_URL,
   SIGN_IN_URL,
   LOGGED_IN_LANDING,
+  REGISTER_EMAIL_CHECK_URL,
+  ERROR_ACCOUNT_ALREADY_ACTIVE_URL,
 } from '../../constants/AppUrlConstants';
 
 const mockUseLocationState = { state: {} };
@@ -76,6 +80,7 @@ describe('Sign in tests', () => {
     const user = userEvent.setup();
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     await user.click(screen.getByTestId('submit-button'));
+    await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
   });
 
@@ -116,6 +121,7 @@ describe('Sign in tests', () => {
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@boo');
     await user.click(screen.getByTestId('submit-button'));
+    await screen.findByRole('button', { name: 'Enter your email address in the correct format, like name@example.com' });
     await user.click(screen.getByRole('button', { name: 'Enter your email address in the correct format, like name@example.com' }));
     expect(scrollIntoViewMock).toHaveBeenCalled();
     expect(screen.getByRole('textbox', { name: /email/i })).toHaveFocus();
@@ -245,22 +251,6 @@ describe('Sign in tests', () => {
     expect(mockedUseNavigate).toHaveBeenCalledWith(REGISTER_EMAIL_RESEND_URL, { state: { dataToSubmit: { emailAddress: 'testemail@email.com' } } });
   });
 
-  it('should redirect to error page if 500 response received', async () => {
-    const user = userEvent.setup();
-    mockAxios
-      .onPost(SIGN_IN_ENDPOINT)
-      .reply(500);
-
-    render(<MemoryRouter><SignIn /></MemoryRouter>);
-
-    await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
-    await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
-    await user.click(screen.getByTestId('submit-button'));
-    await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, { state: { title: 'Something has gone wrong', redirectURL: SIGN_IN_URL } }); // on error we redirect to error page
-    });
-  });
-
   it('should clear API error when something is typed into input', async () => {
     const user = userEvent.setup();
 
@@ -299,5 +289,75 @@ describe('Sign in tests', () => {
     await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
     await user.click(screen.getByTestId('submit-button'));
     expect(mockedUseNavigate).toHaveBeenCalledWith('/thisurl', { state: { redirectURL: '/thisurl', otherState: 'another piece of state' } });
+  });
+
+  // ================
+  // TESTS for temporary work around for 500/unhandled errors
+  // ================
+  /* See comment around line 128 in SignIn.jsx as to temporary process for 500 errors */
+  // it('should redirect to error page if 500 response received', async () => {
+  //   const user = userEvent.setup();
+  //   mockAxios
+  //     .onPost(SIGN_IN_ENDPOINT)
+  //     .reply(500);
+
+  //   render(<MemoryRouter><SignIn /></MemoryRouter>);
+
+  //   await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
+  //   await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
+  //   await user.click(screen.getByTestId('submit-button'));
+  //   await waitFor(() => {
+  //     expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, { state: { title: 'Something has gone wrong', redirectURL: SIGN_IN_URL } }); // on error we redirect to error page
+  //   });
+  // });
+
+  it('should send verification email if 500 response received to sign in', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onPost(SIGN_IN_ENDPOINT)
+      .reply(500)
+      .onPost(REGISTER_RESEND_VERIFICATION_EMAIL_ENDPOINT)
+      .reply(204);
+
+    render(<MemoryRouter><SignIn /></MemoryRouter>);
+
+    await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
+    await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(mockedUseNavigate).toHaveBeenCalledWith(REGISTER_EMAIL_CHECK_URL, { state: { dataToSubmit: { emailAddress: 'testemail@email.com' } } });
+  });
+
+  it('should redirect to user already verified if 500 from sign in and 400 already verified received', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onPost(SIGN_IN_ENDPOINT)
+      .reply(500)
+      .onPost(REGISTER_RESEND_VERIFICATION_EMAIL_ENDPOINT)
+      .reply(409, {
+        message: USER_ALREADY_VERIFIED,
+      });
+
+    render(<MemoryRouter><SignIn /></MemoryRouter>);
+
+    await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
+    await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_ACCOUNT_ALREADY_ACTIVE_URL, { state: { dataToSubmit: { emailAddress: 'testemail@email.com' } } });
+  });
+
+  it('should redirect to message page if 500 from sign in and 500/unknown error received', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onPost(SIGN_IN_ENDPOINT)
+      .reply(500)
+      .onPost(REGISTER_RESEND_VERIFICATION_EMAIL_ENDPOINT)
+      .reply(500);
+
+    render(<MemoryRouter><SignIn /></MemoryRouter>);
+
+    await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
+    await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, { state: { title: 'Something has gone wrong', redirectURL: SIGN_IN_URL } });
   });
 });

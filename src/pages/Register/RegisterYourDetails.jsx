@@ -8,6 +8,7 @@ import {
   VALIDATE_REQUIRED,
   DISPLAY_GROUPED,
   FIELD_AUTOCOMPLETE,
+  AUTOCOMPLETE_DIALCODE,
 } from '../../constants/AppConstants';
 import { REGISTER_EMAIL_RESEND_URL, REGISTER_PASSWORD_URL } from '../../constants/AppUrlConstants';
 import { countries } from '../../constants/CountryData';
@@ -51,7 +52,7 @@ const RegisterYourDetails = () => {
     {
       type: FIELD_AUTOCOMPLETE,
       dataSet: countries,
-      responseKey: 'dialCode',
+      responseKey: AUTOCOMPLETE_DIALCODE,
       label: 'International dialling code',
       fieldName: 'diallingCode',
       additionalKey: 'countryName',
@@ -129,6 +130,7 @@ const RegisterYourDetails = () => {
     const dataToSubmit = {
       ...state?.dataToSubmit,
       ...formData.formData,
+      countryCode: formData.formData.countryExpandedDetails.country.alphaCode,
       phoneNumber: MergePhoneNumberFields({ diallingCode: formData.formData.diallingCode, telephoneNumber: formData.formData.telephoneNumber }),
     };
 
