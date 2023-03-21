@@ -52,6 +52,7 @@ ingress:
     ingress.kubernetes.io/ssl-redirect: "true"
     ingress.kubernetes.io/force-ssl-redirect: "true"
     kubernetes.io/ingress.class: nginx-external
+    ingress.kubernetes.io/server-snippet: 'proxy_buffer_size 25600k; proxy_buffers 8 25600k; large_client_header_buffers 8 25600k;'
 
 resources:
   limits:
@@ -114,3 +115,5 @@ env:
       value: "FALSE"
     - name: STATSD_METRICS
       value: 'FALSE'
+    - name: ADD_NGINX_SERVER_CFG
+      value: 'proxy_buffers 8 25600k; proxy_buffer_size 25600k; large_client_header_buffers 8 25600k;'
