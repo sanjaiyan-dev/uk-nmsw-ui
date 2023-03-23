@@ -28,7 +28,7 @@ Feature: User Registration
     Then I am taken to check your email page
     When I click on not received an email
     Then the user is redirected to request-new-verification-link
-    And I click `send confirmation email` button
+    And I click `Request New Link` button
     Then I am taken to check your email page
     When I navigate back to landing page
     When I create an account with same email previously registered
@@ -42,9 +42,8 @@ Feature: User Registration
     When I am on request-new-verification-link
     When I click on 'change email details link'
     When I enter the email address
-    And I click `send confirmation email` button
+    And I click `Request New Link` button
     Then I am shown - You already have an account
-
 
   @registration
   Scenario: Should not register existing user
@@ -66,7 +65,7 @@ Feature: User Registration
     When I click the verification link that is expired
     Then I am shown 'link expired' and the link to 'request new link'
 
-
+  @registration
   Scenario: user registration email page validation
     When I click create an account on the landing page
     Then the registration page is displayed
@@ -94,9 +93,26 @@ Feature: User Registration
     When I click continue without providing any details
     Then I am shown form error message
       | Error | Enter your full nameEnter your company nameEnter an international dialling codeEnter a telephone numberEnter countrySelect is your company a shipping agent |
-    When I click back navigation button
-    Then the email address verified page is loaded with a continue button
-    Then I am redirected to provide my other details
+    When there are no dial codes that match the number given
+    Then I am shown no results found for dialled code
+    When I have typed at least one number in dialling code field
+    Then a list of possible matched dialled code is returned
+    When I have typed at least 2 letters in the country field
+    Then a list of possible matched country name is returned
+    When there are no country names that contain combination of letters
+    Then I am shown no results found for country field
+    When I provide any letters in telephone number field
+    Then I am shown corresponding error message
+      | Field | telephoneNumber-error                                 |
+      | Error | Error: Enter a telephone number in the correct format |
+    When I enter non allowed symbols like  / <>
+    Then I am shown corresponding error message
+      | Field | telephoneNumber-error                                 |
+      | Error | Error: Enter a telephone number in the correct format |
+    When I enter only allowed symbols and NO numbers
+    Then I am shown corresponding error message
+      | Field | telephoneNumber-error                                 |
+      | Error | Error: Enter a telephone number in the correct format |
     When I provide all my details
     Then I am redirected to password page
     When I click back navigation button
@@ -111,17 +127,23 @@ Feature: User Registration
       | Field | requirePassword-error                                |
       | Error | Error: Passwords must be at least 10 characters long |
     When I enter password in invalid format
+    Then I am shown corresponding error message
       | Field | requirePassword-error                                |
       | Error | Error: Enter a password that does not contain spaces |
+    When I provide my password
+    Then my account is created and taken to confirmation page
+    When I navigate back
+    When I provide my password
+    Then I am shown - You already have an account
 
   Scenario: user attempts to request resend but we don't know their email address
     When I am on request-new-verification-link
-    And I click `send confirmation email` button
+    And I click `Request New Link` button
     Then I am shown corresponding error message
       | Field | emailAddress-error              |
       | Error | Error: Enter your email address |
     When I enter the email address
-    And I click `send confirmation email` button
+    And I click `Request New Link` button
     Then I am taken to check your email page
 
   Scenario: User redirected to request-new-verification-link when email address not identified
@@ -143,7 +165,7 @@ Feature: User Registration
     When I click on request new email
     Then I am on request-new-verification-link
     When I click change the email sent and  change to different email
-    And I click `send confirmation email` button
+    And I click `Request New Link` button
     Then I am taken to check your email page
     And I verify the email address
     Then the email address verified page is loaded with a continue button

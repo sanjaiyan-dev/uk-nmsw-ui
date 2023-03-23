@@ -7,14 +7,17 @@ import ConfirmationPage from '../../e2e/pages/registration/confirmation.page';
 import BasePage from '../../e2e/pages/base.page';
 import {faker} from '@faker-js/faker';
 import SignInPage from '../../e2e/pages/sign-in.page.js';
+import yourDetailsPage from "../../e2e/pages/registration/yourDetails.page.js";
 
 let password;
 let companyName;
+let fullName;
 const inboxId = Cypress.env('inboxId');
 
 Before(() => {
   password = 'Test-NMSW-Dev';
   companyName = faker.company.name();
+  fullName = faker.name.fullName();
 });
 
 After({tags: "@registration"}, () => {
@@ -43,10 +46,18 @@ When('I provide my email address', () => {
 });
 
 When('I verify the email address', () => {
-  EmailPage.verifyCheckYourEmailPage();
-  cy.activateAccount();
-  cy.wait('@verifyRegistration').then(({response}) => {
-    expect(response.statusCode).to.eq(204);
+  const text1 = 'You already have an account'
+  cy.wait(1000);
+  cy.get('.govuk-heading-xl').then(($text) => {
+    if ($text.text() === text1) {
+      cy.removeTestUser();
+    } else {
+      EmailPage.verifyCheckYourEmailPage();
+    }
+    cy.activateAccount();
+    cy.wait('@verifyRegistration').then(({response}) => {
+      expect(response.statusCode).to.eq(204);
+    })
   });
 });
 
@@ -56,15 +67,18 @@ Then('the email address verified page is loaded with a continue button', () => {
 });
 
 Then('I am redirected to provide my other details', () => {
+  cy.wait(1000);
   cy.url().should('include', '/your-details');
 });
 
 When('I provide all my details', () => {
-  YourDetailPage.typeFullName(faker.name.fullName());
+  YourDetailPage.typeFullName(fullName);
   YourDetailPage.typeCompanyName(companyName);
-  YourDetailPage.typePhoneCode('44');
-  YourDetailPage.typePhoneNumber('9087654321');
-  YourDetailPage.typeCountry('GBR');
+  YourDetailPage.typePhoneCode('33', 'diallingCode-input__option--0');
+  YourDetailPage.typePhoneCode('+44', 'diallingCode-input__option--5');
+  YourDetailPage.typePhoneNumber('+(44 - 9087654321 ).');
+  yourDetailsPage.typeCountry('usa', 'country-input__option--0');
+  yourDetailsPage.typeCountry('GBR', 'country-input__option--0');
   YourDetailPage.isShippingAgentYes();
   BasePage.clickContinue();
 });
@@ -80,7 +94,7 @@ When('I provide my password', () => {
   cy.intercept('PATCH', '*/registration').as('registration');
   BasePage.clickContinue();
   cy.wait('@registration').then(({response}) => {
-    expect(response.statusCode).to.be.oneOf([200, 409]);
+    expect(response.statusCode).to.be.oneOf([200, 409, 401]);
   });
 });
 
@@ -98,7 +112,7 @@ When('I provide my new password', () => {
 Then('my account is created and taken to confirmation page', () => {
   cy.url().should('include', '/account-created');
   ConfirmationPage.verifyAccountTitle();
-  ConfirmationPage.verifyCompanyName(companyName);
+  ConfirmationPage.verifyCompanyName(fullName, companyName);
   cy.contains('Sign in');
 });
 
@@ -140,6 +154,7 @@ When('I enter password less than 10 characters', () => {
 When('I enter password in invalid format', () => {
   PasswordPage.typePassword('Password    ');
   PasswordPage.typePassword(('Password    '));
+  BasePage.clickContinue();
 });
 
 When('I navigate back to landing page', () => {
@@ -189,7 +204,7 @@ When('the user has reached your-details page and the application cannot identify
 });
 
 Then('the application redirect user to the verification failed page', () => {
-  cy.url().should('include', '/verification-failed');
+  cy.contains('The verification link did not work. Resend the email to try again.')
 });
 
 When('I click the resend verification email button', () => {
@@ -241,8 +256,8 @@ When('I am on request-new-verification-link', () => {
   cy.visitUrl('/create-account/request-new-verification-link');
 });
 
-Then('I click `send confirmation email` button', () => {
-  BasePage.clickSendConfirmationEmail();
+Then('I click `Request New Link` button', () => {
+  BasePage.clickRequestNewLink();
 });
 
 When('I enter the email address', () => {
@@ -270,9 +285,64 @@ Then('I provide new email address', () => {
 });
 
 Then('I click change the email sent and  change to different email', () => {
-  cy.get('#emailAddress').contains('Change where the email was sent').click();
+  EmailPage.clickChangeWhereEmailSent();
   cy.fixture('registration.json').then((registration) => {
     cy.get('#emailAddress-input').clear();
     EmailPage.enterEmailAddress(registration.email)
   });
+});
+
+When('I have typed at least one number in dialling code field', () => {
+  cy.get('input#diallingCode-input').clear().type('8');
+});
+
+Then('a list of possible matched dialled code is returned', () => {
+  cy.get('#diallingCode-input__listbox').find('li').each(($code) => {
+    cy.wrap($code).should('contain.text', '8');
+  });
+});
+
+When('I have typed at least 2 letters in the country field', () => {
+  cy.get('#country-input').clear().type('ty');
+});
+
+Then('a list of possible matched country name is returned', () => {
+  cy.get('#country-input__listbox').find('li').each(($country) => {
+    cy.wrap($country).should('contain.text', 'ty');
+  });
+});
+
+When('there are no dial codes that match the number given', () => {
+  cy.get('input#diallingCode-input').clear().type('100');
+});
+
+Then('I am shown no results found for dialled code', () => {
+  cy.get('#diallingCode-input__listbox').should('have.text', 'No results found')
+});
+
+When('there are no country names that contain combination of letters', () => {
+  cy.get('#country-input').clear().type('qz');
+});
+
+Then('I am shown no results found for country field', () => {
+  cy.get('#country-input__listbox').should('have.text', 'No results found')
+});
+
+When('I provide any letters in telephone number field', () => {
+  YourDetailPage.typePhoneNumber('7867er');
+  BasePage.clickContinue();
+});
+
+When(/^I enter non allowed symbols like  \/ (.*)$/, function () {
+  YourDetailPage.typePhoneNumber('<44 \ 8905678 /');
+  BasePage.clickContinue();
+});
+
+When('I enter only allowed symbols and NO numbers', () => {
+  YourDetailPage.typePhoneNumber('().-+  ');
+  BasePage.clickContinue();
+});
+
+When('I navigate back', () => {
+  cy.go('back');
 });

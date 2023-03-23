@@ -23,7 +23,7 @@ class EmailPage {
   //reusable methods
   verifyEmailPage() {
     cy.url().should('include', 'create-account/email-address');
-    this.heading.should('have.text', 'What is your email address');
+    this.heading.should('have.text', 'What is your email address?');
   }
 
   enterEmailAddress(email) {
@@ -75,7 +75,7 @@ class EmailPage {
   }
 
   clickChangeWhereEmailSent() {
-    cy.contains('Change where the email was sent').click();
+    cy.contains('Change the contact email address you want to use').click();
   }
 
 }

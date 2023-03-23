@@ -24,13 +24,15 @@ describe('Registration confirmation page tests', () => {
     expect(screen.getByText('Account created')).toBeInTheDocument();
   });
 
-  it('should render company name', () => {
-    mockUseLocationState.state = { companyName: 'My company' };
+  it('should render company name, full name and email from state', () => {
+    mockUseLocationState.state = { companyName: 'My company', fullName: 'John Doe', email: 'test@email.com' };
     render(<MemoryRouter><RegisterConfirmation /></MemoryRouter>);
-    expect(screen.getByText('My company has been setup.')).toBeInTheDocument();
+    expect(screen.getByText('For John Doe')).toBeInTheDocument();
+    expect(screen.getByText('Now a team member at My company')).toBeInTheDocument();
+    expect(screen.getByText('test@email.com')).toBeInTheDocument();
   });
 
-  it('should not break if company name is lost from state', () => {
+  it('should not break if company name, full name and email is lost from state', () => {
     mockUseLocationState.state = {};
     render(<MemoryRouter><RegisterConfirmation /></MemoryRouter>);
     expect(screen.getByText('Account created')).toBeInTheDocument();

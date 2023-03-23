@@ -24,17 +24,19 @@ describe('Generic confirmation page', () => {
     expect(screen.getByText('Action was successful')).toBeInTheDocument();
   });
 
-  it('should show an error message if the page loads without form submitted details', () => {
+  it('should show an error message if the page loads without form submitted details', async () => {
     mockUseLocationState.state = '';
     render(<MemoryRouter><GenericConfirmation /></MemoryRouter>);
+    await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
     expect(screen.getByText('Something went wrong, please try again')).toBeInTheDocument();
     expect((screen.getByText('There is a problem')).outerHTML).toEqual('<h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>');
   });
 
-  it('should show an error message if the page loads with an empty object of form submitted details', () => {
+  it('should show an error message if the page loads with an empty object of form submitted details', async () => {
     mockUseLocationState.state = {};
     render(<MemoryRouter><GenericConfirmation /></MemoryRouter>);
+    await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
     expect(screen.getByText('Something went wrong, please try again')).toBeInTheDocument();
     expect((screen.getByText('There is a problem')).outerHTML).toEqual('<h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>');

@@ -66,7 +66,7 @@ module.exports = (argv) => {
       new HtmlWebpackPlugin({
         template: path.join(__dirname, 'public', 'index.html'),
         favicon: './src/assets/images/favicon.ico',
-        api: env.NMSW_DATA_API_BASE_URL,
+        gaTokenValue: env.GA_TOKEN,
       }),
       new CopyPlugin(
         {

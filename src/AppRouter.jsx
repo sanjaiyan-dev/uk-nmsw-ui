@@ -9,10 +9,13 @@ import { SERVICE_NAME } from './constants/AppConstants';
 // URLs
 import {
   ACCESSIBILITY_URL,
+  CHANGE_YOUR_DETAILS_PAGE_URL,
+  CHANGE_YOUR_PASSWORD_PAGE_URL,
   COOKIE_URL,
   ERROR_ACCOUNT_ALREADY_ACTIVE_URL,
-  ERROR_CREW_DETAILS_UPLOAD_URL,
+  FILE_UPLOAD_FIELD_ERRORS_URL,
   FORM_CONFIRMATION_URL,
+  GENERIC_CONFIRMATION_URL,
   LANDING_URL,
   MESSAGE_URL,
   PRIVACY_URL,
@@ -39,15 +42,15 @@ import {
   VOYAGE_TASK_LIST_URL,
   YOUR_VOYAGES_URL,
   YOUR_DETAILS_PAGE_URL,
-  CHANGE_YOUR_DETAILS_PAGE_URL,
-  CHANGE_YOUR_PASSWORD_PAGE_URL,
-  GENERIC_CONFIRMATION_URL,
 } from './constants/AppUrlConstants';
 
 import LoadingSpinner from './components/LoadingSpinner';
 
 // Lazy loaded routes (js loads on demand)
 // Error/Message pages
+const FileUploadConfirmation = lazy(() => import('./pages/Voyage/FileUploadConfirmation'));
+const FormConfirmationPage = lazy(() => import('./pages/Message/FormConfirmationPage'));
+const GenericConfirmationPage = lazy(() => import('./pages/Message/GenericConfirmation'));
 const GenericMessage = lazy(() => import('./pages/Message/GenericMessage'));
 // Register/Sign in pages
 const AccountAlreadyActive = lazy(() => import('./pages/Message/AccountAlreadyActive'));
@@ -64,8 +67,9 @@ const AccessibilityStatement = lazy(() => import('./pages/Regulatory/Accessibili
 const CookiePolicy = lazy(() => import('./pages/Regulatory/CookiePolicy'));
 const Landing = lazy(() => import('./pages/Landing/Landing'));
 const PrivacyNotice = lazy(() => import('./pages/Regulatory/PrivacyNotice'));
+// Downloadable templates pages
+const Templates = lazy(() => import('./pages/NavPages/Templates'));
 // Voyage pages
-const FileUploadConfirmation = lazy(() => import('./pages/Voyage/FileUploadConfirmation'));
 const VoyageCheckYourAnswers = lazy(() => import('./pages/Voyage/VoyageCheckYourAnswers'));
 const VoyageCrew = lazy(() => import('./pages/Voyage/VoyageCrew'));
 const VoyageDeleteDraftCheck = lazy(() => import('./pages/Voyage/VoyageDeleteDraftCheck'));
@@ -75,11 +79,8 @@ const VoyagePassengerUpload = lazy(() => import('./pages/Voyage/VoyagePassengerU
 const VoyageSupportingDocsUpload = lazy(() => import('./pages/Voyage/VoyageSupportingDocsUpload'));
 const VoyageTaskList = lazy(() => import('./pages/Voyage/VoyageTaskList'));
 const YourVoyages = lazy(() => import('./pages/NavPages/YourVoyages'));
-const ErrorsCrewUpload = lazy(() => import('./pages/Voyage/ErrorsCrewUpload'));
-// Other pages
-const FormConfirmationPage = lazy(() => import('./pages/Message/FormConfirmationPage'));
-const GenericConfirmationPage = lazy(() => import('./pages/Message/GenericConfirmation'));
-const Templates = lazy(() => import('./pages/NavPages/Templates'));
+const FileUploadFieldErrors = lazy(() => import('./pages/Message/FileUploadFieldErrors'));
+// Your details pages
 const YourDetails = lazy(() => import('./pages/NavPages/YourDetails/YourDetails'));
 const ChangeYourDetails = lazy(() => import('./pages/NavPages/YourDetails/ChangeYourDetails'));
 const ChangeYourPassword = lazy(() => import('./pages/NavPages/YourDetails/ChangeYourPassword'));
@@ -114,23 +115,43 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
           <Route element={<ProtectedRoutes isPermittedToView={isPermittedToView} />}>
             <Route path={CHANGE_YOUR_DETAILS_PAGE_URL} element={<ChangeYourDetails />} />
             <Route path={CHANGE_YOUR_PASSWORD_PAGE_URL} element={<ChangeYourPassword />} />
+            <Route path={FILE_UPLOAD_FIELD_ERRORS_URL} element={<FileUploadFieldErrors />} />
             <Route path={FORM_CONFIRMATION_URL} element={<FormConfirmationPage />} />
             <Route path={GENERIC_CONFIRMATION_URL} element={<GenericConfirmationPage />} />
             <Route path={TEMPLATE_PAGE_URL} element={<Templates />} />
             <Route path={YOUR_DETAILS_PAGE_URL} element={<YourDetails />} />
             <Route path={YOUR_VOYAGES_URL} element={<YourVoyages />} />
+
+            {/* Create voyage Routes */}
             <Route path={VOYAGE_CHECK_YOUR_ANSWERS} element={<VoyageCheckYourAnswers />} />
+            <Route path={`${VOYAGE_CHECK_YOUR_ANSWERS}/:declarationId`} element={<VoyageCheckYourAnswers />} />
+
             <Route path={VOYAGE_CREW_UPLOAD_URL} element={<VoyageCrew />} />
+            <Route path={`${VOYAGE_CREW_UPLOAD_URL}/:declarationId`} element={<VoyageCrew />} />
             <Route path={VOYAGE_CREW_CONFIRMATION_URL} element={<FileUploadConfirmation />} />
+            <Route path={`${VOYAGE_CREW_CONFIRMATION_URL}/:declarationId`} element={<FileUploadConfirmation />} />
+
             <Route path={VOYAGE_DELETE_DRAFT_CHECK_URL} element={<VoyageDeleteDraftCheck />} />
+            <Route path={`${VOYAGE_DELETE_DRAFT_CHECK_URL}/:declarationId`} element={<VoyageDeleteDraftCheck />} />
+
             <Route path={VOYAGE_GENERAL_DECLARATION_UPLOAD_URL} element={<VoyageGeneralDeclaration />} />
+            <Route path={`${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}/:declarationId`} element={<VoyageGeneralDeclaration />} />
             <Route path={VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL} element={<FileUploadConfirmation />} />
+            <Route path={`${VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL}/:declarationId`} element={<FileUploadConfirmation />} />
+
             <Route path={VOYAGE_PASSENGERS_URL} element={<VoyagePassengers />} />
+            <Route path={`${VOYAGE_PASSENGERS_URL}/:declarationId`} element={<VoyagePassengers />} />
             <Route path={VOYAGE_PASSENGER_UPLOAD_URL} element={<VoyagePassengerUpload />} />
+            <Route path={`${VOYAGE_PASSENGER_UPLOAD_URL}/:declarationId`} element={<VoyagePassengerUpload />} />
             <Route path={VOYAGE_PASSENGER_CONFIRMATION_URL} element={<FileUploadConfirmation />} />
+            <Route path={`${VOYAGE_PASSENGER_CONFIRMATION_URL}/:declarationId`} element={<FileUploadConfirmation />} />
+
             <Route path={VOYAGE_SUPPORTING_DOCS_UPLOAD_URL} element={<VoyageSupportingDocsUpload />} />
+            <Route path={`${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}/:declarationId`} element={<VoyageSupportingDocsUpload />} />
+
             <Route path={VOYAGE_TASK_LIST_URL} element={<VoyageTaskList />} />
-            <Route path={ERROR_CREW_DETAILS_UPLOAD_URL} element={<ErrorsCrewUpload />} />
+            <Route path={`${VOYAGE_TASK_LIST_URL}/:declarationId`} element={<VoyageTaskList />} />
+
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

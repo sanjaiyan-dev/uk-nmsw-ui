@@ -13,6 +13,7 @@ import {
   SIGN_IN_URL,
   YOUR_DETAILS_PAGE_URL,
   YOUR_DETAILS_PAGE_NAME,
+  GOV_URL,
 } from '../constants/AppUrlConstants';
 import { SIGN_OUT_ENDPOINT } from '../constants/AppAPIConstants';
 import useUserIsPermitted from '../hooks/useUserIsPermitted';
@@ -96,9 +97,9 @@ const Nav = () => {
     <>
       <div className="govuk-header__logo">
         <Link
-          to={LANDING_URL}
+          to={GOV_URL}
           className="govuk-header__link govuk-header__link--homepage"
-          onClick={() => { setActivePage(LANDING_URL); removeFormData(); }}
+          onClick={() => { removeFormData(); }}
         >
           <span className="govuk-header__logotype">
             <svg aria-hidden="true" focusable="false" className="govuk-header__logotype-crown" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 132 97" height="30" width="36">

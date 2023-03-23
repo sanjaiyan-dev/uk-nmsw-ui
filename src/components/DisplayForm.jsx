@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
   EXPANDED_DETAILS,
+  FIELD_AUTOCOMPLETE,
   FIELD_CONDITIONAL,
   FIELD_PASSWORD,
   PASSWORD_FORM,
@@ -21,11 +22,14 @@ const DisplayForm = ({
   fields, formId, formActions, formType, isLoading, pageHeading, handleSubmit, children, removeApiErrors,
 }) => {
   const fieldsRef = useRef(null);
+  const errorSummaryRef = useRef(null);
   const navigate = useNavigate();
   const [errors, setErrors] = useState();
   const [fieldsWithValues, setFieldsWithValues] = useState();
   const [formData, setFormData] = useState({});
   const [sessionData, setSessionData] = useState(JSON.parse(sessionStorage.getItem('formData')));
+  // Turns errors into a boolean so that error summary does not focus (and input does not lose focus) when user types into an input
+  const errorsExist = !!errors;
 
   const handleChange = (e, itemToClear) => {
     // e may be an html event (e.g. radio button selected, text entered in input field)
@@ -91,6 +95,7 @@ const DisplayForm = ({
       }
     } else {
       scrollToTop();
+      errorSummaryRef?.current?.focus();
     }
   };
 
@@ -160,14 +165,32 @@ const DisplayForm = ({
 
     const mappedFormData = fields.map((field) => {
       const sessionDataValue = sessionDataArray?.find((sessionDataField) => sessionDataField.name === field.fieldName);
-      return ({
-        fieldName: field.fieldName,
-        value: sessionDataValue?.value ? sessionDataValue?.value : field.value,
-      });
+      let valuesToAdd;
+
+      if (field.type === FIELD_AUTOCOMPLETE) {
+        const expandedDetails = `${field.fieldName}${EXPANDED_DETAILS}`;
+        const sessionExpandedDetailsValue = sessionDataArray?.find((sessionDataField) => sessionDataField.name === expandedDetails);
+        valuesToAdd = [
+          { [field.fieldName]: sessionDataValue?.value ? sessionDataValue?.value : field.value },
+          { [expandedDetails]: sessionExpandedDetailsValue?.value },
+        ];
+      } else {
+        valuesToAdd = { [field.fieldName]: sessionDataValue?.value ? sessionDataValue?.value : field.value };
+      }
+      return valuesToAdd;
     });
-    const objectOfMappedFields = Object.assign({}, ...mappedFormData.map((field) => ({ [field.fieldName]: field.value })));
-    setFormData(objectOfMappedFields);
+
+    const flattenedData = mappedFormData.flatMap((field) => field);
+    const objectOfData = Object.assign({}, ...flattenedData);
+
+    setFormData(objectOfData);
   }, [setFieldsWithValues, setFormData]);
+
+  useEffect(() => {
+    if (errorsExist) {
+      errorSummaryRef?.current?.focus();
+    }
+  }, [errorsExist]);
 
   if (!formActions || !fieldsWithValues) { return null; }
   return (
@@ -175,7 +198,7 @@ const DisplayForm = ({
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
           {errors?.length > 0 && (
-            <div className="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary">
+            <div className="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary" ref={errorSummaryRef} tabIndex={-1}>
               <h2 className="govuk-error-summary__title" id="error-summary-title">
                 There is a problem
               </h2>
@@ -205,11 +228,11 @@ const DisplayForm = ({
       </div>
 
       {formType !== PASSWORD_FORM && (
-      <div className="govuk-grid-row">
-        <div className="govuk-grid-column-three-quarters below-h1">
-          {children}
+        <div className="govuk-grid-row">
+          <div className="govuk-grid-column-three-quarters below-h1">
+            {children}
+          </div>
         </div>
-      </div>
       )}
 
       <div className="govuk-grid-row">

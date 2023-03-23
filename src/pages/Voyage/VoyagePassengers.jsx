@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   DISPLAY_GROUPED,
   FIELD_RADIO,
@@ -9,17 +9,13 @@ import { VOYAGE_PASSENGER_UPLOAD_URL, VOYAGE_TASK_LIST_URL, YOUR_VOYAGES_URL } f
 import Message from '../../components/Message';
 
 const VoyagePassengers = () => {
-  const { state } = useLocation();
   const navigate = useNavigate();
+  const { declarationId } = useParams();
   document.title = 'Is the ship carrying any passengers?';
 
   const formActions = {
     submit: {
-      className: 'govuk-button',
-      dataModule: 'govuk-button',
-      dataTestid: 'submit-button',
       label: 'Save and continue',
-      type: 'button',
     },
   };
   const formFields = [
@@ -49,13 +45,13 @@ const VoyagePassengers = () => {
 
   const handleSubmit = (formData) => {
     if (formData?.formData?.passengers === 'passengersYes') {
-      navigate(VOYAGE_PASSENGER_UPLOAD_URL, { state: { declarationId: state?.declarationId } });
+      navigate(`${VOYAGE_PASSENGER_UPLOAD_URL}/${declarationId}`);
     } else if (formData?.formData?.passengers === 'passengersNo') {
-      navigate(VOYAGE_TASK_LIST_URL, { state: { declarationId: state?.declarationId } });
+      navigate(`${VOYAGE_TASK_LIST_URL}/${declarationId}`);
     }
   };
 
-  if (!state?.declarationId) {
+  if (!declarationId) {
     return (
       <Message title="Something has gone wrong" redirectURL={YOUR_VOYAGES_URL} />
     );

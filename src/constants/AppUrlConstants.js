@@ -1,7 +1,8 @@
 // External links
 export const CROWN_COPYRIGHT_URL = 'https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/';
-export const FEEDBACK_URL = '/';
+export const FEEDBACK_URL = 'https://www.homeofficesurveys.homeoffice.gov.uk/s/6MBWPJ/';
 export const PASSWORD_GUIDENCE_URL = 'https://www.ncsc.gov.uk/collection/top-tips-for-staying-secure-online/three-random-words#:~:text=Why%20does%20the%20NCSC%20recommend,enough%20for%20you%20to%20remember';
+export const GOV_URL = 'https://www.gov.uk/';
 
 // Register/Sign in pages
 export const REGISTER_ACCOUNT_URL = '/create-account/email-address';
@@ -23,7 +24,6 @@ export const LANDING_URL = '/';
 export const PRIVACY_URL = '/privacy-notice';
 
 // Voyage pages
-export const ERROR_CREW_DETAILS_UPLOAD_URL = '/create-voyage/check-crew-details';
 export const FORM_CONFIRMATION_URL = '/report-voyage/confirmation';
 export const VOYAGE_CHECK_YOUR_ANSWERS = '/report-voyage/check-your-answers';
 export const VOYAGE_CREW_UPLOAD_URL = '/report-voyage/upload-crew-details';
@@ -40,6 +40,7 @@ export const YOUR_VOYAGES_PAGE_NAME = 'Your voyages';
 export const YOUR_VOYAGES_URL = '/your-voyages';
 
 // Other pages
+export const FILE_UPLOAD_FIELD_ERRORS_URL = '/field-errors';
 export const GENERIC_CONFIRMATION_URL = '/confirmation';
 export const TEMPLATE_PAGE_NAME = 'Templates';
 export const TEMPLATE_PAGE_URL = '/templates';

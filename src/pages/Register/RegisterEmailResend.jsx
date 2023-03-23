@@ -24,7 +24,7 @@ import {
 import DisplayForm from '../../components/DisplayForm';
 
 const SupportingText = () => (
-  <p className="govuk-body">Emails sometimes take a few minutes to arrive. If you didn&apos;t receive the link, you can request a new one.</p>
+  <p className="govuk-body">Emails sometimes take a few minutes to arrive. If you did not receive the link, you can request a new one.</p>
 );
 
 const RegisterEmailResend = () => {
@@ -35,11 +35,7 @@ const RegisterEmailResend = () => {
 
   const formActions = {
     submit: {
-      className: 'govuk-button',
-      dataModule: 'govuk-button',
-      dataTestid: 'submit-button',
-      label: 'Send confirmation email',
-      type: 'button',
+      label: 'Request a new link',
     },
   };
   const formFields = [
@@ -49,7 +45,7 @@ const RegisterEmailResend = () => {
       fieldName: 'emailAddress',
       label: 'Email address',
       value: state?.dataToSubmit?.emailAddress,
-      linkText: 'Change where the email was sent',
+      linkText: 'Change the contact email address you want to use',
       validation: [
         {
           type: VALIDATE_REQUIRED,

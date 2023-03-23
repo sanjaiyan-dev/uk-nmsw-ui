@@ -66,7 +66,7 @@ describe('Your voyages page tests', () => {
     expect(screen.getByRole('button', { name: 'Report a voyage' })).toBeInTheDocument();
     user.click(screen.getByRole('button', { name: 'Report a voyage' }));
     await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(VOYAGE_GENERAL_DECLARATION_UPLOAD_URL, { state: { declarationId: '123' } });
+      expect(mockedUseNavigate).toHaveBeenCalledWith(`${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}/123`);
     });
   });
 

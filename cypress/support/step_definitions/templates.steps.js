@@ -1,11 +1,6 @@
-import {When, Then, After} from '@badeball/cypress-cucumber-preprocessor';
+import {When, Then} from '@badeball/cypress-cucumber-preprocessor';
 import LandingPage from '../../e2e/pages/landing.page';
 import BasePage from '../../e2e/pages/base.page';
-import SignInPage from "../../e2e/pages/sign-in.page";
-
-After({tags: "@signOut"},() => {
-  SignInPage.clickSignOut();
-});
 
 When('I click template tab on the navigation bar', () => {
   LandingPage.clickTemplateTab();

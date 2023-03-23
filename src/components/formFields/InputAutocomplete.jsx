@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Autocomplete from 'accessible-autocomplete/react';
+import { AUTOCOMPLETE_DIALCODE } from '../../constants/AppConstants';
 
 /* there is an open PR to fix the aria-activedescendent issue:
  * https://github.com/alphagov/accessible-autocomplete/issues/434
@@ -11,10 +12,11 @@ import Autocomplete from 'accessible-autocomplete/react';
  * and false is an invalid value for it.
  * some explanation of aria-activedescendant: https://www.holisticseo.digital/technical-seo/web-accessibility/aria-activedescendant/
 */
-const InputAutocomplete = ({ fieldDetails, handleChange }) => {
+const InputAutocomplete = ({ error, fieldDetails, handleChange }) => {
   const { dataSet } = fieldDetails;
   const defaultValue = fieldDetails.value || '';
   const sessionData = JSON.parse(sessionStorage.getItem('formData'));
+  const classToApply = error ? 'autocomplete-input autocomplete-input--error' : 'autocomplete-input';
 
   const formatText = ({ result, additionalKey }) => {
     const rkPrefix = fieldDetails.responseKeyPrefix || '';
@@ -30,13 +32,20 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
 
   const suggest = (userQuery, populateResults) => {
     if (!userQuery) { return; }
+
+    /* To cater to international dialling codes, if the fieldType is dialCode, we allow user to type a +
+     * then strip it off before searching records as they do not have the +
+     */
+    const searchString = fieldDetails.responseKey === AUTOCOMPLETE_DIALCODE ? userQuery.replace(/[+]/g, '') : userQuery;
+
     /* The if statements below will be replaced by a call to an API endpoint with a filter function
      * which we will trigger on 2+ keypresses, and then populateResults with the results it returns
      * we may need to create a second InputAutoCompleteFromAPIData component if we have a need to maintain
      * the local dataset version below
      */
-    const filteredResults = dataSet.filter((item) => item[fieldDetails.responseKey].toLowerCase().includes(userQuery.toLowerCase()) || item[fieldDetails.additionalKey]?.toLowerCase().includes(userQuery.toLowerCase()));
+    const filteredResults = dataSet.filter((item) => item[fieldDetails.responseKey].toLowerCase().includes(searchString.toLowerCase()) || item[fieldDetails.additionalKey]?.toLowerCase().includes(searchString.toLowerCase()));
     // populateResults is part of the Autocomplete componet and how we return results to the list
+
     populateResults(filteredResults);
   };
 
@@ -173,7 +182,7 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
     return () => {
       element.removeEventListener('keydown', handleKeypress);
     };
-  }, []);
+  }, [sessionData]);
 
   // We need to use the template function to handle our results coming in objects
   // this lets us format the strings to display as we like
@@ -182,7 +191,7 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
   // if we wanted to show different values we could call separate functions, or define them in the template function to return
   // different results
   return (
-    <div className="autocomplete-input">
+    <div className={classToApply}>
       <Autocomplete
         confirmOnBlur={false}
         defaultValue={defaultValue}
@@ -201,6 +210,7 @@ const InputAutocomplete = ({ fieldDetails, handleChange }) => {
 };
 
 InputAutocomplete.propTypes = {
+  error: PropTypes.string,
   fieldDetails: PropTypes.shape({
     dataSet: PropTypes.array.isRequired,
     fieldName: PropTypes.string.isRequired,

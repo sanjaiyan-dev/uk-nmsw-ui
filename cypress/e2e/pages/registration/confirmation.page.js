@@ -8,8 +8,8 @@ class ConfirmationPage {
     cy.get('.govuk-panel__title').should('have.text', 'Account created');
   }
 
-  verifyCompanyName(companyName) {
-    cy.get('.govuk-panel__body').should('have.text', companyName + ' has been setup.');
+  verifyCompanyName(fullName, companyName) {
+    cy.get('.govuk-panel__body').should('have.text', 'For ' + fullName + 'Now a team member at ' + companyName);
   }
 
   verifyUserNotRegistered() {

@@ -31,7 +31,7 @@ describe('Register email address POST tests', () => {
 
   it('should render h1', () => {
     render(<MemoryRouter><RegisterEmailAddress /></MemoryRouter>);
-    expect(screen.getByText('What is your email address')).toBeInTheDocument();
+    expect(screen.getByText('What is your email address?')).toBeInTheDocument();
   });
 
   it('should navigate to register details page if successful POST response', async () => {

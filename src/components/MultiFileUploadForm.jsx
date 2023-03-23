@@ -1,0 +1,363 @@
+import { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import PropTypes from 'prop-types';
+import { SIGN_IN_URL } from '../constants/AppUrlConstants';
+import Auth from '../utils/Auth';
+import LoadingSpinner from './LoadingSpinner';
+import '../assets/css/multiFileUploadForm.scss';
+
+const FILE_STATUS_PENDING = 'Pending';
+const FILE_STATUS_IN_PROGRESS = 'in progress';
+const FILE_STATUS_ERROR = 'Error';
+const FILE_STATUS_SUCCESS = 'Success';
+const MAX_FILES = 7;
+
+const FileStatusInProgress = ({ fileName }) => (
+  <div className="govuk-!-margin-bottom-5 multi-file-upload--filelist-filename">
+    <div className="multi-file-upload--loading-spinner">
+      <LoadingSpinner />
+    </div>
+    <span>{fileName}</span>
+  </div>
+);
+
+const FileStatusPending = ({ fileName }) => (
+  <div className="govuk-!-margin-bottom-5 multi-file-upload--filelist-filename">
+    <span>{fileName}</span> <span className="govuk-tag govuk-tag--grey">{FILE_STATUS_PENDING}</span>
+  </div>
+);
+
+const FileStatusSuccess = ({ fileName }) => (
+  <div className="success">
+    <div className="multi-file-upload--filelist-icon">
+      <svg fill="currentColor" role="presentation" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" height="25" width="25">
+        <path d="M25,6.2L8.7,23.2L0,14.1l4-4.2l4.7,4.9L21,2L25,6.2z" />
+      </svg>
+    </div>
+    <div className="govuk-!-margin-bottom-5 multi-file-upload--filelist-filename">
+      <span>{fileName}</span> <span>has been uploaded</span>
+    </div>
+  </div>
+);
+
+const FileStatusError = ({ fileName, errorMessage }) => (
+  <div className="error">
+    <div className="multi-file-upload--filelist-icon">
+      <svg fill="currentColor" role="presentation" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" height="25" width="25">
+        <path d="M13.6,15.4h-2.3v-4.5h2.3V15.4z M13.6,19.8h-2.3v-2.2h2.3V19.8z M0,23.2h25L12.5,2L0,23.2z" />
+      </svg>
+    </div>
+    <div className="govuk-!-margin-bottom-5 multi-file-upload--filelist-filename">
+      <span>{fileName}</span> <span>{errorMessage}</span>
+    </div>
+  </div>
+);
+
+const MultiFileUploadForm = ({
+  endpoint,
+  pageHeading,
+  submitButtonLabel,
+  urlNextPage,
+  urlThisPage,
+}) => {
+  const inputRef = useRef(null);
+  const multiple = true;
+  const navigate = useNavigate();
+  const [dragActive, setDragActive] = useState(false);
+  const [errors, setErrors] = useState([]);
+  const [filesAddedForUpload, setFilesAddedForUpload] = useState([]);
+  const [maxFilesError, setMaxFilesError] = useState();
+
+  const handleDrag = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === 'dragenter' || e.type === 'dragover') {
+      setDragActive(true);
+    } else if (e.type === 'dragleave') {
+      setDragActive(false);
+    }
+  };
+
+  const storeFilesForUpload = async (fileList) => {
+    const fileCurrentlyInState = [...filesAddedForUpload];
+    const filesUserAdded = [...fileList];
+    const errorList = [];
+    setMaxFilesError();
+    setErrors();
+    // Check we do not exceed max file count
+    const remainingFilesAvailable = MAX_FILES - filesAddedForUpload.length;
+
+    if (filesAddedForUpload.length === MAX_FILES) {
+      setMaxFilesError(`You've selected too many files. You can add ${remainingFilesAvailable} more files.`);
+      setErrors([`You've selected too many files. You can add ${remainingFilesAvailable} more files.`]);
+    } else if (filesAddedForUpload.length > 0 && (filesAddedForUpload.length + fileList.length > MAX_FILES)) {
+      setMaxFilesError(`You've selected too many files. You can only add ${remainingFilesAvailable} more files.`);
+      setErrors([`You've selected too many files. You can only add ${remainingFilesAvailable} more files.`]);
+    } else if (fileList.length > MAX_FILES) {
+      setMaxFilesError(`You've selected too many files. You can only add ${MAX_FILES}.`);
+      setErrors([`You've selected too many files. You can only add ${MAX_FILES}.`]);
+    } else {
+      const newFilesForUpload = filesUserAdded.reduce((results, fileToCheck) => {
+        if (fileCurrentlyInState.findIndex((existingFile) => existingFile.file.name === fileToCheck.name) === -1) {
+          results.push({ file: fileToCheck, status: FILE_STATUS_PENDING });
+        } else {
+          errorList.push(`A file name ${fileToCheck.name} already exists in your list`);
+        }
+        setErrors(errorList);
+        return results;
+      }, []);
+
+      setFilesAddedForUpload([...filesAddedForUpload, ...newFilesForUpload]);
+    }
+  };
+
+  // triggers when file(s) are dropped into the input zone
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      storeFilesForUpload(e.dataTransfer.files);
+    }
+  };
+
+  // triggers when file(s) are selected with click
+  const handleChange = (e) => {
+    e.preventDefault();
+    if (e.target.files && e.target.files[0]) {
+      storeFilesForUpload(e.target.files);
+    }
+  };
+
+  const onChooseFilesButtonClick = () => {
+    // triggers the input and opens the file browser for selecting files
+    inputRef.current.click();
+  };
+
+  const updateFileStatus = ({ file, status, errorMessage }) => {
+    const updatedFileIndex = filesAddedForUpload.findIndex((existingFile) => existingFile.file.name === file.file.name);
+    const newState = [...filesAddedForUpload];
+    newState[updatedFileIndex].status = status;
+    if (errorMessage) { newState[updatedFileIndex].errorMessage = errorMessage; }
+    setFilesAddedForUpload(newState);
+  };
+
+  const onUploadFiles = async (e) => {
+    e.preventDefault();
+    const postFile = async (selectedFile) => {
+      const dataToSubmit = new FormData();
+      dataToSubmit.append('file', selectedFile?.file, selectedFile?.file?.name);
+      try {
+        const response = await axios.post(endpoint, dataToSubmit, {
+          headers: {
+            Authorization: `Bearer ${Auth.retrieveToken()}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        updateFileStatus({ file: selectedFile, status: FILE_STATUS_SUCCESS });
+        return response;
+      } catch (err) {
+        switch (err?.response?.status) {
+          case 401:
+          case 422:
+            Auth.removeToken();
+            navigate(SIGN_IN_URL, { state: { redirectURL: urlThisPage } });
+            break;
+          default: updateFileStatus({
+            file: selectedFile,
+            status: FILE_STATUS_ERROR,
+            errorMessage: err?.response?.data?.message ? err.response.data.message : 'There was a problem check file and try again',
+          });
+        }
+        return err;
+      }
+    };
+
+    const asyncLoop = async () => {
+      for (let i = 0; i < filesAddedForUpload.length; i++) {
+        updateFileStatus({ file: filesAddedForUpload[i], status: FILE_STATUS_IN_PROGRESS });
+        // eslint-disable-next-line no-await-in-loop
+        await postFile(filesAddedForUpload[i]);
+      }
+    };
+
+    asyncLoop();
+  };
+
+  const handleDelete = ({ e, fileName }) => {
+    e.preventDefault();
+    /* There will be two states a file could be in
+     * 1. in our filesAddedForUpload state (not stored in db)
+     * 2. already uploaded and stored to the db
+     * In future, when we do a GET request to see what files are
+     * stored on the db, then we can set a value to 'uploaded' on the file object
+     * that we keep in current state, and use that value to determine
+     * if we need to do a DELETE request.
+     * Until we build that we only have state 1, which is handled with the code below
+     */
+
+    const filtered = filesAddedForUpload.filter((file) => file.file.name !== fileName);
+    setFilesAddedForUpload(filtered);
+  };
+
+  const onContinue = (e) => {
+    e.preventDefault();
+    navigate(urlNextPage);
+  };
+
+  /*
+   * when the drag goes over our button element in the dragarea,
+   * a dragleave event is triggered, and our background starts flickering
+   * To get around this issue, when dragActive is true we add an invisible element
+   * to cover the entire form. (drag-active')
+   * This then listens to the events without interference from any other elements.
+   * And this can also handle the drop.
+   */
+
+  return (
+    <>
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-three-quarters">
+          {errors.length > 0 && (
+            <div className="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary">
+              <div className="govuk-error-summary__body">
+                <ul className="govuk-list govuk-error-summary__list multi-file-upload--error-summary">
+                  {errors.map((error) => (
+                    <li key={error}>
+                      <span className="govuk-visually-hidden">Error:</span> {error}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-full">
+          {pageHeading ? <h1 className="govuk-heading-xl">{pageHeading}</h1> : <h1 className="govuk-heading-xl">Upload files</h1>}
+        </div>
+      </div>
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-three-quarters">
+          <form
+            id="multiFileUpload"
+            onDragEnter={handleDrag}
+            onSubmit={(e) => e.preventDefault()}
+          >
+            <fieldset className="govuk-fieldset">
+              <div className={maxFilesError ? 'govuk-form-group govuk-form-group--error' : 'govuk-form-group'}>
+                <p id="multiFileUploadForm-error" className="govuk-error-message">
+                  <span className="govuk-visually-hidden">Error:</span> {maxFilesError}
+                </p>
+                <input
+                  ref={inputRef}
+                  type="file"
+                  id="multiFileUploadInput"
+                  data-testid="multiFileUploadInput"
+                  multiple={multiple}
+                  onChange={handleChange}
+                />
+                <label
+                  className={dragActive ? 'file-upload-dropzone drag-active' : 'file-upload-dropzone'}
+                  htmlFor="multiFileUploadInput"
+                >
+                  <div>
+                    <p className="govuk-body">Drag and drop files here or</p>
+                    <button
+                      className="govuk-button--text"
+                      type="button"
+                      onClick={onChooseFilesButtonClick}
+                    >
+                      Choose files
+                    </button>
+                  </div>
+                </label>
+                {dragActive
+                  && (
+                    <div
+                      id="dragFileElement"
+                      onDragEnter={handleDrag}
+                      onDragLeave={handleDrag}
+                      onDragOver={handleDrag}
+                      onDrop={handleDrop}
+                    />
+                  )}
+              </div>
+            </fieldset>
+            <button
+              className="govuk-button govuk-button--secondary"
+              type="button"
+              onClick={onUploadFiles}
+            >
+              Upload files
+            </button>
+          </form>
+        </div>
+      </div>
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-three-quarters">
+          {filesAddedForUpload.length > 0 && (
+            <>
+              <h2 className="govuk-heading-m">Files added</h2>
+              {filesAddedForUpload.map((file) => (
+                <div key={file.file.name} className="govuk-grid-row  govuk-!-margin-bottom-5 multi-file-upload--filelist">
+                  <div className="nmsw-grid-column-ten-twelfths">
+                    {file.status === FILE_STATUS_IN_PROGRESS && <FileStatusInProgress fileName={file.file.name} />}
+                    {file.status === FILE_STATUS_PENDING && <FileStatusPending fileName={file.file.name} />}
+                    {file.status === FILE_STATUS_SUCCESS && <FileStatusSuccess fileName={file.file.name} />}
+                    {file.status === FILE_STATUS_ERROR && <FileStatusError fileName={file.file.name} errorMessage={file.errorMessage} />}
+                  </div>
+                  <div className="nmsw-grid-column-two-twelfths govuk-!-text-align-right">
+                    <button
+                      className="govuk-button govuk-button--warning govuk-!-margin-bottom-5"
+                      type="button"
+                      onClick={(e) => handleDelete({ e, fileName: file.file.name })}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
+          <button
+            className="govuk-button govuk-button--primary"
+            type="button"
+            onClick={onContinue}
+          >
+            {submitButtonLabel || 'Save and continue'}
+          </button>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default MultiFileUploadForm;
+
+FileStatusInProgress.propTypes = {
+  fileName: PropTypes.string.isRequired,
+};
+
+FileStatusPending.propTypes = {
+  fileName: PropTypes.string.isRequired,
+};
+
+FileStatusSuccess.propTypes = {
+  fileName: PropTypes.string.isRequired,
+};
+
+FileStatusError.propTypes = {
+  fileName: PropTypes.string.isRequired,
+  errorMessage: PropTypes.string.isRequired,
+};
+
+MultiFileUploadForm.propTypes = {
+  endpoint: PropTypes.string.isRequired,
+  pageHeading: PropTypes.string.isRequired,
+  submitButtonLabel: PropTypes.string.isRequired,
+  urlNextPage: PropTypes.string.isRequired,
+  urlThisPage: PropTypes.string.isRequired,
+};

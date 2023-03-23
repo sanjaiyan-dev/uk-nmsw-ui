@@ -125,6 +125,7 @@ describe('Change your details tests', () => {
     const user = userEvent.setup();
     render(<MemoryRouter><ChangeYourDetails /></MemoryRouter>);
     await user.click(screen.getByTestId('submit-button'));
+    await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
   });
 
@@ -132,6 +133,7 @@ describe('Change your details tests', () => {
     const user = userEvent.setup();
     render(<MemoryRouter><ChangeYourDetails /></MemoryRouter>);
     await user.click(screen.getByTestId('submit-button'));
+    await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
     expect(screen.getAllByText('Enter your full name')).toHaveLength(2);
     expect(screen.getAllByText('Enter your company name')).toHaveLength(2);

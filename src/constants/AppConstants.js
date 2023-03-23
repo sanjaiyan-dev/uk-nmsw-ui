@@ -20,6 +20,7 @@ export const FIELD_PASSWORD = 'password';
 export const FIELD_PHONE = 'tel';
 export const FIELD_TEXT = 'text';
 export const FIELD_RADIO = 'radio';
+export const AUTOCOMPLETE_DIALCODE = 'dialCode';
 // Forms: states
 export const CHECKED_TRUE = true;
 export const CHECKED_FALSE = false;
@@ -33,6 +34,17 @@ export const VALIDATE_MIN_LENGTH = 'minLength';
 export const VALIDATE_PHONE_NUMBER = 'phoneNumber';
 export const VALIDATE_REQUIRED = 'required';
 export const VALIDATE_NO_SPACES = 'noSpaces';
+// Templates
+export const GENERAL_DECLARATION_TEMPLATE_NAME = 'General Declaration (FAL 1)';
+export const CREW_DETAILS_TEMPLATE_NAME = 'Crew details including supernumeraries (FAL 5)';
+export const PASSENGER_DETAILS_TEMPLATE_NAME = 'Passenger details (FAL 6)';
+
+// Templates
+export const GENERAL_DECLARATION_LABEL = 'General Declaration (FAL 1)';
+export const CREW_DETAILS_LABEL = 'Crew details including supernumeraries (FAL 5)';
+export const PASSENGER_DETAILS_LABEL = 'Any passenger details (FAL 6)';
+export const SUPPORTING_DOCUMENTS_LABEL = 'Supporting documents';
+export const CHECK_YOUR_ANSWERS_LABEL = 'Check answers and submit';
 
 // File upload
 export const MAX_FILE_SIZE = 4194304;

@@ -96,7 +96,7 @@ const CookiePolicy = ({ setIsCookieBannerShown }) => {
             </div>
           </div>
         )}
-      <h1 className="govuk-heading-l">Cookies</h1>
+      <h1 className="govuk-heading-xl">Cookies</h1>
       <h2 className="govuk-heading-l">Change your cookie settings</h2>
       <DisplayForm
         formId="changeYourCookieSettings"

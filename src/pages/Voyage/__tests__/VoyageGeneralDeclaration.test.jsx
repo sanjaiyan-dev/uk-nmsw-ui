@@ -1,10 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { YOUR_VOYAGES_URL } from '../../../constants/AppUrlConstants';
+import { VOYAGE_GENERAL_DECLARATION_UPLOAD_URL, YOUR_VOYAGES_URL } from '../../../constants/AppUrlConstants';
 import VoyageGeneralDeclaration from '../VoyageGeneralDeclaration';
+import { GENERAL_DECLARATION_TEMPLATE_NAME } from '../../../constants/AppConstants';
 
 const mockUseLocationState = { state: {} };
 const mockedUseNavigate = jest.fn();
@@ -15,6 +16,16 @@ jest.mock('react-router', () => ({
   useLocation: jest.fn().mockImplementation(() => mockUseLocationState),
 }));
 
+const renderPage = () => {
+  render(
+    <MemoryRouter initialEntries={[`${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}/123`]}>
+      <Routes>
+        <Route path={`${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}/:declarationId`} element={<VoyageGeneralDeclaration />} />
+      </Routes>
+    </MemoryRouter>,
+  );
+};
+
 describe('Voyage general declaration page', () => {
   const mockAxios = new MockAdapter(axios);
 
@@ -24,18 +35,22 @@ describe('Voyage general declaration page', () => {
     mockUseLocationState.state = {};
   });
 
-  it('should render the page if declaration ID is in state', async () => {
-    mockUseLocationState.state = { fileType: 'FAL Name', declarationId: '123' };
-    render(<MemoryRouter><VoyageGeneralDeclaration /></MemoryRouter>);
+  it('should render the page if declaration ID is in URL', async () => {
+    renderPage();
     expect(screen.getByRole('heading', { name: 'Upload the General Declaration (FAL 1)' })).toBeInTheDocument();
-    expect(screen.getByTestId('paragraph').outerHTML).toEqual('<p class="govuk-body" data-testid="paragraph">You must use the new excel spreadsheet version of the <button class="govuk-button--text" type="button">FAL 1 general declaration</button>.</p>');
-    expect(screen.getByRole('button', { name: 'FAL 1 general declaration' }).outerHTML).toEqual('<button class="govuk-button--text" type="button">FAL 1 general declaration</button>');
+    expect(screen.getByTestId('paragraph').outerHTML).toEqual('<p class="govuk-body" data-testid="paragraph">You must use the <button class="govuk-button--text" type="button">General Declaration (FAL 1) template</button> to submit a report to NMSW.</p>');
+    expect(screen.getByRole('button', { name: 'General Declaration (FAL 1) template' }).outerHTML).toEqual('<button class="govuk-button--text" type="button">General Declaration (FAL 1) template</button>');
     expect(screen.getByRole('button', { name: 'Check for errors' }).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button">Check for errors</button>');
   });
 
-  it('should show error message if no declaration ID in state', async () => {
-    mockUseLocationState.state = {};
-    render(<MemoryRouter><VoyageGeneralDeclaration /></MemoryRouter>);
+  it('should show error message if no declaration ID in URL', async () => {
+    render(
+      <MemoryRouter initialEntries={[VOYAGE_GENERAL_DECLARATION_UPLOAD_URL]}>
+        <Routes>
+          <Route path={VOYAGE_GENERAL_DECLARATION_UPLOAD_URL} element={<VoyageGeneralDeclaration />} />
+        </Routes>
+      </MemoryRouter>,
+    );
     await screen.findByRole('heading', { name: 'Something has gone wrong' });
     expect(screen.getByRole('heading', { name: 'Something has gone wrong' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Click here to continue' }).outerHTML).toEqual(`<a href="${YOUR_VOYAGES_URL}">Click here to continue</a>`);
@@ -43,13 +58,13 @@ describe('Voyage general declaration page', () => {
 
   it('should show error if no file is selected and submit clicked', async () => {
     const user = userEvent.setup();
-    mockUseLocationState.state = { fileType: 'FAL Name', declarationId: '123' };
-    render(<MemoryRouter><VoyageGeneralDeclaration /></MemoryRouter>);
-    expect(screen.getByRole('heading', { name: 'Upload the General Declaration (FAL 1)' })).toBeInTheDocument();
+    renderPage();
+    expect(screen.getByRole('heading', { name: `Upload the ${GENERAL_DECLARATION_TEMPLATE_NAME}` })).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Check for errors' }));
+    await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByRole('alert', { name: 'There is a problem' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Select a FAL 1 - General Declaration' })).toBeInTheDocument();
-    expect(screen.getAllByText('Select a FAL 1 - General Declaration')).toHaveLength(2);
+    expect(screen.getByRole('button', { name: `Select a ${GENERAL_DECLARATION_TEMPLATE_NAME}` })).toBeInTheDocument();
+    expect(screen.getAllByText(`Select a ${GENERAL_DECLARATION_TEMPLATE_NAME}`)).toHaveLength(2);
   });
 
   /*

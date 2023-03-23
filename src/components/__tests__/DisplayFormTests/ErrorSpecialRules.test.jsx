@@ -163,6 +163,7 @@ describe('Display Form', () => {
     await user.type(screen.getByLabelText('Text input'), 'Ab');
     await user.click(screen.getByRole('button', { name: 'Submit test button' }));
 
+    await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem').outerHTML).toEqual('<h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>');
     expect(screen.getAllByText('Field must be a minimum of 8 characters')).toHaveLength(2);
     // Error summary has the error message as a button and correct class
@@ -188,6 +189,7 @@ describe('Display Form', () => {
     await user.type(screen.getByLabelText('Repeating text input'), 'AbcD');
     await user.click(screen.getByRole('button', { name: 'Submit test button' }));
 
+    await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem').outerHTML).toEqual('<h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>');
     expect(screen.getAllByText('Fields must match')).toHaveLength(2);
     // Error summary has the error message as a button and correct class
@@ -233,6 +235,7 @@ describe('Display Form', () => {
     await user.type(screen.getByLabelText('Telephone number'), 'Abcd');
     await user.click(screen.getByRole('button', { name: 'Submit test button' }));
 
+    await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
     expect(screen.getAllByText('Enter a telephone number in the correct format')).toHaveLength(2);
   });
@@ -253,6 +256,7 @@ describe('Display Form', () => {
     await user.type(screen.getByLabelText('Telephone number'), '()++-- ..)');
     await user.click(screen.getByRole('button', { name: 'Submit test button' }));
 
+    await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
     expect(screen.getAllByText('Enter a telephone number in the correct format')).toHaveLength(2);
   });
@@ -292,6 +296,7 @@ describe('Display Form', () => {
     );
     await user.click(screen.getByRole('button', { name: 'Submit test button' }));
 
+    await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem').outerHTML).toEqual('<h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>');
     expect(screen.getAllByText('Enter your text input value')).toHaveLength(2);
     // Error summary has the error message as a button and correct class
@@ -315,6 +320,7 @@ describe('Display Form', () => {
     );
     await user.click(screen.getByRole('button', { name: 'Submit test button' }));
 
+    await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem').outerHTML).toEqual('<h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>');
     expect(screen.getAllByText('Enter your text input value')).toHaveLength(2);
     // Error summary has the error message as a button and correct class

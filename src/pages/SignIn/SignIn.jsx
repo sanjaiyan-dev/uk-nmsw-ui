@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import DisplayForm from '../../components/DisplayForm';
 import {
   FIELD_EMAIL,
   FIELD_PASSWORD,
@@ -9,14 +10,21 @@ import {
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
 import {
+  REGISTER_RESEND_VERIFICATION_EMAIL_ENDPOINT,
+  SIGN_IN_ENDPOINT,
+  USER_ALREADY_VERIFIED,
+  USER_NOT_VERIFIED,
+  USER_SIGN_IN_DETAILS_INVALID,
+} from '../../constants/AppAPIConstants';
+import {
   MESSAGE_URL,
   REGISTER_ACCOUNT_URL,
   SIGN_IN_URL,
   LOGGED_IN_LANDING,
   REGISTER_EMAIL_RESEND_URL,
+  REGISTER_EMAIL_CHECK_URL,
+  ERROR_ACCOUNT_ALREADY_ACTIVE_URL,
 } from '../../constants/AppUrlConstants';
-import DisplayForm from '../../components/DisplayForm';
-import { SIGN_IN_ENDPOINT, USER_NOT_VERIFIED, USER_SIGN_IN_DETAILS_INVALID } from '../../constants/AppAPIConstants';
 import Auth from '../../utils/Auth';
 import { scrollToTop } from '../../utils/ScrollToElement';
 
@@ -32,6 +40,7 @@ const SignIn = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const [errors, setErrors] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   document.title = 'Sign in';
 
   // Form fields
@@ -71,9 +80,36 @@ const SignIn = () => {
 
   const removeApiErrors = () => {
     if (errors) setErrors();
+    setIsLoading(false);
+  };
+
+  const resendVerificationEmail = async (emailToSendTo) => {
+    try {
+      const controller = new AbortController();
+      const response = await axios.post(REGISTER_RESEND_VERIFICATION_EMAIL_ENDPOINT, {
+        email: emailToSendTo,
+      }, {
+        signal: controller.signal,
+      });
+
+      if (response.status === 204) {
+        navigate(REGISTER_EMAIL_CHECK_URL, { state: { dataToSubmit: { emailAddress: emailToSendTo } } });
+      }
+    } catch (err) {
+      if (err?.response?.data?.message === USER_ALREADY_VERIFIED) {
+        // Edgecase where somehow user activates their account while we're processing a resend verification email
+        navigate(ERROR_ACCOUNT_ALREADY_ACTIVE_URL, { state: { dataToSubmit: { emailAddress: emailToSendTo } } });
+      } else {
+        // USER_NOT_REGISTERED & 500 errors will fall into this bucket (error out on USER_NOT_REGISTERED as it shouldn't occur here and we don't want to cause a loop of register/resend running)
+        navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: SIGN_IN_URL } });
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleSubmit = async ({ formData }) => {
+    setIsLoading(true);
     try {
       const response = await axios.post(SIGN_IN_ENDPOINT, formData);
       if (response.data.token) { Auth.storeToken(response.data.token); }
@@ -89,8 +125,19 @@ const SignIn = () => {
       } else if (err?.response?.data?.message === USER_NOT_VERIFIED) {
         navigate(REGISTER_EMAIL_RESEND_URL, { state: { dataToSubmit: { emailAddress: formData?.email } } });
       } else {
-        navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: SIGN_IN_URL } });
+        /* currently if a user is registered but not verified
+         * (aka in database but not able to sign in yet) we get a 500 response
+         * To handle that until API can be updated with a clear response
+         * for this scenario, any other error we will attempt to re-send verification
+         * email.
+         * Once we have an error response we can use to identify this scenario then
+         * we can go back to the navigate(MESSAGE ...) code below
+         */
+        resendVerificationEmail(formData.email);
+        // navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: SIGN_IN_URL } });
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -123,6 +170,7 @@ const SignIn = () => {
         fields={formFields}
         formActions={formActions}
         formType={SIGN_IN_FORM}
+        isLoading={isLoading}
         keepSessionOnSubmit={state?.redirectURL}
         handleSubmit={handleSubmit}
         removeApiErrors={removeApiErrors}

@@ -14,13 +14,12 @@ describe('Register email address tests', () => {
 
   it('should render h1', async () => {
     render(<MemoryRouter><RegisterEmailAddress /></MemoryRouter>);
-    expect(screen.getByText('What is your email address')).toBeInTheDocument();
+    expect(screen.getByText('What is your email address?')).toBeInTheDocument();
   });
 
   it('should render an intro inset', async () => {
     render(<MemoryRouter><RegisterEmailAddress /></MemoryRouter>);
-    expect(screen.getByText('This will only be used if you need to recover your sign in details.')).toBeInTheDocument();
-    expect(screen.getByText('To confirm it is your email address we will send you a verification link.')).toBeInTheDocument();
+    expect(screen.getByText('We may use these details to contact you if we have questions about reports that you submit.')).toBeInTheDocument();
   });
 
   it('should render two email address fields', async () => {
@@ -47,6 +46,7 @@ describe('Register email address tests', () => {
     const user = userEvent.setup();
     render(<MemoryRouter><RegisterEmailAddress /></MemoryRouter>);
     await user.click(screen.getByTestId('submit-button'));
+    await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
   });
 

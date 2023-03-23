@@ -1,27 +1,21 @@
-import { useLocation } from 'react-router-dom';
-import { DownloadFile } from '../../utils/DownloadFile';
-import {
-  API_URL,
-  ENDPOINT_DECLARATION_PATH,
-  ENDPOINT_FILE_UPLOAD_GENERAL_DECLARATION_PATH,
-} from '../../constants/AppAPIConstants';
-import {
-  VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL,
-  VOYAGE_GENERAL_DECLARATION_UPLOAD_URL,
-  YOUR_VOYAGES_URL,
-} from '../../constants/AppUrlConstants';
+import { useParams } from 'react-router-dom';
 import FileUploadForm from '../../components/FileUploadForm';
 import Message from '../../components/Message';
+import { API_URL, ENDPOINT_DECLARATION_PATH, ENDPOINT_FILE_UPLOAD_GENERAL_DECLARATION_PATH } from '../../constants/AppAPIConstants';
+import { GENERAL_DECLARATION_TEMPLATE_NAME } from '../../constants/AppConstants';
+import { VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL, VOYAGE_GENERAL_DECLARATION_UPLOAD_URL, YOUR_VOYAGES_URL } from '../../constants/AppUrlConstants';
+import ErrorMappingFal1 from '../../constants/ErrorMappingFal1';
+import { DownloadFile } from '../../utils/DownloadFile';
 
 const SupportingText = () => (
-  <p className="govuk-body" data-testid="paragraph">You must use the new excel spreadsheet version of the <button className="govuk-button--text" type="button" onClick={() => DownloadFile('/assets/files/NMSW-FAL-1.xlsx', 'FAL1.xlsx')}>FAL 1 general declaration</button>.</p>
+  <p className="govuk-body" data-testid="paragraph">You must use the <button className="govuk-button--text" type="button" onClick={() => DownloadFile('/assets/files/General declaration FAL 1.xlsx', 'General declaration FAL 1.xlsx')}>General Declaration (FAL 1) template</button> to submit a report to NMSW.</p>
 );
 
 const VoyageUploadGeneralDeclaration = () => {
-  const { state } = useLocation();
-  document.title = 'Upload the General Declaration (FAL 1)';
+  const { declarationId } = useParams();
+  document.title = `Upload the ${GENERAL_DECLARATION_TEMPLATE_NAME}`;
 
-  if (!state?.declarationId) {
+  if (!declarationId) {
     return (
       <Message title="Something has gone wrong" redirectURL={YOUR_VOYAGES_URL} />
     );
@@ -29,15 +23,15 @@ const VoyageUploadGeneralDeclaration = () => {
 
   return (
     <FileUploadForm
-      declarationId={state?.declarationId}
-      endpoint={`${API_URL}${ENDPOINT_DECLARATION_PATH}/${state?.declarationId}${ENDPOINT_FILE_UPLOAD_GENERAL_DECLARATION_PATH}`}
-      fileNameRequired="FAL 1 - General Declaration"
+      endpoint={`${API_URL}${ENDPOINT_DECLARATION_PATH}/${declarationId}${ENDPOINT_FILE_UPLOAD_GENERAL_DECLARATION_PATH}`}
+      errorMessageMapFile={ErrorMappingFal1}
+      fileNameRequired={GENERAL_DECLARATION_TEMPLATE_NAME}
       fileTypesAllowed="csv or xlsx"
       formId="uploadGeneralDeclaration"
-      pageHeading="Upload the General Declaration (FAL 1)"
+      pageHeading={`Upload the ${GENERAL_DECLARATION_TEMPLATE_NAME}`}
       submitButtonLabel="Check for errors"
-      urlSuccessPage={VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL}
-      urlThisPage={VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}
+      urlSuccessPage={`${VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL}/${declarationId}`}
+      urlThisPage={`${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}/${declarationId}`}
     >
       <SupportingText />
     </FileUploadForm>

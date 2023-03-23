@@ -12,14 +12,17 @@ import {
 import {
   CHANGE_YOUR_PASSWORD_PAGE_NAME,
   GENERIC_CONFIRMATION_URL,
+  PASSWORD_GUIDENCE_URL,
   YOUR_DETAILS_PAGE_URL,
 } from '../../../constants/AppUrlConstants';
 
 const PasswordSupportingText = () => (
   <div className="govuk-grid-column-two-thirds">
     <p className="govuk-body govuk-!-font-weight-bold">Enter a new password</p>
-    <p className="govuk-body">Your new password needs to be 10 or more characters. To help you create a long and strong password, the National Cyber Security Centre recommends using 3 random words.</p>
-    <p className="govuk-body">You can use a mix of letters, numbers or symbols in these three words.</p>
+    <p className="govuk-body">Your password must be at least 10 characters long. There is no restriction on the characters you use.</p>
+    <p className="govuk-body">
+      To create a long and strong password, the National Cyber Security Centre recommends using <a href={PASSWORD_GUIDENCE_URL} target="_blank" rel="noreferrer">3 random words (opens in new tab)</a>.
+    </p>
   </div>
 );
 

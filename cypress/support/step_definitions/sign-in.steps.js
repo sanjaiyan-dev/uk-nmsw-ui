@@ -1,4 +1,4 @@
-import {Given, When, Then, Before} from '@badeball/cypress-cucumber-preprocessor';
+import {Given, When, Then, Before, After} from '@badeball/cypress-cucumber-preprocessor';
 import EmailPage from '../../e2e/pages/registration/email.page.js';
 import SignInPage from '../../e2e/pages/sign-in.page.js';
 import LandingPage from '../../e2e/pages/landing.page';
@@ -8,6 +8,10 @@ Before(() => {
   cy.fixture('registration.json').then((user) => {
     this.user = user;
   });
+});
+
+After(() => {
+  cy.clearAllSessionStorage()
 });
 
 Given('I am on the sign-in page', () => {

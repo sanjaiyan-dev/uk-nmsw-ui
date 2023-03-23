@@ -6,8 +6,10 @@ import MockAdapter from 'axios-mock-adapter';
 import {
   REGISTER_ACCOUNT_ENDPOINT,
   TOKEN_INVALID,
+  TOKEN_USED_TO_REGISTER,
 } from '../../../constants/AppAPIConstants';
 import {
+  ERROR_ACCOUNT_ALREADY_ACTIVE_URL,
   MESSAGE_URL,
   REGISTER_CONFIRMATION_URL,
   REGISTER_EMAIL_RESEND_URL,
@@ -51,7 +53,7 @@ describe('Register password tests', () => {
      * so leaving this line for the Cypress tests
      */
     // expect(screen.getByText('To create a long and strong password, the National Cyber Security Centre recommends using ')).toBeInTheDocument();
-    expect(screen.getByText('3 random words')).toBeInTheDocument();
+    expect(screen.getByText('3 random words (opens in new tab)')).toBeInTheDocument();
     expect(screen.getByRole('link')).toHaveAttribute('href', 'https://www.ncsc.gov.uk/collection/top-tips-for-staying-secure-online/three-random-words#:~:text=Why%20does%20the%20NCSC%20recommend,enough%20for%20you%20to%20remember');
   });
 
@@ -79,6 +81,7 @@ describe('Register password tests', () => {
     const user = userEvent.setup();
     render(<MemoryRouter><RegisterYourPassword /></MemoryRouter>);
     await user.click(screen.getByTestId('submit-button'));
+    await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
   });
 
@@ -86,6 +89,7 @@ describe('Register password tests', () => {
     const user = userEvent.setup();
     render(<MemoryRouter><RegisterYourPassword /></MemoryRouter>);
     await user.click(screen.getByTestId('submit-button'));
+    await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
     expect(screen.getAllByText('Enter a password')).toHaveLength(2);
     expect(screen.getAllByText('Confirm your password')).toHaveLength(3); // label & 2 error messages
@@ -96,6 +100,7 @@ describe('Register password tests', () => {
     render(<MemoryRouter><RegisterYourPassword /></MemoryRouter>);
     await user.type(screen.getByLabelText('Password'), 'mypasswordis');
     await user.click(screen.getByTestId('submit-button'));
+    await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
     expect(screen.getAllByText('Confirm your password')).toHaveLength(3);
   });
@@ -105,6 +110,7 @@ describe('Register password tests', () => {
     render(<MemoryRouter><RegisterYourPassword /></MemoryRouter>);
     await user.type(screen.getByLabelText('Password'), 'shortpwd');
     await user.click(screen.getByTestId('submit-button'));
+    await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
     expect(screen.getAllByText('Passwords must be at least 10 characters long')).toHaveLength(2);
   });
@@ -115,6 +121,7 @@ describe('Register password tests', () => {
     await user.type(screen.getByLabelText('Password'), 'mypasswordis');
     await user.type(screen.getByLabelText('Confirm your password'), 'mypass');
     await user.click(screen.getByTestId('submit-button'));
+    await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
     expect(screen.getAllByText('Passwords must match')).toHaveLength(2);
   });
@@ -125,6 +132,7 @@ describe('Register password tests', () => {
     await user.type(screen.getByLabelText('Password'), 'mypasswordis');
     await user.type(screen.getByLabelText('Confirm your password'), 'myPasswordIs');
     await user.click(screen.getByTestId('submit-button'));
+    await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
     expect(screen.getAllByText('Passwords must match')).toHaveLength(2);
   });
@@ -134,6 +142,7 @@ describe('Register password tests', () => {
     render(<MemoryRouter><RegisterYourPassword state={{ dataToSubmit: { sampleField: 'field value', secondField: 'second value' } }} /></MemoryRouter>);
     await user.type(screen.getByLabelText('Password'), 'my password');
     await user.click(screen.getByTestId('submit-button'));
+    await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
     expect(screen.getAllByText('Enter a password that does not contain spaces')).toHaveLength(2);
   });
@@ -143,6 +152,7 @@ describe('Register password tests', () => {
     render(<MemoryRouter><RegisterYourPassword state={{ dataToSubmit: { sampleField: 'field value', secondField: 'second value' } }} /></MemoryRouter>);
     await user.type(screen.getByLabelText('Password'), ' mypassword');
     await user.click(screen.getByTestId('submit-button'));
+    await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
     expect(screen.getAllByText('Enter a password that does not contain spaces')).toHaveLength(2);
   });
@@ -152,6 +162,7 @@ describe('Register password tests', () => {
     render(<MemoryRouter><RegisterYourPassword state={{ dataToSubmit: { sampleField: 'field value', secondField: 'second value' } }} /></MemoryRouter>);
     await user.type(screen.getByLabelText('Password'), 'mypassword ');
     await user.click(screen.getByTestId('submit-button'));
+    await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
     expect(screen.getAllByText('Enter a password that does not contain spaces')).toHaveLength(2);
   });
@@ -161,6 +172,7 @@ describe('Register password tests', () => {
     render(<MemoryRouter><RegisterYourPassword state={{ dataToSubmit: { sampleField: 'field value', secondField: 'second value' } }} /></MemoryRouter>);
     await user.type(screen.getByLabelText('Password'), '          ');
     await user.click(screen.getByTestId('submit-button'));
+    await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
     expect(screen.getAllByText('Enter a password')).toHaveLength(2);
     expect(screen.queryByText('Enter a password that does not contain spaces')).not.toBeInTheDocument();
@@ -171,6 +183,7 @@ describe('Register password tests', () => {
     render(<MemoryRouter><RegisterYourPassword state={{ dataToSubmit: { sampleField: 'field value', secondField: 'second value' } }} /></MemoryRouter>);
     await user.type(screen.getByLabelText('Password'), '   s');
     await user.click(screen.getByTestId('submit-button'));
+    await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
     expect(screen.getAllByText('Passwords must be at least 10 characters long')).toHaveLength(2);
     expect(screen.queryByText('Enter a password that does not contain spaces')).not.toBeInTheDocument();
@@ -271,7 +284,7 @@ describe('Register password tests', () => {
     await user.type(screen.getByLabelText('Confirm your password'), 'mypasswordis');
     await user.click(screen.getByTestId('submit-button'));
     await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(REGISTER_CONFIRMATION_URL, { state: { companyName: 'My company' } });
+      expect(mockedUseNavigate).toHaveBeenCalledWith(REGISTER_CONFIRMATION_URL, { state: { companyName: 'My company', fullName: 'Joe Bloggs', email: 'testemail@email.com' } });
     });
   });
 
@@ -329,6 +342,31 @@ describe('Register password tests', () => {
     await user.click(screen.getByTestId('submit-button'));
     await waitFor(() => {
       expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, { state: { title: 'Something has gone wrong', redirectURL: REGISTER_PASSWORD_URL } });
+    });
+  });
+
+  it('should navigate to account already active page if PATCH response returns token already used', async () => {
+    const user = userEvent.setup();
+    const dataToSubmit = {
+      companyName: 'My company',
+      country: 'AUS',
+      emailAddress: 'testemail@email.com',
+      fullName: 'Joe Bloggs',
+      phoneNumber: '(123)12345',
+      shippingAgent: 'yes',
+    };
+    mockAxios
+      .onPatch(REGISTER_ACCOUNT_ENDPOINT)
+      .reply(401, {
+        message: TOKEN_USED_TO_REGISTER,
+      });
+
+    render(<MemoryRouter><RegisterYourPassword /></MemoryRouter>);
+    await user.type(screen.getByLabelText('Password'), 'mypasswordis');
+    await user.type(screen.getByLabelText('Confirm your password'), 'mypasswordis');
+    await user.click(screen.getByTestId('submit-button'));
+    await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_ACCOUNT_ALREADY_ACTIVE_URL, { state: { dataToSubmit: { emailAddress: dataToSubmit.email } } });
     });
   });
 

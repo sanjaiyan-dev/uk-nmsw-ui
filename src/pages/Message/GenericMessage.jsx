@@ -22,7 +22,9 @@ const GenericMessage = () => {
           </button>
         )}
         {!state.button && (
-          <Link to={state?.redirectURL || LANDING_URL} state={state}>Click here to continue</Link>
+          <Link to={state?.redirectURL || LANDING_URL} state={state}>
+            {state?.linkText || 'Click here to continue'}
+          </Link>
         )}
       </div>
     </div>
