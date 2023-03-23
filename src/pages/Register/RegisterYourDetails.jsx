@@ -80,7 +80,7 @@ const RegisterYourDetails = () => {
         },
         {
           type: VALIDATE_PHONE_NUMBER,
-          message: 'Enter a telephone number in the correct format',
+          message: 'Telephone number must be in the correct format',
         },
       ],
     },
