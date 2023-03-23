@@ -54,14 +54,14 @@ describe('Register email address tests', () => {
     const user = userEvent.setup();
     render(<MemoryRouter><RegisterEmailAddress /></MemoryRouter>);
     await user.click(screen.getByTestId('submit-button'));
-    expect(screen.getAllByText('Enter an email address in the correct format, like name@example.com')).toHaveLength(2);
+    expect(screen.getAllByText('Enter a real email address')).toHaveLength(2);
   });
 
   it('should scroll to email field and set focus on email input if user clicks on email required error link', async () => {
     const user = userEvent.setup();
     render(<MemoryRouter><RegisterEmailAddress /></MemoryRouter>);
     await user.click(screen.getByTestId('submit-button'));
-    await user.click(screen.getByRole('button', { name: 'Enter an email address in the correct format, like name@example.com' }));
+    await user.click(screen.getByRole('button', { name: 'Enter a real email address' }));
     expect(scrollIntoViewMock).toHaveBeenCalled();
     expect(screen.getAllByRole('textbox', { name: /email/i })[0]).toHaveFocus();
   });
@@ -71,7 +71,7 @@ describe('Register email address tests', () => {
     render(<MemoryRouter><RegisterEmailAddress /></MemoryRouter>);
     await user.type(screen.getAllByRole('textbox', { name: /email/i })[0], 'testemail');
     await user.click(screen.getByTestId('submit-button'));
-    expect(screen.getAllByText('Enter an email address in the correct format, like name@example.com')).toHaveLength(2);
+    expect(screen.getAllByText('Enter a real email address')).toHaveLength(2);
   });
 
   it('should display the email invalid error if the email address has no .xx', async () => {
@@ -79,7 +79,7 @@ describe('Register email address tests', () => {
     render(<MemoryRouter><RegisterEmailAddress /></MemoryRouter>);
     await user.type(screen.getAllByRole('textbox', { name: /email/i })[0], 'testemail@boo');
     await user.click(screen.getByTestId('submit-button'));
-    expect(screen.getAllByText('Enter an email address in the correct format, like name@example.com')).toHaveLength(2);
+    expect(screen.getAllByText('Enter a real email address')).toHaveLength(2);
   });
 
   it('should scroll to email field and set focus on email input if user clicks on email invalid format error link', async () => {
@@ -87,7 +87,7 @@ describe('Register email address tests', () => {
     render(<MemoryRouter><RegisterEmailAddress /></MemoryRouter>);
     await user.type(screen.getAllByRole('textbox', { name: /email/i })[0], 'testemail@boo');
     await user.click(screen.getByTestId('submit-button'));
-    await user.click(screen.getByRole('button', { name: 'Enter an email address in the correct format, like name@example.com' }));
+    await user.click(screen.getByRole('button', { name: 'Enter a real email address' }));
     expect(scrollIntoViewMock).toHaveBeenCalled();
     expect(screen.getAllByRole('textbox', { name: /email/i })[0]).toHaveFocus();
   });
@@ -116,7 +116,7 @@ describe('Register email address tests', () => {
     await user.type(screen.getAllByRole('textbox', { name: /email/i })[0], 'testemail@boo.com');
     await user.type(screen.getAllByRole('textbox', { name: /email/i })[1], 'testemail@boo');
     await user.click(screen.getByTestId('submit-button'));
-    expect(screen.getAllByText('Your email addresses must match')).toHaveLength(2);
+    expect(screen.getAllByText('Email addresses must match')).toHaveLength(2);
   });
 
   it('should scroll to repeat email field and set focus on repeat email input if user clicks on emails dont match error link', async () => {
@@ -125,7 +125,7 @@ describe('Register email address tests', () => {
     await user.type(screen.getAllByRole('textbox', { name: /email/i })[0], 'testemail@boo.com');
     await user.type(screen.getAllByRole('textbox', { name: /email/i })[1], 'testemail@boo');
     await user.click(screen.getByTestId('submit-button'));
-    await user.click(screen.getByRole('button', { name: 'Your email addresses must match' }));
+    await user.click(screen.getByRole('button', { name: 'Email addresses must match' }));
     expect(scrollIntoViewMock).toHaveBeenCalled();
     expect(screen.getAllByRole('textbox', { name: /email/i })[1]).toHaveFocus();
   });
@@ -137,8 +137,8 @@ describe('Register email address tests', () => {
     await user.type(screen.getAllByRole('textbox', { name: /email/i })[1], 'testEMAIL@email.COM');
     await user.click(screen.getByTestId('submit-button'));
     expect(screen.queryByText('Enter your email address')).not.toBeInTheDocument();
-    expect(screen.queryByText('Enter your email address in the correct format, like name@example.com')).not.toBeInTheDocument();
+    expect(screen.queryByText('Enter a real email address')).not.toBeInTheDocument();
     expect(screen.queryByText('Confirm your email address')).not.toBeInTheDocument();
-    expect(screen.queryByText('Your email addresses must match')).not.toBeInTheDocument();
+    expect(screen.queryByText('Email addresses must match')).not.toBeInTheDocument();
   });
 });

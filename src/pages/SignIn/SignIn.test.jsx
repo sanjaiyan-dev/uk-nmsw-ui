@@ -105,7 +105,7 @@ describe('Sign in tests', () => {
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail');
     await user.click(screen.getByTestId('submit-button'));
-    expect(screen.getAllByText('Enter your email address in the correct format, like name@example.com')).toHaveLength(2);
+    expect(screen.getAllByText('Enter a real email address')).toHaveLength(2);
   });
 
   it('should display the email invalid error if the email address has no .xx', async () => {
@@ -113,7 +113,7 @@ describe('Sign in tests', () => {
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@boo');
     await user.click(screen.getByTestId('submit-button'));
-    expect(screen.getAllByText('Enter your email address in the correct format, like name@example.com')).toHaveLength(2);
+    expect(screen.getAllByText('Enter a real email address')).toHaveLength(2);
   });
 
   it('should scroll to email field and set focus on email input if user clicks on email invalid format error link', async () => {
@@ -121,8 +121,8 @@ describe('Sign in tests', () => {
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@boo');
     await user.click(screen.getByTestId('submit-button'));
-    await screen.findByRole('button', { name: 'Enter your email address in the correct format, like name@example.com' });
-    await user.click(screen.getByRole('button', { name: 'Enter your email address in the correct format, like name@example.com' }));
+    await screen.findByRole('button', { name: 'Enter a real email address' });
+    await user.click(screen.getByRole('button', { name: 'Enter a real email address' }));
     expect(scrollIntoViewMock).toHaveBeenCalled();
     expect(screen.getByRole('textbox', { name: /email/i })).toHaveFocus();
   });
@@ -133,7 +133,7 @@ describe('Sign in tests', () => {
     await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
     await user.click(screen.getByTestId('submit-button'));
     expect(screen.queryByText('Enter your email address')).not.toBeInTheDocument();
-    expect(screen.queryByText('Enter your email address in the correct format, like name@example.com')).not.toBeInTheDocument();
+    expect(screen.queryByText('Enter a real email address')).not.toBeInTheDocument();
   });
 
   it('should display the password required error if there is no password', async () => {
