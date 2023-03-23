@@ -63,7 +63,7 @@ const ChangeYourDetails = () => {
       validation: [
         {
           type: VALIDATE_REQUIRED,
-          message: 'Enter an international dialling code',
+          message: 'Select an international dialling code',
         },
       ],
     },
@@ -94,7 +94,7 @@ const ChangeYourDetails = () => {
       validation: [
         {
           type: VALIDATE_REQUIRED,
-          message: 'Enter country',
+          message: 'Select a country',
         },
       ],
     },

@@ -64,7 +64,7 @@ const RegisterYourDetails = () => {
       validation: [
         {
           type: VALIDATE_REQUIRED,
-          message: 'Enter an international dialling code',
+          message: 'Select an international dialling code',
         },
       ],
     },
@@ -95,7 +95,7 @@ const RegisterYourDetails = () => {
       validation: [
         {
           type: VALIDATE_REQUIRED,
-          message: 'Enter country',
+          message: 'Select a country',
         },
       ],
     },
@@ -120,7 +120,7 @@ const RegisterYourDetails = () => {
       validation: [
         {
           type: VALIDATE_REQUIRED,
-          message: 'Select is your company a shipping agent',
+          message: 'Select yes if your company is a shipping agent',
         },
       ],
     },
