@@ -48,11 +48,11 @@ const RegisterEmailAddress = () => {
       validation: [
         {
           type: VALIDATE_REQUIRED,
-          message: 'Enter an email address in the correct format, like name@example.com',
+          message: 'Enter a real email address',
         },
         {
           type: VALIDATE_EMAIL_ADDRESS,
-          message: 'Enter an email address in the correct format, like name@example.com',
+          message: 'Enter a real email address',
         },
       ],
     },
@@ -67,7 +67,7 @@ const RegisterEmailAddress = () => {
         },
         {
           type: VALIDATE_FIELD_MATCH,
-          message: 'Your email addresses must match',
+          message: 'Email addresses must match',
           condition: 'emailAddress',
         },
       ],
