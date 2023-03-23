@@ -318,7 +318,7 @@ It should NOT be used for the other types as it is redundant for them.
   validation: [
     {
       type: VALIDATE_REQUIRED,
-      message: 'Select is your company a shipping agent',
+      message: 'Select yes if your company is a shipping agent',
     },
   ],
 },
