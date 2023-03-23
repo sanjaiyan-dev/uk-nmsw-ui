@@ -22,20 +22,20 @@ const ErrorMappingFal5 = {
   E: { // rank or rating
     order: 'e',
     'none is not an allowed value': 'Enter the rank, rating or job title; for supernumeraries just put SN or supernumerary, not the job title',
-    'Value must be 35 characters or less': 'Enter the rank, rating or job title in 35 characters or less',
-    'Value must use English letters instead of special characters not recognised': 'Enter the rank, rating or job title using English letters instead of special characters not recognised',
+    'ensure this value has at most 35 characters': 'Enter the rank, rating or job title in 35 characters or less',
+    'Enter the value using English letters instead of special characters not recognised': 'Enter the rank, rating or job title using English letters instead of special characters not recognised',
   },
   F: { // surname
     order: 'f',
     'none is not an allowed value': 'Enter family name or surname as it appears in the travel document',
-    'Value must be 35 characters or less': 'Enter family name or surname in 35 characters or less',
-    'Value must use English letters instead of special characters not recognised': 'Enter family name or surname using English letters instead of special characters not recognised',
+    'ensure this value has at most 35 characters': 'Enter family name or surname in 35 characters or less',
+    'Enter the value using English letters instead of special characters not recognised': 'Enter family name or surname using English letters instead of special characters not recognised',
   },
   G: { // forenames
     order: 'g',
     'none is not an allowed value': 'Enter all forenames or given names as they appear in the travel document - if the crew member has no forename recorded enter UNKNOWN',
-    'Value must be 35 characters or less': 'Enter all forenames or given names in 35 characters or less',
-    'Value must use English letters instead of special characters not recognised': 'Enter forenames using English letters instead of special characters not recognised',
+    'ensure this value has at most 35 characters': 'Enter all forenames or given names in 35 characters or less',
+    'Enter the value using English letters instead of special characters not recognised': 'Enter forenames using English letters instead of special characters not recognised',
   },
   H: { // gender
     order: 'h',
@@ -47,8 +47,8 @@ const ErrorMappingFal5 = {
   },
   J: { // place of birth
     order: 'j',
-    'Value must be 35 characters or less': 'Enter the place of birth in 35 characters or less',
-    'Value must use English letters instead of special characters not recognised': 'Enter place of birth using English letters instead of special characters not recognised',
+    'ensure this value has at most 35 characters': 'Enter the place of birth in 35 characters or less',
+    'Enter the value using English letters instead of special characters not recognised': 'Enter place of birth using English letters instead of special characters not recognised',
   },
   K: { // nationality
     order: 'k',
