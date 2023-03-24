@@ -41,23 +41,23 @@ When('I attempt to add a file with the same name that is already added', (table)
 });
 
 Then('I am shown an error message for {string}', (file) => {
-  cy.get('.multi-file-upload--error-summary').should('have.text', `Error: A file name ${file} already exists in your list`);
+  cy.get('.multi-file-upload--error-summary').should('have.text', `Error: A file called ${file} already exists in your list`);
 });
 
 Then('I am able to delete the file', () => {
-   cy.get('.multi-file-upload--filelist').should('have.length', 7);
+  cy.get('.multi-file-upload--filelist').should('have.length', 7);
   fileUploadPage.clickDelete();
-   cy.get('.multi-file-upload--filelist').should('have.length', 6);
+  cy.get('.multi-file-upload--filelist').should('have.length', 6);
 });
 
 When('I upload a valid file, it gets uploaded', (table) => {
   fileUploadPage.selectMultipleFiles(table);
   cy.contains('Upload files').click();
-  cy.get('.success .multi-file-upload--filelist-filename').should('have.css','color','rgb(0, 112, 60)').should('have.text','General declaration FAL 1 - goodData.xlsx has been uploaded');
+  cy.get('.success .multi-file-upload--filelist-filename').should('have.css', 'color', 'rgb(0, 112, 60)').should('have.text', 'General declaration FAL 1 - goodData.xlsx has been uploaded');
 });
 
 When('I upload an invalid file, it gets rejected', (table) => {
   fileUploadPage.selectMultipleFiles(table);
   cy.contains('Upload files').click();
-  cy.get('.error .multi-file-upload--filelist-filename').should('have.css','color','rgb(212, 53, 28)').should('contain.text','MELLINA GEN DEC2.xlsx There was a problem check file and try again');
+  cy.get('.error .multi-file-upload--filelist-filename').should('have.css', 'color', 'rgb(212, 53, 28)').should('contain.text', 'MELLINA GEN DEC2.xlsx There was a problem check file and try again');
 });

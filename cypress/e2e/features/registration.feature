@@ -85,14 +85,14 @@ Feature: User Registration
     When I enter confirm email which is not same as email address
     Then I am shown corresponding error message
       | Field | repeatEmailAddress-error               |
-      | Error | Error: Your email addresses must match |
+      | Error | Error: Email addresses must match |
     When I provide my email address
     When I verify the email address
     Then the email address verified page is loaded with a continue button
     Then I am redirected to provide my other details
     When I click continue without providing any details
     Then I am shown form error message
-      | Error | Enter your full nameEnter your company nameEnter an international dialling codeEnter a telephone numberEnter countrySelect is your company a shipping agent |
+      | Error | Enter your full nameEnter your company nameSelect an international dialling codeTelephone number must beSelect a countrySelect yes if your company is a shipping agent |
     When there are no dial codes that match the number given
     Then I am shown no results found for dialled code
     When I have typed at least one number in dialling code field
@@ -104,15 +104,15 @@ Feature: User Registration
     When I provide any letters in telephone number field
     Then I am shown corresponding error message
       | Field | telephoneNumber-error                                 |
-      | Error | Error: Enter a telephone number in the correct format |
+      | Error | Error: Telephone number must be in the correct format |
     When I enter non allowed symbols like  / <>
     Then I am shown corresponding error message
       | Field | telephoneNumber-error                                 |
-      | Error | Error: Enter a telephone number in the correct format |
+      | Error | Error: Telephone number must be in the correct format |
     When I enter only allowed symbols and NO numbers
     Then I am shown corresponding error message
       | Field | telephoneNumber-error                                 |
-      | Error | Error: Enter a telephone number in the correct format |
+      | Error | Error: Telephone number must be in the correct format |
     When I provide all my details
     Then I am redirected to password page
     When I click back navigation button
@@ -125,11 +125,11 @@ Feature: User Registration
     When I enter password less than 10 characters
     Then I am shown corresponding error message
       | Field | requirePassword-error                                |
-      | Error | Error: Passwords must be at least 10 characters long |
+      | Error | Error: Password must be at least 10 characters long |
     When I enter password in invalid format
     Then I am shown corresponding error message
       | Field | requirePassword-error                                |
-      | Error | Error: Enter a password that does not contain spaces |
+      | Error | Error: Password must not contain spaces |
     When I provide my password
     Then my account is created and taken to confirmation page
     When I navigate back

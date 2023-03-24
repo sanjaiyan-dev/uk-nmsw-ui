@@ -21,7 +21,7 @@ Feature: User sign-in
     When the user enters invalid email address and sign-in
     Then I am shown corresponding error message
       | Field | email-error                                                                  |
-      | Error | Error: Enter your email address in the correct format, like name@example.com |
+      | Error | Error: Enter a real email address |
 
   Scenario: User should not be signed-in without providing email and password
     When I click sign-in without providing email and password

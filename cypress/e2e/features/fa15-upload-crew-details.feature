@@ -25,14 +25,14 @@ Feature: Upload Crew details (FAL5) file
   Scenario: Crew details page validation
     When I click check for errors without uploading any file
     Then I am shown corresponding error message
-      | Field | fileUploadInput-error                                          |
-      | Error | Error: Select a Crew details including supernumeraries (FAL 5) |
+      | Field | fileUploadInput-error |
+      | Error | Error: Select a file  |
     When I upload the file is not of type .csv or .xlsx
     Then previous the error message should clear
     When I click check for errors
     Then I am shown corresponding error message
-      | Field | fileUploadInput-error                          |
-      | Error | Error: The selected file must be a csv or xlsx |
+      | Field | fileUploadInput-error                 |
+      | Error | Error: The file must be a csv or xlsx |
     When I upload the file larger than 4MB
     When I click check for errors
     Then I am shown corresponding error message
