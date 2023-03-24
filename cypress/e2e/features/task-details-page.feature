@@ -15,6 +15,14 @@ Feature: Task details page after file uploads
     When I click save and continue
     Then I am taken to task details page
     Then I can verify voyage details on the task details page
+    When I click delete draft
+    Then I am taken to confirm delete draft page
+    When I click No to delete the draft
+    Then I am taken to task details page
+    When I click delete draft
+    Then I am taken to confirm delete draft page
+    When I click Yes to delete the draft
+    Then I am taken to your-voyages page
 
   Scenario: Verify application navigates user to landing page with missing auth token
     When I have uploaded 'Fal1-Files''General declaration FAL 1-Positive-test.xlsx'

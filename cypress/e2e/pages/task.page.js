@@ -18,14 +18,23 @@ class TaskPage {
     cy.get('.govuk-inset-text').contains(voyageType);
   }
 
-  checkDeleteDraftButton() {
-    cy.contains('Delete draft');
+  clickDeleteDraftButton() {
+    cy.contains('Delete draft').click();
   }
 
   clickSupportingDocsLink() {
     cy.contains('Supporting documents').click();
   }
 
+  clickYesDeleteDraft() {
+    cy.get('input[value=deleteDraftYes]').click();
+    cy.contains('Confirm').click();
+  }
+
+  clickNoDeleteDraft() {
+    cy.get('input[value=deleteDraftNo]').click();
+    cy.contains('Confirm').click();
+  }
 }
 
 export default new TaskPage();
