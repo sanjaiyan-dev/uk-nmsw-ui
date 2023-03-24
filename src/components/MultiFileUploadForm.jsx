@@ -11,7 +11,7 @@ const FILE_STATUS_PENDING = 'Pending';
 const FILE_STATUS_IN_PROGRESS = 'in progress';
 const FILE_STATUS_ERROR = 'Error';
 const FILE_STATUS_SUCCESS = 'Success';
-const MAX_FILES = 7;
+const MAX_FILES = 8;
 
 const FileStatusInProgress = ({ fileName }) => (
   <div className="govuk-!-margin-bottom-5 multi-file-upload--filelist-filename">
