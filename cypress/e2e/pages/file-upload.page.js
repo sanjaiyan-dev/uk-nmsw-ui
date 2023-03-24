@@ -86,6 +86,22 @@ class FileUploadPage {
   clickDelete() {
     cy.get(':nth-child(2) > .nmsw-grid-column-two-twelfths').contains('Delete').click();
   }
+
+  verifyPassengerDetailsPage() {
+    cy.url().should('include', 'passenger-details');
+  }
+
+  verifyUploadPassengerDetailsPage() {
+    cy.url().should('include', 'upload-passenger-details');
+  }
+
+  selectYesPassenger() {
+    cy.get('input[id="passengers-input[0]"]').click();
+  }
+
+  selectNoPassenger() {
+    cy.get('input[id="passengers-input[1]"]').click();
+  }
 }
 
 export default new FileUploadPage();
