@@ -82,7 +82,7 @@ describe('Display Form', () => {
         },
         {
           type: VALIDATE_PHONE_NUMBER,
-          message: 'Enter a telephone number in the correct format',
+          message: 'Telephone number must be in the correct format',
         },
       ],
     },
@@ -237,7 +237,7 @@ describe('Display Form', () => {
 
     await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
-    expect(screen.getAllByText('Enter a telephone number in the correct format')).toHaveLength(2);
+    expect(screen.getAllByText('Telephone number must be in the correct format')).toHaveLength(2);
   });
 
   it('should return an error if a phone number has no numbers in it', async () => {
@@ -258,7 +258,7 @@ describe('Display Form', () => {
 
     await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
-    expect(screen.getAllByText('Enter a telephone number in the correct format')).toHaveLength(2);
+    expect(screen.getAllByText('Telephone number must be in the correct format')).toHaveLength(2);
   });
 
   it('should NOT return an error if a phone number has characters that ARE in the defined accepted numsymbol list', async () => {
@@ -278,7 +278,7 @@ describe('Display Form', () => {
     await user.click(screen.getByRole('button', { name: 'Submit test button' }));
 
     expect(screen.queryByText('There is a problem')).not.toBeInTheDocument();
-    expect(screen.queryByText('Enter a telephone number in the correct format')).not.toBeInTheDocument();
+    expect(screen.queryByText('Telephone number must be in the correct format')).not.toBeInTheDocument();
   });
 
   it('should return the error for the first failing validation rule if there are multiple rules', async () => {

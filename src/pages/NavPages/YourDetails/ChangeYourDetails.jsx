@@ -63,7 +63,7 @@ const ChangeYourDetails = () => {
       validation: [
         {
           type: VALIDATE_REQUIRED,
-          message: 'Enter an international dialling code',
+          message: 'Select an international dialling code',
         },
       ],
     },
@@ -79,7 +79,7 @@ const ChangeYourDetails = () => {
         },
         {
           type: VALIDATE_PHONE_NUMBER,
-          message: 'Enter a telephone number in the correct format',
+          message: 'Telephone number must be in the correct format',
         },
       ],
     },
@@ -94,7 +94,7 @@ const ChangeYourDetails = () => {
       validation: [
         {
           type: VALIDATE_REQUIRED,
-          message: 'Enter country',
+          message: 'Select a country',
         },
       ],
     },

@@ -92,7 +92,7 @@ describe('Resend registration email verification email', () => {
     await user.type(screen.getAllByRole('textbox', { name: /email/i })[0], 'testemail');
     await user.click(screen.getByRole('button', { name: 'Request a new link' }));
     await screen.findByRole('heading', { name: 'There is a problem' });
-    expect(screen.getAllByText('Enter an email address in the correct format, like name@example.com')).toHaveLength(2);
+    expect(screen.getAllByText('Enter a real email address')).toHaveLength(2);
   });
 
   it('should display the email invalid error if the email address has no .xx', async () => {
@@ -101,7 +101,7 @@ describe('Resend registration email verification email', () => {
     await user.type(screen.getAllByRole('textbox', { name: /email/i })[0], 'testemail@boo');
     await user.click(screen.getByRole('button', { name: 'Request a new link' }));
     await screen.findByRole('heading', { name: 'There is a problem' });
-    expect(screen.getAllByText('Enter an email address in the correct format, like name@example.com')).toHaveLength(2);
+    expect(screen.getAllByText('Enter a real email address')).toHaveLength(2);
   });
 
   it('should scroll to email field and set focus on email input if user clicks on email invalid format error link', async () => {
@@ -110,7 +110,7 @@ describe('Resend registration email verification email', () => {
     await user.type(screen.getAllByRole('textbox', { name: /email/i })[0], 'testemail@boo');
     await user.click(screen.getByRole('button', { name: 'Request a new link' }));
     await screen.findByRole('heading', { name: 'There is a problem' });
-    await user.click(screen.getByRole('button', { name: 'Enter an email address in the correct format, like name@example.com' }));
+    await user.click(screen.getByRole('button', { name: 'Enter a real email address' }));
     expect(scrollIntoViewMock).toHaveBeenCalled();
     expect(screen.getAllByRole('textbox', { name: /email/i })[0]).toHaveFocus();
   });

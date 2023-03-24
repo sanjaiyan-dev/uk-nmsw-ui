@@ -112,8 +112,8 @@ describe('File upload tests', () => {
     await user.click(screen.getByRole('button', { name: 'Submit text from props' }));
     await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByRole('alert', { name: 'There is a problem' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Select a File name from props for error display' })).toBeInTheDocument();
-    expect(screen.getAllByText('Select a File name from props for error display')).toHaveLength(2);
+    expect(screen.getByRole('button', { name: 'Select a file' })).toBeInTheDocument();
+    expect(screen.getAllByText('Select a file')).toHaveLength(2);
     expect(scrollIntoViewMock).toHaveBeenCalled();
   });
 
@@ -133,8 +133,8 @@ describe('File upload tests', () => {
     await user.click(screen.getByRole('button', { name: 'Submit text from props' }));
     await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByRole('alert', { name: 'There is a problem' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Select a File name from props for error display' })).toBeInTheDocument();
-    expect(screen.getAllByText('Select a File name from props for error display')).toHaveLength(2);
+    expect(screen.getByRole('button', { name: 'Select a file' })).toBeInTheDocument();
+    expect(screen.getAllByText('Select a file')).toHaveLength(2);
     expect(scrollIntoViewMock).toHaveBeenCalled();
   });
 
@@ -152,8 +152,8 @@ describe('File upload tests', () => {
     expect(input.files[0]).toStrictEqual(file);
     await user.click(screen.getByRole('button', { name: 'Submit text from props' }));
     expect(screen.getByRole('alert', { name: 'There is a problem' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'The selected file must be a File types from props for error display' })).toBeInTheDocument();
-    expect(screen.getAllByText('The selected file must be a File types from props for error display')).toHaveLength(2);
+    expect(screen.getByRole('button', { name: 'The file must be a File types from props for error display' })).toBeInTheDocument();
+    expect(screen.getAllByText('The file must be a File types from props for error display')).toHaveLength(2);
     expect(scrollIntoViewMock).toHaveBeenCalled();
   });
 
@@ -176,7 +176,7 @@ describe('File upload tests', () => {
     const user = userEvent.setup();
     renderPage();
     await user.click(screen.getByRole('button', { name: 'Submit text from props' }));
-    await user.click(screen.getByRole('button', { name: 'Select a File name from props for error display' }));
+    await user.click(screen.getByRole('button', { name: 'Select a file' }));
     expect(scrollIntoViewMock).toHaveBeenCalled();
   });
 
@@ -185,10 +185,10 @@ describe('File upload tests', () => {
     const file = new File(['template'], 'template.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     renderPage();
     await user.click(screen.getByRole('button', { name: 'Submit text from props' }));
-    expect(screen.getAllByText('Select a File name from props for error display')).toHaveLength(2);
+    expect(screen.getAllByText('Select a file')).toHaveLength(2);
     const input = screen.getByLabelText('Title from props');
     await user.upload(input, file);
-    expect(screen.queryByText('Select a File name from props for error display')).not.toBeInTheDocument();
+    expect(screen.queryByText('Select a file')).not.toBeInTheDocument();
   });
 
   it('should redirect user to sign in with this page and declaration id if missing bearer token', async () => {

@@ -63,8 +63,8 @@ describe('Voyage general declaration page', () => {
     await user.click(screen.getByRole('button', { name: 'Check for errors' }));
     await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByRole('alert', { name: 'There is a problem' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: `Select a ${GENERAL_DECLARATION_TEMPLATE_NAME}` })).toBeInTheDocument();
-    expect(screen.getAllByText(`Select a ${GENERAL_DECLARATION_TEMPLATE_NAME}`)).toHaveLength(2);
+    expect(screen.getByRole('button', { name: 'Select a file' })).toBeInTheDocument();
+    expect(screen.getAllByText('Select a file')).toHaveLength(2);
   });
 
   /*

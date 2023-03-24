@@ -288,7 +288,7 @@ It should NOT be used for the other types as it is redundant for them.
     },
     {
       type: VALIDATE_EMAIL_ADDRESS,
-      message: 'Enter an email address in the correct format, like name@example.com',
+      message: 'Enter a real email address',
     },
   ],
 },
@@ -318,7 +318,7 @@ It should NOT be used for the other types as it is redundant for them.
   validation: [
     {
       type: VALIDATE_REQUIRED,
-      message: 'Select is your company a shipping agent',
+      message: 'Select yes if your company is a shipping agent',
     },
   ],
 },

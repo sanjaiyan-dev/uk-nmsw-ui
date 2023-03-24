@@ -140,12 +140,12 @@ describe('Error mapping for Crew Details (FAL 5) tests', () => {
       .onPost('/specific-endpoint-path-for-filetype')
       .reply(400, {
         C5: 'Enter the country as a 3-letter ISO country code; for example, GBR, SWE, NLD',
-        F6: 'Value must be 35 characters or less',
+        F6: 'ensure this value has at most 35 characters',
         K5: 'Enter the country as a 3-letter ISO country code; for example, GBR, SWE, NLD',
         D13: 'ensure this value has at most 35 characters',
-        G9: 'Value must be 35 characters or less',
-        E5: 'Value must be 35 characters or less',
-        J10: 'Value must be 35 characters or less',
+        G9: 'ensure this value has at most 35 characters',
+        E5: 'ensure this value has at most 35 characters',
+        J10: 'ensure this value has at most 35 characters',
       });
     renderPage();
     const input = screen.getByLabelText('Title from props');
@@ -204,11 +204,11 @@ describe('Error mapping for Crew Details (FAL 5) tests', () => {
       .onPost('/specific-endpoint-path-for-filetype')
       .reply(400, {
         A5: 'Enter travel document as P, I, O or as Passport, ID card, Other',
-        E12: 'Value must use English letters instead of special characters not recognised',
+        E12: 'Enter the value using English letters instead of special characters not recognised',
         D8: 'Number of the travel document must be only numbers',
-        G9: 'Value must use English letters instead of special characters not recognised',
-        F6: 'Value must use English letters instead of special characters not recognised',
-        J22: 'Value must use English letters instead of special characters not recognised',
+        G9: 'Enter the value using English letters instead of special characters not recognised',
+        F6: 'Enter the value using English letters instead of special characters not recognised',
+        J22: 'Enter the value using English letters instead of special characters not recognised',
       });
     renderPage();
     const input = screen.getByLabelText('Title from props');

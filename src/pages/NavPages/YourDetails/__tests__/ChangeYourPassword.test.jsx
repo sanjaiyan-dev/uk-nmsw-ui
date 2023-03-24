@@ -72,7 +72,7 @@ describe('Change your password tests', () => {
     expect(screen.getAllByText('Enter a password')).toHaveLength(2);
     // This text is also in the 'hint' text so occurs 3 times
     expect(screen.getAllByText('Enter a new password')).toHaveLength(3);
-    expect(screen.getAllByText('Confirm a new password')).toHaveLength(2);
+    expect(screen.getAllByText('Confirm your new password')).toHaveLength(2);
   });
 
   it('should display error message if fields are formatted incorrectly', async () => {
@@ -94,7 +94,7 @@ describe('Change your password tests', () => {
     await user.click(screen.getByTestId('submit-button'));
     await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
-    expect(screen.getAllByText('Passwords must be at least 10 characters long')).toHaveLength(2);
+    expect(screen.getAllByText('Password must be at least 10 characters long')).toHaveLength(2);
   });
 
   it('should display error message if password contains spaces', async () => {
@@ -104,7 +104,7 @@ describe('Change your password tests', () => {
     await user.click(screen.getByTestId('submit-button'));
     await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
-    expect(screen.getAllByText('Enter a password that does not contain spaces')).toHaveLength(2);
+    expect(screen.getAllByText('Password must not contain spaces')).toHaveLength(2);
   });
 
   it('should NOT display error messagess if fields are valid', async () => {
@@ -116,10 +116,10 @@ describe('Change your password tests', () => {
     await user.click(screen.getByTestId('submit-button'));
     expect(screen.queryByText('There is a problem')).not.toBeInTheDocument();
     expect(screen.queryByText('Enter a password')).not.toBeInTheDocument();
-    expect(screen.queryByText('Confirm a new password')).not.toBeInTheDocument();
+    expect(screen.queryByText('Confirm your new password')).not.toBeInTheDocument();
     expect(screen.queryByText('Passwords must match')).not.toBeInTheDocument();
-    expect(screen.queryByText('Passwords must be at least 10 characters long')).not.toBeInTheDocument();
-    expect(screen.queryByText('Enter a password that does not contain spaces')).not.toBeInTheDocument();
+    expect(screen.queryByText('Password must be at least 10 characters long')).not.toBeInTheDocument();
+    expect(screen.queryByText('Password must not contain spaces')).not.toBeInTheDocument();
   });
 
   it('should take user to a confirmation page is there are no errors', async () => {

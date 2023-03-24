@@ -139,7 +139,7 @@ describe('Multi file upload tests', () => {
 
     const input = screen.getByTestId('multiFileUploadInput');
     await user.upload(input, files);
-    expect(screen.getAllByText("You've selected too many files. You can only add 7.")).toHaveLength(2);
+    expect(screen.getAllByText("You've selected too many files: you can only add 7")).toHaveLength(2);
   });
 
   it('should only allow a max of seven files be added for upload - more than 7 selected over multiple adds', async () => {
@@ -165,7 +165,7 @@ describe('Multi file upload tests', () => {
 
     await user.upload(input, additionalFiles);
     expect(screen.getAllByText('Pending')).toHaveLength(2); // it does not let user add the extra files, remains at 2
-    expect(screen.getAllByText("You've selected too many files. You can only add 5 more files.")).toHaveLength(2);
+    expect(screen.getAllByText("You've selected too many files: you can add up to 5 more files")).toHaveLength(2);
   });
 
   it('should only allow a max of seven files be added for upload - 7 added and tries to add more', async () => {
@@ -190,7 +190,7 @@ describe('Multi file upload tests', () => {
 
     await user.upload(input, additionalFiles);
     expect(screen.getAllByText('Pending')).toHaveLength(7); // it does not let user add the extra files, remains at 2
-    expect(screen.getAllByText("You've selected too many files. You can add 0 more files.")).toHaveLength(2);
+    expect(screen.getAllByText("You've selected too many files: you can add up to 0 more files")).toHaveLength(2);
   });
 
   it('should not repeat error messages when too many files selected for upload - 7 added and tries to add more', async () => {
@@ -219,11 +219,11 @@ describe('Multi file upload tests', () => {
 
     await user.upload(input, additionalFiles);
     expect(screen.getAllByText('Pending')).toHaveLength(7); // it does not let user add the extra files, remains at 2
-    expect(screen.getAllByText("You've selected too many files. You can add 0 more files.")).toHaveLength(2);
+    expect(screen.getAllByText("You've selected too many files: you can add up to 0 more files")).toHaveLength(2);
 
     await user.upload(input, additionalFilesTwo); // repeat and expect to still only have the 2 instance of error on screen
     expect(screen.getAllByText('Pending')).toHaveLength(7); // it does not let user add the extra files, remains at 2
-    expect(screen.getAllByText("You've selected too many files. You can add 0 more files.")).toHaveLength(2);
+    expect(screen.getAllByText("You've selected too many files: you can add up to 0 more files")).toHaveLength(2);
   });
 
   it('should remove a pre-uploaded file from the list if its delete button is clicked', async () => {
@@ -292,8 +292,8 @@ describe('Multi file upload tests', () => {
     expect(screen.getAllByRole('button', { name: 'Delete' })).toHaveLength(5);
     expect(screen.getAllByText('Pending')).toHaveLength(5);
 
-    expect(screen.getByText('A file name template2.xlsx already exists in your list')).toBeInTheDocument();
-    expect(screen.getByText('A file name template4.xlsx already exists in your list')).toBeInTheDocument();
+    expect(screen.getByText('A file called template2.xlsx already exists in your list')).toBeInTheDocument();
+    expect(screen.getByText('A file called template4.xlsx already exists in your list')).toBeInTheDocument();
   });
 
   it('should load the next page on submit button click', async () => {
