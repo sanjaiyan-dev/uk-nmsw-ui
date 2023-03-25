@@ -74,17 +74,17 @@ Feature: User Registration
     When I click create an account on the landing page
     When I click send verification email without providing any details
     Then I am shown form error message
-      | Error | Enter an email address in the correct format, like name@example.comConfirm your email address |
+      | Error | Enter a real email addressConfirm your email address |
     When I enter invalid email address and continue without confirm email address
     Then I am shown corresponding error message
-      | Field | emailAddress-error                                                         |
-      | Error | Error: Enter an email address in the correct format, like name@example.com |
+      | Field | emailAddress-error                |
+      | Error | Error: Enter a real email address |
     Then I am shown corresponding error message
       | Field | repeatEmailAddress-error          |
       | Error | Error: Confirm your email address |
     When I enter confirm email which is not same as email address
     Then I am shown corresponding error message
-      | Field | repeatEmailAddress-error               |
+      | Field | repeatEmailAddress-error          |
       | Error | Error: Email addresses must match |
     When I provide my email address
     When I verify the email address
@@ -92,7 +92,7 @@ Feature: User Registration
     Then I am redirected to provide my other details
     When I click continue without providing any details
     Then I am shown form error message
-      | Error | Enter your full nameEnter your company nameSelect an international dialling codeTelephone number must beSelect a countrySelect yes if your company is a shipping agent |
+      | Error | Enter your full nameEnter your company nameSelect an international dialling codeEnter a telephone numberSelect a countrySelect yes if your company is a shipping agent |
     When there are no dial codes that match the number given
     Then I am shown no results found for dialled code
     When I have typed at least one number in dialling code field
@@ -124,11 +124,11 @@ Feature: User Registration
       | Error | Enter a passwordConfirm your password |
     When I enter password less than 10 characters
     Then I am shown corresponding error message
-      | Field | requirePassword-error                                |
+      | Field | requirePassword-error                               |
       | Error | Error: Password must be at least 10 characters long |
     When I enter password in invalid format
     Then I am shown corresponding error message
-      | Field | requirePassword-error                                |
+      | Field | requirePassword-error                   |
       | Error | Error: Password must not contain spaces |
     When I provide my password
     Then my account is created and taken to confirmation page
