@@ -1,14 +1,19 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
-import { VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL, VOYAGE_TASK_LIST_URL, YOUR_VOYAGES_URL } from '../../../constants/AppUrlConstants';
+import { MemoryRouter } from 'react-router-dom';
+import {
+  URL_DECLARATIONID_IDENTIFIER,
+  VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL,
+  VOYAGE_TASK_LIST_URL,
+  YOUR_VOYAGES_URL,
+} from '../../../constants/AppUrlConstants';
 import FileUploadConfirmation from '../FileUploadConfirmation';
 
 const mockUseLocationState = { state: {} };
 const mockedUseNavigate = jest.fn();
 
-jest.mock('react-router', () => ({
-  ...jest.requireActual('react-router'),
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
   useNavigate: () => mockedUseNavigate,
   useLocation: jest.fn().mockImplementation(() => mockUseLocationState),
 }));
@@ -16,10 +21,8 @@ jest.mock('react-router', () => ({
 // using Gen Dec as an example URL that calls the File Upload component
 const renderPage = () => {
   render(
-    <MemoryRouter initialEntries={[`${VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL}/123`]}>
-      <Routes>
-        <Route path={`${VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL}/:declarationId`} element={<FileUploadConfirmation />} />
-      </Routes>
+    <MemoryRouter initialEntries={[`${VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL}?${URL_DECLARATIONID_IDENTIFIER}=123`]}>
+      <FileUploadConfirmation />
     </MemoryRouter>,
   );
 };
@@ -42,9 +45,7 @@ describe('File upload success confirmation page', () => {
   it('should render an error without declarationId in params', async () => {
     render(
       <MemoryRouter initialEntries={[`${VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL}`]}>
-        <Routes>
-          <Route path={`${VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL}`} element={<FileUploadConfirmation />} />
-        </Routes>
+        <FileUploadConfirmation />
       </MemoryRouter>,
     );
     await screen.findByRole('heading', { name: 'Something has gone wrong' });
@@ -66,6 +67,6 @@ describe('File upload success confirmation page', () => {
     renderPage();
     expect(screen.getByRole('button', { name: 'Save and continue' })).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Save and continue' }));
-    expect(mockedUseNavigate).toHaveBeenCalledWith(`${VOYAGE_TASK_LIST_URL}/123`);
+    expect(mockedUseNavigate).toHaveBeenCalledWith(`${VOYAGE_TASK_LIST_URL}?${URL_DECLARATIONID_IDENTIFIER}=123`);
   });
 });

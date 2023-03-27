@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import {
+  URL_DECLARATIONID_IDENTIFIER,
   VOYAGE_PASSENGERS_URL,
   VOYAGE_PASSENGER_UPLOAD_URL,
   VOYAGE_TASK_LIST_URL,
@@ -12,18 +13,16 @@ import VoyagePassengers from '../VoyagePassengers';
 const mockUseLocationState = { state: {} };
 const mockedUseNavigate = jest.fn();
 
-jest.mock('react-router', () => ({
-  ...jest.requireActual('react-router'),
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
   useNavigate: () => mockedUseNavigate,
   useLocation: jest.fn().mockImplementation(() => mockUseLocationState),
 }));
 
 const renderPage = () => {
   render(
-    <MemoryRouter initialEntries={[`${VOYAGE_PASSENGERS_URL}/123`]}>
-      <Routes>
-        <Route path={`${VOYAGE_PASSENGERS_URL}/:declarationId`} element={<VoyagePassengers />} />
-      </Routes>
+    <MemoryRouter initialEntries={[`${VOYAGE_PASSENGERS_URL}?${URL_DECLARATIONID_IDENTIFIER}=123`]}>
+      <VoyagePassengers />
     </MemoryRouter>,
   );
 };
@@ -45,9 +44,7 @@ describe('Voyage passengers page', () => {
   it('should render an error without declarationId', async () => {
     render(
       <MemoryRouter initialEntries={[`${VOYAGE_PASSENGERS_URL}`]}>
-        <Routes>
-          <Route path={`${VOYAGE_PASSENGERS_URL}`} element={<VoyagePassengers />} />
-        </Routes>
+        <VoyagePassengers />
       </MemoryRouter>,
     );
     await screen.findByRole('heading', { name: 'Something has gone wrong' });
@@ -61,7 +58,7 @@ describe('Voyage passengers page', () => {
     expect(screen.getByRole('button', { name: 'Save and continue' })).toBeInTheDocument();
     await user.click(screen.getByRole('radio', { name: 'Yes' }));
     await user.click(screen.getByRole('button', { name: 'Save and continue' }));
-    expect(mockedUseNavigate).toHaveBeenCalledWith(`${VOYAGE_PASSENGER_UPLOAD_URL}/123`);
+    expect(mockedUseNavigate).toHaveBeenCalledWith(`${VOYAGE_PASSENGER_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=123`);
   });
 
   it('should go to the task details page if user selects NO', async () => {
@@ -70,6 +67,6 @@ describe('Voyage passengers page', () => {
     expect(screen.getByRole('button', { name: 'Save and continue' })).toBeInTheDocument();
     await user.click(screen.getByRole('radio', { name: 'No' }));
     await user.click(screen.getByRole('button', { name: 'Save and continue' }));
-    expect(mockedUseNavigate).toHaveBeenCalledWith(`${VOYAGE_TASK_LIST_URL}/123`);
+    expect(mockedUseNavigate).toHaveBeenCalledWith(`${VOYAGE_TASK_LIST_URL}?${URL_DECLARATIONID_IDENTIFIER}=123`);
   });
 });
