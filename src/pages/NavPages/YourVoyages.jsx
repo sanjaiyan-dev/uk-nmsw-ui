@@ -49,7 +49,7 @@ const YourVoyages = () => {
       });
       if (response.status === 200) {
         console.log('declaration id', response.data.id);
-        navigate(`${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}/${response.data.id}`);
+        navigate(`${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}?report=${response.data.id}`);
       }
     } catch (err) {
       // 422 missing segments = missing bearer token for this endpoint

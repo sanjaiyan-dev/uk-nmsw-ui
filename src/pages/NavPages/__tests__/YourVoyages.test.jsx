@@ -6,6 +6,7 @@ import MockAdapter from 'axios-mock-adapter';
 import { CREATE_VOYAGE_ENDPOINT, TOKEN_EXPIRED } from '../../../constants/AppAPIConstants';
 import {
   SIGN_IN_URL,
+  URL_DECLARATIONID_IDENTIFIER,
   VOYAGE_GENERAL_DECLARATION_UPLOAD_URL,
   YOUR_VOYAGES_PAGE_NAME,
   YOUR_VOYAGES_URL,
@@ -66,7 +67,7 @@ describe('Your voyages page tests', () => {
     expect(screen.getByRole('button', { name: 'Report a voyage' })).toBeInTheDocument();
     user.click(screen.getByRole('button', { name: 'Report a voyage' }));
     await waitFor(() => {
-      expect(mockedUseNavigate).toHaveBeenCalledWith(`${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}/123`);
+      expect(mockedUseNavigate).toHaveBeenCalledWith(`${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=123`);
     });
   });
 
