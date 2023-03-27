@@ -1,11 +1,12 @@
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { VOYAGE_TASK_LIST_URL, YOUR_VOYAGES_URL } from '../../constants/AppUrlConstants';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { URL_DECLARATIONID_IDENTIFIER, VOYAGE_TASK_LIST_URL, YOUR_VOYAGES_URL } from '../../constants/AppUrlConstants';
 import Message from '../../components/Message';
 
 const FileUploadConfirmation = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const { declarationId } = useParams();
+  const [searchParams] = useSearchParams();
+  const declarationId = searchParams.get(URL_DECLARATIONID_IDENTIFIER);
   document.title = 'No errors found';
 
   if (!declarationId || !state?.fileName) {
@@ -39,7 +40,7 @@ const FileUploadConfirmation = () => {
             type="button"
             className="govuk-button"
             data-module="govuk-button"
-            onClick={() => navigate(`${VOYAGE_TASK_LIST_URL}/${declarationId}`)}
+            onClick={() => navigate(`${VOYAGE_TASK_LIST_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`)}
           >
             Save and continue
           </button>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import LoadingSpinner from '../../components/LoadingSpinner';
@@ -8,6 +8,7 @@ import { countries } from '../../constants/CountryData';
 import {
   MESSAGE_URL,
   SIGN_IN_URL,
+  URL_DECLARATIONID_IDENTIFIER,
   VOYAGE_CHECK_YOUR_ANSWERS,
   VOYAGE_CREW_UPLOAD_URL,
   VOYAGE_GENERAL_DECLARATION_UPLOAD_URL,
@@ -20,7 +21,8 @@ import GetDeclaration from '../../utils/GetDeclaration';
 const VoyageCheckYourAnswers = () => {
   dayjs.extend(customParseFormat);
   const navigate = useNavigate();
-  const { declarationId } = useParams();
+  const [searchParams] = useSearchParams();
+  const declarationId = searchParams.get(URL_DECLARATIONID_IDENTIFIER);
   const [isLoading, setIsLoading] = useState(false);
   const [voyageDetails, setVoyageDetails] = useState([]);
 
@@ -33,21 +35,21 @@ const VoyageCheckYourAnswers = () => {
       title: 'Crew details',
       value: '',
       fileLink: '',
-      changeLink: `${VOYAGE_CREW_UPLOAD_URL}/${declarationId}`,
+      changeLink: `${VOYAGE_CREW_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
     },
     {
       id: 'passengerDetails',
       title: 'Passenger details',
       value: '',
       fileLink: '',
-      changeLink: `${VOYAGE_PASSENGERS_URL}/${declarationId}`,
+      changeLink: `${VOYAGE_PASSENGERS_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
     },
     {
       id: 'supportingDocuments',
       title: 'Supporting documents',
       value: '',
       fileLink: '',
-      changeLink: `${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}/${declarationId}`,
+      changeLink: `${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
     },
   ];
 
@@ -136,7 +138,7 @@ const VoyageCheckYourAnswers = () => {
       switch (response?.status) {
         case 401:
         case 422:
-          navigate(SIGN_IN_URL, { state: { redirectURL: `${VOYAGE_CHECK_YOUR_ANSWERS}/${declarationId}` } });
+          navigate(SIGN_IN_URL, { state: { redirectURL: `${VOYAGE_CHECK_YOUR_ANSWERS}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}` } });
           break;
         default: navigate(MESSAGE_URL, {
           state: {
@@ -186,7 +188,7 @@ const VoyageCheckYourAnswers = () => {
               <dd className="govuk-summary-list__value" />
               <dd className="govuk-summary-list__actions">
                 <Link
-                  to={`${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}/${declarationId}`}
+                  to={`${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`}
                   aria-describedby="voyageDetails"
                 >
                   Change<span className="govuk-visually-hidden"> change voyage details</span>
