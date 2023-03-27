@@ -9,6 +9,7 @@ import {
   VOYAGE_PASSENGER_UPLOAD_URL,
   YOUR_VOYAGES_URL,
 } from '../../constants/AppUrlConstants';
+import ErrorMappingFal6 from '../../constants/ErrorMappingFal6';
 
 const VoyagePassengerUpload = () => {
   const [searchParams] = useSearchParams();
@@ -24,7 +25,7 @@ const VoyagePassengerUpload = () => {
   return (
     <FileUploadForm
       endpoint={`${API_URL}${ENDPOINT_DECLARATION_PATH}/${declarationId}${ENDPOINT_FILE_UPLOAD_PASSENGER_DETAILS_PATH}`}
-      // errorMessageMapFile={}
+      errorMessageMapFile={ErrorMappingFal6}
       fileNameRequired={PASSENGER_DETAILS_TEMPLATE_NAME}
       fileTypesAllowed="csv or xlsx"
       formId="uploadPassengerDetails"
