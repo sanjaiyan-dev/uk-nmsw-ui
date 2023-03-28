@@ -25,10 +25,10 @@ Then('the details from my FAL 1 form are displayed on CYA page', () => {
     {key: 'Flag state of ship', value: "Canada"},
     {
       key: 'Departure details',
-      value: "Departure port LOCODEUS XXXDate of departure12 February 2023Time of departure13:00"
+      value: "Departure port LOCODEUS  XXXDate of departure12 February 2023Time of departure13:00"
     },
-    {key: 'Arrival details', value: "Arrival port LOCODEGB XXXDate of arrival15 February 2023Time of arrival12:00"},
-    {key: 'Next port of call', value: "JP NXX"},
+    {key: 'Arrival details', value: "Arrival port LOCODEGB  XXXDate of arrival15 February 2023Time of arrival12:00"},
+    {key: 'Next port of call', value: "JP  NXX"},
     {key: 'Brief description of the cargo', value: "No cargo"},
   ];
 
