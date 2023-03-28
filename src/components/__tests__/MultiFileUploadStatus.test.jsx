@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
@@ -83,7 +83,9 @@ describe('Multi file upload status tests', () => {
     expect(screen.getAllByText('Pending')).toHaveLength(2);
 
     await user.click(screen.getByRole('button', { name: 'Upload files' }));
-    expect(screen.queryByText('Loading')).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.queryByText('Loading')).not.toBeInTheDocument();
+    });
     expect(screen.getAllByText('has been uploaded')).toHaveLength(2);
   });
 
