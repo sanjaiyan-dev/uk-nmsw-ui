@@ -115,7 +115,11 @@ const VoyageTaskList = () => {
 
       // Once we have generalDeclaration, crewDetails, passengerDetails all set to completed
       // then we can change completedSections to 1
-      setCompletedSections(0);
+      if (response.data.FAL1 && response.data.FAL5 && response.data.FAL6) {
+        setCompletedSections(1);
+      } else {
+        setCompletedSections(0);
+      }
 
       // and checkYourAnswer to notStarted
       setCheckYourAnswersStep({ ...checkYourAnswersStep });
@@ -155,7 +159,7 @@ const VoyageTaskList = () => {
   }
 
   if (isLoading) { return (<LoadingSpinner />); }
-  console.log('steps', steps)
+
   return (
     <>
       <div className="govuk-grid-row">
