@@ -20,6 +20,7 @@ export const ENDPOINT_DECLARATION_ATTACHMENTS_PATH = '/attachments';
 // Responses
 export const FILE_MISSING = 'No file provided';
 export const FILE_TYPE_INVALID_PREFIX = 'Invalid file type';
+export const FAL6_IS_EMPTY = 'No data rows found in file.';
 export const TOKEN_EXPIRED = 'Token has expired';
 export const TOKEN_INVALID = 'Token is invalid or it has expired';
 export const TOKEN_USED_TO_REGISTER = 'Token was already used';

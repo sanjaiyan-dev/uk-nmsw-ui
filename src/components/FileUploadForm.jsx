@@ -3,7 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { GENERAL_DECLARATION_TEMPLATE_NAME, MAX_FILE_SIZE, MAX_FILE_SIZE_DISPLAY } from '../constants/AppConstants';
-import { FILE_MISSING, FILE_TYPE_INVALID_PREFIX } from '../constants/AppAPIConstants';
+import {
+  FILE_MISSING,
+  FILE_TYPE_INVALID_PREFIX,
+  FAL6_IS_EMPTY,
+} from '../constants/AppAPIConstants';
 import {
   FILE_UPLOAD_FIELD_ERRORS_URL,
   LOGGED_IN_LANDING,
@@ -128,6 +132,8 @@ const FileUploadForm = ({
               handleErrors({ errType: FILE_ERROR, errMessage: 'Select a file' });
             } else if (err?.response?.data?.message?.startsWith(FILE_TYPE_INVALID_PREFIX)) {
               handleErrors({ errType: FILE_ERROR, errMessage: `The file must be a ${fileTypesAllowed}` });
+            } else if (err?.response?.data?.message === FAL6_IS_EMPTY) {
+              handleErrors({ errType: FILE_ERROR, errMessage: 'Template is empty' });
             } else {
               handleErrors({ errType: FIELD_ERROR, errData: err?.response?.data });
             }
