@@ -1,5 +1,10 @@
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { DISPLAY_GROUPED, FIELD_RADIO, SINGLE_PAGE_FORM } from '../../constants/AppConstants';
+import {
+  DISPLAY_GROUPED,
+  FIELD_RADIO,
+  SINGLE_PAGE_FORM,
+  VALIDATE_REQUIRED,
+} from '../../constants/AppConstants';
 import { VOYAGE_TASK_LIST_URL, YOUR_VOYAGES_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
 import Message from '../../components/Message';
@@ -38,7 +43,14 @@ const VoyageDeleteDraftCheck = () => {
           value: 'deleteDraftNo',
         },
       ],
+      validation: [
+        {
+          type: VALIDATE_REQUIRED,
+          message: 'Select yes if you want to delete your draft report',
+        },
+      ],
     },
+
   ];
 
   const handleSubmit = (formData) => {

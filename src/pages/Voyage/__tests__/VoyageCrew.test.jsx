@@ -55,7 +55,7 @@ describe('Voyage crew page', () => {
     expect(screen.getByRole('heading', { name: `Upload the ${CREW_DETAILS_TEMPLATE_NAME}` })).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Check for errors' }));
     expect(screen.getByRole('alert', { name: 'There is a problem' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: `Select a ${CREW_DETAILS_TEMPLATE_NAME}` })).toBeInTheDocument();
-    expect(screen.getAllByText(`Select a ${CREW_DETAILS_TEMPLATE_NAME}`)).toHaveLength(2);
+    expect(screen.getByRole('button', { name: 'Select a file' })).toBeInTheDocument();
+    expect(screen.getAllByText('Select a file')).toHaveLength(2);
   });
 });

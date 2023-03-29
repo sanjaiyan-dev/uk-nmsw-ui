@@ -9,7 +9,7 @@ class yourDetailsPage {
   }
 
   typePhoneCode(phCode,id) {
-    cy.get('input#diallingCode-input').clear().type(phCode).get(`li[id=${id}]`).click();
+    cy.get('input#diallingCode-input').clear().type(phCode).get(`li[id=${id}]`).click({force: true});
   }
 
   typePhoneNumber(phNumber) {
@@ -17,7 +17,7 @@ class yourDetailsPage {
   }
 
   typeCountry(country,id) {
-    cy.get('#country-input').clear().type(country).get(`li[id=${id}]`).click();
+    cy.get('#country-input').clear().type(country).get(`li[id=${id}]`).click({force: true});
   }
 
   isShippingAgentYes() {

@@ -11,7 +11,7 @@ const FILE_STATUS_PENDING = 'Pending';
 const FILE_STATUS_IN_PROGRESS = 'in progress';
 const FILE_STATUS_ERROR = 'Error';
 const FILE_STATUS_SUCCESS = 'Success';
-const MAX_FILES = 7;
+const MAX_FILES = 8;
 
 const FileStatusInProgress = ({ fileName }) => (
   <div className="govuk-!-margin-bottom-5 multi-file-upload--filelist-filename">
@@ -89,20 +89,20 @@ const MultiFileUploadForm = ({
     const remainingFilesAvailable = MAX_FILES - filesAddedForUpload.length;
 
     if (filesAddedForUpload.length === MAX_FILES) {
-      setMaxFilesError(`You've selected too many files. You can add ${remainingFilesAvailable} more files.`);
-      setErrors([`You've selected too many files. You can add ${remainingFilesAvailable} more files.`]);
+      setMaxFilesError(`You've selected too many files: you can add up to ${remainingFilesAvailable} more files`);
+      setErrors([`You've selected too many files: you can add up to ${remainingFilesAvailable} more files`]);
     } else if (filesAddedForUpload.length > 0 && (filesAddedForUpload.length + fileList.length > MAX_FILES)) {
-      setMaxFilesError(`You've selected too many files. You can only add ${remainingFilesAvailable} more files.`);
-      setErrors([`You've selected too many files. You can only add ${remainingFilesAvailable} more files.`]);
+      setMaxFilesError(`You've selected too many files: you can add up to ${remainingFilesAvailable} more files`);
+      setErrors([`You've selected too many files: you can add up to ${remainingFilesAvailable} more files`]);
     } else if (fileList.length > MAX_FILES) {
-      setMaxFilesError(`You've selected too many files. You can only add ${MAX_FILES}.`);
-      setErrors([`You've selected too many files. You can only add ${MAX_FILES}.`]);
+      setMaxFilesError(`You've selected too many files: you can only add ${MAX_FILES}`);
+      setErrors([`You've selected too many files: you can only add ${MAX_FILES}`]);
     } else {
       const newFilesForUpload = filesUserAdded.reduce((results, fileToCheck) => {
         if (fileCurrentlyInState.findIndex((existingFile) => existingFile.file.name === fileToCheck.name) === -1) {
           results.push({ file: fileToCheck, status: FILE_STATUS_PENDING });
         } else {
-          errorList.push(`A file name ${fileToCheck.name} already exists in your list`);
+          errorList.push(`A file called ${fileToCheck.name} already exists in your list`);
         }
         setErrors(errorList);
         return results;

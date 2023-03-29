@@ -13,12 +13,12 @@ printHelp()
 	echo
 }
 
-if [[ ! -s "$VAL_FILE" ]]; then
+if [ ! -s $VAL_FILE ]; then
 	echo "Please enter the correct number of arguments."
 	echo "Helm values file \"${VAL_FILE}\" could not be opened."
 	printHelp
 	exit 1
-elif [[ -z $OUTPUT_FILE ]]; then
+elif [ -z $OUTPUT_FILE ]; then
 	echo "Please enter the correct number of arguments."
 	printHelp
 	exit 1

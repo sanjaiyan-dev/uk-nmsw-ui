@@ -68,7 +68,7 @@ describe('Display Form default values and session data', () => {
         },
         {
           type: VALIDATE_EMAIL_ADDRESS,
-          message: 'Enter your email address in the correct format, like name@example.com',
+          message: 'Enter a real email address',
         },
       ],
     },

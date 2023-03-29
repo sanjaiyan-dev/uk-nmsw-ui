@@ -122,7 +122,7 @@ describe('Multi file upload tests', () => {
     expect(screen.getAllByText('Pending')).toHaveLength(4);
   });
 
-  it('should only allow a max of seven files be selected for upload - more than 7 selected for add', async () => {
+  it('should only allow a max of eight files be selected for upload - more than 8 selected for add', async () => {
     const user = userEvent.setup();
     const files = [
       new File(['template1'], 'template1.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
@@ -133,16 +133,17 @@ describe('Multi file upload tests', () => {
       new File(['template6'], 'template6.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
       new File(['template7'], 'template7.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
       new File(['template8'], 'template8.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
+      new File(['template9'], 'template9.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
     ];
 
     renderPage();
 
     const input = screen.getByTestId('multiFileUploadInput');
     await user.upload(input, files);
-    expect(screen.getAllByText("You've selected too many files. You can only add 7.")).toHaveLength(2);
+    expect(screen.getAllByText("You've selected too many files: you can only add 8")).toHaveLength(2);
   });
 
-  it('should only allow a max of seven files be added for upload - more than 7 selected over multiple adds', async () => {
+  it('should only allow a max of eight files be added for upload - more than 8 selected over multiple adds', async () => {
     const user = userEvent.setup();
     const files = [
       new File(['template1'], 'template1.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
@@ -155,6 +156,7 @@ describe('Multi file upload tests', () => {
       new File(['template6'], 'template6.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
       new File(['template7'], 'template7.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
       new File(['template8'], 'template8.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
+      new File(['template9'], 'template9.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
     ];
 
     renderPage();
@@ -165,10 +167,10 @@ describe('Multi file upload tests', () => {
 
     await user.upload(input, additionalFiles);
     expect(screen.getAllByText('Pending')).toHaveLength(2); // it does not let user add the extra files, remains at 2
-    expect(screen.getAllByText("You've selected too many files. You can only add 5 more files.")).toHaveLength(2);
+    expect(screen.getAllByText("You've selected too many files: you can add up to 6 more files")).toHaveLength(2);
   });
 
-  it('should only allow a max of seven files be added for upload - 7 added and tries to add more', async () => {
+  it('should only allow a max of eight files be added for upload - 8 added and tries to add more', async () => {
     const user = userEvent.setup();
     const files = [
       new File(['template1'], 'template1.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
@@ -178,22 +180,23 @@ describe('Multi file upload tests', () => {
       new File(['template5'], 'template5.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
       new File(['template6'], 'template6.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
       new File(['template7'], 'template7.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
+      new File(['template8'], 'template8.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
     ];
-    const additionalFiles = [new File(['template8'], 'template8.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
+    const additionalFiles = [new File(['template9'], 'template9.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
     ];
 
     renderPage();
 
     const input = screen.getByTestId('multiFileUploadInput');
     await user.upload(input, files);
-    expect(screen.getAllByText('Pending')).toHaveLength(7);
+    expect(screen.getAllByText('Pending')).toHaveLength(8);
 
     await user.upload(input, additionalFiles);
-    expect(screen.getAllByText('Pending')).toHaveLength(7); // it does not let user add the extra files, remains at 2
-    expect(screen.getAllByText("You've selected too many files. You can add 0 more files.")).toHaveLength(2);
+    expect(screen.getAllByText('Pending')).toHaveLength(8); // it does not let user add the extra files, remains at 2
+    expect(screen.getAllByText("You've selected too many files: you can add up to 0 more files")).toHaveLength(2);
   });
 
-  it('should not repeat error messages when too many files selected for upload - 7 added and tries to add more', async () => {
+  it('should not repeat error messages when too many files selected for upload - 8 added and tries to add more', async () => {
     const user = userEvent.setup();
     const files = [
       new File(['template1'], 'template1.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
@@ -203,27 +206,28 @@ describe('Multi file upload tests', () => {
       new File(['template5'], 'template5.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
       new File(['template6'], 'template6.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
       new File(['template7'], 'template7.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
+      new File(['template8'], 'template8.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
     ];
     const additionalFiles = [
-      new File(['template8'], 'template8.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
+      new File(['template9'], 'template9.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
     ];
     const additionalFilesTwo = [
-      new File(['template8'], 'template8.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
+      new File(['template9'], 'template9.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
     ];
 
     renderPage();
 
     const input = screen.getByTestId('multiFileUploadInput');
     await user.upload(input, files);
-    expect(screen.getAllByText('Pending')).toHaveLength(7);
+    expect(screen.getAllByText('Pending')).toHaveLength(8);
 
     await user.upload(input, additionalFiles);
-    expect(screen.getAllByText('Pending')).toHaveLength(7); // it does not let user add the extra files, remains at 2
-    expect(screen.getAllByText("You've selected too many files. You can add 0 more files.")).toHaveLength(2);
+    expect(screen.getAllByText('Pending')).toHaveLength(8); // it does not let user add the extra files, remains at 2
+    expect(screen.getAllByText("You've selected too many files: you can add up to 0 more files")).toHaveLength(2);
 
     await user.upload(input, additionalFilesTwo); // repeat and expect to still only have the 2 instance of error on screen
-    expect(screen.getAllByText('Pending')).toHaveLength(7); // it does not let user add the extra files, remains at 2
-    expect(screen.getAllByText("You've selected too many files. You can add 0 more files.")).toHaveLength(2);
+    expect(screen.getAllByText('Pending')).toHaveLength(8); // it does not let user add the extra files, remains at 2
+    expect(screen.getAllByText("You've selected too many files: you can add up to 0 more files")).toHaveLength(2);
   });
 
   it('should remove a pre-uploaded file from the list if its delete button is clicked', async () => {
@@ -292,8 +296,8 @@ describe('Multi file upload tests', () => {
     expect(screen.getAllByRole('button', { name: 'Delete' })).toHaveLength(5);
     expect(screen.getAllByText('Pending')).toHaveLength(5);
 
-    expect(screen.getByText('A file name template2.xlsx already exists in your list')).toBeInTheDocument();
-    expect(screen.getByText('A file name template4.xlsx already exists in your list')).toBeInTheDocument();
+    expect(screen.getByText('A file called template2.xlsx already exists in your list')).toBeInTheDocument();
+    expect(screen.getByText('A file called template4.xlsx already exists in your list')).toBeInTheDocument();
   });
 
   it('should load the next page on submit button click', async () => {

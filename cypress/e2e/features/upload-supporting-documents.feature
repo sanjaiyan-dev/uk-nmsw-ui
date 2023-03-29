@@ -26,9 +26,11 @@ Feature: Upload supporting documents
       | GDF1-imo-goodwithIMO-prefix.xlsx    |
       | GDF1-imo-goodwithIMONumberOnly.xlsx |
       | GDF1-imo-goodwithIMOprefix.xlsx     |
+      | GDF1-imo-invalidCharacters.xlsx     |
+
     Then I am shown corresponding error message
-      | Field | multiFileUploadForm-error                                  |
-      | Error | Error: You've selected too many files. You can only add 7. |
+      | Field | multiFileUploadForm-error                                 |
+      | Error | Error: You've selected too many files: you can only add 8 |
     When I upload a valid file, it gets uploaded
       | fileName                                  |
       | General declaration FAL 1 - goodData.xlsx |
@@ -53,8 +55,8 @@ Feature: Upload supporting documents
       | MELLINA SHIPS STORES (003).xlsx                                      |
       | NMSW FAL 5 and 6 Supporting Information - Crew Off Signers List.xlsx |
     Then I am shown corresponding error message
-      | Field | multiFileUploadForm-error                                        |
-      | Error | Error: You've selected too many files. You can add 0 more files. |
+      | Field | multiFileUploadForm-error                                             |
+      | Error | Error: You've selected too many files: you can add up to 1 more files |
     Then I am able to delete the file
     When I click save and continue
     Then I am taken to task details page

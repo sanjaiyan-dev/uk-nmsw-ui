@@ -112,7 +112,7 @@ describe('Register password tests', () => {
     await user.click(screen.getByTestId('submit-button'));
     await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
-    expect(screen.getAllByText('Passwords must be at least 10 characters long')).toHaveLength(2);
+    expect(screen.getAllByText('Password must be at least 10 characters long')).toHaveLength(2);
   });
 
   it('should display the error messages if password values do not match', async () => {
@@ -144,7 +144,7 @@ describe('Register password tests', () => {
     await user.click(screen.getByTestId('submit-button'));
     await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
-    expect(screen.getAllByText('Enter a password that does not contain spaces')).toHaveLength(2);
+    expect(screen.getAllByText('Password must not contain spaces')).toHaveLength(2);
   });
 
   it('should display the error messages if password value has spaces at the start', async () => {
@@ -154,7 +154,7 @@ describe('Register password tests', () => {
     await user.click(screen.getByTestId('submit-button'));
     await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
-    expect(screen.getAllByText('Enter a password that does not contain spaces')).toHaveLength(2);
+    expect(screen.getAllByText('Password must not contain spaces')).toHaveLength(2);
   });
 
   it('should display the error messages if password value has spaces at the end', async () => {
@@ -164,7 +164,7 @@ describe('Register password tests', () => {
     await user.click(screen.getByTestId('submit-button'));
     await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
-    expect(screen.getAllByText('Enter a password that does not contain spaces')).toHaveLength(2);
+    expect(screen.getAllByText('Password must not contain spaces')).toHaveLength(2);
   });
 
   it('should display the required error messages if password value is only spaces', async () => {
@@ -175,7 +175,7 @@ describe('Register password tests', () => {
     await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
     expect(screen.getAllByText('Enter a password')).toHaveLength(2);
-    expect(screen.queryByText('Enter a password that does not contain spaces')).not.toBeInTheDocument();
+    expect(screen.queryByText('Password must not contain spaces')).not.toBeInTheDocument();
   });
 
   it('should display the min length error message if password has spaces and is fewer than 10 characters', async () => {
@@ -185,8 +185,8 @@ describe('Register password tests', () => {
     await user.click(screen.getByTestId('submit-button'));
     await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
-    expect(screen.getAllByText('Passwords must be at least 10 characters long')).toHaveLength(2);
-    expect(screen.queryByText('Enter a password that does not contain spaces')).not.toBeInTheDocument();
+    expect(screen.getAllByText('Password must be at least 10 characters long')).toHaveLength(2);
+    expect(screen.queryByText('Password must not contain spaces')).not.toBeInTheDocument();
   });
 
   it('should NOT display error messagess if fields are valid', async () => {

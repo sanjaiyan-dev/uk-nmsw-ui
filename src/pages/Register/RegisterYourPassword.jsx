@@ -57,12 +57,12 @@ const RegisterYourPassword = () => {
         },
         {
           type: VALIDATE_MIN_LENGTH,
-          message: 'Passwords must be at least 10 characters long',
+          message: 'Password must be at least 10 characters long',
           condition: 10,
         },
         {
           type: VALIDATE_NO_SPACES,
-          message: 'Enter a password that does not contain spaces',
+          message: 'Password must not contain spaces',
         },
       ],
     },

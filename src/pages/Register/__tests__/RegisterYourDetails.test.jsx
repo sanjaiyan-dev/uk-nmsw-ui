@@ -153,9 +153,9 @@ describe('Register your details tests', () => {
     expect(screen.getAllByText('Enter your full name')).toHaveLength(2);
     expect(screen.getAllByText('Enter your company name')).toHaveLength(2);
     expect(screen.getAllByText('Enter a telephone number')).toHaveLength(2);
-    expect(screen.getAllByText('Enter an international dialling code')).toHaveLength(2);
-    expect(screen.getAllByText('Enter country')).toHaveLength(2);
-    expect(screen.getAllByText('Select is your company a shipping agent')).toHaveLength(2);
+    expect(screen.getAllByText('Select an international dialling code')).toHaveLength(2);
+    expect(screen.getAllByText('Select a country')).toHaveLength(2);
+    expect(screen.getAllByText('Select yes if your company is a shipping agent')).toHaveLength(2);
   });
 
   it('should display the error messages if fields are formatted incorrectly', async () => {
@@ -168,7 +168,7 @@ describe('Register your details tests', () => {
     await user.click(screen.getByTestId('submit-button'));
     await screen.findByRole('heading', { name: 'There is a problem' });
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
-    expect(screen.getAllByText('Enter a telephone number in the correct format')).toHaveLength(2);
+    expect(screen.getAllByText('Telephone number must be in the correct format')).toHaveLength(2);
   });
 
   it('should NOT display error messagess if fields are valid', async () => {
@@ -188,11 +188,11 @@ describe('Register your details tests', () => {
     expect(screen.queryByText('There is a problem')).not.toBeInTheDocument();
     expect(screen.queryByText('Enter your full name')).not.toBeInTheDocument();
     expect(screen.queryByText('Enter your company name')).not.toBeInTheDocument();
-    expect(screen.queryByText('Enter an international dialling code')).not.toBeInTheDocument();
+    expect(screen.queryByText('Select an international dialling code')).not.toBeInTheDocument();
     expect(screen.queryByText('Enter a telephone number')).not.toBeInTheDocument();
-    expect(screen.queryByText('Enter a telephone number in the correct format')).not.toBeInTheDocument();
-    expect(screen.queryByText('Enter country')).not.toBeInTheDocument();
-    expect(screen.queryByText('Select is your company a shipping agent')).not.toBeInTheDocument();
+    expect(screen.queryByText('Telephone number must be in the correct format')).not.toBeInTheDocument();
+    expect(screen.queryByText('Select a country')).not.toBeInTheDocument();
+    expect(screen.queryByText('Select yes if your company is a shipping agent')).not.toBeInTheDocument();
   });
 
   it('should NOT clear form session data on submit', async () => {
