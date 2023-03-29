@@ -210,12 +210,12 @@ describe('Error mapping for Crew Details (FAL 5) tests', () => {
       .onPost('/specific-endpoint-path-for-filetype')
       .reply(400, {
         A5: 'Enter travel document as P, I, O or as Passport, ID card, Other',
-        E12: 'Enter the value using English letters instead of special characters not recognised',
+        E12: 'Enter the rank or rating using English letters instead of special characters not recognised',
         D8: 'Number of the travel document must be only numbers',
         H12: 'Enter M for male, F for female, or X for gender neutral if this is in the Travel Document',
         G9: 'Enter forenames using English letters instead of special characters not recognised',
-        F6: 'Enter the value using English letters instead of special characters not recognised',
-        J22: 'Enter the value using English letters instead of special characters not recognised',
+        F6: 'Enter the surname using English letters instead of special characters not recognised',
+        J22: 'Enter the place of birth using English letters instead of special characters not recognised',
       });
     renderPage();
     const input = screen.getByLabelText('Title from props');

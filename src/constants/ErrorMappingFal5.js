@@ -3,6 +3,7 @@ const ErrorMappingFal5 = {
     order: 'a',
     'field required': 'Enter P, I or O, or you may enter the full word: P - Passport, I - ID card - for a national ID card or O - Other - for any other document',
     'travel document type must be 8 characters or less': 'Enter travel document as P, I, O or as Passport, ID card, Other',
+    'Enter travel document as P, I, O or as Passport, ID card, Other': 'Enter travel document as P, I, O or as Passport, ID card, Other',
   },
   B: { // other travel doument type
     order: 'b',
@@ -24,13 +25,13 @@ const ErrorMappingFal5 = {
     order: 'e',
     'field required': 'Enter the rank, rating or job title; for supernumeraries just put SN or supernumerary, not the job title',
     'ensure this value has at most 35 characters': 'Enter the rank, rating or job title in 35 characters or less',
-    'Enter the value using English letters instead of special characters not recognised': 'Enter the rank, rating or job title using English letters instead of special characters not recognised',
+    'Enter the rank or rating using English letters instead of special characters not recognised': 'Enter the rank, rating or job title using English letters instead of special characters not recognised',
   },
   F: { // surname
     order: 'f',
     'field required': 'Enter family name or surname as it appears in the travel document',
     'surname must be 35 characters or less': 'Enter family name or surname in 35 characters or less',
-    'Enter the value using English letters instead of special characters not recognised': 'Enter family name or surname using English letters instead of special characters not recognised',
+    'Enter the surname using English letters instead of special characters not recognised': 'Enter family name or surname using English letters instead of special characters not recognised',
   },
   G: { // forenames
     order: 'g',
@@ -50,7 +51,7 @@ const ErrorMappingFal5 = {
   J: { // place of birth
     order: 'j',
     'place of birth must be 35 characters or less': 'Enter the place of birth in 35 characters or less',
-    'Enter the value using English letters instead of special characters not recognised': 'Enter place of birth using English letters instead of special characters not recognised',
+    'Enter the place of birth using English letters instead of special characters not recognised': 'Enter place of birth using English letters instead of special characters not recognised',
   },
   K: { // nationality
     order: 'k',
