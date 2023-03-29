@@ -1,24 +1,27 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
-import { YOUR_VOYAGES_URL, VOYAGE_TASK_LIST_URL, VOYAGE_DELETE_DRAFT_CHECK_URL } from '../../../constants/AppUrlConstants';
+import { MemoryRouter } from 'react-router-dom';
+import {
+  URL_DECLARATIONID_IDENTIFIER,
+  YOUR_VOYAGES_URL,
+  VOYAGE_TASK_LIST_URL,
+  VOYAGE_DELETE_DRAFT_CHECK_URL,
+} from '../../../constants/AppUrlConstants';
 import VoyageDeleteDraftCheck from '../VoyageDeleteDraftCheck';
 
 let mockUseLocationState = { state: {} };
 const mockedUseNavigate = jest.fn();
 
-jest.mock('react-router', () => ({
-  ...jest.requireActual('react-router'),
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
   useNavigate: () => mockedUseNavigate,
   useLocation: jest.fn().mockImplementation(() => mockUseLocationState),
 }));
 
 const renderPage = () => {
   render(
-    <MemoryRouter initialEntries={[`${VOYAGE_DELETE_DRAFT_CHECK_URL}/123`]}>
-      <Routes>
-        <Route path={`${VOYAGE_DELETE_DRAFT_CHECK_URL}/:declarationId`} element={<VoyageDeleteDraftCheck />} />
-      </Routes>
+    <MemoryRouter initialEntries={[`${VOYAGE_DELETE_DRAFT_CHECK_URL}?${URL_DECLARATIONID_IDENTIFIER}=123`]}>
+      <VoyageDeleteDraftCheck />
     </MemoryRouter>,
   );
 };
@@ -50,9 +53,7 @@ describe('Voyage delete draft check are you sure page', () => {
     mockUseLocationState = { state: { shipName: 'My ship name' } };
     render(
       <MemoryRouter initialEntries={[`${VOYAGE_DELETE_DRAFT_CHECK_URL}`]}>
-        <Routes>
-          <Route path={`${VOYAGE_DELETE_DRAFT_CHECK_URL}`} element={<VoyageDeleteDraftCheck />} />
-        </Routes>
+        <VoyageDeleteDraftCheck />
       </MemoryRouter>,
     );
     await screen.findByRole('heading', { name: 'Something has gone wrong' });
@@ -77,6 +78,6 @@ describe('Voyage delete draft check are you sure page', () => {
     expect(screen.getByRole('button', { name: 'Confirm' })).toBeInTheDocument();
     await user.click(screen.getByRole('radio', { name: 'No' }));
     await user.click(screen.getByRole('button', { name: 'Confirm' }));
-    expect(mockedUseNavigate).toHaveBeenCalledWith(`${VOYAGE_TASK_LIST_URL}/123`);
+    expect(mockedUseNavigate).toHaveBeenCalledWith(`${VOYAGE_TASK_LIST_URL}?${URL_DECLARATIONID_IDENTIFIER}=123`);
   });
 });

@@ -1,16 +1,22 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   DISPLAY_GROUPED,
   FIELD_RADIO,
   SINGLE_PAGE_FORM,
 } from '../../constants/AppConstants';
 import DisplayForm from '../../components/DisplayForm';
-import { VOYAGE_PASSENGER_UPLOAD_URL, VOYAGE_TASK_LIST_URL, YOUR_VOYAGES_URL } from '../../constants/AppUrlConstants';
+import {
+  URL_DECLARATIONID_IDENTIFIER,
+  VOYAGE_PASSENGER_UPLOAD_URL,
+  VOYAGE_TASK_LIST_URL,
+  YOUR_VOYAGES_URL,
+} from '../../constants/AppUrlConstants';
 import Message from '../../components/Message';
 
 const VoyagePassengers = () => {
   const navigate = useNavigate();
-  const { declarationId } = useParams();
+  const [searchParams] = useSearchParams();
+  const declarationId = searchParams.get(URL_DECLARATIONID_IDENTIFIER);
   document.title = 'Is the ship carrying any passengers?';
 
   const formActions = {
@@ -45,9 +51,9 @@ const VoyagePassengers = () => {
 
   const handleSubmit = (formData) => {
     if (formData?.formData?.passengers === 'passengersYes') {
-      navigate(`${VOYAGE_PASSENGER_UPLOAD_URL}/${declarationId}`);
+      navigate(`${VOYAGE_PASSENGER_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`);
     } else if (formData?.formData?.passengers === 'passengersNo') {
-      navigate(`${VOYAGE_TASK_LIST_URL}/${declarationId}`);
+      navigate(`${VOYAGE_TASK_LIST_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`);
     }
   };
 

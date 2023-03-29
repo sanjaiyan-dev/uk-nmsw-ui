@@ -124,34 +124,16 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
 
             {/* Create voyage Routes */}
             <Route path={VOYAGE_CHECK_YOUR_ANSWERS} element={<VoyageCheckYourAnswers />} />
-            <Route path={`${VOYAGE_CHECK_YOUR_ANSWERS}/:declarationId`} element={<VoyageCheckYourAnswers />} />
-
             <Route path={VOYAGE_CREW_UPLOAD_URL} element={<VoyageCrew />} />
-            <Route path={`${VOYAGE_CREW_UPLOAD_URL}/:declarationId`} element={<VoyageCrew />} />
             <Route path={VOYAGE_CREW_CONFIRMATION_URL} element={<FileUploadConfirmation />} />
-            <Route path={`${VOYAGE_CREW_CONFIRMATION_URL}/:declarationId`} element={<FileUploadConfirmation />} />
-
             <Route path={VOYAGE_DELETE_DRAFT_CHECK_URL} element={<VoyageDeleteDraftCheck />} />
-            <Route path={`${VOYAGE_DELETE_DRAFT_CHECK_URL}/:declarationId`} element={<VoyageDeleteDraftCheck />} />
-
             <Route path={VOYAGE_GENERAL_DECLARATION_UPLOAD_URL} element={<VoyageGeneralDeclaration />} />
-            <Route path={`${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}/:declarationId`} element={<VoyageGeneralDeclaration />} />
             <Route path={VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL} element={<FileUploadConfirmation />} />
-            <Route path={`${VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL}/:declarationId`} element={<FileUploadConfirmation />} />
-
             <Route path={VOYAGE_PASSENGERS_URL} element={<VoyagePassengers />} />
-            <Route path={`${VOYAGE_PASSENGERS_URL}/:declarationId`} element={<VoyagePassengers />} />
             <Route path={VOYAGE_PASSENGER_UPLOAD_URL} element={<VoyagePassengerUpload />} />
-            <Route path={`${VOYAGE_PASSENGER_UPLOAD_URL}/:declarationId`} element={<VoyagePassengerUpload />} />
             <Route path={VOYAGE_PASSENGER_CONFIRMATION_URL} element={<FileUploadConfirmation />} />
-            <Route path={`${VOYAGE_PASSENGER_CONFIRMATION_URL}/:declarationId`} element={<FileUploadConfirmation />} />
-
             <Route path={VOYAGE_SUPPORTING_DOCS_UPLOAD_URL} element={<VoyageSupportingDocsUpload />} />
-            <Route path={`${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}/:declarationId`} element={<VoyageSupportingDocsUpload />} />
-
             <Route path={VOYAGE_TASK_LIST_URL} element={<VoyageTaskList />} />
-            <Route path={`${VOYAGE_TASK_LIST_URL}/:declarationId`} element={<VoyageTaskList />} />
-
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

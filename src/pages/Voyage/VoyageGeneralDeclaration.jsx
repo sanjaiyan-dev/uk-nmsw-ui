@@ -1,9 +1,14 @@
-import { useParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import FileUploadForm from '../../components/FileUploadForm';
 import Message from '../../components/Message';
 import { API_URL, ENDPOINT_DECLARATION_PATH, ENDPOINT_FILE_UPLOAD_GENERAL_DECLARATION_PATH } from '../../constants/AppAPIConstants';
 import { GENERAL_DECLARATION_TEMPLATE_NAME } from '../../constants/AppConstants';
-import { VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL, VOYAGE_GENERAL_DECLARATION_UPLOAD_URL, YOUR_VOYAGES_URL } from '../../constants/AppUrlConstants';
+import {
+  URL_DECLARATIONID_IDENTIFIER,
+  VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL,
+  VOYAGE_GENERAL_DECLARATION_UPLOAD_URL,
+  YOUR_VOYAGES_URL,
+} from '../../constants/AppUrlConstants';
 import ErrorMappingFal1 from '../../constants/ErrorMappingFal1';
 import { DownloadFile } from '../../utils/DownloadFile';
 
@@ -12,7 +17,8 @@ const SupportingText = () => (
 );
 
 const VoyageUploadGeneralDeclaration = () => {
-  const { declarationId } = useParams();
+  const [searchParams] = useSearchParams();
+  const declarationId = searchParams.get(URL_DECLARATIONID_IDENTIFIER);
   document.title = `Upload the ${GENERAL_DECLARATION_TEMPLATE_NAME}`;
 
   if (!declarationId) {
@@ -30,8 +36,8 @@ const VoyageUploadGeneralDeclaration = () => {
       formId="uploadGeneralDeclaration"
       pageHeading={`Upload the ${GENERAL_DECLARATION_TEMPLATE_NAME}`}
       submitButtonLabel="Check for errors"
-      urlSuccessPage={`${VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL}/${declarationId}`}
-      urlThisPage={`${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}/${declarationId}`}
+      urlSuccessPage={`${VOYAGE_GENERAL_DECLARATION_CONFIRMATION_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`}
+      urlThisPage={`${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`}
     >
       <SupportingText />
     </FileUploadForm>
