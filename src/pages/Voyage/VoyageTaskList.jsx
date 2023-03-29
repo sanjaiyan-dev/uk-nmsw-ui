@@ -56,45 +56,9 @@ const VoyageTaskList = () => {
       status: 'cannotStartYet',
     },
   );
-  const [steps, setStep] = useState([
-    {
-      item: 'generalDeclaration',
-      link: `${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
-      label: GENERAL_DECLARATION_LABEL,
-      status: 'completed', // this page does not load before this step is complete
-    },
-    {
-      item: 'crewDetails',
-      link: `${VOYAGE_CREW_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
-      label: CREW_DETAILS_LABEL,
-      status: 'required',
-
-    },
-    {
-      item: 'passengerDetails',
-      link: `${VOYAGE_PASSENGERS_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
-      label: PASSENGER_DETAILS_LABEL,
-      status: 'required',
-
-    },
-    {
-      item: 'supportingDocuments',
-      link: `${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
-      label: SUPPORTING_DOCUMENTS_LABEL,
-      status: 'optional',
-
-    },
-  ]);
+  const [steps, setStep] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   document.title = 'Report a voyage';
-
-  const updateSteps = ({ itemName, newStatus }) => {
-    const updatedStepsArray = steps.map((arrayItem) => (
-      arrayItem.item === itemName
-        ? { ...arrayItem, status: newStatus }
-        : arrayItem));
-    setStep(updatedStepsArray);
-  };
 
   const updateDeclarationData = async () => {
     const response = await GetDeclaration({ declarationId });
@@ -102,18 +66,42 @@ const VoyageTaskList = () => {
       setDeclarationData(response.data);
       setVoyageTypeText(response.data?.FAL1.departureFromUk ? 'Departure from the UK' : 'Arrival to the UK');
 
-      // Once we have GET data for the other sections we can expand this to check which we have
-      // in the response data and then set new statuses accordingly
-      // e.g. we have reponse.data.FAL1 therefore generalDeclaration is completed
-      // leaving this here as example, but this page never loads without GenDec completed so this step is always status completed
-      updateSteps({ itemName: 'generalDeclaration', newStatus: 'completed' });
+      const updatedStatuses = [
+        {
+          item: 'generalDeclaration',
+          link: `${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
+          label: GENERAL_DECLARATION_LABEL,
+          status: 'completed', // this page does not load before this step is complete
+        },
+        {
+          item: 'crewDetails',
+          link: `${VOYAGE_CREW_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
+          label: CREW_DETAILS_LABEL,
+          status: response.data.FAL5 ? 'completed' : 'required',
+        },
+        {
+          item: 'passengerDetails',
+          link: `${VOYAGE_PASSENGERS_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
+          label: PASSENGER_DETAILS_LABEL,
+          status: response.data.FAL6 ? 'completed' : 'required',
+        },
+        {
+          item: 'supportingDocuments',
+          link: `${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
+          label: SUPPORTING_DOCUMENTS_LABEL,
+          status: 'optional',
+        },
+      ];
 
-      // Once we have generalDeclaration, crewDetails, passengerDetails all set to completed
-      // then we can change completedSections to 1
-      setCompletedSections(0);
+      setStep(updatedStatuses);
 
-      // and checkYourAnswer to notStarted
-      setCheckYourAnswersStep({ ...checkYourAnswersStep });
+      if (response.data.FAL1 && response.data.FAL5 && response.data.FAL6) {
+        setCompletedSections(1);
+        setCheckYourAnswersStep({ ...checkYourAnswersStep, status: 'notStarted' });
+      } else {
+        setCompletedSections(0);
+        setCheckYourAnswersStep({ ...checkYourAnswersStep, status: 'cannotStartYet' });
+      }
     } else {
       switch (response?.status) {
         case 401:
@@ -131,8 +119,6 @@ const VoyageTaskList = () => {
       }
     }
 
-    // if report status is anything other than draft this page should not load, instead user will be taken
-    // directly to the check your answers page to view a cancelled or submitted report
     setIsLoading(false);
   };
 
@@ -186,14 +172,20 @@ const VoyageTaskList = () => {
               <h2 className="app-task-list__section"><span className="app-task-list__section-number">2. </span>Submit the report</h2>
               <ul className="app-task-list__items">
                 <li className="app-task-list__item">
-                  {/* <div data-testid="checkYourAnswers">
-                    <span>Check answers and submit</span>
-                    <strong className={CLASSES_FOR_STATUS[checkYourAnswersStep.status]}>{LABELS_FOR_STATUS[checkYourAnswersStep.status]}</strong>
-                  </div> */}
-                  <Link to={checkYourAnswersStep.link}>
-                    <span>Check answers and submit</span>
-                    <strong className={CLASSES_FOR_STATUS[checkYourAnswersStep.status]}>{LABELS_FOR_STATUS[checkYourAnswersStep.status]}</strong>
-                  </Link>
+                  {checkYourAnswersStep.status === 'cannotStartYet'
+                    && (
+                      <div data-testid="checkYourAnswers">
+                        <span>Check answers and submit</span>
+                        <strong className={CLASSES_FOR_STATUS[checkYourAnswersStep.status]}>{LABELS_FOR_STATUS[checkYourAnswersStep.status]}</strong>
+                      </div>
+                    )}
+                  {checkYourAnswersStep.status !== 'cannotStartYet'
+                    && (
+                      <Link to={checkYourAnswersStep.link}>
+                        <span>Check answers and submit</span>
+                        <strong className={CLASSES_FOR_STATUS[checkYourAnswersStep.status]}>{LABELS_FOR_STATUS[checkYourAnswersStep.status]}</strong>
+                      </Link>
+                    )}
                 </li>
               </ul>
             </li>
