@@ -113,16 +113,13 @@ const VoyageTaskList = () => {
         },
       );
 
-      // Once we have generalDeclaration, crewDetails, passengerDetails all set to completed
-      // then we can change completedSections to 1
       if (response.data.FAL1 && response.data.FAL5 && response.data.FAL6) {
         setCompletedSections(1);
+        setCheckYourAnswersStep({ ...checkYourAnswersStep, status: 'notStarted' });
       } else {
         setCompletedSections(0);
+        setCheckYourAnswersStep({ ...checkYourAnswersStep, status: 'cannotStartYet' });
       }
-
-      // and checkYourAnswer to notStarted
-      setCheckYourAnswersStep({ ...checkYourAnswersStep });
     } else {
       switch (response?.status) {
         case 401:
@@ -195,14 +192,20 @@ const VoyageTaskList = () => {
               <h2 className="app-task-list__section"><span className="app-task-list__section-number">2. </span>Submit the report</h2>
               <ul className="app-task-list__items">
                 <li className="app-task-list__item">
-                  {/* <div data-testid="checkYourAnswers">
-                    <span>Check answers and submit</span>
-                    <strong className={CLASSES_FOR_STATUS[checkYourAnswersStep.status]}>{LABELS_FOR_STATUS[checkYourAnswersStep.status]}</strong>
-                  </div> */}
-                  <Link to={checkYourAnswersStep.link}>
-                    <span>Check answers and submit</span>
-                    <strong className={CLASSES_FOR_STATUS[checkYourAnswersStep.status]}>{LABELS_FOR_STATUS[checkYourAnswersStep.status]}</strong>
-                  </Link>
+                  {checkYourAnswersStep.status === 'cannotStartYet'
+                    && (
+                      <div data-testid="checkYourAnswers">
+                        <span>Check answers and submit</span>
+                        <strong className={CLASSES_FOR_STATUS[checkYourAnswersStep.status]}>{LABELS_FOR_STATUS[checkYourAnswersStep.status]}</strong>
+                      </div>
+                    )}
+                  {checkYourAnswersStep.status !== 'cannotStartYet'
+                    && (
+                      <Link to={checkYourAnswersStep.link}>
+                        <span>Check answers and submit</span>
+                        <strong className={CLASSES_FOR_STATUS[checkYourAnswersStep.status]}>{LABELS_FOR_STATUS[checkYourAnswersStep.status]}</strong>
+                      </Link>
+                    )}
                 </li>
               </ul>
             </li>
