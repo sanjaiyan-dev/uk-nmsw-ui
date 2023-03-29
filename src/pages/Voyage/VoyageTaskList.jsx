@@ -56,45 +56,9 @@ const VoyageTaskList = () => {
       status: 'cannotStartYet',
     },
   );
-  const [steps, setStep] = useState([
-    {
-      item: 'generalDeclaration',
-      link: `${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
-      label: GENERAL_DECLARATION_LABEL,
-      status: 'completed', // this page does not load before this step is complete
-    },
-    {
-      item: 'crewDetails',
-      link: `${VOYAGE_CREW_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
-      label: CREW_DETAILS_LABEL,
-      status: 'required',
-
-    },
-    {
-      item: 'passengerDetails',
-      link: `${VOYAGE_PASSENGERS_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
-      label: PASSENGER_DETAILS_LABEL,
-      status: 'required',
-
-    },
-    {
-      item: 'supportingDocuments',
-      link: `${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
-      label: SUPPORTING_DOCUMENTS_LABEL,
-      status: 'optional',
-
-    },
-  ]);
+  const [steps, setStep] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   document.title = 'Report a voyage';
-
-  const updateSteps = ({ itemName, newStatus }) => {
-    const updatedStepsArray = steps.map((arrayItem) => (
-      arrayItem.item === itemName
-        ? { ...arrayItem, status: newStatus }
-        : arrayItem));
-    setStep(updatedStepsArray);
-  };
 
   const updateDeclarationData = async () => {
     const response = await GetDeclaration({ declarationId });
@@ -102,16 +66,34 @@ const VoyageTaskList = () => {
       setDeclarationData(response.data);
       setVoyageTypeText(response.data?.FAL1.departureFromUk ? 'Departure from the UK' : 'Arrival to the UK');
 
-      updateSteps(
+      const updatedStatuses = [
         {
-          itemName: 'crewDetails',
-          newStatus: response.data.FAL5 ? 'completed' : 'required',
+          item: 'generalDeclaration',
+          link: `${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
+          label: GENERAL_DECLARATION_LABEL,
+          status: 'completed', // this page does not load before this step is complete
         },
         {
-          itemName: 'passengerDetails',
-          newStatus: response.data.FAL6 ? 'completed' : 'required',
+          item: 'crewDetails',
+          link: `${VOYAGE_CREW_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
+          label: CREW_DETAILS_LABEL,
+          status: response.data.FAL5 ? 'completed' : 'required',
         },
-      );
+        {
+          item: 'passengerDetails',
+          link: `${VOYAGE_PASSENGERS_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
+          label: PASSENGER_DETAILS_LABEL,
+          status: response.data.FAL6 ? 'completed' : 'required',
+        },
+        {
+          item: 'supportingDocuments',
+          link: `${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
+          label: SUPPORTING_DOCUMENTS_LABEL,
+          status: 'optional',
+        },
+      ];
+
+      setStep(updatedStatuses);
 
       if (response.data.FAL1 && response.data.FAL5 && response.data.FAL6) {
         setCompletedSections(1);
@@ -137,8 +119,6 @@ const VoyageTaskList = () => {
       }
     }
 
-    // if report status is anything other than draft this page should not load, instead user will be taken
-    // directly to the check your answers page to view a cancelled or submitted report
     setIsLoading(false);
   };
 
