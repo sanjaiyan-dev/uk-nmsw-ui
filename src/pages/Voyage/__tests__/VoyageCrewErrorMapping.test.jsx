@@ -47,13 +47,13 @@ describe('Error mapping for Crew Details (FAL 5) tests', () => {
     mockAxios
       .onPost('/specific-endpoint-path-for-filetype')
       .reply(400, {
-        F5: 'none is not an allowed value',
-        A5: 'none is not an allowed value',
-        C5: 'none is not an allowed value',
-        H5: 'Enter M for male, F for female, or X for gender neutral if this is in the Travel Document',
-        D5: 'none is not an allowed value',
-        E5: 'none is not an allowed value',
-        G5: 'none is not an allowed value',
+        F5: 'field required',
+        A5: 'field required',
+        C5: 'field required',
+        H5: 'field required',
+        D5: 'field required',
+        E5: 'field required',
+        G5: 'field required',
       });
     renderPage();
     const input = screen.getByLabelText('Title from props');
@@ -139,13 +139,14 @@ describe('Error mapping for Crew Details (FAL 5) tests', () => {
     mockAxios
       .onPost('/specific-endpoint-path-for-filetype')
       .reply(400, {
-        C5: 'Enter the country as a 3-letter ISO country code; for example, GBR, SWE, NLD',
-        F6: 'ensure this value has at most 35 characters',
-        K5: 'Enter the country as a 3-letter ISO country code; for example, GBR, SWE, NLD',
-        D13: 'ensure this value has at most 35 characters',
-        G9: 'ensure this value has at most 35 characters',
+        C5: 'ensure this value has at most 3 characters',
+        F6: 'surname must be 35 characters or less',
+        K5: 'ensure this value has at most 3 characters',
+        B24: 'travel document nature must be 35 characters or less',
+        D13: 'travel document number must be 35 characters or less',
+        G9: 'forenames must be 35 characters or less',
         E5: 'ensure this value has at most 35 characters',
-        J10: 'ensure this value has at most 35 characters',
+        J10: 'place of birth must be 35 characters or less',
       });
     renderPage();
     const input = screen.getByLabelText('Title from props');
@@ -155,6 +156,11 @@ describe('Error mapping for Crew Details (FAL 5) tests', () => {
     expect(mockedUseNavigate).toHaveBeenCalledWith(FILE_UPLOAD_FIELD_ERRORS_URL, {
       state: {
         errorList: [
+          {
+            cell: 'B24',
+            message: 'Enter the type of travel document in 35 characters or less',
+            order: 'b',
+          },
           {
             cell: 'C5',
             message: 'Enter the issuing country as a 3-letter ISO country code; for example, GBR, SWE, NLD',
@@ -204,11 +210,12 @@ describe('Error mapping for Crew Details (FAL 5) tests', () => {
       .onPost('/specific-endpoint-path-for-filetype')
       .reply(400, {
         A5: 'Enter travel document as P, I, O or as Passport, ID card, Other',
-        E12: 'Enter the value using English letters instead of special characters not recognised',
+        E12: 'Enter the rank or rating using English letters instead of special characters not recognised',
         D8: 'Number of the travel document must be only numbers',
-        G9: 'Enter the value using English letters instead of special characters not recognised',
-        F6: 'Enter the value using English letters instead of special characters not recognised',
-        J22: 'Enter the value using English letters instead of special characters not recognised',
+        H12: 'Enter M for male, F for female, or X for gender neutral if this is in the Travel Document',
+        G9: 'Enter forenames using English letters instead of special characters not recognised',
+        F6: 'Enter the surname using English letters instead of special characters not recognised',
+        J22: 'Enter the place of birth using English letters instead of special characters not recognised',
       });
     renderPage();
     const input = screen.getByLabelText('Title from props');
@@ -242,6 +249,11 @@ describe('Error mapping for Crew Details (FAL 5) tests', () => {
             cell: 'G9',
             message: 'Enter forenames using English letters instead of special characters not recognised',
             order: 'g',
+          },
+          {
+            cell: 'H12',
+            message: 'Enter M for male, F for female, or X for gender neutral if this is in the travel document',
+            order: 'h',
           },
           {
             cell: 'J22',
