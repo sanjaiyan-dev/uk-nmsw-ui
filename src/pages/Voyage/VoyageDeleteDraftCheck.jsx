@@ -1,18 +1,19 @@
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   DISPLAY_GROUPED,
   FIELD_RADIO,
   SINGLE_PAGE_FORM,
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
-import { VOYAGE_TASK_LIST_URL, YOUR_VOYAGES_URL } from '../../constants/AppUrlConstants';
+import { URL_DECLARATIONID_IDENTIFIER, VOYAGE_TASK_LIST_URL, YOUR_VOYAGES_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
 import Message from '../../components/Message';
 
 const VoyageDeleteDraftCheck = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const { declarationId } = useParams();
+  const [searchParams] = useSearchParams();
+  const declarationId = searchParams.get(URL_DECLARATIONID_IDENTIFIER);
 
   document.title = 'Delete voyage';
 
@@ -50,18 +51,17 @@ const VoyageDeleteDraftCheck = () => {
         },
       ],
     },
-
   ];
 
   const handleSubmit = (formData) => {
     if (formData?.formData?.deleteDraft === 'deleteDraftYes') {
       navigate(YOUR_VOYAGES_URL, { state: { confirmationBanner: { message: `Report for ${state?.shipName} deleted.` } } });
     } else if (formData?.formData?.deleteDraft === 'deleteDraftNo') {
-      navigate(`${VOYAGE_TASK_LIST_URL}/${declarationId}`);
+      navigate(`${VOYAGE_TASK_LIST_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`);
     }
   };
 
-  if (!declarationId || !state?.shipName) {
+  if (!declarationId) {
     return (
       <Message title="Something has gone wrong" redirectURL={YOUR_VOYAGES_URL} />
     );

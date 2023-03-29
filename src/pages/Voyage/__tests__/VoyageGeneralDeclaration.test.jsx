@@ -1,27 +1,25 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { VOYAGE_GENERAL_DECLARATION_UPLOAD_URL, YOUR_VOYAGES_URL } from '../../../constants/AppUrlConstants';
+import { URL_DECLARATIONID_IDENTIFIER, VOYAGE_GENERAL_DECLARATION_UPLOAD_URL, YOUR_VOYAGES_URL } from '../../../constants/AppUrlConstants';
 import VoyageGeneralDeclaration from '../VoyageGeneralDeclaration';
 import { GENERAL_DECLARATION_TEMPLATE_NAME } from '../../../constants/AppConstants';
 
 const mockUseLocationState = { state: {} };
 const mockedUseNavigate = jest.fn();
 
-jest.mock('react-router', () => ({
-  ...jest.requireActual('react-router'),
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
   useNavigate: () => mockedUseNavigate,
   useLocation: jest.fn().mockImplementation(() => mockUseLocationState),
 }));
 
 const renderPage = () => {
   render(
-    <MemoryRouter initialEntries={[`${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}/123`]}>
-      <Routes>
-        <Route path={`${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}/:declarationId`} element={<VoyageGeneralDeclaration />} />
-      </Routes>
+    <MemoryRouter initialEntries={[`${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=123`]}>
+      <VoyageGeneralDeclaration />
     </MemoryRouter>,
   );
 };
@@ -46,9 +44,7 @@ describe('Voyage general declaration page', () => {
   it('should show error message if no declaration ID in URL', async () => {
     render(
       <MemoryRouter initialEntries={[VOYAGE_GENERAL_DECLARATION_UPLOAD_URL]}>
-        <Routes>
-          <Route path={VOYAGE_GENERAL_DECLARATION_UPLOAD_URL} element={<VoyageGeneralDeclaration />} />
-        </Routes>
+        <VoyageGeneralDeclaration />
       </MemoryRouter>,
     );
     await screen.findByRole('heading', { name: 'Something has gone wrong' });

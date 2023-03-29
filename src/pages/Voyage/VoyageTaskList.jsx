@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   CHECK_YOUR_ANSWERS_LABEL,
   CREW_DETAILS_LABEL,
@@ -10,6 +10,7 @@ import {
 import {
   SIGN_IN_URL,
   MESSAGE_URL,
+  URL_DECLARATIONID_IDENTIFIER,
   VOYAGE_CHECK_YOUR_ANSWERS,
   VOYAGE_CREW_UPLOAD_URL,
   VOYAGE_DELETE_DRAFT_CHECK_URL,
@@ -42,14 +43,15 @@ const LABELS_FOR_STATUS = {
 
 const VoyageTaskList = () => {
   const navigate = useNavigate();
-  const { declarationId } = useParams();
+  const [searchParams] = useSearchParams();
+  const declarationId = searchParams.get(URL_DECLARATIONID_IDENTIFIER);
   const [completedSections, setCompletedSections] = useState(0);
   const [declarationData, setDeclarationData] = useState();
   const [voyageTypeText, setVoyageTypeText] = useState();
   const [checkYourAnswersStep, setCheckYourAnswersStep] = useState(
     {
       item: 'checkYourAnswers',
-      link: `${VOYAGE_CHECK_YOUR_ANSWERS}/${declarationId}`,
+      link: `${VOYAGE_CHECK_YOUR_ANSWERS}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
       label: CHECK_YOUR_ANSWERS_LABEL,
       status: 'cannotStartYet',
     },
@@ -57,27 +59,27 @@ const VoyageTaskList = () => {
   const [steps, setStep] = useState([
     {
       item: 'generalDeclaration',
-      link: `${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}/${declarationId}`,
+      link: `${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
       label: GENERAL_DECLARATION_LABEL,
       status: 'completed', // this page does not load before this step is complete
     },
     {
       item: 'crewDetails',
-      link: `${VOYAGE_CREW_UPLOAD_URL}/${declarationId}`,
+      link: `${VOYAGE_CREW_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
       label: CREW_DETAILS_LABEL,
       status: 'required',
 
     },
     {
       item: 'passengerDetails',
-      link: `${VOYAGE_PASSENGERS_URL}/${declarationId}`,
+      link: `${VOYAGE_PASSENGERS_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
       label: PASSENGER_DETAILS_LABEL,
       status: 'required',
 
     },
     {
       item: 'supportingDocuments',
-      link: `${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}/${declarationId}`,
+      link: `${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
       label: SUPPORTING_DOCUMENTS_LABEL,
       status: 'optional',
 
@@ -117,7 +119,7 @@ const VoyageTaskList = () => {
         case 401:
         case 422:
           Auth.removeToken();
-          navigate(SIGN_IN_URL, { state: { redirectURL: `${VOYAGE_TASK_LIST_URL}/${declarationId}` } });
+          navigate(SIGN_IN_URL, { state: { redirectURL: `${VOYAGE_TASK_LIST_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}` } });
           break;
         default: navigate(MESSAGE_URL, {
           state: {
@@ -200,7 +202,7 @@ const VoyageTaskList = () => {
             type="button"
             className="govuk-button govuk-button--warning"
             data-module="govuk-button"
-            onClick={() => navigate(`${VOYAGE_DELETE_DRAFT_CHECK_URL}/${declarationId}`, { state: { shipName: declarationData?.FAL1?.nameOfShip } })}
+            onClick={() => navigate(`${VOYAGE_DELETE_DRAFT_CHECK_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`, { state: { shipName: declarationData?.FAL1?.nameOfShip } })}
           >
             Delete draft
           </button>

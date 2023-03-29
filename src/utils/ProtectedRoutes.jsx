@@ -1,10 +1,14 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { LANDING_URL } from '../constants/AppUrlConstants';
+import { SIGN_IN_URL } from '../constants/AppUrlConstants';
 
-const ProtectedRoutes = ({ isPermittedToView }) => (
-  isPermittedToView ? <Outlet /> : <Navigate to={LANDING_URL} replace />
-);
+const ProtectedRoutes = ({ isPermittedToView }) => {
+  const location = useLocation();
+
+  return (
+    isPermittedToView ? <Outlet /> : <Navigate to={SIGN_IN_URL} state={{ redirectURL: location }} replace />
+  );
+};
 
 export default ProtectedRoutes;
 

@@ -1,24 +1,27 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
-import { VOYAGE_SUPPORTING_DOCS_UPLOAD_URL, VOYAGE_TASK_LIST_URL, YOUR_VOYAGES_URL } from '../../../constants/AppUrlConstants';
+import { MemoryRouter } from 'react-router-dom';
+import {
+  URL_DECLARATIONID_IDENTIFIER,
+  VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
+  VOYAGE_TASK_LIST_URL,
+  YOUR_VOYAGES_URL,
+} from '../../../constants/AppUrlConstants';
 import VoyageSupportingDocsUpload from '../VoyageSupportingDocsUpload';
 
 const mockUseLocationState = { state: {} };
 const mockedUseNavigate = jest.fn();
 
-jest.mock('react-router', () => ({
-  ...jest.requireActual('react-router'),
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
   useNavigate: () => mockedUseNavigate,
   useLocation: jest.fn().mockImplementation(() => mockUseLocationState),
 }));
 
 const renderPage = () => {
   render(
-    <MemoryRouter initialEntries={[`${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}/123`]}>
-      <Routes>
-        <Route path={`${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}/:declarationId`} element={<VoyageSupportingDocsUpload />} />
-      </Routes>
+    <MemoryRouter initialEntries={[`${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=123`]}>
+      <VoyageSupportingDocsUpload />
     </MemoryRouter>,
   );
 };
@@ -39,9 +42,7 @@ describe('Voyage supporting docs page', () => {
   it('should render an error without declarationId', async () => {
     render(
       <MemoryRouter initialEntries={[`${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}`]}>
-        <Routes>
-          <Route path={`${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}`} element={<VoyageSupportingDocsUpload />} />
-        </Routes>
+        <VoyageSupportingDocsUpload />
       </MemoryRouter>,
     );
     await screen.findByRole('heading', { name: 'Something has gone wrong' });
@@ -54,6 +55,6 @@ describe('Voyage supporting docs page', () => {
     renderPage();
     expect(screen.getByRole('heading', { name: 'Upload supporting documents' })).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Save and continue' }));
-    expect(mockedUseNavigate).toHaveBeenCalledWith(`${VOYAGE_TASK_LIST_URL}/123`);
+    expect(mockedUseNavigate).toHaveBeenCalledWith(`${VOYAGE_TASK_LIST_URL}?${URL_DECLARATIONID_IDENTIFIER}=123`);
   });
 });
