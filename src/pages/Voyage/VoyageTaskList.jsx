@@ -102,11 +102,16 @@ const VoyageTaskList = () => {
       setDeclarationData(response.data);
       setVoyageTypeText(response.data?.FAL1.departureFromUk ? 'Departure from the UK' : 'Arrival to the UK');
 
-      // Once we have GET data for the other sections we can expand this to check which we have
-      // in the response data and then set new statuses accordingly
-      // e.g. we have reponse.data.FAL1 therefore generalDeclaration is completed
-      // leaving this here as example, but this page never loads without GenDec completed so this step is always status completed
-      updateSteps({ itemName: 'generalDeclaration', newStatus: 'completed' });
+      updateSteps(
+        {
+          itemName: 'crewDetails',
+          newStatus: response.data.FAL5 ? 'completed' : 'required',
+        },
+        {
+          itemName: 'passengerDetails',
+          newStatus: response.data.FAL6 ? 'completed' : 'required',
+        },
+      );
 
       // Once we have generalDeclaration, crewDetails, passengerDetails all set to completed
       // then we can change completedSections to 1
@@ -150,7 +155,7 @@ const VoyageTaskList = () => {
   }
 
   if (isLoading) { return (<LoadingSpinner />); }
-
+  console.log('steps', steps)
   return (
     <>
       <div className="govuk-grid-row">
