@@ -13,12 +13,8 @@ import {
   MESSAGE_URL,
   SIGN_IN_URL,
   URL_DECLARATIONID_IDENTIFIER,
-  // VOYAGE_CHECK_YOUR_ANSWERS,
-  // VOYAGE_CREW_UPLOAD_URL,
   VOYAGE_DELETE_DRAFT_CHECK_URL,
   VOYAGE_GENERAL_DECLARATION_UPLOAD_URL,
-  // VOYAGE_PASSENGERS_URL,
-  // VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
   VOYAGE_TASK_LIST_URL,
   YOUR_VOYAGES_URL,
 } from '../../../constants/AppUrlConstants';
@@ -35,7 +31,7 @@ jest.mock('react-router-dom', () => ({
 
 describe('Voyage task list page', () => {
   const mockAxios = new MockAdapter(axios);
-  const mockedFAL1Response = {
+  const mockedResponseFal1Only = {
     FAL1: {
       nameOfShip: 'Test ship name',
       imoNumber: '1234567',
@@ -53,6 +49,8 @@ describe('Voyage task list page', () => {
       nextPortUnlocode: 'NLRTM',
       cargo: 'No cargo',
     },
+    FAL5: null,
+    FAL6: null,
   };
 
   beforeEach(() => {
@@ -130,6 +128,14 @@ describe('Voyage task list page', () => {
   });
 
   it('should render the static content on the page with default statuses and styles', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, mockedResponseFal1Only);
+
     renderPage();
 
     await screen.findByRole('heading', { name: 'Report a voyage' });
@@ -146,8 +152,7 @@ describe('Voyage task list page', () => {
     expect(screen.getByRole('link', { name: 'Supporting documents Optional' }).outerHTML).toBe('<a href="/report-voyage/upload-supporting-documents?report=123"><span>Supporting documents</span><strong class="govuk-tag govuk-tag--blue app-task-list__tag">Optional</strong></a>');
     expect(screen.getByText('Check answers and submit')).toBeInTheDocument();
     expect(screen.getByText('Cannot start yet')).toBeInTheDocument();
-    // check your answers link enabled for testing purposes for now until we have all FAL form GET endpoints to use
-    // expect(screen.getByTestId('checkYourAnswers').outerHTML).toBe('<div data-testid="checkYourAnswers"><span>Check answers and submit</span><strong class="govuk-tag govuk-tag--grey app-task-list__tag">Cannot start yet</strong></div>');
+    expect(screen.getByTestId('checkYourAnswers').outerHTML).toBe('<div data-testid="checkYourAnswers"><span>Check answers and submit</span><strong class="govuk-tag govuk-tag--grey app-task-list__tag">Cannot start yet</strong></div>');
     expect(screen.getByText('Draft')).toBeInTheDocument();
     expect(screen.getByText('Ship name:')).toBeInTheDocument();
     expect(screen.getByText('Voyage type:')).toBeInTheDocument();
@@ -161,7 +166,7 @@ describe('Voyage task list page', () => {
           Authorization: 'Bearer 123',
         },
       })
-      .reply(200, mockedFAL1Response);
+      .reply(200, mockedResponseFal1Only);
 
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
@@ -206,20 +211,132 @@ describe('Voyage task list page', () => {
     expect(screen.getByTestId('completedSections')).toHaveTextContent('0');
   });
 
-  /*
-   * This click not working with react-router-dom, ticket open to investigate and improve tests
-   * for now in the tests below we're testing the a href is correct
-   * and in the Cypress tests that the correct looking page loads
-  */
-  it('should load the General Declaration upload page if General Declaration is clicked', async () => {
-    // const user = userEvent.setup();
+  it('should show Crew Details link as complete if response received has a link for FAL5', async () => {
     mockAxios
       .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
         headers: {
           Authorization: 'Bearer 123',
         },
       })
-      .reply(200, mockedFAL1Response);
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: true,
+          departurePortUnlocode: 'AUXXX',
+          departureDate: '2023-02-12',
+          departureTime: '14:00:00',
+          arrivalPortUnlocode: 'GBPOR',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUXXX',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+        },
+        FAL5: 'https://fal5-report-link.com',
+      });
+
+    renderPage();
+    await screen.findByRole('heading', { name: 'Report a voyage' });
+    expect(screen.getByRole('link', { name: 'Crew details including supernumeraries (FAL 5) Completed' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Crew details including supernumeraries (FAL 5) Completed' }).outerHTML).toBe('<a href="/report-voyage/upload-crew-details?report=123"><span>Crew details including supernumeraries (FAL 5)</span><strong class="govuk-tag app-task-list__tag">Completed</strong></a>');
+    expect(screen.getByRole('link', { name: 'Any passenger details (FAL 6) Required' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Any passenger details (FAL 6) Required' }).outerHTML).toBe('<a href="/report-voyage/passenger-details?report=123"><span>Any passenger details (FAL 6)</span><strong class="govuk-tag govuk-tag--pink app-task-list__tag">Required</strong></a>');
+    expect(screen.getByTestId('completedSections')).toHaveTextContent('0');
+  });
+
+  it('should show Passenger Details link as complete if response received has a link for FAL6', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: true,
+          departurePortUnlocode: 'AUXXX',
+          departureDate: '2023-02-12',
+          departureTime: '14:00:00',
+          arrivalPortUnlocode: 'GBPOR',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUXXX',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+        },
+        FAL5: null,
+        FAL6: 'https://fal6-report-link.com',
+      });
+
+    renderPage();
+    await screen.findByRole('heading', { name: 'Report a voyage' });
+    expect(screen.getByRole('link', { name: 'Crew details including supernumeraries (FAL 5) Required' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Crew details including supernumeraries (FAL 5) Required' }).outerHTML).toBe('<a href="/report-voyage/upload-crew-details?report=123"><span>Crew details including supernumeraries (FAL 5)</span><strong class="govuk-tag govuk-tag--pink app-task-list__tag">Required</strong></a>');
+    expect(screen.getByRole('link', { name: 'Any passenger details (FAL 6) Completed' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Any passenger details (FAL 6) Completed' }).outerHTML).toBe('<a href="/report-voyage/passenger-details?report=123"><span>Any passenger details (FAL 6)</span><strong class="govuk-tag app-task-list__tag">Completed</strong></a>');
+    expect(screen.getByTestId('completedSections')).toHaveTextContent('0');
+  });
+
+  it('should show completed sections as 1 and Passenger & Crew Details link as complete if response received has a link for FAL6 & FAL6', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: true,
+          departurePortUnlocode: 'AUXXX',
+          departureDate: '2023-02-12',
+          departureTime: '14:00:00',
+          arrivalPortUnlocode: 'GBPOR',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUXXX',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+        },
+        FAL5: 'https://fal5-report-link.com',
+        FAL6: 'https://fal6-report-link.com',
+      });
+
+    renderPage();
+    await screen.findByRole('heading', { name: 'Report a voyage' });
+    expect(screen.getByRole('link', { name: 'Crew details including supernumeraries (FAL 5) Completed' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Crew details including supernumeraries (FAL 5) Completed' }).outerHTML).toBe('<a href="/report-voyage/upload-crew-details?report=123"><span>Crew details including supernumeraries (FAL 5)</span><strong class="govuk-tag app-task-list__tag">Completed</strong></a>');
+    expect(screen.getByRole('link', { name: 'Any passenger details (FAL 6) Completed' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Any passenger details (FAL 6) Completed' }).outerHTML).toBe('<a href="/report-voyage/passenger-details?report=123"><span>Any passenger details (FAL 6)</span><strong class="govuk-tag app-task-list__tag">Completed</strong></a>');
+    expect(screen.getByTestId('completedSections')).toHaveTextContent('1');
+  });
+
+  /*
+   * This click not working with react-router-dom, ticket open to investigate and improve tests
+   * for now in the tests below we're testing the a href is correct
+   * and in the Cypress tests that the correct looking page loads
+  */
+  it('should load the General Declaration upload page if General Declaration is clicked', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, mockedResponseFal1Only);
 
     render(
       <MemoryRouter initialEntries={[`${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=123`]}>
@@ -229,36 +346,21 @@ describe('Voyage task list page', () => {
     await screen.findByRole('heading', { name: 'Report a voyage' });
     expect(screen.getByRole('link', { name: 'General Declaration (FAL 1) Completed' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'General Declaration (FAL 1) Completed' }).outerHTML).toEqual('<a href="/report-voyage/upload-general-declaration?report=123"><span>General Declaration (FAL 1)</span><strong class="govuk-tag app-task-list__tag">Completed</strong></a>');
-
-    // user.click(screen.getByRole('link', { name: 'General Declaration (FAL 1) Completed' }));
-    // await waitFor(() => {
-    //   expect(mockedUseNavigate).toHaveBeenCalledWith(`${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=123`, {
-    //     preventScrollReset: undefined, relative: undefined, replace: false,
-    //   }); // params on Link generated links by default
-    // });
   });
 
   it('should load the Crew Details upload page if Crew is clicked', async () => {
-    // const user = userEvent.setup();
     mockAxios
       .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
         headers: {
           Authorization: 'Bearer 123',
         },
       })
-      .reply(200, mockedFAL1Response);
+      .reply(200, mockedResponseFal1Only);
 
     renderPage();
     await screen.findByRole('heading', { name: 'Report a voyage' });
     expect(screen.getByRole('link', { name: 'Crew details including supernumeraries (FAL 5) Required' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Crew details including supernumeraries (FAL 5) Required' }).outerHTML).toEqual('<a href="/report-voyage/upload-crew-details?report=123"><span>Crew details including supernumeraries (FAL 5)</span><strong class="govuk-tag govuk-tag--pink app-task-list__tag">Required</strong></a>');
-
-    // await user.click(screen.getByRole('link', { name: 'Crew details including supernumeraries (FAL 5) Required' }));
-    // await waitFor(() => {
-    //   expect(mockedUseNavigate).toHaveBeenCalledWith('/report-voyage/upload-crew-details?report=123', {
-    //     preventScrollReset: undefined, relative: undefined, replace: false,
-    //   }); // params on Link generated links by default
-    // });
   });
 
   it('should load the Passenger Details yes/no page if Passenger is clicked', async () => {
@@ -269,7 +371,7 @@ describe('Voyage task list page', () => {
           Authorization: 'Bearer 123',
         },
       })
-      .reply(200, mockedFAL1Response);
+      .reply(200, mockedResponseFal1Only);
 
     renderPage();
     await screen.findByRole('heading', { name: 'Report a voyage' });
@@ -292,7 +394,7 @@ describe('Voyage task list page', () => {
           Authorization: 'Bearer 123',
         },
       })
-      .reply(200, mockedFAL1Response);
+      .reply(200, mockedResponseFal1Only);
 
     renderPage();
     await screen.findByRole('heading', { name: 'Report a voyage' });
@@ -307,31 +409,40 @@ describe('Voyage task list page', () => {
     // });
   });
 
-  // TODO: test style and label changes on links for each step once they're completed
-  // TODO: test count changes to '1' once gendec, crew, passenger all completed
+  it('should load the Check your answers page if Check answers and submit is clicked', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: true,
+          departurePortUnlocode: 'AUXXX',
+          departureDate: '2023-02-12',
+          departureTime: '14:00:00',
+          arrivalPortUnlocode: 'GBPOR',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUXXX',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+        },
+        FAL5: 'https://fal5-report-link.com',
+        FAL6: 'https://fal6-report-link.com',
+      });
 
-  // TODO: once we have a function to enable check your answers page, uncomment test and adapt
-  // it('should load the Check your answers page if Check answers and submit is clicked', async () => {
-  //   const user = userEvent.setup();
-  //   mockAxios
-  //     .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
-  //       headers: {
-  //         Authorization: 'Bearer 123',
-  //       },
-  //     })
-  //     .reply(200, mockedFAL1Response);
-
-  //   renderPage();
-  //   await screen.findByRole('heading', { name: 'Report a voyage' });
-  //   expect(screen.getByText('Check answers and submit')).toBeInTheDocument();
-  //   expect(screen.getByRole('link', { name: 'Check answers and submit Cannot start yet' })).toBeInTheDocument();
-  //   await user.click(screen.getByRole('link', { name: 'Check answers and submit Cannot start yet' }));
-  //   await waitFor(() => {
-  //     expect(mockedUseNavigate).toHaveBeenCalledWith(`${VOYAGE_CHECK_YOUR_ANSWERS}?=${URL_DECLARATIONID_IDENTIFIER}=123`, {
-  //       preventScrollReset: undefined, relative: undefined, replace: false
-  //     });
-  //   });
-  // });
+    renderPage();
+    await screen.findByRole('heading', { name: 'Report a voyage' });
+    expect(screen.getByRole('link', { name: 'Check answers and submit Not started' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Check answers and submit Not started' }).outerHTML).toEqual('<a href="/report-voyage/check-your-answers?report=123"><span>Check answers and submit</span><strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong></a>');
+  });
 
   it('should load the delete draft page if delete draft is clicked', async () => {
     const user = userEvent.setup();
@@ -341,7 +452,7 @@ describe('Voyage task list page', () => {
           Authorization: 'Bearer 123',
         },
       })
-      .reply(200, mockedFAL1Response);
+      .reply(200, mockedResponseFal1Only);
 
     renderPage();
     await screen.findByRole('heading', { name: 'Report a voyage' });
