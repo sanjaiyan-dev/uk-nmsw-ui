@@ -51,7 +51,6 @@ const VoyageDeleteDraftCheck = () => {
         },
       ],
     },
-
   ];
 
   const handleSubmit = (formData) => {
@@ -62,7 +61,7 @@ const VoyageDeleteDraftCheck = () => {
     }
   };
 
-  if (!declarationId || !state?.shipName) {
+  if (!declarationId) {
     return (
       <Message title="Something has gone wrong" redirectURL={YOUR_VOYAGES_URL} />
     );

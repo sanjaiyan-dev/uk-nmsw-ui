@@ -41,14 +41,6 @@ describe('Voyage delete draft check are you sure page', () => {
     expect(screen.getByRole('button', { name: 'Confirm' }).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Confirm</button>');
   });
 
-  it('should render an error if no state', async () => {
-    mockUseLocationState.state = {};
-    renderPage();
-    await screen.findByRole('heading', { name: 'Something has gone wrong' });
-    expect(screen.getByRole('heading', { name: 'Something has gone wrong' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Click here to continue' }).outerHTML).toEqual(`<a href="${YOUR_VOYAGES_URL}">Click here to continue</a>`);
-  });
-
   it('should render an error if no declarationId in params', async () => {
     mockUseLocationState = { state: { shipName: 'My ship name' } };
     render(
