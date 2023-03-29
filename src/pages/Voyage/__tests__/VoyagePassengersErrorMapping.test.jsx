@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { FILE_UPLOAD_FIELD_ERRORS_URL } from '../../../constants/AppUrlConstants';
-import ErrorMappingFal5 from '../../../constants/ErrorMappingFal5';
+import ErrorMappingFal6 from '../../../constants/ErrorMappingFal6';
 import FileUploadForm from '../../../components/FileUploadForm';
 
 const mockedUseNavigate = jest.fn();
@@ -18,7 +18,7 @@ const renderPage = () => {
     <MemoryRouter>
       <FileUploadForm
         endpoint="/specific-endpoint-path-for-filetype"
-        errorMessageMapFile={ErrorMappingFal5}
+        errorMessageMapFile={ErrorMappingFal6}
         fileNameRequired="File name from props for error display"
         fileTypesAllowed="File types from props for error display"
         formId="uploadFile"
@@ -31,7 +31,7 @@ const renderPage = () => {
   );
 };
 
-describe('Error mapping for Crew Details (FAL 5) tests', () => {
+describe('Error mapping for Passenger details (FAL 6) tests', () => {
   const mockAxios = new MockAdapter(axios);
   const scrollIntoViewMock = jest.fn();
   window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
@@ -41,7 +41,7 @@ describe('Error mapping for Crew Details (FAL 5) tests', () => {
     window.sessionStorage.clear();
   });
 
-  it('should map the mandatory fields missing Crew Details (FAL 5) errors, in the specified order', async () => {
+  it('should map the mandatory fields missing Passenger details (FAL 6), in the specified order', async () => {
     const user = userEvent.setup();
     const file = new File(['template'], 'template.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     mockAxios
@@ -50,10 +50,12 @@ describe('Error mapping for Crew Details (FAL 5) tests', () => {
         F5: 'field required',
         A5: 'field required',
         C5: 'field required',
-        H5: 'field required',
+        G5: 'Enter M for male, F for female, or X for gender neutral if this is in the travel document',
         D5: 'field required',
         E5: 'field required',
-        G5: 'field required',
+        M5: 'field required',
+        O5: 'field required',
+        N5: 'field required',
       });
     renderPage();
     const input = screen.getByLabelText('Title from props');
@@ -80,23 +82,33 @@ describe('Error mapping for Crew Details (FAL 5) tests', () => {
           },
           {
             cell: 'E5',
-            message: 'Enter the rank, rating or job title; for supernumeraries just put SN or supernumerary, not the job title',
+            message: 'Enter family name or surname as it appears in the travel document',
             order: 'e',
           },
           {
             cell: 'F5',
-            message: 'Enter family name or surname as it appears in the travel document',
+            message: 'Enter all forenames or given names as they appear in the travel document - if the crew member has no forename recorded enter UNKNOWN',
             order: 'f',
           },
           {
             cell: 'G5',
-            message: 'Enter all forenames or given names as they appear in the travel document - if the crew member has no forename recorded enter UNKNOWN',
+            message: 'Enter M for male, F for female, or X for gender neutral if this is in the travel document',
             order: 'g',
           },
           {
-            cell: 'H5',
-            message: 'Enter M for male, F for female, or X for gender neutral if this is in the travel document',
-            order: 'h',
+            cell: 'M5',
+            message: 'Enter the name of the port or the LOCODE for the port; for example, Southampton, GBSOU or GB SOU',
+            order: 'm',
+          },
+          {
+            cell: 'N5',
+            message: 'Enter the name of the port or the LOCODE for the port; for example, Southampton, GBSOU or GB SOU',
+            order: 'n',
+          },
+          {
+            cell: 'O5',
+            message: 'Enter Yes or Y if this passenger is in transit and No or N if this passenger is disembarking or embarking in the UK',
+            order: 'o',
           },
         ],
         fileName: 'template.xlsx',
@@ -133,20 +145,22 @@ describe('Error mapping for Crew Details (FAL 5) tests', () => {
     });
   });
 
-  it('should map the too many characters Crew Details (FAL 5) errors, in the specified order', async () => {
+  it('should map the too many characters Passenger details (FAL 6), in the specified order', async () => {
     const user = userEvent.setup();
     const file = new File(['template'], 'template.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     mockAxios
       .onPost('/specific-endpoint-path-for-filetype')
       .reply(400, {
-        C5: 'ensure this value has at most 3 characters',
-        F6: 'surname must be 35 characters or less',
-        K5: 'ensure this value has at most 3 characters',
-        B24: 'travel document nature must be 35 characters or less',
+        C5: 'Enter the country as a 3-letter ISO country code; for example, GBR, SWE, NLD',
+        F6: 'forenames must be 35 characters or less',
+        J20: 'Enter the country as a 3-letter ISO country code; for example, GBR, SWE, NLD',
         D13: 'travel document number must be 35 characters or less',
-        G9: 'forenames must be 35 characters or less',
-        E5: 'ensure this value has at most 35 characters',
-        J10: 'place of birth must be 35 characters or less',
+        L97: 'cabin must be 35 characters or less',
+        E28: 'surname must be 35 characters or less',
+        I123: 'place of birth must be 35 characters or less',
+        G45: 'ensure this value has at most 6 characters',
+        M7: 'port of embarkation must be 35 characters or less',
+        N55: 'port of disembarkation must be 35 characters or less',
       });
     renderPage();
     const input = screen.getByLabelText('Title from props');
@@ -156,11 +170,6 @@ describe('Error mapping for Crew Details (FAL 5) tests', () => {
     expect(mockedUseNavigate).toHaveBeenCalledWith(FILE_UPLOAD_FIELD_ERRORS_URL, {
       state: {
         errorList: [
-          {
-            cell: 'B24',
-            message: 'Enter the type of travel document in 35 characters or less',
-            order: 'b',
-          },
           {
             cell: 'C5',
             message: 'Enter the issuing country as a 3-letter ISO country code; for example, GBR, SWE, NLD',
@@ -172,29 +181,44 @@ describe('Error mapping for Crew Details (FAL 5) tests', () => {
             order: 'd',
           },
           {
-            cell: 'E5',
-            message: 'Enter the rank, rating or job title in 35 characters or less',
+            cell: 'E28',
+            message: 'Enter family name or surname in 35 characters or less',
             order: 'e',
           },
           {
             cell: 'F6',
-            message: 'Enter family name or surname in 35 characters or less',
+            message: 'Enter all forenames or given names in 35 characters or less',
             order: 'f',
           },
           {
-            cell: 'G9',
-            message: 'Enter all forenames or given names in 35 characters or less',
+            cell: 'G45',
+            message: 'Enter M for male, F for female, or X for gender neutral if this is in the travel document',
             order: 'g',
           },
           {
-            cell: 'J10',
+            cell: 'I123',
             message: 'Enter the place of birth in 35 characters or less',
+            order: 'i',
+          },
+          {
+            cell: 'J20',
+            message: 'Enter the nationality as a 3-letter ISO country code; for example, GBR, SWE, NLD',
             order: 'j',
           },
           {
-            cell: 'K5',
-            message: 'Enter the nationality as a 3-letter ISO country code; for example, GBR, SWE, NLD',
-            order: 'k',
+            cell: 'L97',
+            message: 'Enter the cabin number in 35 characters or less',
+            order: 'l',
+          },
+          {
+            cell: 'M7',
+            message: 'Enter the name of the port in 35 characters or less',
+            order: 'm',
+          },
+          {
+            cell: 'N55',
+            message: 'Enter the name of the port in 35 characters or less',
+            order: 'n',
           },
         ],
         fileName: 'template.xlsx',
@@ -210,12 +234,15 @@ describe('Error mapping for Crew Details (FAL 5) tests', () => {
       .onPost('/specific-endpoint-path-for-filetype')
       .reply(400, {
         A5: 'Enter travel document as P, I, O or as Passport, ID card, Other',
-        E12: 'Enter the rank or rating using English letters instead of special characters not recognised',
         D8: 'Number of the travel document must be only numbers',
-        H12: 'Enter M for male, F for female, or X for gender neutral if this is in the Travel Document',
-        G9: 'Enter forenames using English letters instead of special characters not recognised',
-        F6: 'Enter the surname using English letters instead of special characters not recognised',
-        J22: 'Enter the place of birth using English letters instead of special characters not recognised',
+        E45: 'Enter the surname using English letters instead of special characters not recognised',
+        F87: 'Enter the forenames using English letters instead of special characters not recognised',
+        G54: 'Enter M for male, F for female, or X for gender neutral if this is in the travel document',
+        I9: 'Enter the place of birth using English letters instead of special characters not recognised',
+        L16: 'Enter the cabin using only letters and numbers',
+        M23: 'Enter the port of embarkation using only letters and numbers',
+        N54: 'Enter the port of disembarkation using only letters and numbers',
+        O12: 'Enter Yes or Y if this passenger is in transit and No or N if this passenger is disembarking or embarking in the UK',
       });
     renderPage();
     const input = screen.getByLabelText('Title from props');
@@ -236,29 +263,44 @@ describe('Error mapping for Crew Details (FAL 5) tests', () => {
             order: 'd',
           },
           {
-            cell: 'E12',
-            message: 'Enter the rank, rating or job title using English letters instead of special characters not recognised',
+            cell: 'E45',
+            message: 'Enter family name or surname using English letters instead of special characters not recognised',
             order: 'e',
           },
           {
-            cell: 'F6',
-            message: 'Enter family name or surname using English letters instead of special characters not recognised',
+            cell: 'F87',
+            message: 'Enter forenames using English letters instead of special characters not recognised',
             order: 'f',
           },
           {
-            cell: 'G9',
-            message: 'Enter forenames using English letters instead of special characters not recognised',
+            cell: 'G54',
+            message: 'Enter M for male, F for female, or X for gender neutral if this is in the travel document',
             order: 'g',
           },
           {
-            cell: 'H12',
-            message: 'Enter M for male, F for female, or X for gender neutral if this is in the travel document',
-            order: 'h',
+            cell: 'I9',
+            message: 'Enter place of birth using English letters instead of special characters not recognised',
+            order: 'i',
           },
           {
-            cell: 'J22',
-            message: 'Enter place of birth using English letters instead of special characters not recognised',
-            order: 'j',
+            cell: 'L16',
+            message: 'Enter the cabin number using letters and numbers only and omit any other characters',
+            order: 'l',
+          },
+          {
+            cell: 'M23',
+            message: 'Enter the name of the port using English letters instead of special characters not recognised',
+            order: 'm',
+          },
+          {
+            cell: 'N54',
+            message: 'Enter the name of the port using English letters instead of special characters not recognised',
+            order: 'n',
+          },
+          {
+            cell: 'O12',
+            message: 'Enter Yes or Y if this passenger is in transit and No or N if this passenger is disembarking or embarking in the UK',
+            order: 'o',
           },
         ],
         fileName: 'template.xlsx',
@@ -267,14 +309,14 @@ describe('Error mapping for Crew Details (FAL 5) tests', () => {
     });
   });
 
-  it('should map the dates in the wrong format for Crew Details (FAL 5) errors, in the specified order', async () => {
+  it('should map the dates in the wrong format for Passenger details (FAL 6) errors, in the specified order', async () => {
     const user = userEvent.setup();
     const file = new File(['template'], 'template.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     mockAxios
       .onPost('/specific-endpoint-path-for-filetype')
       .reply(400, {
-        L8: 'Date must be in the dd/mm/yyyy format, for example, 22/02/2002',
-        I6: 'Date must be in the dd/mm/yyyy format, for example, 22/02/2002',
+        K8: 'Date must be in the dd/mm/yyyy format, for example, 22/02/2002',
+        H6: 'Date must be in the dd/mm/yyyy format, for example, 22/02/2002',
       });
     renderPage();
     const input = screen.getByLabelText('Title from props');
@@ -285,14 +327,14 @@ describe('Error mapping for Crew Details (FAL 5) tests', () => {
       state: {
         errorList: [
           {
-            cell: 'I6',
+            cell: 'H6',
             message: 'Enter the date of birth in the dd/mm/yyyy format, for example, 12/02/2022',
-            order: 'i',
+            order: 'h',
           },
           {
-            cell: 'L8',
+            cell: 'K8',
             message: 'Enter the travel document expiry date in the dd/mm/yyyy format, for example, 12/02/2022',
-            order: 'l',
+            order: 'k',
           },
         ],
         fileName: 'template.xlsx',
