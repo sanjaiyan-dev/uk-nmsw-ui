@@ -46,6 +46,25 @@ steps:
     target:
     - staging
 
+- name: sync_production_secrets
+  pull: always
+  image: quay.io/ukhomeofficedigital/cop-secrets
+  environment:
+    AWS_ACCESS_KEY_ID:
+      from_secret: PRODUCTION_DRONE_AWS_ACCESS_KEY_ID
+    AWS_SECRET_ACCESS_KEY:
+      from_secret: PRODUCTION_DRONE_AWS_SECRET_ACCESS_KEY
+    DEPLOY_ENV: production
+    DRONE_SERVER: https://drone-gh.acp.homeoffice.gov.uk
+    DRONE_TOKEN:
+      from_secret: DRONE_V1_PUBLIC_TOKEN
+    DRONE_VERSION: ${DRONE_SYSTEM_VERSION}
+  when:
+    event:
+    - promote
+    target:
+    - production
+
 - name: unit_test
   pull: always
   image: quay.io/ukhomeofficedigital/cop-node:18-alpine
@@ -80,7 +99,7 @@ steps:
     event:
     - push
 
-- name: vulnerability-scan
+- name: vulnerability_scan
   pull: always
   image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/anchore-submission:latest
   environment:
@@ -161,12 +180,27 @@ steps:
     - cat ./.env
     - export $(cat ./.env | xargs)
     - /usr/local/bin/wait
-    - docker build -t nmsw-ui:$${DRONE_COMMIT_SHA} .
+    - docker build -t nmsw-ui:staging-$${DRONE_COMMIT_SHA} .
   when:
     event:
     - promote
     target:
     - staging
+
+- name: vulnerability_scan_staging
+  pull: always
+  image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/anchore-submission:latest
+  environment:
+    IMAGE_NAME: nmsw-ui:staging-${DRONE_COMMIT_SHA}
+    LOCAL_IMAGE: true
+    TOLERATE: low
+    WHITELIST_FILE: whitelist
+  when:
+    branch:
+    - main
+    - version-*
+    event:
+    - push
 
 - name: image_to_quay_staging
   image: plugins/docker
@@ -209,6 +243,77 @@ steps:
     target:
     - staging
 
+- name: build_container_image_production
+  pull: always
+  image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
+  commands:
+    - ./extract-env-vars.sh ./helm/production.yaml ./.env
+    - cat ./.env
+    - export $(cat ./.env | xargs)
+    - /usr/local/bin/wait
+    - docker build -t nmsw-ui:production-$${DRONE_COMMIT_SHA} .
+  when:
+    event:
+    - promote
+    target:
+    - production
+
+- name: vulnerability_scan_production
+  pull: always
+  image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/anchore-submission:latest
+  environment:
+    IMAGE_NAME: nmsw-ui:production-${DRONE_COMMIT_SHA}
+    LOCAL_IMAGE: true
+    TOLERATE: low
+    WHITELIST_FILE: whitelist
+  when:
+    branch:
+    - main
+    - version-*
+    event:
+    - push
+
+- name: image_to_quay_production
+  image: plugins/docker
+  settings:
+    registry: quay.io
+    repo: quay.io/ukhomeofficedigital/nmsw-ui
+    tags:
+    - production-${DRONE_COMMIT_SHA}
+  environment:
+    DOCKER_PASSWORD:
+      from_secret: NMSW_QUAY_PASSWORD
+    DOCKER_USERNAME: ukhomeofficedigital+nmsw_ui
+  when:
+    event:
+    - promote
+    target:
+    - production
+
+- name: deploy_to_production
+  pull: if-not-exists
+  image: quay.io/ukhomeofficedigital/helm:latest
+  commands:
+  - ./helm/decrypt-secrets.sh production
+  - /run-helm.sh list -n nmsw
+  - helm upgrade --install nmsw-ui ./helm -f ./helm/production.yaml -n nmsw --set image.tag="production-${DRONE_COMMIT_SHA}"
+  environment:
+    KUBE_CERTIFICATE_AUTHORITY_DATA:
+      from_secret: PRODUCTION_NMSW_KUBE_CA_DATA
+    KUBE_CLUSTER_NAME:
+      from_secret: PRODUCTION_NMSW_KUBE_CLUSTER_NAME
+    KUBE_SERVER:
+      from_secret: PRODUCTION_NMSW_KUBE_SERVER
+    KUBE_TOKEN:
+      from_secret: PRODUCTION_NMSW_KUBE_TOKEN
+    GPG_KEY:
+      from_secret: PRODUCTION_NMSW_GPG_KEY
+  when:
+    event:
+    - promote
+    target:
+    - production
+
 - name: notify
   pull: if-not-exists
   image: plugins/slack
@@ -235,7 +340,7 @@ services:
 - name: docker
   image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
 
-- name: anchore-submission-server
+- name: anchore_submission_server
   pull: always
   image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/anchore-submission:latest
   commands:
@@ -295,5 +400,28 @@ steps:
     - promote
     target:
     - staging
+  failure: ignore
+
+- name: production_cypress_test
+  pull: if-not-exists
+  image: quay.io/ukhomeofficedigital/cop-cypress:12.2.0-node18
+  environment:
+    CYPRESS_MAIL_API_KEY:
+      from_secret: PRODUCTION_NMSW_MAILSLURP_API_KEY
+  commands:
+  - ./extract-env-vars.sh ./helm/production.yaml cypress-env.sh
+  - cat ./cypress-env.sh
+  - export $(cat ./cypress-env.sh | xargs)
+  - >-
+    apt-get update && apt-get install -y procps curl;
+    curl -O https://github.com/cucumber/json-formatter/releases/download/v19.0.0/cucumber-json-formatter-linux-amd64;
+    mv ./cucumber-json-formatter-linux-amd64 /usr/local/bin/cucumber-json-formatter;
+    chmod +x /usr/local/bin/cucumber-json-formatter
+  - ./drone-cypress-test-script.sh production
+  when:
+    event:
+    - promote
+    target:
+    - production
   failure: ignore
 ...
