@@ -180,7 +180,7 @@ steps:
     - cat ./.env
     - export $(cat ./.env | xargs)
     - /usr/local/bin/wait
-    - docker build -t nmsw-ui:$${DRONE_COMMIT_SHA} .
+    - docker build -t nmsw-ui:staging-$${DRONE_COMMIT_SHA} .
   when:
     event:
     - promote
@@ -236,7 +236,7 @@ steps:
     - cat ./.env
     - export $(cat ./.env | xargs)
     - /usr/local/bin/wait
-    - docker build -t nmsw-ui:$${DRONE_COMMIT_SHA} .
+    - docker build -t nmsw-ui:production-$${DRONE_COMMIT_SHA} .
   when:
     event:
     - promote
