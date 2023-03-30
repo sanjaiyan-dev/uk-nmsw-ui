@@ -99,7 +99,7 @@ steps:
     event:
     - push
 
-- name: vulnerability-scan
+- name: vulnerability_scan
   pull: always
   image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/anchore-submission:latest
   environment:
@@ -187,6 +187,21 @@ steps:
     target:
     - staging
 
+- name: vulnerability_scan_staging
+  pull: always
+  image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/anchore-submission:latest
+  environment:
+    IMAGE_NAME: nmsw-ui:staging-${DRONE_COMMIT_SHA}
+    LOCAL_IMAGE: true
+    TOLERATE: low
+    WHITELIST_FILE: whitelist
+  when:
+    branch:
+    - main
+    - version-*
+    event:
+    - push
+
 - name: image_to_quay_staging
   image: plugins/docker
   settings:
@@ -242,6 +257,21 @@ steps:
     - promote
     target:
     - production
+
+- name: vulnerability_scan_production
+  pull: always
+  image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/anchore-submission:latest
+  environment:
+    IMAGE_NAME: nmsw-ui:production-${DRONE_COMMIT_SHA}
+    LOCAL_IMAGE: true
+    TOLERATE: low
+    WHITELIST_FILE: whitelist
+  when:
+    branch:
+    - main
+    - version-*
+    event:
+    - push
 
 - name: image_to_quay_production
   image: plugins/docker
@@ -310,7 +340,7 @@ services:
 - name: docker
   image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
 
-- name: anchore-submission-server
+- name: anchore_submission_server
   pull: always
   image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/anchore-submission:latest
   commands:
