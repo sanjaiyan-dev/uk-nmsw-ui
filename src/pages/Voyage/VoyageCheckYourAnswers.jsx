@@ -221,6 +221,7 @@ const VoyageCheckYourAnswers = () => {
               <dd className="govuk-summary-list__value" />
               <dd className="govuk-summary-list__actions">
                 <Link
+                  className="govuk-link"
                   to={`${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`}
                   aria-describedby="voyageDetails"
                 >
@@ -262,6 +263,7 @@ const VoyageCheckYourAnswers = () => {
                 </dd>
                 <dd className="govuk-summary-list__actions">
                   <Link
+                    className="govuk-link"
                     to={item.changeLink}
                     aria-describedby={item.id}
                   >

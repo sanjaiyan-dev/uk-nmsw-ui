@@ -22,7 +22,11 @@ const GenericMessage = () => {
           </button>
         )}
         {!state.button && (
-          <Link to={state?.redirectURL || LANDING_URL} state={state}>
+          <Link
+            className="govuk-link"
+            to={state?.redirectURL || LANDING_URL}
+            state={state}
+          >
             {state?.linkText || 'Click here to continue'}
           </Link>
         )}

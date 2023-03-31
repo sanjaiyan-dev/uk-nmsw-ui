@@ -28,7 +28,7 @@ describe('Message component tests', () => {
       </MemoryRouter>,
     );
     expect(screen.getByRole('heading', { name: 'Title from props' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Click here to continue' }).outerHTML).toEqual('<a href="/url-from-props">Click here to continue</a>');
+    expect(screen.getByRole('link', { name: 'Click here to continue' }).outerHTML).toEqual('<a class="govuk-link" href="/url-from-props">Click here to continue</a>');
   });
 
   it('should render title, button, and message (but not link) when message and button props passed', () => {
