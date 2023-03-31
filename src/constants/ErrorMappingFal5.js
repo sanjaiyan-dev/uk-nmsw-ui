@@ -42,6 +42,7 @@ const ErrorMappingFal5 = {
   H: { // gender
     order: 'h',
     'field required': 'Enter M for male, F for female, or X for gender neutral if this is in the travel document',
+    'ensure this value has at most 6 characters': 'Enter M for male, F for female, or X for gender neutral if this is in the travel document',
     'Enter M for male, F for female, or X for gender neutral if this is in the Travel Document': 'Enter M for male, F for female, or X for gender neutral if this is in the travel document',
   },
   I: { // date of birth
