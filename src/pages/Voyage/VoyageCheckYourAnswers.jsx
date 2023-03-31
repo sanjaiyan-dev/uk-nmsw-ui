@@ -25,24 +25,43 @@ const VoyageCheckYourAnswers = () => {
   const declarationId = searchParams.get(URL_DECLARATIONID_IDENTIFIER);
   const [isLoading, setIsLoading] = useState(false);
   const [voyageDetails, setVoyageDetails] = useState([]);
+  const [fal5Details, setFal5Details] = useState({
+    fal5Name: '',
+    fal5FileLink: '',
+  });
+  const [fal6Details, setFal6Details] = useState({
+    fal6Name: '',
+    fal6FileLink: '',
+  });
 
   document.title = 'Check your answers';
+
+  const getFalName = (URL) => {
+    // Splits BE file link after the last dash /
+    const falNameStep1 = URL?.split('/').pop();
+    // Splits the file name further so it gets everything before the ?
+    const falNameStep2 = falNameStep1?.split('?')[0];
+    // Decodes the encoded URL so only the file name is left
+    const falName = decodeURI(falNameStep2);
+    return falName;
+  };
 
   // values of this array will be populated by GET request when available
   const uploadedDocuments = [
     {
       id: 'crewDetails',
       title: 'Crew details',
-      value: '',
-      fileLink: '',
+      value: fal5Details?.fal5Name ? fal5Details?.fal5Name : '',
+      fileLink: fal5Details?.fal5FileLink ? fal5Details?.fal5FileLink : '',
       changeLink: `${VOYAGE_CREW_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
     },
     {
       id: 'passengerDetails',
       title: 'Passenger details',
-      value: '',
-      fileLink: '',
+      value: fal6Details?.fal6Name ? fal6Details?.fal6Name : '',
+      fileLink: fal6Details?.fal6FileLink ? fal6Details?.fal6FileLink : '',
       changeLink: `${VOYAGE_PASSENGERS_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
+      noFileText: 'No passenger details provided',
     },
     {
       id: 'supportingDocuments',
@@ -50,6 +69,7 @@ const VoyageCheckYourAnswers = () => {
       value: '',
       fileLink: '',
       changeLink: `${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
+      noFileText: 'No supporting documents provided',
     },
   ];
 
@@ -133,6 +153,19 @@ const VoyageCheckYourAnswers = () => {
           value: response.data.FAL1.cargo,
         },
       ]);
+
+      setFal5Details({
+        fal5Name: getFalName(response?.data?.FAL5),
+        fal5FileLink: response?.data?.FAL5,
+      });
+
+      if (response.data.FAL6) {
+        setFal6Details({
+          fal6Name: getFalName(response?.data?.FAL6),
+          fal6FileLink: response?.data?.FAL6,
+        });
+      }
+
       setIsLoading(false);
     } else {
       switch (response?.status) {
@@ -225,7 +258,7 @@ const VoyageCheckYourAnswers = () => {
                   {item.title}
                 </dt>
                 <dd className="govuk-summary-list__value">
-                  {item.value}
+                  {item.fileLink ? <a className="govuk-link" href={item.fileLink} download>{item.value}</a> : item.noFileText}
                 </dd>
                 <dd className="govuk-summary-list__actions">
                   <Link
