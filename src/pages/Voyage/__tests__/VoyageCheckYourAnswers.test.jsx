@@ -33,7 +33,7 @@ jest.mock('react-router-dom', () => ({
 
 describe('Voyage check your answers page', () => {
   const mockAxios = new MockAdapter(axios);
-  const mockedFAL1Response = {
+  const mockedFAL1And5Response = {
     FAL1: {
       nameOfShip: 'Test ship name',
       imoNumber: '1234567',
@@ -51,6 +51,30 @@ describe('Voyage check your answers page', () => {
       nextPortUnlocode: 'NLRTM',
       cargo: 'No cargo',
     },
+    FAL5: 'https://fal5-report-link.com',
+    FAL6: null,
+  };
+
+  const mockedAllFALResponse = {
+    FAL1: {
+      nameOfShip: 'Test ship name',
+      imoNumber: '1234567',
+      callSign: 'NA',
+      signatory: 'Captain Name',
+      flagState: 'GBR',
+      departureFromUk: false,
+      departurePortUnlocode: 'AUPOR',
+      departureDate: '2023-02-12',
+      departureTime: '09:23:00',
+      arrivalPortUnlocode: 'GBDOV',
+      arrivalDate: '2023-02-15',
+      arrivalTime: '14:00:00',
+      previousPortUnlocode: 'AUPOR',
+      nextPortUnlocode: 'NLRTM',
+      cargo: 'No cargo',
+    },
+    FAL5: 'https://fal5-report-link.com',
+    FAL6: 'https://fal6-report-link.com',
   };
 
   beforeEach(() => {
@@ -133,7 +157,7 @@ describe('Voyage check your answers page', () => {
           Authorization: 'Bearer 123',
         },
       })
-      .reply(200, mockedFAL1Response);
+      .reply(200, mockedFAL1And5Response);
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     expect(screen.getByRole('heading', { name: 'Check your answers' })).toBeInTheDocument();
@@ -150,7 +174,7 @@ describe('Voyage check your answers page', () => {
           Authorization: 'Bearer 123',
         },
       })
-      .reply(200, mockedFAL1Response);
+      .reply(200, mockedFAL1And5Response);
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     expect(screen.getByRole('button', { name: 'Save and submit' }).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button">Save and submit</button>');
@@ -163,7 +187,7 @@ describe('Voyage check your answers page', () => {
           Authorization: 'Bearer 123',
         },
       })
-      .reply(200, mockedFAL1Response);
+      .reply(200, mockedFAL1And5Response);
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     expect(screen.getByText('Voyage type').outerHTML).toEqual('<dt class="govuk-summary-list__key">Voyage type</dt>');
@@ -179,14 +203,15 @@ describe('Voyage check your answers page', () => {
     expect(screen.getByText('Supporting documents').outerHTML).toEqual('<dt id="supportingDocuments" class="govuk-summary-list__key">Supporting documents</dt>');
   });
 
-  it('should render the General Declaration values', async () => {
+  // To view the CYA page the FAL 5 file much be present
+  it('should render the General Declaration values and a Crew Details FAL 5 link', async () => {
     mockAxios
       .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
         headers: {
           Authorization: 'Bearer 123',
         },
       })
-      .reply(200, mockedFAL1Response);
+      .reply(200, mockedFAL1And5Response);
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     expect(screen.getByText('Arrival to the UK').outerHTML).toEqual('<dd class="govuk-summary-list__value">Arrival to the UK</dd>');
@@ -211,6 +236,24 @@ describe('Voyage check your answers page', () => {
 
     expect(screen.getByText('NL RTM').outerHTML).toEqual('<dd class="govuk-summary-list__value">NL RTM</dd>');
     expect(screen.getByText('No cargo').outerHTML).toEqual('<dd class="govuk-summary-list__value">No cargo</dd>');
+    expect(screen.getByRole('link', { name: 'fal5-report-link.com' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal5-report-link.com" download="">fal5-report-link.com</a>');
+    expect(screen.getByText('No passenger details provided')).toBeInTheDocument();
+    expect(screen.getByText('No supporting documents provided')).toBeInTheDocument();
+  });
+
+  it('should render link for Passenger details a file is present', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, mockedAllFALResponse);
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+
+    expect(screen.getByRole('link', { name: 'fal5-report-link.com' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal5-report-link.com" download="">fal5-report-link.com</a>');
+    expect(screen.getByRole('link', { name: 'fal6-report-link.com' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal6-report-link.com" download="">fal6-report-link.com</a>');
   });
 
   it('should fallback to displaying the alphaCode if we do not find a match in the country name lookup on flagState', async () => {
@@ -238,6 +281,8 @@ describe('Voyage check your answers page', () => {
           nextPortUnlocode: 'NLRTM',
           cargo: 'No cargo',
         },
+        FAL5: 'https://fal5-report-link.com',
+        FAL6: null,
       });
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
@@ -257,7 +302,7 @@ describe('Voyage check your answers page', () => {
           Authorization: 'Bearer 123',
         },
       })
-      .reply(200, mockedFAL1Response);
+      .reply(200, mockedFAL1And5Response);
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     expect(screen.getByRole('link', { name: 'Change change voyage details' })).toBeInTheDocument();
@@ -278,7 +323,7 @@ describe('Voyage check your answers page', () => {
           Authorization: 'Bearer 123',
         },
       })
-      .reply(200, mockedFAL1Response);
+      .reply(200, mockedFAL1And5Response);
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     expect(screen.getByRole('link', { name: 'Change change Crew details' })).toBeInTheDocument();
@@ -299,7 +344,7 @@ describe('Voyage check your answers page', () => {
           Authorization: 'Bearer 123',
         },
       })
-      .reply(200, mockedFAL1Response);
+      .reply(200, mockedFAL1And5Response);
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     expect(screen.getByRole('link', { name: 'Change change Passenger details' })).toBeInTheDocument();
@@ -320,7 +365,7 @@ describe('Voyage check your answers page', () => {
           Authorization: 'Bearer 123',
         },
       })
-      .reply(200, mockedFAL1Response);
+      .reply(200, mockedFAL1And5Response);
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     expect(screen.getByRole('link', { name: 'Change change Supporting documents' })).toBeInTheDocument();
