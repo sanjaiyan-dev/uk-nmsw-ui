@@ -42,8 +42,7 @@ When('I upload the file is not of type .csv or .xlsx', () => {
   FileUploadPage.chooseInvalidFile(fileName);
 });
 
-When('I upload a template file with null values', () => {
-  fileName = 'Crew details including supernumeraries FAL 5.xlsx';
+When('I upload a template file {string} with null values', (fileName) => {
   FileUploadPage.chooseInvalidFile(fileName);
 });
 
