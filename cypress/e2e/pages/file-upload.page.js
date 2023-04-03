@@ -102,6 +102,10 @@ class FileUploadPage {
   selectNoPassenger() {
     cy.get('input[id="passengers-input[1]"]').click();
   }
+
+  clickUpload() {
+    cy.contains('Upload files').click();
+  }
 }
 
 export default new FileUploadPage();

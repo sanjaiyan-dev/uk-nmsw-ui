@@ -1,6 +1,7 @@
 import {Then, When} from "@badeball/cypress-cucumber-preprocessor";
 import cyaPage from "../../e2e/pages/cya.page";
 import BasePage from "../../e2e/pages/base.page";
+import FileUploadPage from "../../e2e/pages/file-upload.page";
 
 When('I click Check answers and submit', () => {
   cyaPage.clickCheckAnswersAndSubmit();
@@ -53,4 +54,9 @@ Then('I am taken to error message page', () => {
 
 When('I click - Click here to continue', () => {
   cy.contains('Click here to continue').click();
+});
+
+When('I click upload files', () => {
+  FileUploadPage.clickUpload();
+  cy.wait(1000);
 });
