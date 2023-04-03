@@ -43,4 +43,11 @@ Feature: Check your answer page
     When I click save and continue
     Then I am taken to task details page
     When I click Check answers and submit
+    Then the FE sends a POST to the declarationId endpoint
     Then I can view Check Your Answers page
+    And I sign-out
+    When I try to access a protected CYA page with declaration Id
+    Then I am taken to the sign-in page
+    When I have entered a correct email address and password and sign in
+    Then I can view Check Your Answers page
+

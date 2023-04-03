@@ -11,8 +11,14 @@ Feature: Task details page after file uploads
   Scenario: I can see task details page after fal1 gets uploaded successfully
     When I have uploaded 'Fal1-Files''General declaration FAL 1-Positive-test.xlsx'
     When I click check for errors
+    Then the FE sends a POST to the declarationId endpoint
     When there are no errors, I am shown the no errors found page
     When I click save and continue
+    Then I am taken to task details page
+    And I sign-out
+    When I try to access a protected page with declaration Id
+    Then I am taken to the sign-in page
+    When I have entered a correct email address and password and sign in
     Then I am taken to task details page
     Then I can verify voyage details on the task details page
     And I can see Check answers and submit not enabled
@@ -31,8 +37,14 @@ Feature: Task details page after file uploads
     Then I am taken to upload-Passenger-details page
     When I have uploaded 'Fal6-Files''Passenger details FAL 6-PositiveData.xlsx'
     When I click check for errors
+    Then the FE sends a POST to the declarationId endpoint
     When there are no errors, I am shown the no errors found page
     When I click save and continue
+    Then I am taken to task details page
+    And I sign-out
+    When I try to access a protected page with declaration Id
+    Then I am taken to the sign-in page
+    When I have entered a correct email address and password and sign in
     Then I am taken to task details page
     And I can see status for FAL6 as completed
     And I can see Check answers and submit enabled
@@ -45,7 +57,7 @@ Feature: Task details page after file uploads
     When I click Yes to delete the draft
     Then I am taken to your-voyages page
 
-  Scenario: Verify application navigates user to landing page with missing auth token
+  Scenario: Verify application navigates user to sign-in page with missing auth token
     When I have uploaded 'Fal1-Files''General declaration FAL 1-Positive-test.xlsx'
     When I click check for errors
     When there are no errors, I am shown the no errors found page

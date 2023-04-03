@@ -3,6 +3,7 @@ import YourVoyagePage from "../../e2e/pages/your-voyage.page";
 import FileUploadPage from "../../e2e/pages/file-upload.page";
 import LandingPage from "../../e2e/pages/landing.page";
 import TaskPage from "../../e2e/pages/task.page";
+import SignInPage from "../../e2e/pages/sign-in.page";
 
 let fileName;
 
@@ -56,10 +57,11 @@ When('I click check for errors', () => {
   FileUploadPage.clickCheckForErrors();
 });
 
-Then('the FE sends a POST to the declaration-declarationId-upload-fal1 endpoint', () => {
+Then('the FE sends a POST to the declarationId endpoint', () => {
   cy.wait('@declaration').then((result) => {
     let url = result.request.url;
     let declarationId = url.split("/")[5];
+    cy.wrap(declarationId).as('declarationId');
   });
 });
 
@@ -77,4 +79,20 @@ Then('I am taken to task details page', () => {
 
 Then('I am directed back to the Upload general declaration FAL 1 page', () => {
   FileUploadPage.verifyUploadGeneralDecPage();
+});
+
+Then('I sign-out', () => {
+  SignInPage.clickSignOut();
+});
+
+When('I try to access a protected page with declaration Id', () => {
+  cy.get('@declarationId').then(declarationId => {
+ cy.visitUrl(`/report-voyage?report=${declarationId}`);
+ });
+});
+
+When('I try to access a protected CYA page with declaration Id', () => {
+  cy.get('@declarationId').then(declarationId => {
+    cy.visitUrl(`/report-voyage/check-your-answers?report=${declarationId}`);
+  });
 });
