@@ -33,7 +33,7 @@ Feature: Check your answer page
     Then I can view Check Your Answers page
     Then I can verify the Check Your Answers page
 
-  Scenario: User can Verify the details upload and change the details
+  Scenario Outline: User can Verify the details upload and change the details
     And the details from my FAL 1 form are displayed on CYA page
     When I click change the voyage details link
     Then I am taken to upload-general-declaration page
@@ -48,6 +48,13 @@ Feature: Check your answer page
     And I sign-out
     When I try to access a protected CYA page with declaration Id
     Then I am taken to the sign-in page
-    When I have entered a correct email address and password and sign in
-    Then I can view Check Your Answers page
+    When I provide incorrect '<emailAddress>' and '<password>' and sign-in
+    Then I am taken to error message page
+    When I click - Click here to continue
+    Then I am taken to your-voyages page
+    And I sign-out
+    Examples:
+      | emailAddress                                       | password      |
+      | 98748f98-2dcf-41b8-8bc9-9627e6cd0d80@mailslurp.com | Test-NMSW-Dev |
+
 
