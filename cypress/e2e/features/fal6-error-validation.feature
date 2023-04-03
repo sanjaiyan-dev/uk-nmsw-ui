@@ -18,27 +18,27 @@ Feature: Display FAL 6 field level errors
     When I select Yes to uploading passenger details
     Then I am taken to upload-Passenger-details page
 
-  Scenario: Error messages shown when user uploads file with invalid DOB
+  Scenario: Error messages shown when user uploads file with invalid Characters
     When I have uploaded 'Fal6-Files''Passenger details FAL 6 - invalidCharacters.xlsx'
     When I click check for errors
     Then I am taken to Errors found page for 'Passenger details FAL 6 - invalidCharacters.xlsx'
     Then I am shown error messages for 'invalid Characters'
 
-  Scenario: Error messages shown when user uploads file with family name above 35 characters
+  Scenario: Error messages shown when user uploads file with invalid dates
     When I have uploaded 'Fal6-Files''Passenger details FAL 6 - invalidDates.xlsx'
     When I click check for errors
     Then I am taken to Errors found page for 'Passenger details FAL 6 - invalidDates.xlsx'
     Then I am shown error messages for 'invalid Dates'
 
-  Scenario: Error messages shown when user uploads file with invalid gender value
+  Scenario: Error messages shown when user uploads file with more than allowed characters
     When I have uploaded 'Fal6-Files''Passenger details FAL 6 - maxCharacters.xlsx'
     When I click check for errors
     Then I am taken to Errors found page for 'Passenger details FAL 6 - maxCharacters.xlsx'
     Then I am shown error messages for 'max Characters'
 
-  Scenario: Error messages shown when user uploads file with given name with invalid characters'
+  Scenario: Error messages shown when user uploads file with mandatory missing values'
     When I have uploaded 'Fal6-Files''Passenger details FAL 6 - missingOtherTD.xlsx'
     When I click check for errors
     Then I am taken to Errors found page for 'Passenger details FAL 6 - missingOtherTD.xlsx'
     Then I am shown error messages for 'missing Other Document'
-
+    
