@@ -28,7 +28,6 @@ Feature: Upload General declaration (FAL1) page
   Scenario: Upload general declaration (Fal1) successfully
     When I have uploaded 'Fal1-Files''General declaration FAL 1-Positive-test.xlsx'
     When I click check for errors
-    Then the FE sends a POST to the declaration-declarationId-upload-fal1 endpoint
     When there are no errors, I am shown the no errors found for 'General declaration FAL 1-Positive-test.xlsx'
     When I click save and continue
     Then I am taken to task details page

@@ -11,6 +11,7 @@ class TaskPage {
 
   checkFal1UploadDocStatus() {
     cy.get(':nth-child(1) > .app-task-list__items > :nth-child(1)').contains('General Declaration (FAL 1)Completed');
+    cy.get('main#content div:nth-child(2) > div > p').should('have.text','You have completed 0 of 2 sections.')
     cy.get(':nth-child(2) > .app-task-list__items > .app-task-list__item').contains('Check answers and submitCannot start yet');
   }
 
@@ -34,6 +35,15 @@ class TaskPage {
   clickNoDeleteDraft() {
     cy.get('input[value=deleteDraftNo]').click();
     cy.contains('Confirm').click();
+  }
+
+  checkFal5Status() {
+    cy.get('main#content li:nth-child(2) > a > strong').should('have.text','Completed');
+  }
+
+  checkFal6Status() {
+    cy.get('main#content li:nth-child(3) > a > strong').should('have.text','Completed');
+    cy.get('main#content div:nth-child(2) > div > p').should('have.text','You have completed 1 of 2 sections.');
   }
 }
 

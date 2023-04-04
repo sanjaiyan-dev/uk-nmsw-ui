@@ -46,6 +46,11 @@ Feature: Upload supporting documents
       | fileName                  |
       | MELLINA CREW EFFECTS.xlsx |
     Then I am shown an error message for 'MELLINA CREW EFFECTS.xlsx'
+    When auth token is no longer available
+    When I click upload files
+    Then I am taken to the sign-in page
+    When I have entered a correct email address and password and sign in
+    Then I am taken to upload supporting documents page
     Then I am able to add more limited number files to already added supporting files
       | fileName                                     |
       | GDF1-arrival-errors.xlsx                     |
@@ -54,9 +59,17 @@ Feature: Upload supporting documents
       | fileName                                                             |
       | MELLINA SHIPS STORES (003).xlsx                                      |
       | NMSW FAL 5 and 6 Supporting Information - Crew Off Signers List.xlsx |
+      | General declaration FAL 1 - goodData.xlsx                            |
+      | MELLINA CREW EFFECTS.xlsx                                            |
+      | MELLINA GEN DEC.xlsx                                                 |
+      | MELLINA GEN DEC2.xlsx                                                |
+      | USPassportinside.jpg                                                 |
     Then I am shown corresponding error message
       | Field | multiFileUploadForm-error                                             |
-      | Error | Error: You've selected too many files: you can add up to 1 more files |
+      | Error | Error: You've selected too many files: you can add up to 6 more files |
     Then I am able to delete the file
+    When auth token is no longer available
     When I click save and continue
+    Then I am taken to the sign-in page
+    When I have entered a correct email address and password and sign in
     Then I am taken to task details page
