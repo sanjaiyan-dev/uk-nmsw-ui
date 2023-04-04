@@ -66,6 +66,6 @@ Then('I can able to sign-out', () => {
   SignInPage.clickSignOut();
 });
 
-When('user try to access a protected page', () => {
+When('I try to access a protected page', () => {
   cy.visitUrl('/your-voyages');
 });
