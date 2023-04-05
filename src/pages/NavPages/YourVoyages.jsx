@@ -265,8 +265,9 @@ const YourVoyages = () => {
                         <a href="#change" className="govuk-link small-link-text">{statusLinkText}</a>
                       </div>
                     </div>
-
-                    <p className="govuk-!-font-size-16">Submitted: 3 January 2023 by John Smith</p>
+                    {/* Commenting out this code due to it creating more complications for MVP - needs more discussion*/}
+                    {/* {statusType === 'submitted' && voyage.submissionDate && <p className="govuk-!-font-size-16">{`Submitted: ${dayjs(voyage.submissionDate).format('DD MMMM YYYY')} by ${voyage.signatory}`}</p>}
+                    {statusType !== 'submitted' && voyage.creationDate && <p className="govuk-!-font-size-16">{`Created: ${dayjs(voyage.creationDate).format('DD MMMM YYYY')} by ${voyage.signatory}`}</p>} */}
 
                   </div>
                 );
