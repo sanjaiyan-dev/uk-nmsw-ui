@@ -196,11 +196,10 @@ steps:
     TOLERATE: low
     WHITELIST_FILE: whitelist
   when:
-    branch:
-    - main
-    - version-*
     event:
-    - push
+    - promote
+    target:
+    - staging
 
 - name: image_to_quay_staging
   image: plugins/docker
@@ -267,11 +266,10 @@ steps:
     TOLERATE: low
     WHITELIST_FILE: whitelist
   when:
-    branch:
-    - main
-    - version-*
     event:
-    - push
+    - promote
+    target:
+    - production
 
 - name: image_to_quay_production
   image: plugins/docker
