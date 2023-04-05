@@ -66,13 +66,13 @@ const YourVoyages = () => {
         // We will delete drafts without a general declaration here instead of filtering them out
         const filteredData = response.data.results.reduce((results, data) => {
           if (data.departureFromUk !== null) {
-            results.push(data)
+            results.push(data);
           }
-          return results
-        }, [])
-        setVoyageData(filteredData)
+          return results;
+        }, []);
+        setVoyageData(filteredData);
       }
-      setIsLoading(false)
+      setIsLoading(false);
     } catch (err) {
       if (err?.response?.status === 422) {
         Auth.removeToken();
@@ -84,12 +84,12 @@ const YourVoyages = () => {
         setIsError(true);
       }
     }
-    setIsLoading(false)
+    setIsLoading(false);
   };
 
   useEffect(() => {
     setIsLoading(true);
-    getDeclarationData()
+    getDeclarationData();
   }, []);
 
   if (isError) {
@@ -282,12 +282,13 @@ const YourVoyages = () => {
                         <span className="govuk-body-s">Actions</span> <br />
                         <Link
                           to={voyage.status.name === 'Draft' ? `${VOYAGE_TASK_LIST_URL}?${URL_DECLARATIONID_IDENTIFIER}=${voyage.id}` : `${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${voyage.id}`}
-                          className="govuk-link small-link-text">
+                          className="govuk-link small-link-text"
+                        >
                           {statusLinkText}
                         </Link>
                       </div>
                     </div>
-                    {/* Commenting out this code due to it creating more complications for MVP - needs more discussion*/}
+                    {/* Commenting out this code due to it creating more complications for MVP - needs more discussion */}
                     {/* {statusType === 'submitted' && voyage.submissionDate && <p className="govuk-!-font-size-16">{`Submitted: ${dayjs(voyage.submissionDate).format('DD MMMM YYYY')} by ${voyage.signatory}`}</p>}
                     {statusType !== 'submitted' && voyage.creationDate && <p className="govuk-!-font-size-16">{`Created: ${dayjs(voyage.creationDate).format('DD MMMM YYYY')} by ${voyage.signatory}`}</p>} */}
 
