@@ -170,7 +170,7 @@ const YourVoyages = () => {
               </div>
             </div> */}
 
-            <div className="govuk-grid-column-three-quarters">
+            <div className="govuk-grid-column-full">
               <div className="govuk-grid-row">
                 <div className="govuk-grid-column-full">
                   <h2 className="govuk-heading-s govuk-!-margin-bottom-1 reported-voyages-margin--top">{`${voyageData.length} reported voyages`}</h2>
