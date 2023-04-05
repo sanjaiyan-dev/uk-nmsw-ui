@@ -54,8 +54,39 @@ const YourVoyages = () => {
     }
   };
 
+  const getDeclarationData = async () => {
+    try {
+      const response = await axios.get(CREATE_VOYAGE_ENDPOINT, {
+        headers: { Authorization: `Bearer ${Auth.retrieveToken()}` },
+      });
+      if (response.status === 200) {
+        // We will delete drafts without a general declaration here instead of filtering them out
+        const filteredData = response.data.results.reduce((results, data) => {
+          if (data.departureFromUk !== null) {
+            results.push(data)
+          }
+          return results
+        }, [])
+        setVoyageData(filteredData)
+      }
+      setIsLoading(false)
+    } catch (err) {
+      if (err?.response?.status === 422) {
+        Auth.removeToken();
+        navigate(SIGN_IN_URL, { state: { redirectURL: YOUR_VOYAGES_URL } });
+      } else if (err?.response?.data?.msg === TOKEN_EXPIRED) {
+        Auth.removeToken();
+        navigate(SIGN_IN_URL, { state: { redirectURL: YOUR_VOYAGES_URL } });
+      } else {
+        setIsError(true);
+      }
+    }
+    setIsLoading(false)
+  };
+
   useEffect(() => {
-    setVoyageData(voyageList);
+    setIsLoading(true);
+    getDeclarationData()
   }, []);
 
   if (isError) {
