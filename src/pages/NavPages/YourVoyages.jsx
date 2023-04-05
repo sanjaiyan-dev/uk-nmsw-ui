@@ -6,7 +6,10 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { CREATE_VOYAGE_ENDPOINT, TOKEN_EXPIRED } from '../../constants/AppAPIConstants';
 import {
   SIGN_IN_URL,
+  URL_DECLARATIONID_IDENTIFIER,
   VOYAGE_GENERAL_DECLARATION_UPLOAD_URL,
+  VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
+  VOYAGE_TASK_LIST_URL,
   YOUR_VOYAGES_URL,
 } from '../../constants/AppUrlConstants';
 import { SERVICE_NAME } from '../../constants/AppConstants';
@@ -277,7 +280,11 @@ const YourVoyages = () => {
 
                       <div className="govuk-grid-column-one-quarter reported-voyages__columns reported-voyages__text">
                         <span className="govuk-body-s">Actions</span> <br />
-                        <a href="#change" className="govuk-link small-link-text">{statusLinkText}</a>
+                        <Link
+                          to={voyage.status.name === 'Draft' ? `${VOYAGE_TASK_LIST_URL}?${URL_DECLARATIONID_IDENTIFIER}=${voyage.id}` : `${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${voyage.id}`}
+                          className="govuk-link small-link-text">
+                          {statusLinkText}
+                        </Link>
                       </div>
                     </div>
                     {/* Commenting out this code due to it creating more complications for MVP - needs more discussion*/}
