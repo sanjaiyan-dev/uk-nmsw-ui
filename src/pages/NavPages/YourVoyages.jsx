@@ -229,14 +229,14 @@ const YourVoyages = () => {
                     <div className="govuk-grid-row">
 
                       <div className="govuk-grid-column-one-quarter reported-voyages__columns reported-voyages__text">
-                        <p className="govuk-body-s govuk-!-font-weight-bold">{voyage.shipName}</p>
+                        <p className="govuk-body-s govuk-!-font-weight-bold">{voyage.nameOfShip}</p>
                       </div>
 
                       <div className="govuk-grid-column-one-quarter reported-voyages__columns reported-voyages__text">
                         <p className="govuk-body-s">
                           Voyage type:
                           <br />
-                          {voyage.voyageType}
+                          {voyage.departureFromUk ? 'Departure from the UK' : 'Arrival to the UK'}
                         </p>
                       </div>
 
@@ -244,7 +244,7 @@ const YourVoyages = () => {
                         <p className="govuk-body-s">
                           Date:
                           <br />
-                          {voyage.voyageType === 'Arrival to the UK' ? voyage.arrivalDate : voyage.departureDate}
+                          {voyage.departureFromUk ? dayjs(voyage.departureDate).format('DD MMMM YYYY') : dayjs(voyage.arrivalDate).format('DD MMMM YYYY')}
                         </p>
                       </div>
 
