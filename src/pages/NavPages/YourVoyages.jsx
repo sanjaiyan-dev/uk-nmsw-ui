@@ -103,7 +103,8 @@ const YourVoyages = () => {
           <br />
 
           <div className="govuk-grid-row your-voyages__flex">
-            <div className="govuk-grid-column-one-quarter">
+            {/* We are removing filtering for MVP  */}
+            {/* <div className="govuk-grid-column-one-quarter">
               <div className="light-grey__border">
                 <fieldset className="govuk-fieldset">
                   <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
@@ -151,7 +152,7 @@ const YourVoyages = () => {
                         Submitted
                       </label>
                     </div>
-                    {/* <div className="govuk-radios__item">
+                    <div className="govuk-radios__item">
                         <input
                           className="govuk-radios__input"
                           id="cancelled"
@@ -164,24 +165,10 @@ const YourVoyages = () => {
                           Cancelled
                         </label>
                       </div>
-
-                      <div className="govuk-radios__item">
-                        <input
-                          className="govuk-radios__input"
-                          id="failed"
-                          name="reports"
-                          type="radio"
-                          value="failed"
-                          onChange={() => { }}
-                        />
-                        <label className="govuk-label govuk-radios__label" htmlFor="failed">
-                          Failed
-                        </label>
-                      </div> */}
                   </div>
                 </fieldset>
               </div>
-            </div>
+            </div> */}
 
             <div className="govuk-grid-column-three-quarters">
               <div className="govuk-grid-row">
