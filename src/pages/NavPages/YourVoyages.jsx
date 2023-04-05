@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { CREATE_VOYAGE_ENDPOINT, TOKEN_EXPIRED } from '../../constants/AppAPIConstants';
 import {
   SIGN_IN_URL,
@@ -18,6 +20,7 @@ import LoadingSpinner from '../../components/LoadingSpinner';
 // - There is commented out code for when the filter is working but there are no voyages relating to the filter
 
 const YourVoyages = () => {
+  dayjs.extend(customParseFormat);
   const { state } = useLocation();
   const navigate = useNavigate();
   const [isError, setIsError] = useState(false);
