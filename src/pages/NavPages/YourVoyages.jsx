@@ -207,30 +207,23 @@ const YourVoyages = () => {
                 let statusTagClass;
                 let statusLinkText;
                 let statusType;
-                if (voyage.status === 'Submitted' || voyage.status === 'PreSubmitted') {
+                if (voyage.status.name === 'Submitted' || voyage.status.name === 'PreSubmitted') {
                   statusTagClass = 'govuk-tag govuk-tag--green';
                   statusLinkText = 'Review or cancel';
                   statusType = 'submitted';
-                }
-                if (voyage.status === 'Draft') {
+                } else if (voyage.status.name === 'Draft') {
                   statusTagClass = 'govuk-tag govuk-tag--grey';
                   statusLinkText = 'Continue';
                   statusType = 'draft';
+                } else if (voyage.status.name === 'Cancelled' || voyage.status.name === 'PreCancelled') {
+                  statusTagClass = 'govuk-tag govuk-tag--orange';
+                  statusLinkText = 'Review';
+                  statusType = 'cancelled';
+                } else {
+                  statusTagClass = 'govuk-tag govuk-tag--red';
+                  statusLinkText = 'Review and re-submit';
+                  statusType = 'failed';
                 }
-                // This is for if/when we implement showing cancelled/failed reports
-                // } else if (voyage.status === 'Draft') {
-                //   statusTagClass = 'govuk-tag govuk-tag--grey';
-                //   statusLinkText = 'Continue';
-                //   statusType = 'draft';
-                // } else if (voyage.status === 'Cancelled' || voyage.status === 'PreCancelled') {
-                //   statusTagClass = 'govuk-tag govuk-tag--red';
-                //   statusLinkText = 'Review';
-                //   statusType = 'cancelled';
-                // } else {
-                //   statusTagClass = 'govuk-tag govuk-tag--red';
-                //   statusLinkText = 'Review and re-submit';
-                //   statusType = 'failed';
-                // }
                 return (
                   <div key={voyage.id} className="govuk-!-margin-top-5 light-grey__border">
                     <div className="govuk-grid-row">
