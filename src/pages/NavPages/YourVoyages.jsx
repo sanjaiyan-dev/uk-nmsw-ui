@@ -95,6 +95,8 @@ const YourVoyages = () => {
     );
   }
 
+  if (isLoading) { return (<LoadingSpinner />); }
+
   return (
     <>
       <div className="govuk-grid-row">
