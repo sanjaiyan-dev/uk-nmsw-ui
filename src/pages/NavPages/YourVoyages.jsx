@@ -10,21 +10,7 @@ import {
 import { SERVICE_NAME } from '../../constants/AppConstants';
 import Message from '../../components/Message';
 import Auth from '../../utils/Auth';
-
-const voyageList = [
-  {
-    id: '1', voyageType: 'Arrival to the UK', shipName: 'Disney Cruises', arrivalDate: '11th July 2023', departureDate: '15th July 2023', status: 'Submitted',
-  },
-  {
-    id: '2', voyageType: 'Departure from the UK', shipName: 'The Queen Mary', arrivalDate: '11th September 2023', departureDate: '15th September 2023', status: 'Draft',
-  },
-  // {
-  //   id: '3', voyageType: 'Departure from the UK', shipName: 'The Black Pearl', arrivalDate: '15th May 2023', departureDate: '27th May 2023', status: 'Cancelled',
-  // },
-  // {
-  //   id: '4', voyageType: 'Arrival to the UK', shipName: 'The Golden Hind', arrivalDate: '15th March 2023', departureDate: '27th March 2023', status: 'Failed',
-  // },
-];
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 // NOTES:
 // - The filter buttons do nothing
