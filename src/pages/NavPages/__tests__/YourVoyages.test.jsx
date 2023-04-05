@@ -65,9 +65,7 @@ describe('Your voyages page tests', () => {
         results: [
           {
             id: '1',
-            status: {
-              name: 'Draft',
-            },
+            status: 'Draft',
             submissionDate: null,
             nameOfShip: 'Ship 1',
             imoNumber: '1234567',
@@ -102,9 +100,7 @@ describe('Your voyages page tests', () => {
         results: [
           {
             id: '2',
-            status: {
-              name: 'Submitted',
-            },
+            status: 'Submitted',
             submissionDate: '2023-02-11',
             nameOfShip: 'Ship 2',
             imoNumber: '123',
@@ -124,9 +120,7 @@ describe('Your voyages page tests', () => {
           },
           {
             id: '3',
-            status: {
-              name: 'PreSubmitted',
-            },
+            status: 'PreSubmitted',
             submissionDate: '2023-02-11',
             nameOfShip: 'Ship 3',
             imoNumber: '123',
@@ -160,9 +154,7 @@ describe('Your voyages page tests', () => {
         results: [
           {
             id: '4',
-            status: {
-              name: 'Cancelled',
-            },
+            status: 'Cancelled',
             submissionDate: '2023-02-11',
             nameOfShip: 'Ship 4',
             imoNumber: '123',
@@ -182,9 +174,7 @@ describe('Your voyages page tests', () => {
           },
           {
             id: '5',
-            status: {
-              name: 'PreCancelled',
-            },
+            status: 'PreCancelled',
             submissionDate: '2023-02-11',
             nameOfShip: 'Ship 5',
             imoNumber: '123',
@@ -218,9 +208,7 @@ describe('Your voyages page tests', () => {
         results: [
           {
             id: '6',
-            status: {
-              name: 'Failed',
-            },
+            status: 'Failed',
             submissionDate: '2023-02-11',
             nameOfShip: 'Ship 6',
             imoNumber: '123',
@@ -278,9 +266,7 @@ describe('Your voyages page tests', () => {
       .onPost(CREATE_VOYAGE_ENDPOINT)
       .reply(200, {
         id: '123',
-        status: {
-          name: 'Draft',
-        },
+        status: 'Draft',
         submissionDate: null,
         nameOfShip: null,
         imoNumber: null,

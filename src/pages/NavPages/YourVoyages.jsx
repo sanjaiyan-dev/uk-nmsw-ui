@@ -232,15 +232,15 @@ const YourVoyages = () => {
                 let statusTagClass;
                 let statusLinkText;
                 let statusType;
-                if (voyage.status.name === 'Submitted' || voyage.status.name === 'PreSubmitted') {
+                if (voyage.status === 'Submitted' || voyage.status === 'PreSubmitted') {
                   statusTagClass = 'govuk-tag govuk-tag--green';
                   statusLinkText = 'Review or cancel';
                   statusType = 'submitted';
-                } else if (voyage.status.name === 'Draft') {
+                } else if (voyage.status === 'Draft') {
                   statusTagClass = 'govuk-tag govuk-tag--grey';
                   statusLinkText = 'Continue';
                   statusType = 'draft';
-                } else if (voyage.status.name === 'Cancelled' || voyage.status.name === 'PreCancelled') {
+                } else if (voyage.status === 'Cancelled' || voyage.status === 'PreCancelled') {
                   statusTagClass = 'govuk-tag govuk-tag--orange';
                   statusLinkText = 'Review';
                   statusType = 'cancelled';
@@ -281,7 +281,7 @@ const YourVoyages = () => {
                       <div className="govuk-grid-column-one-quarter reported-voyages__columns reported-voyages__text">
                         <span className="govuk-body-s">Actions</span> <br />
                         <Link
-                          to={voyage.status.name === 'Draft' ? `${VOYAGE_TASK_LIST_URL}?${URL_DECLARATIONID_IDENTIFIER}=${voyage.id}` : `${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${voyage.id}`}
+                          to={voyage.status === 'Draft' ? `${VOYAGE_TASK_LIST_URL}?${URL_DECLARATIONID_IDENTIFIER}=${voyage.id}` : `${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${voyage.id}`}
                           className="govuk-link small-link-text"
                         >
                           {statusLinkText}
