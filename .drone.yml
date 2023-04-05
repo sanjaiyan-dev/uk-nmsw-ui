@@ -113,7 +113,6 @@ steps:
     - version-*
     event:
     - push
-    - tag
 
 - name: dev_image_to_quay
   image: plugins/docker
