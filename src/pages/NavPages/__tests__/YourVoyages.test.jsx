@@ -356,6 +356,4 @@ describe('Your voyages page tests', () => {
     expect(screen.getByRole('heading', { name: 'Something has gone wrong' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Click here to continue' }).outerHTML).toEqual(`<a href="${YOUR_VOYAGES_URL}">Click here to continue</a>`);
   });
-
-  // TODO: rewrite tests when BE endpoint is ready as the mocked voyage data will always be availiable
 });
