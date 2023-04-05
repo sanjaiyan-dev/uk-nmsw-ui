@@ -20,7 +20,7 @@ Feature: User sign-in
   Scenario:  User should not be signed-in when email is in invalid format
     When the user enters invalid email address and sign-in
     Then I am shown corresponding error message
-      | Field | email-error                                                                  |
+      | Field | email-error                       |
       | Error | Error: Enter a real email address |
 
   Scenario: User should not be signed-in without providing email and password
@@ -38,5 +38,5 @@ Feature: User sign-in
       | 4f3a5d85-99bd-46db-b8ea-80ea8772c9c5@mailslurp.com | test-12  |
 
   Scenario: User should not be signed-in without providing email and password
-    When user try to access a protected page
-    Then user is redirected to NMSW landing page
+    When I try to access a protected page
+    Then I am taken to the sign-in page

@@ -7,12 +7,6 @@ Then('I can verify voyage details on the task details page', () => {
   TaskPage.checkFal1UploadDocStatus();
 });
 
-Then('I can verify new voyage details on the task details page', () => {
-  TaskPage.checkShipName('JensShip');
-  TaskPage.checkVoyageType('Arrival to the UK');
-  TaskPage.checkFal1UploadDocStatus();
-});
-
 When('I click delete draft', () => {
   TaskPage.clickDeleteDraftButton();
 });
@@ -27,4 +21,22 @@ When('I click No to delete the draft', () => {
 
 When('I click Yes to delete the draft', () => {
   TaskPage.clickYesDeleteDraft();
+});
+
+Then('I can see status for FAL5 as completed', () => {
+TaskPage.checkFal5Status();
+});
+
+Then('I can see status for FAL6 as completed', () => {
+  TaskPage.checkFal6Status();
+});
+
+Then('I can see Check answers and submit not enabled', () => {
+  cy.get('main#content li > div > span').should('not.have.attr','a');
+  cy.get('main#content div > strong').should('have.text','Cannot start yet');
+});
+
+Then('I can see Check answers and submit enabled', () => {
+  cy.get('main#content li:nth-child(2) > ul > li >a').should('have.attr','href');
+  cy.get('main#content li:nth-child(2) > ul > li > a > strong').should('have.text','Not started');
 });

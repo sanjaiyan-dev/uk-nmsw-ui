@@ -12,12 +12,29 @@ Feature: Check your answer page
     When there are no errors, I am shown the no errors found page
     When I click save and continue
     Then I am taken to task details page
-    Then I can verify voyage details on the task details page
+    When I click crew details link
+    Then I am taken to upload-crew-details page
+    When I have uploaded 'Fal5-Files''Crew details including supernumeraries FAL 5-Positive-Test.xlsx'
+    When I click check for errors
+    When there are no errors, I am shown the no errors found page
+    When I click save and continue
+    Then I am taken to task details page
+    When I click Passenger details link
+    Then I am taken to Passenger-details page
+    When I select Yes to uploading passenger details
+    Then I am taken to upload-Passenger-details page
+    When I have uploaded 'Fal6-Files''Passenger details FAL 6-PositiveData.xlsx'
+    When I click check for errors
+    When there are no errors, I am shown the no errors found page
+    When I click save and continue
+    Then I am taken to task details page
+    And I can see Check answers and submit enabled
     When I click Check answers and submit
+    Then I can view Check Your Answers page
     Then I can verify the Check Your Answers page
 
-  Scenario: Verify the details of Voyage details
-    Then the details from my FAL 1 form are displayed on CYA page
+  Scenario Outline: User can Verify the details upload and change the details
+    And the details from my FAL 1 form are displayed on CYA page
     When I click change the voyage details link
     Then I am taken to upload-general-declaration page
     When I have uploaded 'Fal1-Files''General declaration FAL 1 - goodData.xlsx'
@@ -25,6 +42,19 @@ Feature: Check your answer page
     When there are no errors, I am shown the no errors found page
     When I click save and continue
     Then I am taken to task details page
-    Then I can verify new voyage details on the task details page
     When I click Check answers and submit
+    Then the FE sends a POST to the declarationId endpoint
     Then I can view Check Your Answers page
+    And I sign-out
+    When I try to access a protected CYA page with declaration Id
+    Then I am taken to the sign-in page
+    When I provide incorrect '<emailAddress>' and '<password>' and sign-in
+    Then I am taken to error message page
+    When I click - Click here to continue
+    Then I am taken to your-voyages page
+    And I sign-out
+    Examples:
+      | emailAddress                                       | password      |
+      | 98748f98-2dcf-41b8-8bc9-9627e6cd0d80@mailslurp.com | Test-NMSW-Dev |
+
+

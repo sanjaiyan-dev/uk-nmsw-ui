@@ -45,9 +45,9 @@ Then('I am shown an error message for {string}', (file) => {
 });
 
 Then('I am able to delete the file', () => {
-  cy.get('.multi-file-upload--filelist').should('have.length', 7);
+  cy.get('.multi-file-upload--filelist').should('have.length', 2);
   fileUploadPage.clickDelete();
-  cy.get('.multi-file-upload--filelist').should('have.length', 6);
+  cy.get('.multi-file-upload--filelist').should('have.length', 1);
 });
 
 When('I upload a valid file, it gets uploaded', (table) => {

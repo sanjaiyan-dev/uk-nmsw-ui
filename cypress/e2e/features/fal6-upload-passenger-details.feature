@@ -46,3 +46,8 @@ Feature: Upload Passenger details (FAL6) file
     Then I am shown corresponding error message
       | Field | fileUploadInput-error                    |
       | Error | Error: The file must be smaller than 4MB |
+    When I upload a template file 'Passenger details FAL 6.xlsx' with null values
+    When I click check for errors
+    Then I am shown corresponding error message
+      | Field | fileUploadInput-error    |
+      | Error | Error: Template is empty |

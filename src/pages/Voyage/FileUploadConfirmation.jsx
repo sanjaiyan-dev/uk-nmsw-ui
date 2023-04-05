@@ -9,7 +9,7 @@ const FileUploadConfirmation = () => {
   const declarationId = searchParams.get(URL_DECLARATIONID_IDENTIFIER);
   document.title = 'No errors found';
 
-  if (!declarationId || !state?.fileName) {
+  if (!declarationId) {
     return (
       <Message title="Something has gone wrong" redirectURL={YOUR_VOYAGES_URL} />
     );
@@ -32,7 +32,7 @@ const FileUploadConfirmation = () => {
             </div>
             <div className="govuk-notification-banner__content">
               <h3 className="govuk-notification-banner__heading">
-                {`${state?.fileName ? state?.fileName : ''} uploaded`}
+                {`${state?.fileName ? state?.fileName : 'File'} uploaded`}
               </h3>
             </div>
           </div>
