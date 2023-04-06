@@ -8,7 +8,9 @@ import {
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
 import {
+  SIGN_IN_URL,
   URL_DECLARATIONID_IDENTIFIER,
+  VOYAGE_PASSENGERS_URL,
   VOYAGE_PASSENGER_UPLOAD_URL,
   VOYAGE_TASK_LIST_URL,
   YOUR_VOYAGES_URL,
@@ -16,7 +18,7 @@ import {
 import {
   API_URL,
   ENDPOINT_DECLARATION_PATH,
-  TOKEN_EXPIRED
+  TOKEN_EXPIRED,
 } from '../../constants/AppAPIConstants';
 import Auth from '../../utils/Auth';
 import DisplayForm from '../../components/DisplayForm';
@@ -26,8 +28,8 @@ const VoyagePassengers = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const declarationId = searchParams.get(URL_DECLARATIONID_IDENTIFIER);
-  const [isError, setIsError] = useState()
-  const [isLoading, setIsLoading] = useState(false)
+  const [isError, setIsError] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   document.title = 'Is the ship carrying any passengers?';
 
   const formActions = {
@@ -68,11 +70,11 @@ const VoyagePassengers = () => {
 
   const handleSubmit = async (formData) => {
     setIsLoading(true);
-    let isPassengers
+    let isPassengers;
     if (formData?.formData?.passengers === 'passengersYes') {
-      isPassengers = { passengers: true }
+      isPassengers = { passengers: true };
     } else if (formData?.formData?.passengers === 'passengersNo') {
-      isPassengers = { passengers: false }
+      isPassengers = { passengers: false };
     }
 
     try {
@@ -83,14 +85,14 @@ const VoyagePassengers = () => {
         navigate(`${VOYAGE_PASSENGER_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`);
       } else if (response.status === 200 && response.data.passengers === false) {
         navigate(`${VOYAGE_TASK_LIST_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`);
-      };
+      }
     } catch (err) {
       if (err?.response?.status === 422) {
         Auth.removeToken();
-        navigate(SIGN_IN_URL, { state: { redirectURL: YOUR_VOYAGES_URL } });
+        navigate(SIGN_IN_URL, { state: { redirectURL: `${VOYAGE_PASSENGERS_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}` } });
       } else if (err?.response?.data?.msg === TOKEN_EXPIRED) {
         Auth.removeToken();
-        navigate(SIGN_IN_URL, { state: { redirectURL: YOUR_VOYAGES_URL } });
+        navigate(SIGN_IN_URL, { state: { redirectURL: `${VOYAGE_PASSENGERS_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}` } });
       } else {
         setIsError(true);
       }
