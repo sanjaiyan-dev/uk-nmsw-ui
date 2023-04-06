@@ -46,6 +46,12 @@ const VoyagePassengers = () => {
           value: 'passengersNo',
         },
       ],
+      validation: [
+        {
+          type: VALIDATE_REQUIRED,
+          message: 'Select yes if the ship is carrying any passengers',
+        },
+      ],
     },
   ];
 
