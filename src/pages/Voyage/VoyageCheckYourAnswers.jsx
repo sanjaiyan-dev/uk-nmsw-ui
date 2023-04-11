@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
@@ -24,6 +24,7 @@ const VoyageCheckYourAnswers = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const declarationId = searchParams.get(URL_DECLARATIONID_IDENTIFIER);
+  const errorSummaryRef = useRef(null);
   const [declarationData, setDeclarationData] = useState();
   const [errors, setErrors] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -192,11 +193,12 @@ const VoyageCheckYourAnswers = () => {
   const handleSubmit = () => {
     // This will most likely have a validate funtion in the future but at the moment there can only be a single error (I think)
     if (declarationData.FAL1.passengers && !declarationData.FAL6) {
-      scrollToTop();
       setErrors([{
         name: 'passengerDetails',
         message: 'Passenger details (FAL 6) upload is required for ships carrying passengers',
       }]);
+      scrollToTop();
+      errorSummaryRef?.current?.focus();
     } else {
       console.log('submit clicked for id', declarationId);
     }
@@ -222,7 +224,7 @@ const VoyageCheckYourAnswers = () => {
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
           {errors?.length > 0 && (
-            <div className="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary" tabIndex={-1}>
+            <div className="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary" ref={errorSummaryRef} tabIndex={-1}>
               <h2 className="govuk-error-summary__title" id="error-summary-title">
                 There is a problem
               </h2>
