@@ -50,7 +50,6 @@ const VoyageCheckYourAnswers = () => {
     return falFileName;
   };
 
-  // values of this array will be populated by GET request when available
   const uploadedDocuments = [
     {
       id: 'crewDetails',
