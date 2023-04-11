@@ -334,7 +334,7 @@ describe('Voyage task list page', () => {
     renderPage();
     await screen.findByRole('heading', { name: 'Report a voyage' });
     expect(screen.getByRole('link', { name: 'Any passenger details (FAL 6) Required' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Any passenger details (FAL 6) Required' }).outerHTML).toBe('<a href="/report-voyage/passenger-details?report=123"><span>Any passenger details (FAL 6)</span><strong class="govuk-tag govuk-tag--pink app-task-list__tag">Required</strong></a>');
+    expect(screen.getByRole('link', { name: 'Any passenger details (FAL 6) Required' }).outerHTML).toBe('<a class="govuk-link" href="/report-voyage/passenger-details?report=123"><span>Any passenger details (FAL 6)</span><strong class="govuk-tag govuk-tag--pink app-task-list__tag">Required</strong></a>');
     expect(screen.getByTestId('completedSections')).toHaveTextContent('0');
   });
 
@@ -373,7 +373,7 @@ describe('Voyage task list page', () => {
     renderPage();
     await screen.findByRole('heading', { name: 'Report a voyage' });
     expect(screen.getByRole('link', { name: 'Any passenger details (FAL 6) Completed' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Any passenger details (FAL 6) Completed' }).outerHTML).toBe('<a href="/report-voyage/passenger-details?report=123"><span>Any passenger details (FAL 6)</span><strong class="govuk-tag app-task-list__tag">Completed</strong></a>');
+    expect(screen.getByRole('link', { name: 'Any passenger details (FAL 6) Completed' }).outerHTML).toBe('<a class="govuk-link" href="/report-voyage/passenger-details?report=123"><span>Any passenger details (FAL 6)</span><strong class="govuk-tag app-task-list__tag">Completed</strong></a>');
     expect(screen.getByTestId('completedSections')).toHaveTextContent('0');
   });
 
