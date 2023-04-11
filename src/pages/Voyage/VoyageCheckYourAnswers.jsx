@@ -36,14 +36,14 @@ const VoyageCheckYourAnswers = () => {
 
   document.title = 'Check your answers';
 
-  const getFalName = (URL) => {
+  const getFalFileName = (URL) => {
     // Splits BE file link after the last dash /
-    const falNameStep1 = URL?.split('/').pop();
+    const startOfFileName = URL?.split('/').pop();
     // Splits the file name further so it gets everything before the ?
-    const falNameStep2 = falNameStep1?.split('?')[0];
+    const encodedFileName = startOfFileName?.split('?')[0];
     // Decodes the encoded URL so only the file name is left
-    const falName = decodeURI(falNameStep2);
-    return falName;
+    const falFileName = decodeURI(encodedFileName);
+    return falFileName;
   };
 
   // values of this array will be populated by GET request when available
@@ -155,13 +155,13 @@ const VoyageCheckYourAnswers = () => {
       ]);
 
       setFal5Details({
-        fal5Name: getFalName(response?.data?.FAL5),
+        fal5Name: getFalFileName(response?.data?.FAL5),
         fal5FileLink: response?.data?.FAL5,
       });
 
       if (response.data.FAL6) {
         setFal6Details({
-          fal6Name: getFalName(response?.data?.FAL6),
+          fal6Name: getFalFileName(response?.data?.FAL6),
           fal6FileLink: response?.data?.FAL6,
         });
       }
