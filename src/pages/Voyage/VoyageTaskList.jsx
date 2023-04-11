@@ -66,6 +66,15 @@ const VoyageTaskList = () => {
       setDeclarationData(response.data);
       setVoyageTypeText(response.data?.FAL1.departureFromUk ? 'Departure from the UK' : 'Arrival to the UK');
 
+      let isPassengers;
+      if (response.data?.FAL1.passengers && response.data?.FAL6) {
+        isPassengers = 'completed';
+      } else if (response.data?.FAL1.passengers === false) {
+        isPassengers = 'completed';
+      } else {
+        isPassengers = 'required';
+      }
+
       const updatedStatuses = [
         {
           item: 'generalDeclaration',
@@ -83,7 +92,7 @@ const VoyageTaskList = () => {
           item: 'passengerDetails',
           link: `${VOYAGE_PASSENGERS_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
           label: PASSENGER_DETAILS_LABEL,
-          status: response.data.FAL6 ? 'completed' : 'required',
+          status: isPassengers,
         },
         {
           item: 'supportingDocuments',
