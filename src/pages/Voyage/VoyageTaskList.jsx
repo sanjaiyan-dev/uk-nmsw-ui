@@ -104,7 +104,7 @@ const VoyageTaskList = () => {
 
       setStep(updatedStatuses);
 
-      if (response.data.FAL1 && response.data.FAL5 && response.data.FAL6) {
+      if (response.data.FAL1 && response.data.FAL5 && isPassengers === 'completed') {
         setCompletedSections(1);
         setCheckYourAnswersStep({ ...checkYourAnswersStep, status: 'notStarted' });
       } else {
