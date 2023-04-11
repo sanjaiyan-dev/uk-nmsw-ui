@@ -48,6 +48,9 @@ describe('Voyage task list page', () => {
       previousPortUnlocode: 'AUXXX',
       nextPortUnlocode: 'NLRTM',
       cargo: 'No cargo',
+      passengers: null,
+      creationDate: '2023-02-10',
+      submissionDate: '2023-02-11',
     },
     FAL5: null,
     FAL6: null,
@@ -201,6 +204,9 @@ describe('Voyage task list page', () => {
           previousPortUnlocode: 'AUXXX',
           nextPortUnlocode: 'NLRTM',
           cargo: 'No cargo',
+          passengers: null,
+          creationDate: '2023-02-10',
+          submissionDate: '2023-02-11',
         },
       });
 
@@ -235,8 +241,12 @@ describe('Voyage task list page', () => {
           previousPortUnlocode: 'AUXXX',
           nextPortUnlocode: 'NLRTM',
           cargo: 'No cargo',
+          passengers: null,
+          creationDate: '2023-02-10',
+          submissionDate: '2023-02-11',
         },
         FAL5: 'https://fal5-report-link.com',
+        FAL6: null,
       });
 
     renderPage();
@@ -248,7 +258,7 @@ describe('Voyage task list page', () => {
     expect(screen.getByTestId('completedSections')).toHaveTextContent('0');
   });
 
-  it('should show Passenger Details link as complete if response received has a link for FAL6', async () => {
+  it('should show Passenger Details link as complete if response received has a link for FAL6 and passengers is true', async () => {
     mockAxios
       .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
         headers: {
@@ -272,6 +282,9 @@ describe('Voyage task list page', () => {
           previousPortUnlocode: 'AUXXX',
           nextPortUnlocode: 'NLRTM',
           cargo: 'No cargo',
+          passengers: true,
+          creationDate: '2023-02-10',
+          submissionDate: '2023-02-11',
         },
         FAL5: null,
         FAL6: 'https://fal6-report-link.com',
@@ -286,7 +299,7 @@ describe('Voyage task list page', () => {
     expect(screen.getByTestId('completedSections')).toHaveTextContent('0');
   });
 
-  it('should show completed sections as 1 and Passenger & Crew Details link as complete if response received has a link for FAL6 & FAL6', async () => {
+  it('should show Passenger Details link as required if passengers is true but no link is present', async () => {
     mockAxios
       .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
         headers: {
@@ -310,6 +323,87 @@ describe('Voyage task list page', () => {
           previousPortUnlocode: 'AUXXX',
           nextPortUnlocode: 'NLRTM',
           cargo: 'No cargo',
+          passengers: true,
+          creationDate: '2023-02-10',
+          submissionDate: '2023-02-11',
+        },
+        FAL5: null,
+        FAL6: null,
+      });
+
+    renderPage();
+    await screen.findByRole('heading', { name: 'Report a voyage' });
+    expect(screen.getByRole('link', { name: 'Any passenger details (FAL 6) Required' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Any passenger details (FAL 6) Required' }).outerHTML).toBe('<a href="/report-voyage/passenger-details?report=123"><span>Any passenger details (FAL 6)</span><strong class="govuk-tag govuk-tag--pink app-task-list__tag">Required</strong></a>');
+    expect(screen.getByTestId('completedSections')).toHaveTextContent('0');
+  });
+
+  it('should show Passenger Details link as complete if response received for passengers is false', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: true,
+          departurePortUnlocode: 'AUXXX',
+          departureDate: '2023-02-12',
+          departureTime: '14:00:00',
+          arrivalPortUnlocode: 'GBPOR',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUXXX',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: false,
+          creationDate: '2023-02-10',
+          submissionDate: '2023-02-11',
+        },
+        FAL5: null,
+        FAL6: null,
+      });
+
+    renderPage();
+    await screen.findByRole('heading', { name: 'Report a voyage' });
+    expect(screen.getByRole('link', { name: 'Any passenger details (FAL 6) Completed' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Any passenger details (FAL 6) Completed' }).outerHTML).toBe('<a href="/report-voyage/passenger-details?report=123"><span>Any passenger details (FAL 6)</span><strong class="govuk-tag app-task-list__tag">Completed</strong></a>');
+    expect(screen.getByTestId('completedSections')).toHaveTextContent('0');
+  });
+
+  it('should show completed sections as 1 and Passenger & Crew Details link as complete if response received has a link for FAL5 & FAL6', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: true,
+          departurePortUnlocode: 'AUXXX',
+          departureDate: '2023-02-12',
+          departureTime: '14:00:00',
+          arrivalPortUnlocode: 'GBPOR',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUXXX',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: true,
+          creationDate: '2023-02-10',
+          submissionDate: '2023-02-11',
         },
         FAL5: 'https://fal5-report-link.com',
         FAL6: 'https://fal6-report-link.com',
