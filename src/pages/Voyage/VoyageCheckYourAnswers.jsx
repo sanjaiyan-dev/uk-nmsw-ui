@@ -17,12 +17,15 @@ import {
   YOUR_VOYAGES_URL,
 } from '../../constants/AppUrlConstants';
 import GetDeclaration from '../../utils/GetDeclaration';
+import { scrollToElementId, scrollToTop } from '../../utils/ScrollToElement';
 
 const VoyageCheckYourAnswers = () => {
   dayjs.extend(customParseFormat);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const declarationId = searchParams.get(URL_DECLARATIONID_IDENTIFIER);
+  const [declarationData, setDeclarationData] = useState();
+  const [errors, setErrors] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [voyageDetails, setVoyageDetails] = useState([]);
   const [fal5Details, setFal5Details] = useState({
@@ -89,6 +92,7 @@ const VoyageCheckYourAnswers = () => {
   const updateDeclarationData = async () => {
     const response = await GetDeclaration({ declarationId });
     if (response.data) {
+      setDeclarationData(response.data);
       setVoyageDetails([
         {
           title: 'Voyage type',
@@ -186,7 +190,16 @@ const VoyageCheckYourAnswers = () => {
   };
 
   const handleSubmit = () => {
-    console.log('submit clicked for id', declarationId);
+    // This will most likely have a validate funtion in the future but at the moment there can only be a single error (I think)
+    if (declarationData.FAL1.passengers && !declarationData.FAL6) {
+      scrollToTop();
+      setErrors([{
+        name: 'passengerDetails',
+        message: 'Passenger details (FAL 6) upload is required for ships carrying passengers',
+      }]);
+    } else {
+      console.log('submit clicked for id', declarationId);
+    }
   };
 
   useEffect(() => {
@@ -207,6 +220,30 @@ const VoyageCheckYourAnswers = () => {
   return (
     <>
       <div className="govuk-grid-row">
+        <div className="govuk-grid-column-two-thirds">
+          {errors?.length > 0 && (
+            <div className="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary" tabIndex={-1}>
+              <h2 className="govuk-error-summary__title" id="error-summary-title">
+                There is a problem
+              </h2>
+              <div className="govuk-error-summary__body">
+                <ul className="govuk-list govuk-error-summary__list">
+                  {errors.map((error) => (
+                    <li key={error.name}>
+                      <button
+                        className="govuk-button--text"
+                        type="button"
+                        onClick={(e) => { e.preventDefault(); scrollToElementId('passengerDetails'); }}
+                      >
+                        {error.message}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
+        </div>
         <div className="govuk-grid-column-full">
           <h1 className="govuk-heading-xl">Check your answers</h1>
         </div>
