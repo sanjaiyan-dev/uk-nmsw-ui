@@ -5,7 +5,7 @@ import {
   // waitFor,
   waitForElementToBeRemoved,
 } from '@testing-library/react';
-// import userEvent from '@testing-library/user-event';
+import userEvent from '@testing-library/user-event';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import {
@@ -50,6 +50,9 @@ describe('Voyage check your answers page', () => {
       previousPortUnlocode: 'AUPOR',
       nextPortUnlocode: 'NLRTM',
       cargo: 'No cargo',
+      passengers: false,
+      creationDate: '2023-02-10',
+      submissionDate: '2023-02-11',
     },
     FAL5: 'https://fal5-report-link.com',
     FAL6: null,
@@ -72,6 +75,9 @@ describe('Voyage check your answers page', () => {
       previousPortUnlocode: 'AUPOR',
       nextPortUnlocode: 'NLRTM',
       cargo: 'No cargo',
+      passengers: true,
+      creationDate: '2023-02-10',
+      submissionDate: '2023-02-11',
     },
     FAL5: 'https://fal5-report-link.com',
     FAL6: 'https://fal6-report-link.com',
@@ -256,6 +262,46 @@ describe('Voyage check your answers page', () => {
     expect(screen.getByRole('link', { name: 'fal6-report-link.com' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal6-report-link.com" download="">fal6-report-link.com</a>');
   });
 
+  it('should error if passengers is true but no FAL 6 has been provided', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: false,
+          departurePortUnlocode: 'AUPOR',
+          departureDate: '2023-02-12',
+          departureTime: '09:23:00',
+          arrivalPortUnlocode: 'GBDOV',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUPOR',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: true,
+          creationDate: '2023-02-10',
+          submissionDate: '2023-02-11',
+        },
+        FAL5: 'https://fal5-report-link.com',
+        FAL6: null,
+      });
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    await user.click(screen.getByRole('button', { name: 'Save and submit' }));
+
+    expect(screen.getByText('There is a problem')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Passenger details (FAL 6) upload is required for ships carrying passengers' })).toBeInTheDocument();
+  });
+
   it('should fallback to displaying the alphaCode if we do not find a match in the country name lookup on flagState', async () => {
     mockAxios
       .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
@@ -280,6 +326,9 @@ describe('Voyage check your answers page', () => {
           previousPortUnlocode: 'AUPOR',
           nextPortUnlocode: 'NLRTM',
           cargo: 'No cargo',
+          passengers: false,
+          creationDate: '2023-02-10',
+          submissionDate: '2023-02-11',
         },
         FAL5: 'https://fal5-report-link.com',
         FAL6: null,
