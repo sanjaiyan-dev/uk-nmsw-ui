@@ -8,7 +8,7 @@ import {
   VALIDATE_EMAIL_ADDRESS,
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
-import { MESSAGE_URL, REQUEST_PASSWORD_RESET_URL } from '../../constants/AppUrlConstants';
+import { MESSAGE_URL, REQUEST_PASSWORD_RESET_CONFIRMATION_URL, REQUEST_PASSWORD_RESET_URL } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
 
 const SupportingText = () => (
@@ -54,12 +54,17 @@ const RequestPasswordReset = () => {
       }, {
         signal: controller.signal,
       });
-      console.log('r', response)
-      // if (response.status === 204 || 401) {
-      //   navigate(CONFIRMATION_URL_OR_COMPONENT_HERE, { state: { dataToSubmit: { emailAddress: emailToSendTo } } });
-      // }
+
+      if (response.status === 204) {
+        navigate(REQUEST_PASSWORD_RESET_CONFIRMATION_URL, { state: { dataToSubmit: { emailAddress: emailToSendTo } } });
+      }
     } catch (err) {
-      navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: REQUEST_PASSWORD_RESET_URL } });
+      if (err.response.status === 401) {
+        // 401 is invalid email address but we don't message that to the user so we show them the same confirmation page
+        navigate(REQUEST_PASSWORD_RESET_CONFIRMATION_URL, { state: { dataToSubmit: { emailAddress: emailToSendTo } } });
+      } else {
+        navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: REQUEST_PASSWORD_RESET_URL } });
+      }
     } finally {
       setIsLoading(false);
     }
