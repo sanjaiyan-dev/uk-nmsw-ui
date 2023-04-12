@@ -13,7 +13,7 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockedUseNavigate,
 }));
 
-describe('Register email address tests', () => {
+describe('Request password reset tests', () => {
   const mockAxios = new MockAdapter(axios);
   const handleSubmit = jest.fn();
   const scrollIntoViewMock = jest.fn();
