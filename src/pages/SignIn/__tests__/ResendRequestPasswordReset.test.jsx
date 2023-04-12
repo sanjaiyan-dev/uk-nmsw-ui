@@ -21,7 +21,6 @@ describe('Confirm request password reset check your email tests', () => {
     mockUseLocationState = { state: { dataToSubmit: { emailAddress: 'testemail@email.com' } } };
     render(<MemoryRouter><RequestPasswordResetConfirmation /></MemoryRouter>);
     expect(screen.getByRole('heading', { name: 'Check your email' })).toBeInTheDocument();
-    expect(screen.getByText('Click the link in the email to reset your password.')).toBeInTheDocument();
   });
 
   it('should show the email address from state in the page', () => {

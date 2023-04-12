@@ -9,7 +9,6 @@ const RequestPasswordResetConfirmation = () => {
     <>
       <h1 className="govuk-heading-xl">Check your email</h1>
       <p className="govuk-body">If <strong className="govuk-label--s">{state?.dataToSubmit.emailAddress}</strong> is registered on this service, we have sent a password reset link.</p>
-      <p className="govuk-body">Click the link in the email to reset your password.</p>
       <p>
         <Link
           className="govuk-body govuk-link"
