@@ -68,3 +68,7 @@ npm run cypress:run:dev -- --env MAIL_API_KEY=<API_KEY> .
 ```sh
 npm run cypress:open:dev -- --env MAIL_API_KEY=<API_KEY> .
 ```
+**Run regression pack**
+```sh
+npm run cypress:run:dev -- --env MAIL_API_KEY=<API_KEY>,TAGS='@regression' .
+```

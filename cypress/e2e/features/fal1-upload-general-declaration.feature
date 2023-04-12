@@ -25,6 +25,7 @@ Feature: Upload General declaration (FAL1) page
       | Field | fileUploadInput-error                    |
       | Error | Error: The file must be smaller than 4MB |
 
+  @regression
   Scenario: Upload general declaration (Fal1) successfully
     When I have uploaded 'Fal1-Files''General declaration FAL 1-Positive-test.xlsx'
     When I click check for errors

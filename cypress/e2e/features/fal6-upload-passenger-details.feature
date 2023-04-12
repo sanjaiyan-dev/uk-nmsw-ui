@@ -15,6 +15,7 @@ Feature: Upload Passenger details (FAL6) file
     When I click Passenger details link
     Then I am taken to Passenger-details page
 
+  @regression
   Scenario: User should be able to upload fal6-Passenger details file for voyage report
     When I select Yes to uploading passenger details
     Then I am taken to upload-Passenger-details page
