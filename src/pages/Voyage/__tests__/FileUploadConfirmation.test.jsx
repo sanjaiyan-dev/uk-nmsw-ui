@@ -50,7 +50,7 @@ describe('File upload success confirmation page', () => {
     );
     await screen.findByRole('heading', { name: 'Something has gone wrong' });
     expect(screen.getByRole('heading', { name: 'Something has gone wrong' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Click here to continue' }).outerHTML).toEqual(`<a href="${YOUR_VOYAGES_URL}">Click here to continue</a>`);
+    expect(screen.getByRole('link', { name: 'Click here to continue' }).outerHTML).toEqual(`<a class="govuk-link" href="${YOUR_VOYAGES_URL}">Click here to continue</a>`);
   });
 
   it('should render a generic statement without fileName in state', async () => {

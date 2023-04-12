@@ -54,7 +54,7 @@ describe('Sign in tests', () => {
   it('should display a link to create account', () => {
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     expect(screen.getByText('create one now')).toBeInTheDocument();
-    expect(screen.getByText('create one now').outerHTML).toEqual('<a href="/create-account/email-address">create one now</a>');
+    expect(screen.getByText('create one now').outerHTML).toEqual('<a class="govuk-link" href="/create-account/email-address">create one now</a>');
   });
 
   it('should display an input field for password', () => {
