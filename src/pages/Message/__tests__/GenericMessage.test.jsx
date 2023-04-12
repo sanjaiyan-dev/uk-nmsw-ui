@@ -25,10 +25,16 @@ describe('Error page tests', () => {
     expect(screen.getByRole('heading', { name: 'Page title' })).toBeInTheDocument();
   });
 
-  it('should render paragraph if a message was passed in', () => {
+  it('should render paragraph if a message of type string was passed in', () => {
     mockUseLocationState.state = { title: 'Page title', message: 'This is the page message', redirectURL: SIGN_IN_URL };
     render(<MemoryRouter><GenericMessage /></MemoryRouter>);
     expect(screen.getByText('This is the page message')).toBeInTheDocument();
+  });
+
+  it('should NOT render paragraph if a message of type other than string was passed in', () => {
+    mockUseLocationState.state = { title: 'Page title', message: [{ error: 'There is an error', message: 'There is a nested message' }], redirectURL: SIGN_IN_URL };
+    render(<MemoryRouter><GenericMessage /></MemoryRouter>);
+    expect(screen.getByRole('heading', { name: 'Page title' })).toBeInTheDocument(); // testing page renders
   });
 
   it('should render link text if it was passed in', () => {
