@@ -40,16 +40,6 @@ const VoyageCheckYourAnswers = () => {
 
   document.title = 'Check your answers';
 
-  const getFalFileName = (URL) => {
-    // Splits BE file link after the last dash /
-    const startOfFileName = URL?.split('/').pop();
-    // Splits the file name further so it gets everything before the ?
-    const encodedFileName = startOfFileName?.split('?')[0];
-    // Decodes the encoded URL so only the file name is left
-    const falFileName = decodeURI(encodedFileName);
-    return falFileName;
-  };
-
   const uploadedDocuments = [
     {
       id: 'crewDetails',
@@ -75,6 +65,16 @@ const VoyageCheckYourAnswers = () => {
       noFileText: 'No supporting documents provided',
     },
   ];
+
+  const getFalFileName = (URL) => {
+    // Splits BE file link after the last dash /
+    const startOfFileName = URL?.split('/').pop();
+    // Splits the file name further so it gets everything before the ?
+    const encodedFileName = startOfFileName?.split('?')[0];
+    // Decodes the encoded URL so only the file name is left
+    const falFileName = decodeURI(encodedFileName);
+    return falFileName;
+  };
 
   /* until we have a unlocode lookup API we need to format it here */
   const formatUnlocode = (code) => {
