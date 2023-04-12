@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
@@ -17,32 +17,44 @@ import {
   YOUR_VOYAGES_URL,
 } from '../../constants/AppUrlConstants';
 import GetDeclaration from '../../utils/GetDeclaration';
+import { scrollToElementId, scrollToTop } from '../../utils/ScrollToElement';
 
 const VoyageCheckYourAnswers = () => {
   dayjs.extend(customParseFormat);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const declarationId = searchParams.get(URL_DECLARATIONID_IDENTIFIER);
+  const errorSummaryRef = useRef(null);
+  const [declarationData, setDeclarationData] = useState();
+  const [errors, setErrors] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [voyageDetails, setVoyageDetails] = useState([]);
+  const [fal5Details, setFal5Details] = useState({
+    fal5Name: '',
+    fal5FileLink: '',
+  });
+  const [fal6Details, setFal6Details] = useState({
+    fal6Name: '',
+    fal6FileLink: '',
+  });
 
   document.title = 'Check your answers';
 
-  // values of this array will be populated by GET request when available
   const uploadedDocuments = [
     {
       id: 'crewDetails',
       title: 'Crew details',
-      value: '',
-      fileLink: '',
+      value: fal5Details?.fal5Name ? fal5Details?.fal5Name : '',
+      fileLink: fal5Details?.fal5FileLink ? fal5Details?.fal5FileLink : '',
       changeLink: `${VOYAGE_CREW_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
     },
     {
       id: 'passengerDetails',
       title: 'Passenger details',
-      value: '',
-      fileLink: '',
+      value: fal6Details?.fal6Name ? fal6Details?.fal6Name : '',
+      fileLink: fal6Details?.fal6FileLink ? fal6Details?.fal6FileLink : '',
       changeLink: `${VOYAGE_PASSENGERS_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
+      noFileText: 'No passenger details provided',
     },
     {
       id: 'supportingDocuments',
@@ -50,8 +62,19 @@ const VoyageCheckYourAnswers = () => {
       value: '',
       fileLink: '',
       changeLink: `${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
+      noFileText: 'No supporting documents provided',
     },
   ];
+
+  const getFalFileName = (URL) => {
+    // Splits BE file link after the last dash /
+    const startOfFileName = URL?.split('/').pop();
+    // Splits the file name further so it gets everything before the ?
+    const encodedFileName = startOfFileName?.split('?')[0];
+    // Decodes the encoded URL so only the file name is left
+    const falFileName = decodeURI(encodedFileName);
+    return falFileName;
+  };
 
   /* until we have a unlocode lookup API we need to format it here */
   const formatUnlocode = (code) => {
@@ -69,6 +92,7 @@ const VoyageCheckYourAnswers = () => {
   const updateDeclarationData = async () => {
     const response = await GetDeclaration({ declarationId });
     if (response.data) {
+      setDeclarationData(response.data);
       setVoyageDetails([
         {
           title: 'Voyage type',
@@ -133,6 +157,19 @@ const VoyageCheckYourAnswers = () => {
           value: response.data.FAL1.cargo,
         },
       ]);
+
+      setFal5Details({
+        fal5Name: getFalFileName(response?.data?.FAL5),
+        fal5FileLink: response?.data?.FAL5,
+      });
+
+      if (response.data.FAL6) {
+        setFal6Details({
+          fal6Name: getFalFileName(response?.data?.FAL6),
+          fal6FileLink: response?.data?.FAL6,
+        });
+      }
+
       setIsLoading(false);
     } else {
       switch (response?.status) {
@@ -153,7 +190,17 @@ const VoyageCheckYourAnswers = () => {
   };
 
   const handleSubmit = () => {
-    console.log('submit clicked for id', declarationId);
+    // This will most likely have a validate funtion in the future but at the moment there can only be a single error (I think)
+    if (declarationData.FAL1.passengers && !declarationData.FAL6) {
+      setErrors([{
+        name: 'passengerDetails',
+        message: 'Passenger details (FAL 6) upload is required for ships carrying passengers',
+      }]);
+      scrollToTop();
+      errorSummaryRef?.current?.focus();
+    } else {
+      console.log('submit clicked for id', declarationId);
+    }
   };
 
   useEffect(() => {
@@ -174,6 +221,30 @@ const VoyageCheckYourAnswers = () => {
   return (
     <>
       <div className="govuk-grid-row">
+        <div className="govuk-grid-column-two-thirds">
+          {errors?.length > 0 && (
+            <div className="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary" ref={errorSummaryRef} tabIndex={-1}>
+              <h2 className="govuk-error-summary__title" id="error-summary-title">
+                There is a problem
+              </h2>
+              <div className="govuk-error-summary__body">
+                <ul className="govuk-list govuk-error-summary__list">
+                  {errors.map((error) => (
+                    <li key={error.name}>
+                      <button
+                        className="govuk-button--text"
+                        type="button"
+                        onClick={(e) => { e.preventDefault(); scrollToElementId('passengerDetails'); }}
+                      >
+                        {error.message}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
+        </div>
         <div className="govuk-grid-column-full">
           <h1 className="govuk-heading-xl">Check your answers</h1>
         </div>
@@ -188,6 +259,7 @@ const VoyageCheckYourAnswers = () => {
               <dd className="govuk-summary-list__value" />
               <dd className="govuk-summary-list__actions">
                 <Link
+                  className="govuk-link"
                   to={`${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`}
                   aria-describedby="voyageDetails"
                 >
@@ -225,10 +297,11 @@ const VoyageCheckYourAnswers = () => {
                   {item.title}
                 </dt>
                 <dd className="govuk-summary-list__value">
-                  {item.value}
+                  {item.fileLink ? <a className="govuk-link" href={item.fileLink} download>{item.value}</a> : item.noFileText}
                 </dd>
                 <dd className="govuk-summary-list__actions">
                   <Link
+                    className="govuk-link"
                     to={item.changeLink}
                     aria-describedby={item.id}
                   >
