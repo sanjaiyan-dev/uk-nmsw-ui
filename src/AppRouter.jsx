@@ -29,6 +29,7 @@ import {
   REGISTER_PASSWORD_URL,
   REQUEST_PASSWORD_RESET_URL,
   REQUEST_PASSWORD_RESET_CONFIRMATION_URL,
+  REQUEST_PASSWORD_RESET_RESEND_URL,
   SIGN_IN_URL,
   TEMPLATE_PAGE_URL,
   VOYAGE_CHECK_YOUR_ANSWERS,
@@ -65,6 +66,7 @@ const RegisterYourDetails = lazy(() => import('./pages/Register/RegisterYourDeta
 const RegisterYourPassword = lazy(() => import('./pages/Register/RegisterYourPassword'));
 const RequestPasswordReset = lazy(() => import('./pages/SignIn/RequestPasswordReset'));
 const RequestPasswordResetConfirmation = lazy(() => import('./pages/SignIn/RequestPasswordResetConfirmation'));
+const ResendRequestPasswordReset = lazy(() => import('./pages/SignIn/ResendRequestPasswordReset'));
 const SignIn = lazy(() => import('./pages/SignIn/SignIn'));
 // Regulatory pages
 const AccessibilityStatement = lazy(() => import('./pages/Regulatory/AccessibilityStatement'));
@@ -111,6 +113,7 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
           <Route path={REGISTER_PASSWORD_URL} element={<RegisterYourPassword />} />
           <Route path={REQUEST_PASSWORD_RESET_URL} element={<RequestPasswordReset />} />
           <Route path={REQUEST_PASSWORD_RESET_CONFIRMATION_URL} element={<RequestPasswordResetConfirmation />} />
+          <Route path={REQUEST_PASSWORD_RESET_RESEND_URL} element={<ResendRequestPasswordReset />} />
           <Route path={SIGN_IN_URL} element={<SignIn />} />
 
           <Route path={ACCESSIBILITY_URL} element={<AccessibilityStatement />} />

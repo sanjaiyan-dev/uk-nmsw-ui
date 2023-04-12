@@ -15,6 +15,7 @@ export const REGISTER_DETAILS_URL = '/create-account/your-details';
 export const REGISTER_PASSWORD_URL = '/create-account/your-password';
 export const REQUEST_PASSWORD_RESET_URL = '/forgotten-password';
 export const REQUEST_PASSWORD_RESET_CONFIRMATION_URL = '/forgotten-password/check-your-email';
+export const REQUEST_PASSWORD_RESET_RESEND_URL = '/forgotten-password/request-new-link';
 export const SIGN_IN_PAGE_NAME = 'Sign in';
 export const SIGN_IN_URL = '/sign-in';
 export const LOGGED_IN_LANDING = '/your-voyages';
