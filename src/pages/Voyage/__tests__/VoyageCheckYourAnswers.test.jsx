@@ -5,7 +5,7 @@ import {
   // waitFor,
   waitForElementToBeRemoved,
 } from '@testing-library/react';
-// import userEvent from '@testing-library/user-event';
+import userEvent from '@testing-library/user-event';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import {
@@ -33,7 +33,7 @@ jest.mock('react-router-dom', () => ({
 
 describe('Voyage check your answers page', () => {
   const mockAxios = new MockAdapter(axios);
-  const mockedFAL1Response = {
+  const mockedFAL1And5Response = {
     FAL1: {
       nameOfShip: 'Test ship name',
       imoNumber: '1234567',
@@ -50,7 +50,37 @@ describe('Voyage check your answers page', () => {
       previousPortUnlocode: 'AUPOR',
       nextPortUnlocode: 'NLRTM',
       cargo: 'No cargo',
+      passengers: false,
+      creationDate: '2023-02-10',
+      submissionDate: '2023-02-11',
     },
+    FAL5: 'https://fal5-report-link.com',
+    FAL6: null,
+  };
+
+  const mockedAllFALResponse = {
+    FAL1: {
+      nameOfShip: 'Test ship name',
+      imoNumber: '1234567',
+      callSign: 'NA',
+      signatory: 'Captain Name',
+      flagState: 'GBR',
+      departureFromUk: false,
+      departurePortUnlocode: 'AUPOR',
+      departureDate: '2023-02-12',
+      departureTime: '09:23:00',
+      arrivalPortUnlocode: 'GBDOV',
+      arrivalDate: '2023-02-15',
+      arrivalTime: '14:00:00',
+      previousPortUnlocode: 'AUPOR',
+      nextPortUnlocode: 'NLRTM',
+      cargo: 'No cargo',
+      passengers: true,
+      creationDate: '2023-02-10',
+      submissionDate: '2023-02-11',
+    },
+    FAL5: 'https://fal5-report-link.com',
+    FAL6: 'https://fal6-report-link.com',
   };
 
   beforeEach(() => {
@@ -75,7 +105,7 @@ describe('Voyage check your answers page', () => {
     );
     await screen.findByRole('heading', { name: 'Something has gone wrong' });
     expect(screen.getByRole('heading', { name: 'Something has gone wrong' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Click here to continue' }).outerHTML).toEqual(`<a href="${YOUR_VOYAGES_URL}">Click here to continue</a>`);
+    expect(screen.getByRole('link', { name: 'Click here to continue' }).outerHTML).toEqual(`<a class="govuk-link" href="${YOUR_VOYAGES_URL}">Click here to continue</a>`);
   });
 
   it('should redirect to Sign In if GET call returns a 401 response', async () => {
@@ -133,7 +163,7 @@ describe('Voyage check your answers page', () => {
           Authorization: 'Bearer 123',
         },
       })
-      .reply(200, mockedFAL1Response);
+      .reply(200, mockedFAL1And5Response);
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     expect(screen.getByRole('heading', { name: 'Check your answers' })).toBeInTheDocument();
@@ -150,7 +180,7 @@ describe('Voyage check your answers page', () => {
           Authorization: 'Bearer 123',
         },
       })
-      .reply(200, mockedFAL1Response);
+      .reply(200, mockedFAL1And5Response);
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     expect(screen.getByRole('button', { name: 'Save and submit' }).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button">Save and submit</button>');
@@ -163,7 +193,7 @@ describe('Voyage check your answers page', () => {
           Authorization: 'Bearer 123',
         },
       })
-      .reply(200, mockedFAL1Response);
+      .reply(200, mockedFAL1And5Response);
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     expect(screen.getByText('Voyage type').outerHTML).toEqual('<dt class="govuk-summary-list__key">Voyage type</dt>');
@@ -179,14 +209,15 @@ describe('Voyage check your answers page', () => {
     expect(screen.getByText('Supporting documents').outerHTML).toEqual('<dt id="supportingDocuments" class="govuk-summary-list__key">Supporting documents</dt>');
   });
 
-  it('should render the General Declaration values', async () => {
+  // To view the CYA page the FAL 5 file much be present
+  it('should render the General Declaration values and a Crew Details FAL 5 link', async () => {
     mockAxios
       .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
         headers: {
           Authorization: 'Bearer 123',
         },
       })
-      .reply(200, mockedFAL1Response);
+      .reply(200, mockedFAL1And5Response);
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     expect(screen.getByText('Arrival to the UK').outerHTML).toEqual('<dd class="govuk-summary-list__value">Arrival to the UK</dd>');
@@ -211,6 +242,64 @@ describe('Voyage check your answers page', () => {
 
     expect(screen.getByText('NL RTM').outerHTML).toEqual('<dd class="govuk-summary-list__value">NL RTM</dd>');
     expect(screen.getByText('No cargo').outerHTML).toEqual('<dd class="govuk-summary-list__value">No cargo</dd>');
+    expect(screen.getByRole('link', { name: 'fal5-report-link.com' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal5-report-link.com" download="">fal5-report-link.com</a>');
+    expect(screen.getByText('No passenger details provided')).toBeInTheDocument();
+    expect(screen.getByText('No supporting documents provided')).toBeInTheDocument();
+  });
+
+  it('should render link for Passenger details a file is present', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, mockedAllFALResponse);
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+
+    expect(screen.getByRole('link', { name: 'fal5-report-link.com' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal5-report-link.com" download="">fal5-report-link.com</a>');
+    expect(screen.getByRole('link', { name: 'fal6-report-link.com' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal6-report-link.com" download="">fal6-report-link.com</a>');
+  });
+
+  it('should error if passengers is true but no FAL 6 has been provided', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: false,
+          departurePortUnlocode: 'AUPOR',
+          departureDate: '2023-02-12',
+          departureTime: '09:23:00',
+          arrivalPortUnlocode: 'GBDOV',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUPOR',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: true,
+          creationDate: '2023-02-10',
+          submissionDate: '2023-02-11',
+        },
+        FAL5: 'https://fal5-report-link.com',
+        FAL6: null,
+      });
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    await user.click(screen.getByRole('button', { name: 'Save and submit' }));
+
+    expect(screen.getByText('There is a problem')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Passenger details (FAL 6) upload is required for ships carrying passengers' })).toBeInTheDocument();
   });
 
   it('should fallback to displaying the alphaCode if we do not find a match in the country name lookup on flagState', async () => {
@@ -237,7 +326,12 @@ describe('Voyage check your answers page', () => {
           previousPortUnlocode: 'AUPOR',
           nextPortUnlocode: 'NLRTM',
           cargo: 'No cargo',
+          passengers: false,
+          creationDate: '2023-02-10',
+          submissionDate: '2023-02-11',
         },
+        FAL5: 'https://fal5-report-link.com',
+        FAL6: null,
       });
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
@@ -257,11 +351,11 @@ describe('Voyage check your answers page', () => {
           Authorization: 'Bearer 123',
         },
       })
-      .reply(200, mockedFAL1Response);
+      .reply(200, mockedFAL1And5Response);
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     expect(screen.getByRole('link', { name: 'Change change voyage details' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Change change voyage details' }).outerHTML).toEqual('<a aria-describedby="voyageDetails" href="/report-voyage/upload-general-declaration?report=123">Change<span class="govuk-visually-hidden"> change voyage details</span></a>');
+    expect(screen.getByRole('link', { name: 'Change change voyage details' }).outerHTML).toEqual('<a class="govuk-link" aria-describedby="voyageDetails" href="/report-voyage/upload-general-declaration?report=123">Change<span class="govuk-visually-hidden"> change voyage details</span></a>');
     // await user.click(screen.getByRole('link', { name: 'Change change voyage details' }));
     // await waitFor(() => {
     //   expect(mockedUseNavigate).toHaveBeenCalledWith(`${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=123`, {
@@ -278,11 +372,11 @@ describe('Voyage check your answers page', () => {
           Authorization: 'Bearer 123',
         },
       })
-      .reply(200, mockedFAL1Response);
+      .reply(200, mockedFAL1And5Response);
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     expect(screen.getByRole('link', { name: 'Change change Crew details' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Change change Crew details' }).outerHTML).toEqual('<a aria-describedby="crewDetails" href="/report-voyage/upload-crew-details?report=123">Change<span class="govuk-visually-hidden"> change Crew details</span></a>');
+    expect(screen.getByRole('link', { name: 'Change change Crew details' }).outerHTML).toEqual('<a class="govuk-link" aria-describedby="crewDetails" href="/report-voyage/upload-crew-details?report=123">Change<span class="govuk-visually-hidden"> change Crew details</span></a>');
     // await user.click(screen.getByRole('link', { name: 'Change change Crew details' }));
     // await waitFor(() => {
     //   expect(mockedUseNavigate).toHaveBeenCalledWith(`${VOYAGE_CREW_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=123`, {
@@ -299,11 +393,11 @@ describe('Voyage check your answers page', () => {
           Authorization: 'Bearer 123',
         },
       })
-      .reply(200, mockedFAL1Response);
+      .reply(200, mockedFAL1And5Response);
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     expect(screen.getByRole('link', { name: 'Change change Passenger details' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Change change Passenger details' }).outerHTML).toEqual('<a aria-describedby="passengerDetails" href="/report-voyage/passenger-details?report=123">Change<span class="govuk-visually-hidden"> change Passenger details</span></a>');
+    expect(screen.getByRole('link', { name: 'Change change Passenger details' }).outerHTML).toEqual('<a class="govuk-link" aria-describedby="passengerDetails" href="/report-voyage/passenger-details?report=123">Change<span class="govuk-visually-hidden"> change Passenger details</span></a>');
     // await user.click(screen.getByRole('link', { name: 'Change change Passenger details' }));
     // await waitFor(() => {
     //   expect(mockedUseNavigate).toHaveBeenCalledWith(`${VOYAGE_PASSENGERS_URL}?${URL_DECLARATIONID_IDENTIFIER}=123`, {
@@ -320,11 +414,11 @@ describe('Voyage check your answers page', () => {
           Authorization: 'Bearer 123',
         },
       })
-      .reply(200, mockedFAL1Response);
+      .reply(200, mockedFAL1And5Response);
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     expect(screen.getByRole('link', { name: 'Change change Supporting documents' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Change change Supporting documents' }).outerHTML).toEqual('<a aria-describedby="supportingDocuments" href="/report-voyage/upload-supporting-documents?report=123">Change<span class="govuk-visually-hidden"> change Supporting documents</span></a>');
+    expect(screen.getByRole('link', { name: 'Change change Supporting documents' }).outerHTML).toEqual('<a class="govuk-link" aria-describedby="supportingDocuments" href="/report-voyage/upload-supporting-documents?report=123">Change<span class="govuk-visually-hidden"> change Supporting documents</span></a>');
     // await user.click(screen.getByRole('link', { name: 'Change change Supporting documents' }));
     // await waitFor(() => {
     //   expect(mockedUseNavigate).toHaveBeenCalledWith(`${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=123`, {

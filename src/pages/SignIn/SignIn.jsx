@@ -31,7 +31,7 @@ import { scrollToTop } from '../../utils/ScrollToElement';
 const SupportingText = () => (
   <div className="govuk-inset-text">
     <p className="govuk-body">
-      If you do not have an account, you can <Link to={REGISTER_ACCOUNT_URL}>create one now</Link>.
+      If you do not have an account, you can <Link className="govuk-link" to={REGISTER_ACCOUNT_URL}>create one now</Link>.
     </p>
   </div>
 );

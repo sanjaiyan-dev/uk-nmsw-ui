@@ -28,6 +28,7 @@ const GenericConfirmation = () => {
 
         </div>
         <Link
+          className="govuk-link"
           to={state.nextPageLink}
         >
           Return to {state.nextPageName}

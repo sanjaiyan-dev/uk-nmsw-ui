@@ -168,7 +168,7 @@ const VoyageTaskList = () => {
                 {
                   steps.map((item) => (
                     <li key={item.label} className="app-task-list__item">
-                      <Link to={item.link}>
+                      <Link className="govuk-link" to={item.link}>
                         <span>{item.label}</span>
                         <strong className={CLASSES_FOR_STATUS[item.status]}>{LABELS_FOR_STATUS[item.status]}</strong>
                       </Link>
@@ -190,7 +190,7 @@ const VoyageTaskList = () => {
                     )}
                   {checkYourAnswersStep.status !== 'cannotStartYet'
                     && (
-                      <Link to={checkYourAnswersStep.link}>
+                      <Link className="govuk-link" to={checkYourAnswersStep.link}>
                         <span>Check answers and submit</span>
                         <strong className={CLASSES_FOR_STATUS[checkYourAnswersStep.status]}>{LABELS_FOR_STATUS[checkYourAnswersStep.status]}</strong>
                       </Link>
