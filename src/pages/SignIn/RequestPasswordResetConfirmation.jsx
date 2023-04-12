@@ -1,4 +1,5 @@
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { REQUEST_PASSWORD_RESET_RESEND_URL } from '../../constants/AppUrlConstants';
 
 const RequestPasswordResetConfirmation = () => {
   const { state } = useLocation();
@@ -7,16 +8,16 @@ const RequestPasswordResetConfirmation = () => {
   return (
     <>
       <h1 className="govuk-heading-xl">Check your email</h1>
-      <p className="govuk-body">We have sent an email to  <strong className="govuk-label--s">{state?.dataToSubmit.emailAddress}</strong></p>
+      <p className="govuk-body">If <strong className="govuk-label--s">{state?.dataToSubmit.emailAddress}</strong> is registered on this service, we have sent a password reset link.</p>
       <p className="govuk-body">Click the link in the email to reset your password.</p>
       <p>
-        {/* <Link
+        <Link
           className="govuk-body govuk-link"
-          to={RESEND_URL}
+          to={REQUEST_PASSWORD_RESET_RESEND_URL}
           state={{ dataToSubmit: { emailAddress: state?.dataToSubmit.emailAddress } }}
         >
           Not received an email?
-        </Link> */}
+        </Link>
       </p>
     </>
   );
