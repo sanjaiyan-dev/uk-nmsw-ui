@@ -13,7 +13,7 @@ import DisplayForm from '../../components/DisplayForm';
 
 const SupportingText = () => (
   <div>
-    <p className="govuk-body">We&quot;ll email you a link to reset your password.</p>
+    <p className="govuk-body">We&apos;ll email you a link to reset your password.</p>
   </div>
 );
 
@@ -47,7 +47,6 @@ const RequestPasswordReset = () => {
 
   const requestPasswordResetEmail = async ({ emailToSendTo }) => {
     try {
-      console.log('send password reset email', emailToSendTo);
       const controller = new AbortController();
       const response = await axios.post(REQUEST_PASSSWORD_RESET_ENDPOINT, {
         email: emailToSendTo,
