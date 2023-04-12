@@ -4,7 +4,7 @@ Feature: User Registration
   Background:
     Given I am on NMSW landing page
 
-  @registration
+  @registration @regression
   Scenario: Successful user registration
     When I click create an account on the landing page
     Then the registration page is displayed

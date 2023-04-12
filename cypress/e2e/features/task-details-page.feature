@@ -8,6 +8,7 @@ Feature: Task details page after file uploads
     When I click report a voyage
     Then I am taken to upload-general-declaration page
 
+  @regression
   Scenario: I can see task details page after fal1 gets uploaded successfully
     When I have uploaded 'Fal1-Files''General declaration FAL 1-Positive-test.xlsx'
     When I click check for errors

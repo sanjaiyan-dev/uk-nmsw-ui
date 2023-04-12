@@ -15,6 +15,7 @@ Feature: Upload supporting documents
     When I click supporting documents link
     Then I am taken to upload supporting documents page
 
+  @regression
   Scenario: User should be able to upload supporting documents for voyage report
     When I add more files than limited number of supporting documents
       | fileName                            |

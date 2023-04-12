@@ -5,7 +5,7 @@ Feature: User can able to download the file templates
     Given I am on the sign-in page
     And I have entered a correct email address and password and sign in
 
-  @signOut
+  @signOut @regression
   Scenario: Able to download the template files
 
     When I click template tab on the navigation bar

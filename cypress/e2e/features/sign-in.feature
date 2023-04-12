@@ -8,6 +8,7 @@ Feature: User sign-in
     When I click on the create one now link
     Then I am taken to the create-account page
 
+  @regression
   Scenario: User can sign-in successfully
     When I have entered a correct email address and password and sign in
     Then I am taken to your-voyages page

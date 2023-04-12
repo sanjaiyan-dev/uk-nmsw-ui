@@ -33,6 +33,7 @@ Feature: Check your answer page
     Then I can view Check Your Answers page
     Then I can verify the Check Your Answers page
 
+  @regression
   Scenario Outline: User can Verify the details upload and change the details
     And the details from my FAL 1 form are displayed on CYA page
     When I click change the voyage details link
@@ -56,5 +57,4 @@ Feature: Check your answer page
     Examples:
       | emailAddress                                       | password      |
       | 98748f98-2dcf-41b8-8bc9-9627e6cd0d80@mailslurp.com | Test-NMSW-Dev |
-
 
