@@ -86,12 +86,16 @@ Then('I sign-out', () => {
 
 When('I try to access a protected page with declaration Id', () => {
   cy.get('@declarationId').then(declarationId => {
- cy.visitUrl(`/report-voyage?report=${declarationId}`);
- });
+    cy.visitUrl(`/report-voyage?report=${declarationId}`);
+  });
 });
 
 When('I try to access a protected CYA page with declaration Id', () => {
   cy.get('@declarationId').then(declarationId => {
     cy.visitUrl(`/report-voyage/check-your-answers?report=${declarationId}`);
   });
+});
+
+Then('I can see the details of the voyage, I have uploaded', () => {
+  YourVoyagePage.checkVoyageDetails();
 });
