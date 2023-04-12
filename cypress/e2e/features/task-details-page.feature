@@ -48,6 +48,11 @@ Feature: Task details page after file uploads
     Then I am taken to task details page
     And I can see status for FAL6 as completed
     And I can see Check answers and submit enabled
+    When I click Your voyage tab
+    Then I am taken to your-voyages page
+    Then I can see the details of the voyage, I have uploaded
+    When I click continue under actions
+    Then I am taken to task details page
     When I click delete draft
     Then I am taken to confirm delete draft page
     When I click No to delete the draft
