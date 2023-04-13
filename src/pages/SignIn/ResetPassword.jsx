@@ -1,8 +1,9 @@
 // import { useState } from 'react';
 // import { useLocation, useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 // import axios from 'axios';
 // import {
-//   REQUEST_PASSSWORD_RESET_ENDPOINT,
+//   PASSSWORD_RESET_ENDPOINT,
 // } from '../../constants/AppAPIConstants';
 import {
   FIELD_PASSWORD,
@@ -29,6 +30,8 @@ const SupportingText = () => (
 const ResetPassword = () => {
   // const navigate = useNavigate();
   // const { state } = useLocation();
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get('token');
   // const [isLoading, setIsLoading] = useState(false);
   document.title = 'Create a password';
 
@@ -76,8 +79,17 @@ const ResetPassword = () => {
     },
   ];
 
-  const handleSubmit = () => {
-    console.log('submit');
+  const handleSubmit = async (formData) => {
+    // user reaches this url by clicking the link in their password reset email /new-password?token=123.
+    // get the token from the link
+    // get the password the user entered
+    // PATCH to
+    // with:
+    // {
+    //   "token": "string",
+    //   "password": "string"
+    // }
+    console.log('submit token', token, formData.formData.requirePassword);
   };
 
   return (
