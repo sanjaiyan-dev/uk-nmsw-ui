@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {
-  REQUEST_PASSSWORD_RESET_ENDPOINT,
+  PASSSWORD_RESET_ENDPOINT,
 } from '../../constants/AppAPIConstants';
 import {
   DISPLAY_DETAILS,
@@ -57,7 +57,7 @@ const ResendRequestPasswordReset = () => {
   const requestPasswordResetEmail = async ({ emailToSendTo }) => {
     try {
       const controller = new AbortController();
-      const response = await axios.post(REQUEST_PASSSWORD_RESET_ENDPOINT, {
+      const response = await axios.post(PASSSWORD_RESET_ENDPOINT, {
         email: emailToSendTo,
       }, {
         signal: controller.signal,

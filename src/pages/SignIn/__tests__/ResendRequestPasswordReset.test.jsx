@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import {
-  REQUEST_PASSSWORD_RESET_ENDPOINT,
+  PASSSWORD_RESET_ENDPOINT,
 } from '../../../constants/AppAPIConstants';
 import {
   MESSAGE_URL,
@@ -117,7 +117,7 @@ describe('Resend password reset link email', () => {
     const user = userEvent.setup();
     mockUseLocationState = { state: { dataToSubmit: { emailAddress: 'testemail@email.com' } } };
     mockAxios
-      .onPost(REQUEST_PASSSWORD_RESET_ENDPOINT)
+      .onPost(PASSSWORD_RESET_ENDPOINT)
       .reply(204);
 
     render(<MemoryRouter><ResendRequestPasswordReset /></MemoryRouter>);
@@ -130,7 +130,7 @@ describe('Resend password reset link email', () => {
   it('should navigate to confirmation page if invalid email address POST response', async () => {
     const user = userEvent.setup();
     mockAxios
-      .onPost(REQUEST_PASSSWORD_RESET_ENDPOINT, { email: 'test@test.com' })
+      .onPost(PASSSWORD_RESET_ENDPOINT, { email: 'test@test.com' })
       .reply(401);
 
     render(<MemoryRouter><ResendRequestPasswordReset /></MemoryRouter>);
@@ -142,7 +142,7 @@ describe('Resend password reset link email', () => {
   it('should navigate to message page if error POST response', async () => {
     const user = userEvent.setup();
     mockAxios
-      .onPost(REQUEST_PASSSWORD_RESET_ENDPOINT, { email: 'test@test.com' })
+      .onPost(PASSSWORD_RESET_ENDPOINT, { email: 'test@test.com' })
       .reply(400);
 
     render(<MemoryRouter><ResendRequestPasswordReset /></MemoryRouter>);
@@ -154,7 +154,7 @@ describe('Resend password reset link email', () => {
   it('should navigate to message page if 500 POST response', async () => {
     const user = userEvent.setup();
     mockAxios
-      .onPost(REQUEST_PASSSWORD_RESET_ENDPOINT, { email: 'test@test.com' })
+      .onPost(PASSSWORD_RESET_ENDPOINT, { email: 'test@test.com' })
       .reply(500);
 
     render(<MemoryRouter><ResendRequestPasswordReset /></MemoryRouter>);
