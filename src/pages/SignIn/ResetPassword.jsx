@@ -1,10 +1,9 @@
-// import { useState } from 'react';
-// import { useLocation, useNavigate } from 'react-router-dom';
-import { useSearchParams } from 'react-router-dom';
-// import axios from 'axios';
-// import {
-//   PASSSWORD_RESET_ENDPOINT,
-// } from '../../constants/AppAPIConstants';
+import { useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import axios from 'axios';
+import {
+  PASSSWORD_RESET_ENDPOINT,
+} from '../../constants/AppAPIConstants';
 import {
   FIELD_PASSWORD,
   MULTI_PAGE_FORM,
@@ -14,9 +13,13 @@ import {
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
 import {
+  MESSAGE_URL,
   PASSWORD_GUIDENCE_URL,
+  REQUEST_PASSWORD_RESET_URL,
+  SIGN_IN_URL,
 } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
+import ConfirmationMessage from '../../components/ConfirmationMessage';
 
 const SupportingText = () => (
   <div className="govuk-inset-text">
@@ -28,11 +31,11 @@ const SupportingText = () => (
 );
 
 const ResetPassword = () => {
-  // const navigate = useNavigate();
-  // const { state } = useLocation();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
-  // const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showConfirmationPanel, setShowConfirmationPanel] = useState(false);
   document.title = 'Create a password';
 
   const formActions = {
@@ -79,26 +82,62 @@ const ResetPassword = () => {
     },
   ];
 
-  const handleSubmit = async (formData) => {
-    // user reaches this url by clicking the link in their password reset email /new-password?token=123.
-    // get the token from the link
-    // get the password the user entered
-    // PATCH to
-    // with:
-    // {
-    //   "token": "string",
-    //   "password": "string"
-    // }
-    console.log('submit token', token, formData.formData.requirePassword);
+  const sendPasswordReset = async ({ password }) => {
+    try {
+      const controller = new AbortController();
+      const response = await axios.patch(PASSSWORD_RESET_ENDPOINT, {
+        token,
+        password,
+      }, {
+        signal: controller.signal,
+      });
+
+      if (response.status === 204) {
+        setShowConfirmationPanel(true);
+      }
+    } catch (err) {
+      // treat invalid links as though link expired as chances are it's the token not being copied over properly and we should
+      // prompt user to get a new link
+      if (err.response.status === 401 || err.response.status === 400) {
+        navigate(MESSAGE_URL, {
+          state: {
+            title: 'Password reset link has expired',
+            button: {
+              buttonLabel: 'Request a new link',
+              buttonNavigateTo: REQUEST_PASSWORD_RESET_URL,
+            },
+          },
+        });
+      } else {
+        navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: REQUEST_PASSWORD_RESET_URL } });
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
+  const handleSubmit = async (formData) => {
+    setIsLoading(true);
+    sendPasswordReset({ password: formData.formData.requirePassword });
+  };
+
+  if (showConfirmationPanel) {
+    return (
+      <ConfirmationMessage
+        pageTitle="Password reset"
+        confirmationMessage="Your password has been reset"
+        nextPageLink={SIGN_IN_URL}
+        nextPageLinkText="Sign in to start using the service"
+      />
+    );
+  }
   return (
     <DisplayForm
       formId="formRegisterYourPassword"
       fields={formFields}
       formActions={formActions}
       formType={MULTI_PAGE_FORM}
-      // isLoading={isLoading}
+      isLoading={isLoading}
       pageHeading="Change your password"
       handleSubmit={handleSubmit}
     >
