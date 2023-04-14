@@ -26,6 +26,9 @@ Feature: User Registration
     Then the registration page is displayed
     And I provide my email address
     Then I am taken to check your email page
+    When I navigate back to landing page
+    When I create an account with same email previously registered
+    Then I am taken to check your email page
     When I click on not received an email
     Then the user is redirected to request-new-verification-link
     And I click `Request New Link` button

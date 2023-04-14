@@ -15,10 +15,14 @@ Then('I am taken to upload-Passenger-details page', () => {
 
 When('I select Yes to uploading passenger details', () => {
   FileUploadPage.selectYesPassenger();
+  cy.intercept('PATCH','**/declaration/*').as('patch');
   FileUploadPage.clickSaveAndContinue();
+  cy.wait('@patch').its('request.body').should('deep.include',{passengers: true});
 });
 
 When('I select No to uploading passenger details', () => {
   FileUploadPage.selectNoPassenger();
+  cy.intercept('PATCH','**/declaration/*').as('patch');
   FileUploadPage.clickSaveAndContinue();
+  cy.wait('@patch').its('request.body').should('deep.include',{passengers: false});
 });
