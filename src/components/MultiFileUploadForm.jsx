@@ -6,6 +6,7 @@ import { SIGN_IN_URL } from '../constants/AppUrlConstants';
 import Auth from '../utils/Auth';
 import LoadingSpinner from './LoadingSpinner';
 import '../assets/css/multiFileUploadForm.scss';
+import { FILE_TYPE_INVALID_PREFIX } from '../constants/AppAPIConstants';
 
 const FILE_STATUS_PENDING = 'Pending';
 const FILE_STATUS_IN_PROGRESS = 'in progress';
@@ -159,6 +160,21 @@ const MultiFileUploadForm = ({
         return response;
       } catch (err) {
         switch (err?.response?.status) {
+          case 400:
+            if (err?.response?.data?.message?.startsWith(FILE_TYPE_INVALID_PREFIX)) {
+              updateFileStatus({
+                file: selectedFile,
+                status: FILE_STATUS_ERROR,
+                errorMessage: 'The file must be a csv, doc, docm, docx, rtf, txt, xls, xlsm, xlsx, xltm, xltx, xlw or xml',
+              });
+            } else {
+              updateFileStatus({
+                file: selectedFile,
+                status: FILE_STATUS_ERROR,
+                errorMessage: err?.response?.data?.message ? err.response.data.message : 'There was a problem check file and try again',
+              });
+            }
+            break;
           case 401:
           case 422:
             Auth.removeToken();
