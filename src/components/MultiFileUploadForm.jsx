@@ -1,12 +1,18 @@
-import { useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import { SIGN_IN_URL } from '../constants/AppUrlConstants';
-import Auth from '../utils/Auth';
-import LoadingSpinner from './LoadingSpinner';
 import '../assets/css/multiFileUploadForm.scss';
+import {
+  MESSAGE_URL,
+  SIGN_IN_URL,
+  URL_DECLARATIONID_IDENTIFIER,
+  YOUR_VOYAGES_URL
+} from '../constants/AppUrlConstants';
 import { FILE_TYPE_INVALID_PREFIX } from '../constants/AppAPIConstants';
+import Auth from '../utils/Auth';
+import GetDeclaration from '../utils/GetDeclaration';
+import LoadingSpinner from './LoadingSpinner';
 
 const FILE_STATUS_PENDING = 'Pending';
 const FILE_STATUS_IN_PROGRESS = 'in progress';
@@ -65,10 +71,35 @@ const MultiFileUploadForm = ({
   const inputRef = useRef(null);
   const multiple = true;
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const declarationId = searchParams.get(URL_DECLARATIONID_IDENTIFIER);
   const [dragActive, setDragActive] = useState(false);
   const [errors, setErrors] = useState([]);
   const [filesAddedForUpload, setFilesAddedForUpload] = useState([]);
   const [maxFilesError, setMaxFilesError] = useState();
+  const [supportingDocumentsList, setSupportingdocumentsList] = useState();
+
+  const getDeclarationData = async () => {
+    try {
+      const response = await GetDeclaration({ declarationId });
+      setSupportingdocumentsList(response?.data?.supporting)
+    } catch (err) {
+      switch (err?.response?.status) {
+        case 401:
+        case 422:
+          Auth.removeToken();
+          navigate(SIGN_IN_URL, { state: { redirectURL: urlThisPage } });
+          break;
+        default: navigate(MESSAGE_URL, {
+          state: {
+            title: 'Something has gone wrong',
+            message: response?.message,
+            redirectURL: YOUR_VOYAGES_URL,
+          },
+        });
+      };
+    };
+  };
 
   const handleDrag = (e) => {
     e.preventDefault();
@@ -222,6 +253,10 @@ const MultiFileUploadForm = ({
     navigate(urlNextPage);
   };
 
+  useEffect(() => {
+    getDeclarationData();
+  }, [])
+
   /*
    * when the drag goes over our button element in the dragarea,
    * a dragleave event is triggered, and our background starts flickering
@@ -314,9 +349,32 @@ const MultiFileUploadForm = ({
       </div>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-three-quarters">
-          {filesAddedForUpload.length > 0 && (
+          {supportingDocumentsList?.length > 0 && (
             <>
               <h2 className="govuk-heading-m">Files added</h2>
+              {supportingDocumentsList.map((file) => {
+                return (
+                  <div key={file.filename} className="govuk-grid-row  govuk-!-margin-bottom-5 multi-file-upload--filelist">
+                    <div className="nmsw-grid-column-ten-twelfths">
+                      <FileStatusSuccess fileName={file.filename} />
+                    </div>
+                    <div className="nmsw-grid-column-two-twelfths govuk-!-text-align-right">
+                      <button
+                        className="govuk-button govuk-button--warning govuk-!-margin-bottom-5"
+                        type="button"
+                        onClick={(e) => handleDelete({ e, fileName: file.filename })}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                )
+              })}
+            </>
+          )}
+          {filesAddedForUpload.length > 0 && (
+            <>
+              {!supportingDocumentsList && <h2 className="govuk-heading-m">Files added</h2>}
               {filesAddedForUpload.map((file) => (
                 <div key={file.file.name} className="govuk-grid-row  govuk-!-margin-bottom-5 multi-file-upload--filelist">
                   <div className="nmsw-grid-column-ten-twelfths">
