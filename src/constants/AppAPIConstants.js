@@ -6,7 +6,7 @@ export const API_URL = apiUrl;
 export const REGISTER_ACCOUNT_ENDPOINT = `${apiUrl}/registration`;
 export const REGISTER_CHECK_TOKEN_ENDPOINT = `${apiUrl}/check-token`;
 export const REGISTER_RESEND_VERIFICATION_EMAIL_ENDPOINT = `${apiUrl}/resend-verification-email`;
-export const REQUEST_PASSSWORD_RESET_ENDPOINT = `${apiUrl}/reset-password`;
+export const PASSSWORD_RESET_ENDPOINT = `${apiUrl}/reset-password`;
 export const SIGN_IN_ENDPOINT = `${apiUrl}/sign-in`;
 export const SIGN_OUT_ENDPOINT = `${apiUrl}/sign-out`;
 

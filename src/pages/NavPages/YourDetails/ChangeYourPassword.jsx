@@ -16,6 +16,11 @@ import {
   YOUR_DETAILS_PAGE_URL,
 } from '../../../constants/AppUrlConstants';
 
+/* NOTE: This page is not being used in MVP
+ * Keeping in the code as it's high on the list
+ * of postMVP UX fixes
+ */
+
 const PasswordSupportingText = () => (
   <div className="govuk-grid-column-two-thirds">
     <p className="govuk-body govuk-!-font-weight-bold">Enter a new password</p>

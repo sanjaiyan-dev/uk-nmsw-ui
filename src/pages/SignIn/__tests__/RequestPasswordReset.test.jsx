@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import RequestPasswordReset from '../RequestPasswordReset';
-import { REQUEST_PASSSWORD_RESET_ENDPOINT } from '../../../constants/AppAPIConstants';
+import { PASSSWORD_RESET_ENDPOINT } from '../../../constants/AppAPIConstants';
 import { MESSAGE_URL, REQUEST_PASSWORD_RESET_CONFIRMATION_URL, REQUEST_PASSWORD_RESET_URL } from '../../../constants/AppUrlConstants';
 
 const mockedUseNavigate = jest.fn();
@@ -105,7 +105,7 @@ describe('Request password reset tests', () => {
   it('should navigate to confirmation page if successful POST response', async () => {
     const user = userEvent.setup();
     mockAxios
-      .onPost(REQUEST_PASSSWORD_RESET_ENDPOINT, { email: 'test@test.com' })
+      .onPost(PASSSWORD_RESET_ENDPOINT, { email: 'test@test.com' })
       .reply(204);
 
     render(<MemoryRouter><RequestPasswordReset /></MemoryRouter>);
@@ -117,7 +117,7 @@ describe('Request password reset tests', () => {
   it('should navigate to confirmation page if invalid email address POST response', async () => {
     const user = userEvent.setup();
     mockAxios
-      .onPost(REQUEST_PASSSWORD_RESET_ENDPOINT, { email: 'test@test.com' })
+      .onPost(PASSSWORD_RESET_ENDPOINT, { email: 'test@test.com' })
       .reply(401);
 
     render(<MemoryRouter><RequestPasswordReset /></MemoryRouter>);
@@ -129,7 +129,7 @@ describe('Request password reset tests', () => {
   it('should navigate to message page if error POST response', async () => {
     const user = userEvent.setup();
     mockAxios
-      .onPost(REQUEST_PASSSWORD_RESET_ENDPOINT, { email: 'test@test.com' })
+      .onPost(PASSSWORD_RESET_ENDPOINT, { email: 'test@test.com' })
       .reply(400);
 
     render(<MemoryRouter><RequestPasswordReset /></MemoryRouter>);
@@ -141,7 +141,7 @@ describe('Request password reset tests', () => {
   it('should navigate to message page if 500 POST response', async () => {
     const user = userEvent.setup();
     mockAxios
-      .onPost(REQUEST_PASSSWORD_RESET_ENDPOINT, { email: 'test@test.com' })
+      .onPost(PASSSWORD_RESET_ENDPOINT, { email: 'test@test.com' })
       .reply(500);
 
     render(<MemoryRouter><RequestPasswordReset /></MemoryRouter>);
