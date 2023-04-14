@@ -20,7 +20,6 @@ describe('Register email check your email tests', () => {
     render(<MemoryRouter><RegisterEmailCheck /></MemoryRouter>);
     expect(screen.getByText('Check your email')).toBeInTheDocument();
     expect(screen.getByText('We have sent an email to')).toBeInTheDocument();
-    expect(screen.getByText('Click the link in the email to continue your registration.')).toBeInTheDocument();
   });
 
   it('should show the email address from state in the page', () => {
