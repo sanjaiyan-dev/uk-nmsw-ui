@@ -71,7 +71,7 @@ const ResetPassword = () => {
       validation: [
         {
           type: VALIDATE_REQUIRED,
-          message: 'Confirm your password',
+          message: 'Confirm new password',
         },
         {
           type: VALIDATE_FIELD_MATCH_CASE_SENSITIVE,
