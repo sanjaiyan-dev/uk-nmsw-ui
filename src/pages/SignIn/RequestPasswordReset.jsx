@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { PASSSWORD_RESET_ENDPOINT } from '../../constants/AppAPIConstants';
 import {
@@ -19,6 +19,7 @@ const SupportingText = () => (
 
 const RequestPasswordReset = () => {
   const navigate = useNavigate();
+  const { state } = useLocation();
   const [isLoading, setIsLoading] = useState(false);
   document.title = 'Forgot password';
 
@@ -81,7 +82,7 @@ const RequestPasswordReset = () => {
       formActions={formActions}
       formType={SINGLE_PAGE_FORM}
       isLoading={isLoading}
-      pageHeading="Forgot password"
+      pageHeading={state?.title || 'Forgot password'}
       handleSubmit={handleSubmit}
     >
       <SupportingText />
