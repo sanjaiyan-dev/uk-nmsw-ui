@@ -186,17 +186,27 @@ const VoyageCheckYourAnswers = () => {
     /* TODO: NMSW-555
      * If a user types the url for the CYA page into the address bar with a valid declarationId for their account
      * AND they have not uploaded a FAL1 the page will error as the GET request fails
-     * IF they have not uploaded a FAL5
-     * AND/OR they have not answered the 'do you have passengers' question
-     * AND/OR they have answered yes to passengers and not uploaded a FAL6
+     * IF they have not uploaded a FAL5 `!declarationData.FAL5.url`
+     * AND/OR they have not answered the 'do you have passengers' question `declarationData.FAL1.passengers === 'null'`
+     * AND/OR they have answered yes to passengers and not uploaded a FAL6 `declarationData.FAL1.passengers && !declarationData.FAL6.url`
      * AND they click submit the submission should fail as it's required
      */
 
-    /* CURRENTLY - do not know what the API returns if we're missing these items
-     * we may need to handle this now
-     * we may be able to use the API response as the trigger
-     */
-    if (declarationData.FAL1.passengers && declarationData?.FAL6.length === 0) {
+    if (!declarationData.FAL5[0].url) {
+      setErrors([{
+        name: 'crewDetails',
+        message: 'Crew details (FAL 5) upload is required',
+      }]);
+      scrollToTop();
+      errorSummaryRef?.current?.focus();
+    } else if (declarationData.FAL1.passengers === null) {
+      setErrors([{
+        name: 'passengerDetails',
+        message: 'You need to provide passenger details, even if the ship is carrying no passengers',
+      }]);
+      scrollToTop();
+      errorSummaryRef?.current?.focus();
+    } else if (declarationData.FAL1.passengers && declarationData?.FAL6.length === 0) {
       setErrors([{
         name: 'passengerDetails',
         message: 'Passenger details (FAL 6) upload is required for ships carrying passengers',
@@ -276,7 +286,7 @@ const VoyageCheckYourAnswers = () => {
                       <button
                         className="govuk-button--text"
                         type="button"
-                        onClick={(e) => { e.preventDefault(); scrollToElementId('passengerDetails'); }}
+                        onClick={(e) => { e.preventDefault(); scrollToElementId('uploadedDocuments'); }}
                       >
                         {error.message}
                       </button>
@@ -331,7 +341,7 @@ const VoyageCheckYourAnswers = () => {
             ))}
           </dl>
 
-          <h2 className="govuk-heading-m">Uploaded documents</h2>
+          <h2 id="uploadedDocuments" className="govuk-heading-m">Uploaded documents</h2>
           <dl className="govuk-summary-list govuk-!-margin-bottom-9">
             {uploadedDocuments.map((item) => (
               <div key={item.id} className="govuk-summary-list__row">
