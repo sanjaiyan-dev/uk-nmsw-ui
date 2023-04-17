@@ -80,11 +80,11 @@ const MultiFileUploadForm = ({
   const [supportingDocumentsList, setSupportingdocumentsList] = useState();
 
   const getDeclarationData = async () => {
-    try {
-      const response = await GetDeclaration({ declarationId });
+    const response = await GetDeclaration({ declarationId });
+    if (response.data) {
       setSupportingdocumentsList(response?.data?.supporting)
-    } catch (err) {
-      switch (err?.response?.status) {
+    } else {
+      switch (response?.status) {
         case 401:
         case 422:
           Auth.removeToken();
@@ -114,12 +114,12 @@ const MultiFileUploadForm = ({
   const storeFilesForUpload = async (fileList) => {
     const fileCurrentlyInState = [...filesAddedForUpload];
     const filesUserAdded = [...fileList];
+    const uploadedFiles = [...supportingDocumentsList];
     const errorList = [];
     setMaxFilesError();
     setErrors();
     // Check we do not exceed max file count
-    const remainingFilesAvailable = MAX_FILES - filesAddedForUpload.length;
-
+    const remainingFilesAvailable = MAX_FILES - (filesAddedForUpload.length + supportingDocumentsList?.length);
     if (filesAddedForUpload.length === MAX_FILES) {
       setMaxFilesError(`You've selected too many files: you can add up to ${remainingFilesAvailable} more files`);
       setErrors([`You've selected too many files: you can add up to ${remainingFilesAvailable} more files`]);
@@ -131,10 +131,10 @@ const MultiFileUploadForm = ({
       setErrors([`You've selected too many files: you can only add ${MAX_FILES}`]);
     } else {
       const newFilesForUpload = filesUserAdded.reduce((results, fileToCheck) => {
-        if (fileCurrentlyInState.findIndex((existingFile) => existingFile.file.name === fileToCheck.name) === -1) {
-          results.push({ file: fileToCheck, status: FILE_STATUS_PENDING });
-        } else {
+        if ((uploadedFiles.findIndex((existingFile) => existingFile.filename === fileToCheck.name) === 0) || (fileCurrentlyInState.findIndex((existingFile) => existingFile.file.name === fileToCheck.name) === 0)) {
           errorList.push(`A file called ${fileToCheck.name} already exists in your list`);
+        } else {
+          results.push({ file: fileToCheck, status: FILE_STATUS_PENDING });
         }
         setErrors(errorList);
         return results;
@@ -223,14 +223,17 @@ const MultiFileUploadForm = ({
 
     const asyncLoop = async () => {
       for (let i = 0; i < filesAddedForUpload.length; i++) {
-        updateFileStatus({ file: filesAddedForUpload[i], status: FILE_STATUS_IN_PROGRESS });
-        // eslint-disable-next-line no-await-in-loop
-        await postFile(filesAddedForUpload[i]);
+        if (filesAddedForUpload[i].status === FILE_STATUS_PENDING) {
+          updateFileStatus({ file: filesAddedForUpload[i], status: FILE_STATUS_IN_PROGRESS });
+          // eslint-disable-next-line no-await-in-loop
+          await postFile(filesAddedForUpload[i]);
+        } 
       }
     };
 
     asyncLoop();
   };
+
 
   const handleDelete = ({ e, fileName }) => {
     e.preventDefault();
@@ -252,6 +255,8 @@ const MultiFileUploadForm = ({
     e.preventDefault();
     navigate(urlNextPage);
   };
+
+  console.log(filesAddedForUpload)
 
   useEffect(() => {
     getDeclarationData();
