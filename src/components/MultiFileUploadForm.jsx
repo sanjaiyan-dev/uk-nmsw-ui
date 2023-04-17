@@ -76,6 +76,7 @@ const MultiFileUploadForm = ({
   const [dragActive, setDragActive] = useState(false);
   const [errors, setErrors] = useState([]);
   const [filesAddedForUpload, setFilesAddedForUpload] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [maxFilesError, setMaxFilesError] = useState();
   const [supportingDocumentsList, setSupportingdocumentsList] = useState();
 
@@ -83,6 +84,7 @@ const MultiFileUploadForm = ({
     const response = await GetDeclaration({ declarationId });
     if (response.data) {
       setSupportingdocumentsList(response?.data?.supporting)
+      setIsLoading(false);
     } else {
       switch (response?.status) {
         case 401:
@@ -98,6 +100,7 @@ const MultiFileUploadForm = ({
           },
         });
       };
+      setIsLoading(false);
     };
   };
 
@@ -259,6 +262,7 @@ const MultiFileUploadForm = ({
   };
 
   useEffect(() => {
+    setIsLoading(true)
     getDeclarationData();
   }, [])
 
@@ -270,6 +274,8 @@ const MultiFileUploadForm = ({
    * This then listens to the events without interference from any other elements.
    * And this can also handle the drop.
    */
+
+  if (isLoading) { return (<LoadingSpinner/>); }
 
   return (
     <>
