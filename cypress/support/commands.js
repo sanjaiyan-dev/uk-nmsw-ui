@@ -33,6 +33,7 @@ const apiServer = Cypress.env('api_server');
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+require('cypress-downloadfile/lib/downloadFileCommand')
 Cypress.Commands.add('checkAxe', () => {
   cy.checkA11y(null, null, terminalLog, true);
 });
