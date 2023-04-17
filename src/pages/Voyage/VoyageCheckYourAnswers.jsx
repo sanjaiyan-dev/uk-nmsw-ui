@@ -169,7 +169,23 @@ const VoyageCheckYourAnswers = () => {
   };
 
   const handleSubmit = () => {
-    // This will most likely have a validate funtion in the future but at the moment there can only be a single error (I think)
+    // SUBMIT
+    // send a PATCH to /declaration/<declarationId>
+    // take user to confirmation page
+
+    /* TODO: NMSW-555
+     * If a user types the url for the CYA page into the address bar with a valid declarationId for their account
+     * AND they have not uploaded a FAL1 the page will error as the GET request fails
+     * IF they have not uploaded a FAL5
+     * AND/OR they have not answered the 'do you have passengers' question
+     * AND/OR they have answered yes to passengers and not uploaded a FAL6
+     * AND they click submit the submission should fail as it's required
+     */
+
+    /* CURRENTLY - do not know what the API returns if we're missing these items
+     * we may need to handle this now
+     * we may be able to use the API response as the trigger
+     */
     if (declarationData.FAL1.passengers && declarationData?.FAL6.length === 0) {
       setErrors([{
         name: 'passengerDetails',
