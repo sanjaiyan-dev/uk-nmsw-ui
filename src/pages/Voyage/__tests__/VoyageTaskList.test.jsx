@@ -52,8 +52,9 @@ describe('Voyage task list page', () => {
       creationDate: '2023-02-10',
       submissionDate: '2023-02-11',
     },
-    FAL5: null,
-    FAL6: null,
+    FAL5: [],
+    FAL6: [],
+    supporting: [],
   };
 
   beforeEach(() => {
@@ -208,6 +209,9 @@ describe('Voyage task list page', () => {
           creationDate: '2023-02-10',
           submissionDate: '2023-02-11',
         },
+        FAL5: [],
+        FAL6: [],
+        supporting: [],
       });
 
     renderPage();
@@ -245,8 +249,16 @@ describe('Voyage task list page', () => {
           creationDate: '2023-02-10',
           submissionDate: '2023-02-11',
         },
-        FAL5: 'https://fal5-report-link.com',
-        FAL6: null,
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [],
+        supporting: [],
       });
 
     renderPage();
@@ -286,8 +298,16 @@ describe('Voyage task list page', () => {
           creationDate: '2023-02-10',
           submissionDate: '2023-02-11',
         },
-        FAL5: null,
-        FAL6: 'https://fal6-report-link.com',
+        FAL5: [],
+        FAL6: [
+          {
+            filename: 'Passenger details FAL 6',
+            id: 'FAL6',
+            size: '118385',
+            url: 'https://fal6-report-link.com',
+          },
+        ],
+        supporting: [],
       });
 
     renderPage();
@@ -327,8 +347,9 @@ describe('Voyage task list page', () => {
           creationDate: '2023-02-10',
           submissionDate: '2023-02-11',
         },
-        FAL5: null,
-        FAL6: null,
+        FAL5: [],
+        FAL6: [],
+        supporting: [],
       });
 
     renderPage();
@@ -366,8 +387,9 @@ describe('Voyage task list page', () => {
           creationDate: '2023-02-10',
           submissionDate: '2023-02-11',
         },
-        FAL5: null,
-        FAL6: null,
+        FAL5: [],
+        FAL6: [],
+        supporting: [],
       });
 
     renderPage();
@@ -405,8 +427,23 @@ describe('Voyage task list page', () => {
           creationDate: '2023-02-10',
           submissionDate: '2023-02-11',
         },
-        FAL5: 'https://fal5-report-link.com',
-        FAL6: 'https://fal6-report-link.com',
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [
+          {
+            filename: 'Passenger details FAL 6',
+            id: 'FAL6',
+            size: '118385',
+            url: 'https://fal6-report-link.com',
+          },
+        ],
+        supporting: [],
       });
 
     renderPage();
@@ -531,8 +568,23 @@ describe('Voyage task list page', () => {
           creationDate: '2023-02-10',
           submissionDate: '2023-02-11',
         },
-        FAL5: 'https://fal5-report-link.com',
-        FAL6: 'https://fal6-report-link.com',
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [
+          {
+            filename: 'Passenger details FAL 6',
+            id: 'FAL6',
+            size: '118385',
+            url: 'https://fal6-report-link.com',
+          },
+        ],
+        supporting: [],
       });
 
     renderPage();

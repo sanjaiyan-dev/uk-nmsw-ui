@@ -29,14 +29,9 @@ const VoyageCheckYourAnswers = () => {
   const [errors, setErrors] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [voyageDetails, setVoyageDetails] = useState([]);
-  const [fal5Details, setFal5Details] = useState({
-    fal5Name: '',
-    fal5FileLink: '',
-  });
-  const [fal6Details, setFal6Details] = useState({
-    fal6Name: '',
-    fal6FileLink: '',
-  });
+  const [fal5Details, setFal5Details] = useState();
+  const [fal6Details, setFal6Details] = useState();
+  const errorsExist = !!errors;
 
   document.title = 'Check your answers';
 
@@ -44,15 +39,15 @@ const VoyageCheckYourAnswers = () => {
     {
       id: 'crewDetails',
       title: 'Crew details',
-      value: fal5Details?.fal5Name ? fal5Details?.fal5Name : '',
-      fileLink: fal5Details?.fal5FileLink ? fal5Details?.fal5FileLink : '',
+      value: fal5Details?.filename ? fal5Details?.filename : '',
+      fileLink: fal5Details?.url ? fal5Details?.url : '',
       changeLink: `${VOYAGE_CREW_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
     },
     {
       id: 'passengerDetails',
       title: 'Passenger details',
-      value: fal6Details?.fal6Name ? fal6Details?.fal6Name : '',
-      fileLink: fal6Details?.fal6FileLink ? fal6Details?.fal6FileLink : '',
+      value: fal6Details?.filename ? fal6Details?.filename : '',
+      fileLink: fal6Details?.url ? fal6Details?.url : '',
       changeLink: `${VOYAGE_PASSENGERS_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
       noFileText: 'No passenger details provided',
     },
@@ -65,16 +60,6 @@ const VoyageCheckYourAnswers = () => {
       noFileText: 'No supporting documents provided',
     },
   ];
-
-  const getFalFileName = (URL) => {
-    // Splits BE file link after the last dash /
-    const startOfFileName = URL?.split('/').pop();
-    // Splits the file name further so it gets everything before the ?
-    const encodedFileName = startOfFileName?.split('?')[0];
-    // Decodes the encoded URL so only the file name is left
-    const falFileName = decodeURI(encodedFileName);
-    return falFileName;
-  };
 
   /* until we have a unlocode lookup API we need to format it here */
   const formatUnlocode = (code) => {
@@ -158,16 +143,10 @@ const VoyageCheckYourAnswers = () => {
         },
       ]);
 
-      setFal5Details({
-        fal5Name: getFalFileName(response?.data?.FAL5),
-        fal5FileLink: response?.data?.FAL5,
-      });
+      setFal5Details(response.data?.FAL5[0]);
 
-      if (response.data.FAL6) {
-        setFal6Details({
-          fal6Name: getFalFileName(response?.data?.FAL6),
-          fal6FileLink: response?.data?.FAL6,
-        });
+      if (response.data?.FAL6) {
+        setFal6Details(response.data?.FAL6[0]);
       }
 
       setIsLoading(false);
@@ -191,7 +170,7 @@ const VoyageCheckYourAnswers = () => {
 
   const handleSubmit = () => {
     // This will most likely have a validate funtion in the future but at the moment there can only be a single error (I think)
-    if (declarationData.FAL1.passengers && !declarationData.FAL6) {
+    if (declarationData.FAL1.passengers && declarationData?.FAL6.length === 0) {
       setErrors([{
         name: 'passengerDetails',
         message: 'Passenger details (FAL 6) upload is required for ships carrying passengers',
@@ -209,6 +188,12 @@ const VoyageCheckYourAnswers = () => {
       updateDeclarationData();
     }
   }, [declarationId]);
+
+  useEffect(() => {
+    if (errorsExist) {
+      errorSummaryRef?.current?.focus();
+    }
+  }, [errorsExist]);
 
   if (!declarationId) {
     return (

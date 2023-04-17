@@ -54,8 +54,16 @@ describe('Voyage check your answers page', () => {
       creationDate: '2023-02-10',
       submissionDate: '2023-02-11',
     },
-    FAL5: 'https://fal5-report-link.com',
-    FAL6: null,
+    FAL5: [
+      {
+        filename: 'Crew details including supernumeraries FAL 5.xlsx',
+        id: 'FAL5',
+        size: '118385',
+        url: 'https://fal5-report-link.com',
+      },
+    ],
+    FAL6: [],
+    supporting: [],
   };
 
   const mockedAllFALResponse = {
@@ -79,8 +87,23 @@ describe('Voyage check your answers page', () => {
       creationDate: '2023-02-10',
       submissionDate: '2023-02-11',
     },
-    FAL5: 'https://fal5-report-link.com',
-    FAL6: 'https://fal6-report-link.com',
+    FAL5: [
+      {
+        filename: 'Crew details including supernumeraries FAL 5.xlsx',
+        id: 'FAL5',
+        size: '118385',
+        url: 'https://fal5-report-link.com',
+      },
+    ],
+    FAL6: [
+      {
+        filename: 'Passenger details FAL 6.xlsx',
+        id: 'FAL6',
+        size: '118385',
+        url: 'https://fal6-report-link.com',
+      },
+    ],
+    supporting: [],
   };
 
   beforeEach(() => {
@@ -242,7 +265,7 @@ describe('Voyage check your answers page', () => {
 
     expect(screen.getByText('NL RTM').outerHTML).toEqual('<dd class="govuk-summary-list__value">NL RTM</dd>');
     expect(screen.getByText('No cargo').outerHTML).toEqual('<dd class="govuk-summary-list__value">No cargo</dd>');
-    expect(screen.getByRole('link', { name: 'fal5-report-link.com' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal5-report-link.com" download="">fal5-report-link.com</a>');
+    expect(screen.getByRole('link', { name: 'Crew details including supernumeraries FAL 5.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal5-report-link.com" download="">Crew details including supernumeraries FAL 5.xlsx</a>');
     expect(screen.getByText('No passenger details provided')).toBeInTheDocument();
     expect(screen.getByText('No supporting documents provided')).toBeInTheDocument();
   });
@@ -258,8 +281,8 @@ describe('Voyage check your answers page', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
 
-    expect(screen.getByRole('link', { name: 'fal5-report-link.com' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal5-report-link.com" download="">fal5-report-link.com</a>');
-    expect(screen.getByRole('link', { name: 'fal6-report-link.com' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal6-report-link.com" download="">fal6-report-link.com</a>');
+    expect(screen.getByRole('link', { name: 'Crew details including supernumeraries FAL 5.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal5-report-link.com" download="">Crew details including supernumeraries FAL 5.xlsx</a>');
+    expect(screen.getByRole('link', { name: 'Passenger details FAL 6.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal6-report-link.com" download="">Passenger details FAL 6.xlsx</a>');
   });
 
   it('should error if passengers is true but no FAL 6 has been provided', async () => {
@@ -291,8 +314,16 @@ describe('Voyage check your answers page', () => {
           creationDate: '2023-02-10',
           submissionDate: '2023-02-11',
         },
-        FAL5: 'https://fal5-report-link.com',
-        FAL6: null,
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [],
+        supporting: [],
       });
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
@@ -330,8 +361,16 @@ describe('Voyage check your answers page', () => {
           creationDate: '2023-02-10',
           submissionDate: '2023-02-11',
         },
-        FAL5: 'https://fal5-report-link.com',
-        FAL6: null,
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [],
+        supporting: [],
       });
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));

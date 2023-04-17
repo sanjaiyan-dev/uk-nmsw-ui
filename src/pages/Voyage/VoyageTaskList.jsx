@@ -67,7 +67,7 @@ const VoyageTaskList = () => {
       setVoyageTypeText(response.data?.FAL1.departureFromUk ? 'Departure from the UK' : 'Arrival to the UK');
 
       let isPassengers;
-      if (response.data?.FAL1.passengers && response.data?.FAL6) {
+      if (response.data?.FAL1.passengers && response.data?.FAL6.length > 0) {
         isPassengers = 'completed';
       } else if (response.data?.FAL1.passengers === false) {
         isPassengers = 'completed';
@@ -86,7 +86,7 @@ const VoyageTaskList = () => {
           item: 'crewDetails',
           link: `${VOYAGE_CREW_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
           label: CREW_DETAILS_LABEL,
-          status: response.data.FAL5 ? 'completed' : 'required',
+          status: response.data?.FAL5.length > 0 ? 'completed' : 'required',
         },
         {
           item: 'passengerDetails',
@@ -104,7 +104,7 @@ const VoyageTaskList = () => {
 
       setStep(updatedStatuses);
 
-      if (response.data.FAL1 && response.data.FAL5 && isPassengers === 'completed') {
+      if (response.data?.FAL1 && response.data?.FAL5.length > 0 && isPassengers === 'completed') {
         setCompletedSections(1);
         setCheckYourAnswersStep({ ...checkYourAnswersStep, status: 'notStarted' });
       } else {
