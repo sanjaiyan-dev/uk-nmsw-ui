@@ -1,7 +1,7 @@
 import { useSearchParams } from 'react-router-dom';
 import Message from '../../components/Message';
 import MultiFileUploadForm from '../../components/MultiFileUploadForm';
-import { API_URL, ENDPOINT_DECLARATION_PATH, ENDPOINT_FILE_UPLOAD_GENERAL_DECLARATION_PATH } from '../../constants/AppAPIConstants';
+import { API_URL, ENDPOINT_DECLARATION_PATH, ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH } from '../../constants/AppAPIConstants';
 import {
   URL_DECLARATIONID_IDENTIFIER,
   VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
@@ -21,7 +21,7 @@ const VoyageSupportingDocsUpload = () => {
   }
   return (
     <MultiFileUploadForm
-      endpoint={`${API_URL}${ENDPOINT_DECLARATION_PATH}/${declarationId}${ENDPOINT_FILE_UPLOAD_GENERAL_DECLARATION_PATH}`}
+      endpoint={`${API_URL}${ENDPOINT_DECLARATION_PATH}/${declarationId}${ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH}`}
       pageHeading="Upload supporting documents"
       submitButtonLabel="Save and continue"
       urlNextPage={`${VOYAGE_TASK_LIST_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`}
