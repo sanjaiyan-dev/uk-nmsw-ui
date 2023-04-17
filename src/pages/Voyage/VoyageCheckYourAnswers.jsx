@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import LoadingSpinner from '../../components/LoadingSpinner';
-import Message from '../../components/Message';
-import { countries } from '../../constants/CountryData';
+import { DECLARATION_STATUS_PRESUBMITTED } from '../../constants/AppConstants';
+import { API_URL, ENDPOINT_DECLARATION_PATH, TOKEN_EXPIRED } from '../../constants/AppAPIConstants';
 import {
   MESSAGE_URL,
   SIGN_IN_URL,
@@ -16,8 +16,12 @@ import {
   VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
   YOUR_VOYAGES_URL,
 } from '../../constants/AppUrlConstants';
+import { countries } from '../../constants/CountryData';
 import ConfirmationMessage from '../../components/ConfirmationMessage';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import Message from '../../components/Message';
 import GetDeclaration from '../../utils/GetDeclaration';
+import Auth from '../../utils/Auth';
 import { scrollToElementId, scrollToTop } from '../../utils/ScrollToElement';
 
 const SubmitConfirmation = () => (
@@ -177,7 +181,7 @@ const VoyageCheckYourAnswers = () => {
     setIsLoading(false);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     console.log('submit');
     // SUBMIT
     // send a PATCH to /declaration/<declarationId>
@@ -204,8 +208,25 @@ const VoyageCheckYourAnswers = () => {
       scrollToTop();
       errorSummaryRef?.current?.focus();
     } else {
-      setShowConfirmation(true);
-      scrollToTop();
+      try {
+        const response = await axios.patch(`${API_URL}${ENDPOINT_DECLARATION_PATH}/${declarationId}`, { status: DECLARATION_STATUS_PRESUBMITTED }, {
+          headers: { Authorization: `Bearer ${Auth.retrieveToken()}` },
+        });
+        if (response.status === 200) {
+          setShowConfirmation(true);
+          scrollToTop();
+        }
+      } catch (err) {
+        if (err?.response?.status === 422 || err?.response?.data?.msg === TOKEN_EXPIRED) {
+          Auth.removeToken();
+          navigate(SIGN_IN_URL, { state: { redirectURL: `${VOYAGE_CHECK_YOUR_ANSWERS}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}` } });
+        } else {
+          // 500 errors will fall into this bucket
+          navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: `${VOYAGE_CHECK_YOUR_ANSWERS}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}` } });
+        }
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
