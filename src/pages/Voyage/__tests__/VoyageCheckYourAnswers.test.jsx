@@ -35,6 +35,8 @@ jest.mock('react-router-dom', () => ({
 }));
 
 describe('Voyage check your answers page', () => {
+  const scrollIntoViewMock = jest.fn();
+  window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
   const mockAxios = new MockAdapter(axios);
   const mockedFAL1And5Response = {
     FAL1: {
@@ -334,6 +336,56 @@ describe('Voyage check your answers page', () => {
 
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Passenger details (FAL 6) upload is required for ships carrying passengers' })).toBeInTheDocument();
+  });
+
+  it('should scroll to passenger area if user clicks on FAL6 required error', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: false,
+          departurePortUnlocode: 'AUPOR',
+          departureDate: '2023-02-12',
+          departureTime: '09:23:00',
+          arrivalPortUnlocode: 'GBDOV',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUPOR',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: true,
+          creationDate: '2023-02-10',
+          submissionDate: '2023-02-11',
+        },
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [],
+        supporting: [],
+      });
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    await user.click(screen.getByRole('button', { name: 'Save and submit' }));
+
+    expect(screen.getByText('There is a problem')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Passenger details (FAL 6) upload is required for ships carrying passengers' })).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Passenger details (FAL 6) upload is required for ships carrying passengers' }));
+    expect(scrollIntoViewMock).toHaveBeenCalled();
   });
 
   it('should fallback to displaying the alphaCode if we do not find a match in the country name lookup on flagState', async () => {
