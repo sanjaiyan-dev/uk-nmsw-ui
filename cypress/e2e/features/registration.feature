@@ -16,6 +16,8 @@ Feature: User Registration
     Then I am redirected to password page
     When I provide my password
     Then my account is created and taken to confirmation page
+    When I verify my email address again
+    Then I am shown - You already have an account
     When I click sign-in
     Then I am taken to the sign-in page
 
