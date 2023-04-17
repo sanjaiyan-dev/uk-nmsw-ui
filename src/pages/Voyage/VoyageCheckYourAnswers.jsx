@@ -16,8 +16,16 @@ import {
   VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
   YOUR_VOYAGES_URL,
 } from '../../constants/AppUrlConstants';
+import ConfirmationMessage from '../../components/ConfirmationMessage';
 import GetDeclaration from '../../utils/GetDeclaration';
 import { scrollToElementId, scrollToTop } from '../../utils/ScrollToElement';
+
+const SubmitConfirmation = () => (
+  <>
+    <h2 className="govuk-heading-m">What happens next</h2>
+    <p className="govuk-body">We will send you an email that you can show to Border Force officers as proof that you have sent these reports.</p>
+  </>
+);
 
 const VoyageCheckYourAnswers = () => {
   dayjs.extend(customParseFormat);
@@ -31,6 +39,7 @@ const VoyageCheckYourAnswers = () => {
   const [voyageDetails, setVoyageDetails] = useState([]);
   const [fal5Details, setFal5Details] = useState();
   const [fal6Details, setFal6Details] = useState();
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const errorsExist = !!errors;
 
   document.title = 'Check your answers';
@@ -169,6 +178,7 @@ const VoyageCheckYourAnswers = () => {
   };
 
   const handleSubmit = () => {
+    console.log('submit');
     // SUBMIT
     // send a PATCH to /declaration/<declarationId>
     // take user to confirmation page
@@ -194,7 +204,8 @@ const VoyageCheckYourAnswers = () => {
       scrollToTop();
       errorSummaryRef?.current?.focus();
     } else {
-      console.log('submit clicked for id', declarationId);
+      setShowConfirmation(true);
+      scrollToTop();
     }
   };
 
@@ -218,6 +229,18 @@ const VoyageCheckYourAnswers = () => {
   }
 
   if (isLoading) { return (<LoadingSpinner />); }
+  if (showConfirmation) {
+    return (
+      <ConfirmationMessage
+        pageTitle="Voyage details submitted"
+        confirmationMessage="Voyage details submitted"
+        nextPageLink={YOUR_VOYAGES_URL}
+        nextPageLinkText="Return to your voyages"
+      >
+        <SubmitConfirmation />
+      </ConfirmationMessage>
+    );
+  }
 
   return (
     <>
