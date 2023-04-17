@@ -13,6 +13,7 @@ import { FILE_TYPE_INVALID_PREFIX } from '../constants/AppAPIConstants';
 import Auth from '../utils/Auth';
 import GetDeclaration from '../utils/GetDeclaration';
 import LoadingSpinner from './LoadingSpinner';
+import { scrollToTop } from '../utils/ScrollToElement';
 
 const FILE_STATUS_PENDING = 'Pending';
 const FILE_STATUS_IN_PROGRESS = 'in progress';
@@ -68,6 +69,7 @@ const MultiFileUploadForm = ({
   urlNextPage,
   urlThisPage,
 }) => {
+  const errorSummaryRef = useRef(null);
   const inputRef = useRef(null);
   const multiple = true;
   const navigate = useNavigate();
@@ -114,6 +116,11 @@ const MultiFileUploadForm = ({
     }
   };
 
+  const scrollToFocusErrors = () => {
+    scrollToTop();
+    errorSummaryRef?.current?.focus();
+  }
+
   const storeFilesForUpload = async (fileList) => {
     const fileCurrentlyInState = [...filesAddedForUpload];
     const filesUserAdded = [...fileList];
@@ -126,12 +133,15 @@ const MultiFileUploadForm = ({
     if (filesAddedForUpload.length === MAX_FILES) {
       setMaxFilesError(`You've selected too many files: you can add up to ${remainingFilesAvailable} more files`);
       setErrors([`You've selected too many files: you can add up to ${remainingFilesAvailable} more files`]);
+      scrollToFocusErrors();
     } else if (filesAddedForUpload.length > 0 && (filesAddedForUpload.length + fileList.length > MAX_FILES)) {
       setMaxFilesError(`You've selected too many files: you can add up to ${remainingFilesAvailable} more files`);
       setErrors([`You've selected too many files: you can add up to ${remainingFilesAvailable} more files`]);
+      scrollToFocusErrors();
     } else if (fileList.length > MAX_FILES) {
       setMaxFilesError(`You've selected too many files: you can only add ${MAX_FILES}`);
       setErrors([`You've selected too many files: you can only add ${MAX_FILES}`]);
+      scrollToFocusErrors();
     } else {
       const newFilesForUpload = filesUserAdded.reduce((results, fileToCheck) => {
         if (uploadedFiles.length > 0 && uploadedFiles.findIndex((existingFile) => existingFile.filename === fileToCheck.name) !== -1) {
@@ -142,6 +152,9 @@ const MultiFileUploadForm = ({
           results.push({ file: fileToCheck, status: FILE_STATUS_PENDING });
         }
         setErrors(errorList);
+        if (errorList.length > 0) {
+          scrollToFocusErrors();
+        }
         return results;
       }, []);
 
@@ -266,6 +279,12 @@ const MultiFileUploadForm = ({
     getDeclarationData();
   }, [])
 
+  useEffect(() => {
+    if (errors) {
+      errorSummaryRef?.current?.focus();
+    }
+  }, [errors]);
+
   /*
    * when the drag goes over our button element in the dragarea,
    * a dragleave event is triggered, and our background starts flickering
@@ -275,14 +294,14 @@ const MultiFileUploadForm = ({
    * And this can also handle the drop.
    */
 
-  if (isLoading) { return (<LoadingSpinner/>); }
+  if (isLoading) { return (<LoadingSpinner />); }
 
   return (
     <>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-three-quarters">
           {errors.length > 0 && (
-            <div className="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary">
+            <div className="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary" ref={errorSummaryRef} tabIndex={-1}>
               <div className="govuk-error-summary__body">
                 <ul className="govuk-list govuk-error-summary__list multi-file-upload--error-summary">
                   {errors.map((error) => (
