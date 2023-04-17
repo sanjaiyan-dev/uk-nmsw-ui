@@ -39,11 +39,12 @@ const VoyageCheckYourAnswers = () => {
   const errorSummaryRef = useRef(null);
   const [declarationData, setDeclarationData] = useState();
   const [errors, setErrors] = useState();
-  const [isLoading, setIsLoading] = useState(false);
-  const [voyageDetails, setVoyageDetails] = useState([]);
   const [fal5Details, setFal5Details] = useState();
   const [fal6Details, setFal6Details] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isPendingSubmit, setIsPendingSubmit] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [voyageDetails, setVoyageDetails] = useState([]);
   const errorsExist = !!errors;
 
   document.title = 'Check your answers';
@@ -182,11 +183,6 @@ const VoyageCheckYourAnswers = () => {
   };
 
   const handleSubmit = async () => {
-    console.log('submit');
-    // SUBMIT
-    // send a PATCH to /declaration/<declarationId>
-    // take user to confirmation page
-
     /* TODO: NMSW-555
      * If a user types the url for the CYA page into the address bar with a valid declarationId for their account
      * AND they have not uploaded a FAL1 the page will error as the GET request fails
@@ -209,6 +205,7 @@ const VoyageCheckYourAnswers = () => {
       errorSummaryRef?.current?.focus();
     } else {
       try {
+        setIsPendingSubmit(true);
         const response = await axios.patch(`${API_URL}${ENDPOINT_DECLARATION_PATH}/${declarationId}`, { status: DECLARATION_STATUS_PRESUBMITTED }, {
           headers: { Authorization: `Bearer ${Auth.retrieveToken()}` },
         });
@@ -225,7 +222,7 @@ const VoyageCheckYourAnswers = () => {
           navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: `${VOYAGE_CHECK_YOUR_ANSWERS}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}` } });
         }
       } finally {
-        setIsLoading(false);
+        setIsPendingSubmit(false);
       }
     }
   };
@@ -362,8 +359,9 @@ const VoyageCheckYourAnswers = () => {
 
           <button
             type="button"
-            className="govuk-button"
+            className={isPendingSubmit ? 'govuk-button disabled' : 'govuk-button'}
             data-module="govuk-button"
+            disabled={isPendingSubmit}
             onClick={() => handleSubmit()}
           >
             Save and submit
