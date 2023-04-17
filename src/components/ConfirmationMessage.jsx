@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { SERVICE_NAME } from '../constants/AppConstants';
 
 const ConfirmationMessage = ({
+  children,
   confirmationMessage,
   pageTitle,
   nextPageLink,
@@ -17,8 +18,8 @@ const ConfirmationMessage = ({
           <h1 className="govuk-panel__title govuk-!-margin-bottom-6">
             {`${confirmationMessage}`}
           </h1>
-
         </div>
+        {children}
         <Link
           to={nextPageLink}
         >
@@ -32,6 +33,7 @@ const ConfirmationMessage = ({
 export default ConfirmationMessage;
 
 ConfirmationMessage.propTypes = {
+  children: PropTypes.node, // allows any renderable object
   confirmationMessage: PropTypes.string.isRequired,
   pageTitle: PropTypes.string.isRequired,
   nextPageLink: PropTypes.string.isRequired,
