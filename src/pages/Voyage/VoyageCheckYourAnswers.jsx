@@ -182,35 +182,39 @@ const VoyageCheckYourAnswers = () => {
     setIsLoading(false);
   };
 
-  const handleSubmit = async () => {
-    /* TODO: NMSW-555
-     * If a user types the url for the CYA page into the address bar with a valid declarationId for their account
+  const checkForErrors = () => {
+    /* If a user types the url for the CYA page into the address bar with a valid declarationId for their account
      * AND they have not uploaded a FAL1 the page will error as the GET request fails
      * IF they have not uploaded a FAL5 `!declarationData.FAL5.url`
      * AND/OR they have not answered the 'do you have passengers' question `declarationData.FAL1.passengers === 'null'`
      * AND/OR they have answered yes to passengers and not uploaded a FAL6 `declarationData.FAL1.passengers && !declarationData.FAL6.url`
      * AND they click submit the submission should fail as it's required
      */
-
-    if (!declarationData.FAL5[0].url) {
-      setErrors([{
+    const sectionErrors = [];
+    if (!declarationData.FAL5[0]?.url) {
+      sectionErrors.push({
         name: 'crewDetails',
         message: 'Crew details (FAL 5) upload is required',
-      }]);
-      scrollToTop();
-      errorSummaryRef?.current?.focus();
-    } else if (declarationData.FAL1.passengers === null) {
-      setErrors([{
+      });
+    }
+    if (declarationData.FAL1.passengers === null) {
+      sectionErrors.push({
         name: 'passengerDetails',
         message: 'You need to provide passenger details, even if the ship is carrying no passengers',
-      }]);
-      scrollToTop();
-      errorSummaryRef?.current?.focus();
-    } else if (declarationData.FAL1.passengers && declarationData?.FAL6.length === 0) {
-      setErrors([{
+      });
+    }
+    if (declarationData.FAL1.passengers && declarationData?.FAL6.length === 0) {
+      sectionErrors.push({
         name: 'passengerDetails',
         message: 'Passenger details (FAL 6) upload is required for ships carrying passengers',
-      }]);
+      });
+    }
+    return sectionErrors;
+  };
+
+  const handleSubmit = async () => {
+    if (!declarationData.FAL5[0]?.url || declarationData.FAL1.passengers === null || (declarationData.FAL1.passengers && declarationData?.FAL6.length === 0)) {
+      setErrors(checkForErrors);
       scrollToTop();
       errorSummaryRef?.current?.focus();
     } else {
