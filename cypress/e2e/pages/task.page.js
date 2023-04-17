@@ -45,6 +45,11 @@ class TaskPage {
     cy.get('main#content li:nth-child(3) > a > strong').should('have.text','Completed');
     cy.get('main#content div:nth-child(2) > div > p').should('have.text','You have completed 1 of 2 sections.');
   }
+
+  checkFal6StatusBeforeFal5Upload() {
+    cy.get('main#content li:nth-child(3) > a > strong').should('have.text','Completed');
+    cy.get('main#content div:nth-child(2) > div > p').should('have.text','You have completed 0 of 2 sections.');
+  }
 }
 
 export default new TaskPage();
