@@ -81,12 +81,12 @@ const MultiFileUploadForm = ({
   const [filesAddedForUpload, setFilesAddedForUpload] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [maxFilesError, setMaxFilesError] = useState();
-  const [supportingDocumentsList, setSupportingdocumentsList] = useState([]);
+  const [supportingDocumentsList, setSupportingDocumentsList] = useState([]);
 
   const getDeclarationData = async () => {
     const response = await GetDeclaration({ declarationId });
     if (response.data) {
-      setSupportingdocumentsList(response?.data?.supporting)
+      setSupportingDocumentsList(response?.data?.supporting)
     } else {
       switch (response?.status) {
         case 401:
