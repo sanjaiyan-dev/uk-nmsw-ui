@@ -4,6 +4,7 @@ import FileUploadPage from "../../e2e/pages/file-upload.page";
 import LandingPage from "../../e2e/pages/landing.page";
 import TaskPage from "../../e2e/pages/task.page";
 import SignInPage from "../../e2e/pages/sign-in.page";
+import BasePage from "../../e2e/pages/base.page";
 
 let fileName;
 
@@ -74,6 +75,12 @@ When('I click save and continue', () => {
 
 Then('I am taken to task details page', () => {
   TaskPage.checkTaskPage();
+});
+
+When('I navigate back to task details page', () => {
+  BasePage.clickBackButton();
+  BasePage.clickBackButton();
+  cy.url().should('include', 'report-voyage?report=');
 });
 
 Then('I am directed back to the Upload general declaration FAL 1 page', () => {

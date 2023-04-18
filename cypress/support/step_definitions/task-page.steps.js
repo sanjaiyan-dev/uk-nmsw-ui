@@ -27,8 +27,20 @@ Then('I can see status for FAL5 as completed', () => {
   TaskPage.checkFal5Status();
 });
 
+Then('I can see status for FAL5 as required', () => {
+  cy.get('main#content li:nth-child(2) > a > strong').should('have.text', 'Required');
+});
+
 Then('I can see status for FAL6 as completed', () => {
   TaskPage.checkFal6Status();
+});
+
+Then('I can see status for FAL6 as completed and FAL5 as required', () => {
+  TaskPage.checkFal6StatusBeforeFal5Upload();
+});
+
+Then('I can see status for FAL6 as required', () => {
+  cy.get('main#content li:nth-child(3) > a > strong').should('have.text', 'Required');
 });
 
 Then('I can see Check answers and submit not enabled', () => {
