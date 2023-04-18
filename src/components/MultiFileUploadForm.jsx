@@ -10,6 +10,7 @@ import {
   YOUR_VOYAGES_URL
 } from '../constants/AppUrlConstants';
 import { FILE_TYPE_INVALID_PREFIX } from '../constants/AppAPIConstants';
+import { MAX_SUPPORTING_FILE_SIZE, MAX_SUPPORTING_FILE_SIZE_DISPLAY } from '../constants/AppConstants';
 import Auth from '../utils/Auth';
 import GetDeclaration from '../utils/GetDeclaration';
 import LoadingSpinner from './LoadingSpinner';
@@ -229,11 +230,20 @@ const MultiFileUploadForm = ({
             Auth.removeToken();
             navigate(SIGN_IN_URL, { state: { redirectURL: urlThisPage } });
             break;
-          default: updateFileStatus({
-            file: selectedFile,
-            status: FILE_STATUS_ERROR,
-            errorMessage: err?.response?.data?.message ? err.response.data.message : 'There was a problem check file and try again',
-          });
+          default:
+            if (selectedFile.file.size >= MAX_SUPPORTING_FILE_SIZE) {
+              updateFileStatus({
+                file: selectedFile,
+                status: FILE_STATUS_ERROR,
+                errorMessage: `The file must be smaller than ${MAX_SUPPORTING_FILE_SIZE_DISPLAY}MB`
+              });
+            } else {
+              updateFileStatus({
+                file: selectedFile,
+                status: FILE_STATUS_ERROR,
+                errorMessage: err?.response?.data?.message ? err.response.data.message : 'There was a problem check file and try again',
+              });
+            }
         }
         return err;
       }
