@@ -12,7 +12,7 @@ import {
 import {
   API_URL,
   ENDPOINT_DECLARATION_ATTACHMENTS_PATH,
-  ENDPOINT_DECLARATION_PATH
+  ENDPOINT_DECLARATION_PATH,
 } from '../../../constants/AppAPIConstants';
 import VoyageSupportingDocsUpload from '../VoyageSupportingDocsUpload';
 

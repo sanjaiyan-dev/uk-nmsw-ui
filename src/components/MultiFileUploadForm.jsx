@@ -7,7 +7,7 @@ import {
   MESSAGE_URL,
   SIGN_IN_URL,
   URL_DECLARATIONID_IDENTIFIER,
-  YOUR_VOYAGES_URL
+  YOUR_VOYAGES_URL,
 } from '../constants/AppUrlConstants';
 import { FILE_TYPE_INVALID_PREFIX } from '../constants/AppAPIConstants';
 import { MAX_SUPPORTING_FILE_SIZE, MAX_SUPPORTING_FILE_SIZE_DISPLAY } from '../constants/AppConstants';
@@ -86,7 +86,7 @@ const MultiFileUploadForm = ({
   const getDeclarationData = async () => {
     const response = await GetDeclaration({ declarationId });
     if (response.data) {
-      setSupportingDocumentsList(response?.data?.supporting)
+      setSupportingDocumentsList(response?.data?.supporting);
     } else {
       switch (response?.status) {
         case 401:
@@ -101,8 +101,8 @@ const MultiFileUploadForm = ({
             redirectURL: YOUR_VOYAGES_URL,
           },
         });
-      };
-    };
+      }
+    }
     setIsLoading(false);
   };
 
@@ -119,7 +119,7 @@ const MultiFileUploadForm = ({
   const scrollToFocusErrors = () => {
     scrollToTop();
     errorSummaryRef?.current?.focus();
-  }
+  };
 
   const storeFilesForUpload = async (fileList) => {
     const fileCurrentlyInState = [...filesAddedForUpload];
@@ -128,12 +128,12 @@ const MultiFileUploadForm = ({
     setMaxFilesError();
     setErrors();
     // Check we do not exceed max file count
-    const remainingFilesAvailable = MAX_FILES - (filesAddedForUpload.length + supportingDocumentsList?.length);
-    if (filesAddedForUpload.length + supportingDocumentsList?.length === MAX_FILES) {
+    const remainingFilesAvailable = MAX_FILES - (filesAddedForUpload.length + supportingDocumentsList.length);
+    if (filesAddedForUpload.length + supportingDocumentsList.length === MAX_FILES) {
       setMaxFilesError(`You've selected too many files: you can add up to ${remainingFilesAvailable} more files`);
       setErrors([`You've selected too many files: you can add up to ${remainingFilesAvailable} more files`]);
       scrollToFocusErrors();
-    } else if ((filesAddedForUpload.length > 0 || supportingDocumentsList.length > 0) && (filesAddedForUpload.length + fileList.length + supportingDocumentsList?.length > MAX_FILES)) {
+    } else if ((filesAddedForUpload.length > 0 || supportingDocumentsList.length > 0) && (filesAddedForUpload.length + fileList.length + supportingDocumentsList.length > MAX_FILES)) {
       setMaxFilesError(`You've selected too many files: you can add up to ${remainingFilesAvailable} more files`);
       setErrors([`You've selected too many files: you can add up to ${remainingFilesAvailable} more files`]);
       scrollToFocusErrors();
@@ -143,7 +143,7 @@ const MultiFileUploadForm = ({
       scrollToFocusErrors();
     } else {
       const newFilesForUpload = filesUserAdded.reduce((results, fileToCheck) => {
-        if (supportingDocumentsList?.length > 0 && supportingDocumentsList?.findIndex((existingFile) => existingFile.filename === fileToCheck.name) !== -1) {
+        if (supportingDocumentsList.length > 0 && supportingDocumentsList.findIndex((existingFile) => existingFile.filename === fileToCheck.name) !== -1) {
           errorList.push(`A file called ${fileToCheck.name} already exists in your list`);
         } else if (fileCurrentlyInState.length > 0 && fileCurrentlyInState.findIndex((existingFile) => existingFile.file.name === fileToCheck.name) !== -1) {
           errorList.push(`A file called ${fileToCheck.name} already exists in your list`);
@@ -233,7 +233,7 @@ const MultiFileUploadForm = ({
               updateFileStatus({
                 file: selectedFile,
                 status: FILE_STATUS_ERROR,
-                errorMessage: `The file must be smaller than ${MAX_SUPPORTING_FILE_SIZE_DISPLAY}MB`
+                errorMessage: `The file must be smaller than ${MAX_SUPPORTING_FILE_SIZE_DISPLAY}MB`,
               });
             } else {
               updateFileStatus({
@@ -260,7 +260,6 @@ const MultiFileUploadForm = ({
     asyncLoop();
   };
 
-
   const handleDelete = ({ e, fileName }) => {
     e.preventDefault();
     /* There will be two states a file could be in
@@ -283,9 +282,9 @@ const MultiFileUploadForm = ({
   };
 
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     getDeclarationData();
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (errors) {
@@ -387,32 +386,30 @@ const MultiFileUploadForm = ({
       </div>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-three-quarters">
-          {supportingDocumentsList?.length > 0 && (
+          {supportingDocumentsList.length > 0 && (
             <>
               <h2 className="govuk-heading-m">Files added</h2>
-              {supportingDocumentsList.map((file) => {
-                return (
-                  <div key={file.filename} className="govuk-grid-row  govuk-!-margin-bottom-5 multi-file-upload--filelist">
-                    <div className="nmsw-grid-column-ten-twelfths">
-                      <FileStatusSuccess fileName={file.filename} />
-                    </div>
-                    <div className="nmsw-grid-column-two-twelfths govuk-!-text-align-right">
-                      <button
-                        className="govuk-button govuk-button--warning govuk-!-margin-bottom-5"
-                        type="button"
-                        onClick={(e) => handleDelete({ e, fileName: file.filename })}
-                      >
-                        Delete
-                      </button>
-                    </div>
+              {supportingDocumentsList.map((file) => (
+                <div key={file.filename} className="govuk-grid-row  govuk-!-margin-bottom-5 multi-file-upload--filelist">
+                  <div className="nmsw-grid-column-ten-twelfths">
+                    <FileStatusSuccess fileName={file.filename} />
                   </div>
-                )
-              })}
+                  <div className="nmsw-grid-column-two-twelfths govuk-!-text-align-right">
+                    <button
+                      className="govuk-button govuk-button--warning govuk-!-margin-bottom-5"
+                      type="button"
+                      onClick={(e) => handleDelete({ e, fileName: file.filename })}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
             </>
           )}
           {filesAddedForUpload.length > 0 && (
             <>
-              {supportingDocumentsList?.length === 0 && <h2 className="govuk-heading-m">Files added</h2>}
+              {supportingDocumentsList.length === 0 && <h2 className="govuk-heading-m">Files added</h2>}
               {filesAddedForUpload.map((file) => (
                 <div key={file.file.name} className="govuk-grid-row  govuk-!-margin-bottom-5 multi-file-upload--filelist">
                   <div className="nmsw-grid-column-ten-twelfths">

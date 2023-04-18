@@ -1,4 +1,6 @@
-import { render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
+import {
+  render, screen, waitFor, waitForElementToBeRemoved,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
@@ -6,15 +8,14 @@ import MockAdapter from 'axios-mock-adapter';
 import {
   API_URL,
   ENDPOINT_DECLARATION_ATTACHMENTS_PATH,
-  ENDPOINT_DECLARATION_PATH
+  ENDPOINT_DECLARATION_PATH,
 } from '../../constants/AppAPIConstants';
 import {
   SIGN_IN_URL,
   URL_DECLARATIONID_IDENTIFIER,
-  VOYAGE_SUPPORTING_DOCS_UPLOAD_URL
+  VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
 } from '../../constants/AppUrlConstants';
 import MultiFileUploadForm from '../MultiFileUploadForm';
-
 
 const mockedUseNavigate = jest.fn();
 jest.mock('react-router', () => ({
