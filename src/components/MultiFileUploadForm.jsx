@@ -79,7 +79,7 @@ const MultiFileUploadForm = ({
   const [dragActive, setDragActive] = useState(false);
   const [errors, setErrors] = useState([]);
   const [filesAddedForUpload, setFilesAddedForUpload] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [maxFilesError, setMaxFilesError] = useState();
   const [supportingDocumentsList, setSupportingdocumentsList] = useState([]);
 
@@ -87,7 +87,6 @@ const MultiFileUploadForm = ({
     const response = await GetDeclaration({ declarationId });
     if (response.data) {
       setSupportingdocumentsList(response?.data?.supporting)
-      setIsLoading(false);
     } else {
       switch (response?.status) {
         case 401:
@@ -103,8 +102,8 @@ const MultiFileUploadForm = ({
           },
         });
       };
-      setIsLoading(false);
     };
+    setIsLoading(false);
   };
 
   const handleDrag = (e) => {
@@ -139,7 +138,11 @@ const MultiFileUploadForm = ({
       setMaxFilesError(`You've selected too many files: you can add up to ${remainingFilesAvailable} more files`);
       setErrors([`You've selected too many files: you can add up to ${remainingFilesAvailable} more files`]);
       scrollToFocusErrors();
-    } else if (fileList.length + supportingDocumentsList?.length > MAX_FILES) {
+    } else if (supportingDocumentsList.length > 0 && (filesAddedForUpload.length + fileList.length + supportingDocumentsList?.length > MAX_FILES)) {
+      setMaxFilesError(`You've selected too many files: you can add up to ${remainingFilesAvailable} more files`);
+      setErrors([`You've selected too many files: you can add up to ${remainingFilesAvailable} more files`]);
+      scrollToFocusErrors();
+    } else if (fileList.length > MAX_FILES) {
       setMaxFilesError(`You've selected too many files: you can only add ${MAX_FILES}`);
       setErrors([`You've selected too many files: you can only add ${MAX_FILES}`]);
       scrollToFocusErrors();
