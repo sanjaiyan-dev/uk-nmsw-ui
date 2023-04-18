@@ -124,7 +124,6 @@ const MultiFileUploadForm = ({
   const storeFilesForUpload = async (fileList) => {
     const fileCurrentlyInState = [...filesAddedForUpload];
     const filesUserAdded = [...fileList];
-    const uploadedFiles = supportingDocumentsList
     const errorList = [];
     setMaxFilesError();
     setErrors();
@@ -148,7 +147,7 @@ const MultiFileUploadForm = ({
       scrollToFocusErrors();
     } else {
       const newFilesForUpload = filesUserAdded.reduce((results, fileToCheck) => {
-        if (uploadedFiles?.length > 0 && uploadedFiles?.findIndex((existingFile) => existingFile.filename === fileToCheck.name) !== -1) {
+        if (supportingDocumentsList?.length > 0 && supportingDocumentsList?.findIndex((existingFile) => existingFile.filename === fileToCheck.name) !== -1) {
           errorList.push(`A file called ${fileToCheck.name} already exists in your list`);
         } else if (fileCurrentlyInState.length > 0 && fileCurrentlyInState.findIndex((existingFile) => existingFile.file.name === fileToCheck.name) !== -1) {
           errorList.push(`A file called ${fileToCheck.name} already exists in your list`);
