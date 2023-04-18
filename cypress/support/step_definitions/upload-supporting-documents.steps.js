@@ -10,7 +10,7 @@ Then('I am taken to upload supporting documents page', () => {
   fileUploadPage.verifySupportingDocumentsPage();
 });
 
-When('I am able to choose valid number of documents, to upload in Files added section', (table) => {
+When('I am able to choose valid number of documents and upload in Files added section', (table) => {
   const files = table.hashes();
   const folderPath = 'cypress/fixtures/Supporting-Documents/';
   const fileNames = files.map(item => `${folderPath}${item.fileName}`);
@@ -33,11 +33,11 @@ Then('I add more files than limited number of supporting documents', (table) => 
 });
 
 When('I add some more files than limited number of supporting documents', (table) => {
-  fileUploadPage.selectMultipleFiles(table);
+  fileUploadPage.selectMultipleFalFiles(table);
 });
 
 When('I attempt to add a file with the same name that is already added', (table) => {
-  fileUploadPage.selectMultipleFiles(table);
+  fileUploadPage.selectMultipleFalFiles(table);
 });
 
 Then('I am shown an error message for {string}', (file) => {
@@ -50,14 +50,29 @@ Then('I am able to delete the file', () => {
   cy.get('.multi-file-upload--filelist').should('have.length', 1);
 });
 
-When('I upload a valid file, it gets uploaded', (table) => {
-  fileUploadPage.selectMultipleFiles(table);
-  cy.contains('Upload files').click();
-  cy.get('.success .multi-file-upload--filelist-filename').should('have.css', 'color', 'rgb(0, 112, 60)').should('have.text', 'General declaration FAL 1 - goodData.xlsx has been uploaded');
+When('I upload a valid files, it gets uploaded', (table) => {
+  fileUploadPage.selectMultipleFalFiles(table);
+  const files = table.hashes();
+  const fileNames = files.map(item => item.fileName);
+  cy.contains('Upload files').click({timeout:7000});
+  cy.get('.success .multi-file-upload--filelist-filename').each(($el,index) => {
+    cy.contains(`${fileNames[index]} has been uploaded`).should('have.css', 'color', 'rgb(0, 112, 60)');
+  });
+  cy.wait(5000);
 });
 
-When('I upload an invalid file, it gets rejected', (table) => {
-  fileUploadPage.selectMultipleFiles(table);
+When('I upload a file type that is not valid', (table) => {
+  fileUploadPage.selectMultipleFalFiles(table);
   cy.contains('Upload files').click();
-  cy.get('.error .multi-file-upload--filelist-filename').should('have.css', 'color', 'rgb(212, 53, 28)').should('contain.text', 'MELLINA GEN DEC2.xlsx There was a problem check file and try again');
+
+});
+
+Then('I am shown error message to upload correct file type for the files uploaded', (table) => {
+  fileUploadPage.checkIncorrectFileMsg(table);
+});
+
+Then('I can delete files added to add more files', () => {
+  cy.get('.nmsw-grid-column-two-twelfths > .govuk-button').each(($el) => {
+    cy.wrap($el).click({force:true});
+  });
 });
