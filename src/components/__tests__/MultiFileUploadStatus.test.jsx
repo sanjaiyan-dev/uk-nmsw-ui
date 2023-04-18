@@ -8,7 +8,11 @@ import {
   ENDPOINT_DECLARATION_ATTACHMENTS_PATH,
   ENDPOINT_DECLARATION_PATH
 } from '../../constants/AppAPIConstants';
-import { SIGN_IN_URL } from '../../constants/AppUrlConstants';
+import {
+  SIGN_IN_URL,
+  URL_DECLARATIONID_IDENTIFIER,
+  VOYAGE_SUPPORTING_DOCS_UPLOAD_URL
+} from '../../constants/AppUrlConstants';
 import MultiFileUploadForm from '../MultiFileUploadForm';
 
 
@@ -20,7 +24,7 @@ jest.mock('react-router', () => ({
 
 const renderPage = () => {
   render(
-    <MemoryRouter>
+    <MemoryRouter initialEntries={[`${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=123`]}>
       <MultiFileUploadForm
         endpoint="/upload-file-endpoint"
         pageHeading="Title from props"

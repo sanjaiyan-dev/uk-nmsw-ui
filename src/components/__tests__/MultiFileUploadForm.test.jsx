@@ -6,8 +6,10 @@ import MockAdapter from 'axios-mock-adapter';
 import {
   API_URL,
   ENDPOINT_DECLARATION_ATTACHMENTS_PATH,
-  ENDPOINT_DECLARATION_PATH
+  ENDPOINT_DECLARATION_PATH,
+  ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH
 } from '../../constants/AppAPIConstants';
+import { URL_DECLARATIONID_IDENTIFIER, VOYAGE_SUPPORTING_DOCS_UPLOAD_URL } from '../../constants/AppUrlConstants';
 import MultiFileUploadForm from '../MultiFileUploadForm';
 
 const mockedUseNavigate = jest.fn();
@@ -18,9 +20,9 @@ jest.mock('react-router', () => ({
 
 const renderPage = () => {
   render(
-    <MemoryRouter>
+    <MemoryRouter initialEntries={[`${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=123`]}>
       <MultiFileUploadForm
-        endpoint="/upload-file-endpoint"
+        endpoint={`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH}`}
         pageHeading="Title from props"
         submitButtonLabel="Submit button label from props"
         urlNextPage="/next-page/123"
@@ -144,7 +146,7 @@ describe('Multi file upload tests', () => {
     expect(screen.getByText('supportingFile1')).toBeInTheDocument();
     expect(screen.getByText('supportingFile1')).toBeInTheDocument();
     expect(screen.getAllByRole('button', { name: 'Delete' })).toHaveLength(2);
-    expect(screen.getAllByText('Uploaded')).toHaveLength(2);
+    expect(screen.getAllByText('has been uploaded')).toHaveLength(2);
   });
 
   it('should accept one file added and display it in the file list', async () => {
