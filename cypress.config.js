@@ -2,6 +2,7 @@ const {defineConfig} = require('cypress');
 const createBundler = require('@bahmutov/cypress-esbuild-preprocessor');
 const preprocessor = require('@badeball/cypress-cucumber-preprocessor');
 const createEsbuildPlugin = require('@badeball/cypress-cucumber-preprocessor/esbuild');
+const {downloadFile} = require('cypress-downloadfile/lib/addPlugin')
 const fs = require('fs');
 
 async function setupNodeEvents(on, config) {
@@ -16,6 +17,7 @@ async function setupNodeEvents(on, config) {
   );
   on(
       'task',
+      {downloadFile},
       {
         log(message) {
           // eslint-disable-next-line no-console
@@ -36,6 +38,7 @@ async function setupNodeEvents(on, config) {
           }
           return false
         }
+
       }
   );
   config.env.MAIL_API_KEY = process.env.DEV_NMSW_MAILSLURP_API_KEY;
