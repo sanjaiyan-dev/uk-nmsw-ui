@@ -80,7 +80,7 @@ const MultiFileUploadForm = ({
   const [filesAddedForUpload, setFilesAddedForUpload] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [maxFilesError, setMaxFilesError] = useState();
-  const [supportingDocumentsList, setSupportingdocumentsList] = useState();
+  const [supportingDocumentsList, setSupportingdocumentsList] = useState([]);
 
   const getDeclarationData = async () => {
     const response = await GetDeclaration({ declarationId });
@@ -144,7 +144,7 @@ const MultiFileUploadForm = ({
       scrollToFocusErrors();
     } else {
       const newFilesForUpload = filesUserAdded.reduce((results, fileToCheck) => {
-        if (uploadedFiles.length > 0 && uploadedFiles.findIndex((existingFile) => existingFile.filename === fileToCheck.name) !== -1) {
+        if (uploadedFiles?.length > 0 && uploadedFiles?.findIndex((existingFile) => existingFile.filename === fileToCheck.name) !== -1) {
           errorList.push(`A file called ${fileToCheck.name} already exists in your list`);
         } else if (fileCurrentlyInState.length > 0 && fileCurrentlyInState.findIndex((existingFile) => existingFile.file.name === fileToCheck.name) !== -1) {
           errorList.push(`A file called ${fileToCheck.name} already exists in your list`);
@@ -404,7 +404,7 @@ const MultiFileUploadForm = ({
           )}
           {filesAddedForUpload.length > 0 && (
             <>
-              {!supportingDocumentsList && <h2 className="govuk-heading-m">Files added</h2>}
+              {supportingDocumentsList?.length === 0 && <h2 className="govuk-heading-m">Files added</h2>}
               {filesAddedForUpload.map((file) => (
                 <div key={file.file.name} className="govuk-grid-row  govuk-!-margin-bottom-5 multi-file-upload--filelist">
                   <div className="nmsw-grid-column-ten-twelfths">
