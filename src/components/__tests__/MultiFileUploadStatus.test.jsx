@@ -1,10 +1,16 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
+import {
+  API_URL,
+  ENDPOINT_DECLARATION_ATTACHMENTS_PATH,
+  ENDPOINT_DECLARATION_PATH
+} from '../../constants/AppAPIConstants';
 import { SIGN_IN_URL } from '../../constants/AppUrlConstants';
 import MultiFileUploadForm from '../MultiFileUploadForm';
+
 
 const mockedUseNavigate = jest.fn();
 jest.mock('react-router', () => ({
@@ -29,6 +35,32 @@ const renderPage = () => {
 describe('Multi file upload status tests', () => {
   const mockAxios = new MockAdapter(axios);
 
+  const mockedFAL1Response = {
+    FAL1: {
+      nameOfShip: 'Test ship name',
+      imoNumber: '1234567',
+      callSign: 'NA',
+      signatory: 'Captain Name',
+      flagState: 'GBR',
+      departureFromUk: false,
+      departurePortUnlocode: 'AUPOR',
+      departureDate: '2023-02-12',
+      departureTime: '09:23:00',
+      arrivalPortUnlocode: 'GBDOV',
+      arrivalDate: '2023-02-15',
+      arrivalTime: '14:00:00',
+      previousPortUnlocode: 'AUPOR',
+      nextPortUnlocode: 'NLRTM',
+      cargo: 'No cargo',
+      passengers: false,
+      creationDate: '2023-02-10',
+      submissionDate: '2023-02-11',
+    },
+    FAL5: [],
+    FAL6: [],
+    supporting: [],
+  };
+
   beforeEach(() => {
     mockAxios.reset();
     window.sessionStorage.clear();
@@ -46,6 +78,12 @@ describe('Multi file upload status tests', () => {
     ];
     // Force a delay so we can test the file goes to an inprogress state
     mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, mockedFAL1Response)
       .onPost('/upload-file-endpoint')
       .reply(() => new Promise((resolve) => {
         setTimeout(() => {
@@ -54,6 +92,7 @@ describe('Multi file upload status tests', () => {
       }));
 
     renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
 
     const input = screen.getByTestId('multiFileUploadInput');
     await user.upload(input, files);
@@ -71,12 +110,19 @@ describe('Multi file upload status tests', () => {
       new File(['template2'], 'template2.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
     ];
     mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, mockedFAL1Response)
       .onPost('/upload-file-endpoint')
       .reply(200, {
         message: 'success response',
       });
 
     renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
 
     const input = screen.getByTestId('multiFileUploadInput');
     await user.upload(input, files);
@@ -96,12 +142,19 @@ describe('Multi file upload status tests', () => {
       new File(['template2'], 'template2.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
     ];
     mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, mockedFAL1Response)
       .onPost('/upload-file-endpoint')
       .reply(400, {
         message: 'error response',
       });
 
     renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
 
     const input = screen.getByTestId('multiFileUploadInput');
     await user.upload(input, files);
@@ -121,10 +174,17 @@ describe('Multi file upload status tests', () => {
       new File(['template2'], 'template2.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
     ];
     mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, mockedFAL1Response)
       .onPost('/upload-file-endpoint')
       .reply(500);
 
     renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
 
     const input = screen.getByTestId('multiFileUploadInput');
     await user.upload(input, files);
@@ -141,10 +201,17 @@ describe('Multi file upload status tests', () => {
       new File(['template2'], 'template2.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
     ];
     mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, mockedFAL1Response)
       .onPost('/upload-file-endpoint')
       .reply(422);
 
     renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
 
     const input = screen.getByTestId('multiFileUploadInput');
     await user.upload(input, files);
@@ -160,10 +227,17 @@ describe('Multi file upload status tests', () => {
       new File(['template2'], 'template2.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
     ];
     mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, mockedFAL1Response)
       .onPost('/upload-file-endpoint')
       .reply(401);
 
     renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
 
     const input = screen.getByTestId('multiFileUploadInput');
     await user.upload(input, files);
