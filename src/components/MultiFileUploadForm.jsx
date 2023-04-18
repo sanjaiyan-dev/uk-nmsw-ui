@@ -130,15 +130,15 @@ const MultiFileUploadForm = ({
     setErrors();
     // Check we do not exceed max file count
     const remainingFilesAvailable = MAX_FILES - (filesAddedForUpload.length + supportingDocumentsList?.length);
-    if (filesAddedForUpload.length === MAX_FILES) {
+    if (filesAddedForUpload.length + supportingDocumentsList?.length === MAX_FILES) {
       setMaxFilesError(`You've selected too many files: you can add up to ${remainingFilesAvailable} more files`);
       setErrors([`You've selected too many files: you can add up to ${remainingFilesAvailable} more files`]);
       scrollToFocusErrors();
-    } else if (filesAddedForUpload.length > 0 && (filesAddedForUpload.length + fileList.length > MAX_FILES)) {
+    } else if (filesAddedForUpload.length > 0 && (filesAddedForUpload.length + fileList.length + supportingDocumentsList?.length > MAX_FILES)) {
       setMaxFilesError(`You've selected too many files: you can add up to ${remainingFilesAvailable} more files`);
       setErrors([`You've selected too many files: you can add up to ${remainingFilesAvailable} more files`]);
       scrollToFocusErrors();
-    } else if (fileList.length > MAX_FILES) {
+    } else if (fileList.length + supportingDocumentsList?.length > MAX_FILES) {
       setMaxFilesError(`You've selected too many files: you can only add ${MAX_FILES}`);
       setErrors([`You've selected too many files: you can only add ${MAX_FILES}`]);
       scrollToFocusErrors();
