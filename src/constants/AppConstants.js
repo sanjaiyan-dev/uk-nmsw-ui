@@ -53,3 +53,5 @@ export const CHECK_YOUR_ANSWERS_LABEL = 'Check answers and submit';
 // File upload
 export const MAX_FILE_SIZE = 4194304;
 export const MAX_FILE_SIZE_DISPLAY = (MAX_FILE_SIZE / (1024 * 1024)).toFixed(0);
+export const MAX_SUPPORTING_FILE_SIZE = 1048576;
+export const MAX_SUPPORTING_FILE_SIZE_DISPLAY = (MAX_SUPPORTING_FILE_SIZE / (1024 * 1024)).toFixed(0);
