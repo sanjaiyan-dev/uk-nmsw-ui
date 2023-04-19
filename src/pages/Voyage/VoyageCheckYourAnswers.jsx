@@ -66,14 +66,6 @@ const VoyageCheckYourAnswers = () => {
       changeLink: `${VOYAGE_PASSENGERS_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
       noFileText: 'No passenger details provided',
     },
-    {
-      id: 'supportingDocuments',
-      title: 'Supporting documents',
-      value: '',
-      fileLink: '',
-      changeLink: `${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
-      noFileText: 'No supporting documents provided',
-    },
   ];
 
   /* until we have a unlocode lookup API we need to format it here */
@@ -369,6 +361,31 @@ const VoyageCheckYourAnswers = () => {
                 </dd>
               </div>
             ))}
+
+            <div className="govuk-summary-list__row">
+              <dt id="supportingDocuments" className="govuk-summary-list__key">
+                Supporting documents
+              </dt>
+              <dd className="govuk-summary-list__value">
+                {supportingDocs.length < 1 && <span>No supporting documents provided</span>}
+                {
+                  supportingDocs.length > 0 && supportingDocs.map((doc) => (
+                    <div key={doc.id}>
+                      <a className="govuk-link" href={doc.url} download>{doc.filename}</a>
+                    </div>
+                  ))
+                }
+              </dd>
+              <dd className="govuk-summary-list__actions">
+                <Link
+                  className="govuk-link"
+                  to={`${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`}
+                  aria-describedby="supportingDocuments"
+                >
+                  Change<span className="govuk-visually-hidden">{' change Supporting documents'}</span>
+                </Link>
+              </dd>
+            </div>
           </dl>
 
           <h2 className="govuk-heading-m">Now send your application</h2>
