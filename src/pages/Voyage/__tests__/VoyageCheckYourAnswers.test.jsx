@@ -71,7 +71,7 @@ describe('Voyage check your answers page', () => {
     supporting: [],
   };
 
-  const mockedAllFALResponse = {
+  const mockedAllResponse = {
     FAL1: {
       nameOfShip: 'Test ship name',
       imoNumber: '1234567',
@@ -108,7 +108,20 @@ describe('Voyage check your answers page', () => {
         url: 'https://fal6-report-link.com',
       },
     ],
-    supporting: [],
+    supporting: [
+      {
+        id: '123abc',
+        filename: 'MyFirstDocument.xlsx',
+        size: '90610',
+        url: 'https://first-doc-link.com',
+      },
+      {
+        id: '123def',
+        filename: 'My-second-doc.xlsx',
+        size: '90610',
+        url: 'https://second-doc-link.com',
+      },
+    ],
   };
 
   const mockedFAL1Only = {
@@ -296,6 +309,9 @@ describe('Voyage check your answers page', () => {
     expect(screen.getByText('Supporting documents').outerHTML).toEqual('<dt id="supportingDocuments" class="govuk-summary-list__key">Supporting documents</dt>');
   });
 
+  // ==========================
+  // UPLOADED DOCUMENT TESTS
+  // ==========================
   // To view the CYA page the FAL 5 file much be present
   it('should render the General Declaration values and a Crew Details FAL 5 link', async () => {
     mockAxios
@@ -341,7 +357,7 @@ describe('Voyage check your answers page', () => {
           Authorization: 'Bearer 123',
         },
       })
-      .reply(200, mockedAllFALResponse);
+      .reply(200, mockedAllResponse);
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
 
@@ -349,103 +365,10 @@ describe('Voyage check your answers page', () => {
     expect(screen.getByRole('link', { name: 'Passenger details FAL 6.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal6-report-link.com" download="">Passenger details FAL 6.xlsx</a>');
   });
 
-  it('should error if passengers is true but no FAL 6 has been provided', async () => {
-    const user = userEvent.setup();
-    mockAxios
-      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
-        headers: {
-          Authorization: 'Bearer 123',
-        },
-      })
-      .reply(200, {
-        FAL1: {
-          nameOfShip: 'Test ship name',
-          imoNumber: '1234567',
-          callSign: 'NA',
-          signatory: 'Captain Name',
-          flagState: 'GBR',
-          departureFromUk: false,
-          departurePortUnlocode: 'AUPOR',
-          departureDate: '2023-02-12',
-          departureTime: '09:23:00',
-          arrivalPortUnlocode: 'GBDOV',
-          arrivalDate: '2023-02-15',
-          arrivalTime: '14:00:00',
-          previousPortUnlocode: 'AUPOR',
-          nextPortUnlocode: 'NLRTM',
-          cargo: 'No cargo',
-          passengers: true,
-          creationDate: '2023-02-10',
-          submissionDate: '2023-02-11',
-        },
-        FAL5: [
-          {
-            filename: 'Crew details including supernumeraries FAL 5.xlsx',
-            id: 'FAL5',
-            size: '118385',
-            url: 'https://fal5-report-link.com',
-          },
-        ],
-        FAL6: [],
-        supporting: [],
-      });
-    renderPage();
-    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
-    await user.click(screen.getByRole('button', { name: 'Save and submit' }));
+  // ==========================
+  // ERROR TESTS
+  // ==========================
 
-    expect(screen.getByText('There is a problem')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Passenger details (FAL 6) upload is required for ships carrying passengers' })).toBeInTheDocument();
-  });
-
-  it('should scroll to passenger area if user clicks on FAL6 required error', async () => {
-    const user = userEvent.setup();
-    mockAxios
-      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
-        headers: {
-          Authorization: 'Bearer 123',
-        },
-      })
-      .reply(200, {
-        FAL1: {
-          nameOfShip: 'Test ship name',
-          imoNumber: '1234567',
-          callSign: 'NA',
-          signatory: 'Captain Name',
-          flagState: 'GBR',
-          departureFromUk: false,
-          departurePortUnlocode: 'AUPOR',
-          departureDate: '2023-02-12',
-          departureTime: '09:23:00',
-          arrivalPortUnlocode: 'GBDOV',
-          arrivalDate: '2023-02-15',
-          arrivalTime: '14:00:00',
-          previousPortUnlocode: 'AUPOR',
-          nextPortUnlocode: 'NLRTM',
-          cargo: 'No cargo',
-          passengers: true,
-          creationDate: '2023-02-10',
-          submissionDate: '2023-02-11',
-        },
-        FAL5: [
-          {
-            filename: 'Crew details including supernumeraries FAL 5.xlsx',
-            id: 'FAL5',
-            size: '118385',
-            url: 'https://fal5-report-link.com',
-          },
-        ],
-        FAL6: [],
-        supporting: [],
-      });
-    renderPage();
-    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
-    await user.click(screen.getByRole('button', { name: 'Save and submit' }));
-
-    expect(screen.getByText('There is a problem')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Passenger details (FAL 6) upload is required for ships carrying passengers' })).toBeInTheDocument();
-    await user.click(screen.getByRole('button', { name: 'Passenger details (FAL 6) upload is required for ships carrying passengers' }));
-    expect(scrollIntoViewMock).toHaveBeenCalled();
-  });
 
   it('should fallback to displaying the alphaCode if we do not find a match in the country name lookup on flagState', async () => {
     mockAxios
@@ -491,6 +414,9 @@ describe('Voyage check your answers page', () => {
     expect(screen.getByText('HON').outerHTML).toEqual('<dd class="govuk-summary-list__value">HON</dd>');
   });
 
+  // ==========================
+  // CHANGE LINK TESTS
+  // ==========================
   /*
    * This click not working with react-router-dom, ticket open to investigate and improve tests
    * for now in the tests below we're testing the a href is correct
@@ -633,6 +559,56 @@ describe('Voyage check your answers page', () => {
     await user.click(screen.getByRole('button', { name: 'Save and submit' }));
     expect(screen.getByRole('heading', { name: 'There is a problem' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Passenger details (FAL 6) upload is required for ships carrying passengers' })).toBeInTheDocument();
+  });
+
+  it('should scroll to document area if user clicks on a required error', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: false,
+          departurePortUnlocode: 'AUPOR',
+          departureDate: '2023-02-12',
+          departureTime: '09:23:00',
+          arrivalPortUnlocode: 'GBDOV',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUPOR',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: true,
+          creationDate: '2023-02-10',
+          submissionDate: '2023-02-11',
+        },
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [],
+        supporting: [],
+      });
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    await user.click(screen.getByRole('button', { name: 'Save and submit' }));
+
+    expect(screen.getByText('There is a problem')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Passenger details (FAL 6) upload is required for ships carrying passengers' })).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Passenger details (FAL 6) upload is required for ships carrying passengers' }));
+    expect(scrollIntoViewMock).toHaveBeenCalled();
   });
 
   it('should redirect to message page if Submit returns a 500 response', async () => {
