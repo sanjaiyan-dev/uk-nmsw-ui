@@ -184,7 +184,9 @@ const MultiFileUploadForm = ({
     inputRef.current.click();
   };
 
-  const updateFileStatus = ({ file, status, errorMessage, id }) => {
+  const updateFileStatus = ({
+    file, status, errorMessage, id,
+  }) => {
     const updatedFileIndex = filesAddedForUpload.findIndex((existingFile) => existingFile.file.name === file.file.name);
     const newState = [...filesAddedForUpload];
     newState[updatedFileIndex].status = status;
@@ -206,6 +208,7 @@ const MultiFileUploadForm = ({
           },
         });
         updateFileStatus({ file: selectedFile, status: FILE_STATUS_SUCCESS, id: response.data.attachment_id });
+        return response;
       } catch (err) {
         if (selectedFile.file.size >= MAX_SUPPORTING_FILE_SIZE) {
           updateFileStatus({
@@ -254,15 +257,14 @@ const MultiFileUploadForm = ({
           method: 'delete',
           url: endpoint,
           data: {
-            id: id,
+            id,
           },
           headers: {
             Authorization: `Bearer ${Auth.retrieveToken()}`,
           },
-        },
-        );
-        if (response?.status == 200) {
-          getDeclarationData()
+        });
+        if (response?.status === 200) {
+          getDeclarationData();
         }
       } catch (err) {
         switch (err?.response?.status) {
@@ -283,7 +285,7 @@ const MultiFileUploadForm = ({
     } else {
       const filtered = filesAddedForUpload.filter((file) => file.file.name !== fileName);
       setFilesAddedForUpload(filtered);
-    };
+    }
   };
 
   const onContinue = (e) => {

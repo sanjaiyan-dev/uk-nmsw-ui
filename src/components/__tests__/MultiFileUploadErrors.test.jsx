@@ -107,7 +107,6 @@ describe('Multi file upload error tests', () => {
     window.sessionStorage.clear();
   });
 
-
   it('should only allow a max of eight files be selected for upload - more than 8 selected for add', async () => {
     const user = userEvent.setup();
     const files = [

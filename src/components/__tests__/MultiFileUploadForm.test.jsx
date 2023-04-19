@@ -321,11 +321,11 @@ describe('Multi file upload tests', () => {
       .onDelete(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, { id: 'supporting1' }, {
         headers: {
           Authorization: 'Bearer 123',
-        }
+        },
       })
       .reply(200, {
-        message: 'File successfully deleted'
-      })
+        message: 'File successfully deleted',
+      });
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
 
