@@ -207,41 +207,27 @@ const MultiFileUploadForm = ({
         });
         updateFileStatus({ file: selectedFile, status: FILE_STATUS_SUCCESS, id: response.data.attachment_id });
       } catch (err) {
-        switch (err?.response?.status) {
-          case 400:
-            if (err?.response?.data?.message?.startsWith(FILE_TYPE_INVALID_PREFIX)) {
-              updateFileStatus({
-                file: selectedFile,
-                status: FILE_STATUS_ERROR,
-                errorMessage: 'The file must be a csv, doc, docm, docx, rtf, txt, xls, xlsm, xlsx, xltm, xltx, xlw or xml',
-              });
-            } else {
-              updateFileStatus({
-                file: selectedFile,
-                status: FILE_STATUS_ERROR,
-                errorMessage: err?.response?.data?.message ? err.response.data.message : 'There was a problem check file and try again',
-              });
-            }
-            break;
-          case 401:
-          case 422:
-            Auth.removeToken();
-            navigate(SIGN_IN_URL, { state: { redirectURL: urlThisPage } });
-            break;
-          default:
-            if (selectedFile.file.size >= MAX_SUPPORTING_FILE_SIZE) {
-              updateFileStatus({
-                file: selectedFile,
-                status: FILE_STATUS_ERROR,
-                errorMessage: `The file must be smaller than ${MAX_SUPPORTING_FILE_SIZE_DISPLAY}MB`,
-              });
-            } else {
-              updateFileStatus({
-                file: selectedFile,
-                status: FILE_STATUS_ERROR,
-                errorMessage: err?.response?.data?.message ? err.response.data.message : 'There was a problem check file and try again',
-              });
-            }
+        if (selectedFile.file.size >= MAX_SUPPORTING_FILE_SIZE) {
+          updateFileStatus({
+            file: selectedFile,
+            status: FILE_STATUS_ERROR,
+            errorMessage: `The file must be smaller than ${MAX_SUPPORTING_FILE_SIZE_DISPLAY}MB`,
+          });
+        } else if (err?.response?.data?.message?.startsWith(FILE_TYPE_INVALID_PREFIX)) {
+          updateFileStatus({
+            file: selectedFile,
+            status: FILE_STATUS_ERROR,
+            errorMessage: 'The file must be a csv, doc, docm, docx, rtf, txt, xls, xlsm, xlsx, xltm, xltx, xlw or xml',
+          });
+        } else if (err?.response?.status === 401 || err?.response?.status === 422) {
+          Auth.removeToken();
+          navigate(SIGN_IN_URL, { state: { redirectURL: urlThisPage } });
+        } else {
+          updateFileStatus({
+            file: selectedFile,
+            status: FILE_STATUS_ERROR,
+            errorMessage: err?.response?.data?.message ? err.response.data.message : 'There was a problem check file and try again',
+          });
         }
         return err;
       }
