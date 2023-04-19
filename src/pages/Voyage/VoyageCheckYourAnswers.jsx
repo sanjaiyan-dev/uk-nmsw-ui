@@ -44,12 +44,13 @@ const VoyageCheckYourAnswers = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isPendingSubmit, setIsPendingSubmit] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [supportingDocs, setSupportingDocs] = useState([]);
   const [voyageDetails, setVoyageDetails] = useState([]);
   const errorsExist = !!errors;
 
   document.title = 'Check your answers';
 
-  const uploadedDocuments = [
+  const uploadedFalDocuments = [
     {
       id: 'crewDetails',
       title: 'Crew details',
@@ -64,14 +65,6 @@ const VoyageCheckYourAnswers = () => {
       fileLink: fal6Details?.url ? fal6Details?.url : '',
       changeLink: `${VOYAGE_PASSENGERS_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
       noFileText: 'No passenger details provided',
-    },
-    {
-      id: 'supportingDocuments',
-      title: 'Supporting documents',
-      value: '',
-      fileLink: '',
-      changeLink: `${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
-      noFileText: 'No supporting documents provided',
     },
   ];
 
@@ -162,6 +155,8 @@ const VoyageCheckYourAnswers = () => {
       if (response.data?.FAL6) {
         setFal6Details(response.data?.FAL6[0]);
       }
+
+      setSupportingDocs(response.data?.supporting);
 
       setIsLoading(false);
     } else {
@@ -290,7 +285,7 @@ const VoyageCheckYourAnswers = () => {
                       <button
                         className="govuk-button--text"
                         type="button"
-                        onClick={(e) => { e.preventDefault(); scrollToElementId('uploadedDocuments'); }}
+                        onClick={(e) => { e.preventDefault(); scrollToElementId('uploadedFalDocuments'); }}
                       >
                         {error.message}
                       </button>
@@ -345,9 +340,9 @@ const VoyageCheckYourAnswers = () => {
             ))}
           </dl>
 
-          <h2 id="uploadedDocuments" className="govuk-heading-m">Uploaded documents</h2>
+          <h2 id="uploadedFalDocuments" className="govuk-heading-m">Uploaded documents</h2>
           <dl className="govuk-summary-list govuk-!-margin-bottom-9">
-            {uploadedDocuments.map((item) => (
+            {uploadedFalDocuments.map((item) => (
               <div key={item.id} className="govuk-summary-list__row">
                 <dt id={item.id} className="govuk-summary-list__key">
                   {item.title}
@@ -366,6 +361,31 @@ const VoyageCheckYourAnswers = () => {
                 </dd>
               </div>
             ))}
+
+            <div className="govuk-summary-list__row">
+              <dt id="supportingDocuments" className="govuk-summary-list__key">
+                Supporting documents
+              </dt>
+              <dd className="govuk-summary-list__value">
+                {supportingDocs.length < 1 && <span>No supporting documents provided</span>}
+                {
+                  supportingDocs.length > 0 && supportingDocs.map((doc) => (
+                    <div key={doc.id}>
+                      <a className="govuk-link" href={doc.url} download>{doc.filename}</a>
+                    </div>
+                  ))
+                }
+              </dd>
+              <dd className="govuk-summary-list__actions">
+                <Link
+                  className="govuk-link"
+                  to={`${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`}
+                  aria-describedby="supportingDocuments"
+                >
+                  Change<span className="govuk-visually-hidden">{' change Supporting documents'}</span>
+                </Link>
+              </dd>
+            </div>
           </dl>
 
           <h2 className="govuk-heading-m">Now send your application</h2>
