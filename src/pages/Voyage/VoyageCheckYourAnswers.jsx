@@ -44,12 +44,13 @@ const VoyageCheckYourAnswers = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isPendingSubmit, setIsPendingSubmit] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [supportingDocs, setSupportingDocs] = useState([]);
   const [voyageDetails, setVoyageDetails] = useState([]);
   const errorsExist = !!errors;
 
   document.title = 'Check your answers';
 
-  const uploadedDocuments = [
+  const uploadedFalDocuments = [
     {
       id: 'crewDetails',
       title: 'Crew details',
@@ -162,6 +163,8 @@ const VoyageCheckYourAnswers = () => {
       if (response.data?.FAL6) {
         setFal6Details(response.data?.FAL6[0]);
       }
+
+      setSupportingDocs(response.data?.supporting);
 
       setIsLoading(false);
     } else {
@@ -290,7 +293,7 @@ const VoyageCheckYourAnswers = () => {
                       <button
                         className="govuk-button--text"
                         type="button"
-                        onClick={(e) => { e.preventDefault(); scrollToElementId('uploadedDocuments'); }}
+                        onClick={(e) => { e.preventDefault(); scrollToElementId('uploadedFalDocuments'); }}
                       >
                         {error.message}
                       </button>
@@ -345,9 +348,9 @@ const VoyageCheckYourAnswers = () => {
             ))}
           </dl>
 
-          <h2 id="uploadedDocuments" className="govuk-heading-m">Uploaded documents</h2>
+          <h2 id="uploadedFalDocuments" className="govuk-heading-m">Uploaded documents</h2>
           <dl className="govuk-summary-list govuk-!-margin-bottom-9">
-            {uploadedDocuments.map((item) => (
+            {uploadedFalDocuments.map((item) => (
               <div key={item.id} className="govuk-summary-list__row">
                 <dt id={item.id} className="govuk-summary-list__key">
                   {item.title}
