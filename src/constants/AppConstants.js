@@ -1,6 +1,10 @@
 // Site
 export const SERVICE_NAME = 'National Maritime Single Window';
 
+// Declarations
+export const DECLARATION_STATUS_DRAFT = 'Draft';
+export const DECLARATION_STATUS_PRESUBMITTED = 'PreSubmitted';
+
 // Forms: display types
 export const DISPLAY_DETAILS = 'details';
 export const DISPLAY_GROUPED = 'grouped';

@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import LoadingSpinner from '../../components/LoadingSpinner';
-import Message from '../../components/Message';
-import { countries } from '../../constants/CountryData';
+import { DECLARATION_STATUS_PRESUBMITTED } from '../../constants/AppConstants';
+import { API_URL, ENDPOINT_DECLARATION_PATH, TOKEN_EXPIRED } from '../../constants/AppAPIConstants';
 import {
   MESSAGE_URL,
   SIGN_IN_URL,
@@ -16,8 +16,20 @@ import {
   VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
   YOUR_VOYAGES_URL,
 } from '../../constants/AppUrlConstants';
+import { countries } from '../../constants/CountryData';
+import ConfirmationMessage from '../../components/ConfirmationMessage';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import Message from '../../components/Message';
 import GetDeclaration from '../../utils/GetDeclaration';
+import Auth from '../../utils/Auth';
 import { scrollToElementId, scrollToTop } from '../../utils/ScrollToElement';
+
+const SubmitConfirmation = () => (
+  <>
+    <h2 className="govuk-heading-m">What happens next</h2>
+    <p className="govuk-body">We will send you an email that you can show to Border Force officers as proof that you have sent these reports.</p>
+  </>
+);
 
 const VoyageCheckYourAnswers = () => {
   dayjs.extend(customParseFormat);
@@ -27,10 +39,12 @@ const VoyageCheckYourAnswers = () => {
   const errorSummaryRef = useRef(null);
   const [declarationData, setDeclarationData] = useState();
   const [errors, setErrors] = useState();
-  const [isLoading, setIsLoading] = useState(false);
-  const [voyageDetails, setVoyageDetails] = useState([]);
   const [fal5Details, setFal5Details] = useState();
   const [fal6Details, setFal6Details] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isPendingSubmit, setIsPendingSubmit] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [voyageDetails, setVoyageDetails] = useState([]);
   const errorsExist = !!errors;
 
   document.title = 'Check your answers';
@@ -168,8 +182,20 @@ const VoyageCheckYourAnswers = () => {
     setIsLoading(false);
   };
 
-  const handleSubmit = () => {
-    // This will most likely have a validate funtion in the future but at the moment there can only be a single error (I think)
+  const handleSubmit = async () => {
+    /* TODO: NMSW-555
+     * If a user types the url for the CYA page into the address bar with a valid declarationId for their account
+     * AND they have not uploaded a FAL1 the page will error as the GET request fails
+     * IF they have not uploaded a FAL5
+     * AND/OR they have not answered the 'do you have passengers' question
+     * AND/OR they have answered yes to passengers and not uploaded a FAL6
+     * AND they click submit the submission should fail as it's required
+     */
+
+    /* CURRENTLY - do not know what the API returns if we're missing these items
+     * we may need to handle this now
+     * we may be able to use the API response as the trigger
+     */
     if (declarationData.FAL1.passengers && declarationData?.FAL6.length === 0) {
       setErrors([{
         name: 'passengerDetails',
@@ -178,7 +204,26 @@ const VoyageCheckYourAnswers = () => {
       scrollToTop();
       errorSummaryRef?.current?.focus();
     } else {
-      console.log('submit clicked for id', declarationId);
+      try {
+        setIsPendingSubmit(true);
+        const response = await axios.patch(`${API_URL}${ENDPOINT_DECLARATION_PATH}/${declarationId}`, { status: DECLARATION_STATUS_PRESUBMITTED }, {
+          headers: { Authorization: `Bearer ${Auth.retrieveToken()}` },
+        });
+        if (response.status === 200) {
+          setShowConfirmation(true);
+          scrollToTop();
+        }
+      } catch (err) {
+        if (err?.response?.status === 422 || err?.response?.data?.msg === TOKEN_EXPIRED) {
+          Auth.removeToken();
+          navigate(SIGN_IN_URL, { state: { redirectURL: `${VOYAGE_CHECK_YOUR_ANSWERS}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}` } });
+        } else {
+          // 500 errors will fall into this bucket
+          navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: `${VOYAGE_CHECK_YOUR_ANSWERS}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}` } });
+        }
+      } finally {
+        setIsPendingSubmit(false);
+      }
     }
   };
 
@@ -202,6 +247,18 @@ const VoyageCheckYourAnswers = () => {
   }
 
   if (isLoading) { return (<LoadingSpinner />); }
+  if (showConfirmation) {
+    return (
+      <ConfirmationMessage
+        pageTitle="Voyage details submitted"
+        confirmationMessage="Voyage details submitted"
+        nextPageLink={YOUR_VOYAGES_URL}
+        nextPageLinkText="Return to your voyages"
+      >
+        <SubmitConfirmation />
+      </ConfirmationMessage>
+    );
+  }
 
   return (
     <>
@@ -302,8 +359,9 @@ const VoyageCheckYourAnswers = () => {
 
           <button
             type="button"
-            className="govuk-button"
+            className={isPendingSubmit ? 'govuk-button disabled' : 'govuk-button'}
             data-module="govuk-button"
+            disabled={isPendingSubmit}
             onClick={() => handleSubmit()}
           >
             Save and submit
