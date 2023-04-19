@@ -45,17 +45,17 @@ Then('I am shown an error message for {string}', (file) => {
 });
 
 Then('I am able to delete the file', () => {
-  cy.get('.multi-file-upload--filelist').should('have.length', 2);
+  cy.get('.multi-file-upload--filelist').should('have.length', 7);
   fileUploadPage.clickDelete();
-  cy.get('.multi-file-upload--filelist').should('have.length', 1);
+  cy.get('.multi-file-upload--filelist').should('have.length', 6);
 });
 
 When('I upload a valid files, it gets uploaded', (table) => {
   fileUploadPage.selectMultipleFalFiles(table);
   const files = table.hashes();
   const fileNames = files.map(item => item.fileName);
-  cy.contains('Upload files').click({timeout:7000});
-  cy.get('.success .multi-file-upload--filelist-filename').each(($el,index) => {
+  cy.contains('Upload files').click({timeout: 7000});
+  cy.get('.success .multi-file-upload--filelist-filename').each(($el, index) => {
     cy.contains(`${fileNames[index]} has been uploaded`).should('have.css', 'color', 'rgb(0, 112, 60)');
   });
   cy.wait(5000);
@@ -64,7 +64,6 @@ When('I upload a valid files, it gets uploaded', (table) => {
 When('I upload a file type that is not valid', (table) => {
   fileUploadPage.selectMultipleFalFiles(table);
   cy.contains('Upload files').click();
-
 });
 
 Then('I am shown error message to upload correct file type for the files uploaded', (table) => {
@@ -73,6 +72,16 @@ Then('I am shown error message to upload correct file type for the files uploade
 
 Then('I can delete files added to add more files', () => {
   cy.get('.nmsw-grid-column-two-twelfths > .govuk-button').each(($el) => {
-    cy.wrap($el).click({force:true});
+    cy.wrap($el).click({force: true});
   });
+});
+
+When('I add files more than 1Mb', (table) => {
+  fileUploadPage.selectMultipleFalFiles(table);
+  cy.contains('Upload files').click();
+  cy.wait(5000);
+});
+
+Then('I am shown error message to check file and try again', (table) => {
+  fileUploadPage.checkErrorForFileMaxSize(table);
 });

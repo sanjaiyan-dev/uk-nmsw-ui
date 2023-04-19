@@ -102,8 +102,16 @@ class FileUploadPage {
   checkIncorrectFileMsg(table) {
     const files = table.hashes();
     const fileNames = files.map(item => item.fileName);
-    cy.get('.multi-file-upload--filelist-filename').each(($ele, index, $list) => {
+    cy.get('.multi-file-upload--filelist-filename').each(($ele, index) => {
       cy.contains(`${fileNames[index]} The file must be a csv, doc, docm, docx, rtf, txt, xls, xlsm, xlsx, xltm, xltx, xlw or xml`)
+    })
+  }
+
+  checkErrorForFileMaxSize(table) {
+    const files = table.hashes();
+    const fileNames = files.map(item => item.fileName);
+    cy.get('.multi-file-upload--filelist-filename').each(($ele, index) => {
+      cy.contains(`${fileNames[index]} There was a problem check file and try again`)
     })
   }
 }
