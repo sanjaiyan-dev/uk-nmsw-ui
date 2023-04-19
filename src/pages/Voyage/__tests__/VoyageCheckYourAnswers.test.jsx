@@ -111,6 +111,65 @@ describe('Voyage check your answers page', () => {
     supporting: [],
   };
 
+  const mockedFAL1Only = {
+    FAL1: {
+      nameOfShip: 'Test ship name',
+      imoNumber: '1234567',
+      callSign: 'NA',
+      signatory: 'Captain Name',
+      flagState: 'GBR',
+      departureFromUk: false,
+      departurePortUnlocode: 'AUPOR',
+      departureDate: '2023-02-12',
+      departureTime: '09:23:00',
+      arrivalPortUnlocode: 'GBDOV',
+      arrivalDate: '2023-02-15',
+      arrivalTime: '14:00:00',
+      previousPortUnlocode: 'AUPOR',
+      nextPortUnlocode: 'NLRTM',
+      cargo: 'No cargo',
+      passengers: null,
+      creationDate: '2023-02-10',
+      submissionDate: '2023-02-11',
+    },
+    FAL5: [],
+    FAL6: [],
+    supporting: [],
+  };
+
+  const mockedPassengerYesButNoFAL6 = {
+    FAL1: {
+      nameOfShip: 'Test ship name',
+      imoNumber: '1234567',
+      callSign: 'NA',
+      signatory: 'Captain Name',
+      flagState: 'GBR',
+      departureFromUk: false,
+      departurePortUnlocode: 'AUPOR',
+      departureDate: '2023-02-12',
+      departureTime: '09:23:00',
+      arrivalPortUnlocode: 'GBDOV',
+      arrivalDate: '2023-02-15',
+      arrivalTime: '14:00:00',
+      previousPortUnlocode: 'AUPOR',
+      nextPortUnlocode: 'NLRTM',
+      cargo: 'No cargo',
+      passengers: true,
+      creationDate: '2023-02-10',
+      submissionDate: '2023-02-11',
+    },
+    FAL5: [
+      {
+        filename: 'Crew details including supernumeraries FAL 5.xlsx',
+        id: 'FAL5',
+        size: '118385',
+        url: 'https://fal5-report-link.com',
+      },
+    ],
+    FAL6: [],
+    supporting: [],
+  };
+
   beforeEach(() => {
     mockAxios.reset();
     window.sessionStorage.clear();
@@ -521,7 +580,61 @@ describe('Voyage check your answers page', () => {
     // });
   });
 
+  // =============
   // SUBMIT TESTS
+  // =============
+
+  it('should show an error if there is no FAL5 and/or answer to passenger question', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, mockedFAL1Only);
+    mockAxios
+      .onPatch(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, { status: DECLARATION_STATUS_PRESUBMITTED }, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(500);
+
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    await screen.findByRole('heading', { name: 'Check your answers' });
+    await user.click(screen.getByRole('button', { name: 'Save and submit' }));
+    expect(screen.getByRole('heading', { name: 'There is a problem' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Crew details (FAL 5) upload is required' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'You need to provide passenger details, even if the ship is carrying no passengers' })).toBeInTheDocument();
+  });
+
+  it('should show an error if the passenger question was answered YES but there is no passenger file', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, mockedPassengerYesButNoFAL6);
+    mockAxios
+      .onPatch(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, { status: DECLARATION_STATUS_PRESUBMITTED }, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(500);
+
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    await screen.findByRole('heading', { name: 'Check your answers' });
+    await user.click(screen.getByRole('button', { name: 'Save and submit' }));
+    expect(screen.getByRole('heading', { name: 'There is a problem' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Passenger details (FAL 6) upload is required for ships carrying passengers' })).toBeInTheDocument();
+  });
+
   it('should redirect to message page if Submit returns a 500 response', async () => {
     const user = userEvent.setup();
     mockAxios
