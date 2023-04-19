@@ -184,11 +184,12 @@ const MultiFileUploadForm = ({
     inputRef.current.click();
   };
 
-  const updateFileStatus = ({ file, status, errorMessage }) => {
+  const updateFileStatus = ({ file, status, errorMessage, id }) => {
     const updatedFileIndex = filesAddedForUpload.findIndex((existingFile) => existingFile.file.name === file.file.name);
     const newState = [...filesAddedForUpload];
     newState[updatedFileIndex].status = status;
     if (errorMessage) { newState[updatedFileIndex].errorMessage = errorMessage; }
+    if (id) { newState[updatedFileIndex].id = id; }
     setFilesAddedForUpload(newState);
   };
 
@@ -204,8 +205,7 @@ const MultiFileUploadForm = ({
             'Content-Type': 'multipart/form-data',
           },
         });
-        updateFileStatus({ file: selectedFile, status: FILE_STATUS_SUCCESS });
-        return response;
+        updateFileStatus({ file: selectedFile, status: FILE_STATUS_SUCCESS, id: response.data.attachment_id });
       } catch (err) {
         switch (err?.response?.status) {
           case 400:
