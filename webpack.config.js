@@ -22,7 +22,7 @@ module.exports = (argv) => {
       },
     },
     performance: {
-      maxAssetSize: 512000,
+      maxAssetSize: 1024000,
       maxEntrypointSize: 1024000,
     },
     resolve: {
