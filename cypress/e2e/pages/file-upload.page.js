@@ -1,5 +1,3 @@
-const folderPath = 'cypress/fixtures/Supporting-Documents/';
-
 class FileUploadPage {
 
   verifyUploadGeneralDecPage() {
@@ -64,15 +62,9 @@ class FileUploadPage {
     cy.get('.govuk-button--text').contains('Choose files').click();
   }
 
-  selectMultipleFiles(table) {
-    const files = table.hashes();
-    const fileNames = files.map(item => `${folderPath}${item.fileName}`);
-    cy.contains('Choose files').parent().parent().click().selectFile(fileNames);
-  }
-
   selectMultipleFalFiles(table) {
     const files = table.hashes();
-    const folder = 'cypress/fixtures/Fal1-Files/';
+    const folder = 'cypress/fixtures/Supporting-Documents/';
     const fileNames = files.map(item => `${folder}${item.fileName}`);
     cy.contains('Choose files').parent().parent().click().selectFile(fileNames);
   }
@@ -105,6 +97,22 @@ class FileUploadPage {
 
   clickUpload() {
     cy.contains('Upload files').click();
+  }
+
+  checkIncorrectFileMsg(table) {
+    const files = table.hashes();
+    const fileNames = files.map(item => item.fileName);
+    cy.get('.multi-file-upload--filelist-filename').each(($ele, index) => {
+      cy.contains(`${fileNames[index]} The file must be a csv, doc, docm, docx, rtf, txt, xls, xlsm, xlsx, xltm, xltx, xlw or xml`)
+    })
+  }
+
+  checkErrorForFileMaxSize(table) {
+    const files = table.hashes();
+    const fileNames = files.map(item => item.fileName);
+    cy.get('.multi-file-upload--filelist-filename').each(($ele, index) => {
+      cy.contains(`${fileNames[index]} There was a problem check file and try again`)
+    })
   }
 }
 
