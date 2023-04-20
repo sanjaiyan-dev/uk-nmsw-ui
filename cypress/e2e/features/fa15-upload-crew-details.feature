@@ -22,6 +22,10 @@ Feature: Upload Crew details (FAL5) file
     When there are no errors, I am shown the no errors found page
     When I click save and continue
     Then I am taken to task details page
+    When I try to access a protected CYA page with declaration Id
+    When I click Save and Submit
+    Then I am shown form error message
+      | Error | You need to provide passenger details, even if the ship is carrying no passengers |
 
   Scenario: Crew details page validation
     When I click check for errors without uploading any file

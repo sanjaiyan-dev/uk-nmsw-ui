@@ -107,6 +107,14 @@ class FileUploadPage {
     })
   }
 
+  getDeclarationId() {
+    cy.wait('@declaration').then((result) => {
+      let url = result.request.url;
+      let declarationId = url.split("/")[5];
+      cy.wrap(declarationId).as('declarationId');
+    });
+  }
+
   checkErrorForFileMaxSize(table) {
     const files = table.hashes();
     const fileNames = files.map(item => item.fileName);
