@@ -29,6 +29,14 @@ When('I click check for errors without uploading any file', () => {
   FileUploadPage.clickCheckForErrors();
 });
 
+When('I click check for errors for file not of type .csv or .xlsx', () => {
+  FileUploadPage.clickCheckForErrors();
+});
+
+When('I click check for errors for file larger than 4MB', () => {
+  FileUploadPage.clickCheckForErrors();
+});
+
 When('I have uploaded {string}{string}', (folderName, fileName) => {
   FileUploadPage.chooseFile(folderName, fileName);
   cy.wait(1000);
@@ -55,6 +63,7 @@ Then('previous the error message should clear', () => {
 When('I click check for errors', () => {
   cy.intercept('POST', '**/declaration/**').as('declaration');
   FileUploadPage.clickCheckForErrors();
+  FileUploadPage.getDeclarationId();
 });
 
 Then('the FE sends a POST to the declarationId endpoint', () => {
@@ -66,6 +75,7 @@ Then('the FE sends a POST to the declarationId endpoint', () => {
 });
 
 When('there are no errors, I am shown the no errors found page', () => {
+  cy.intercept('POST', '**/declaration/**').as('declaration');
   FileUploadPage.checkNoErrors();
 });
 
