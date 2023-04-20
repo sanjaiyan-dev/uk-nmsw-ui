@@ -229,23 +229,6 @@ describe('Sign in tests', () => {
     expect(screen.getByText('Email and password combination is invalid')).toBeInTheDocument();
   });
 
-  // it('should redirect to re-send verification email page if user is not verified', async () => {
-  //   const user = userEvent.setup();
-
-  //   mockAxios
-  //     .onPost(SIGN_IN_ENDPOINT)
-  //     .reply(401, {
-  //       message: USER_NOT_VERIFIED,
-  //     });
-
-  //   render(<MemoryRouter><SignIn /></MemoryRouter>);
-
-  //   await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
-  //   await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
-  //   await user.click(screen.getByTestId('submit-button'));
-  //   expect(mockedUseNavigate).toHaveBeenCalledWith(REGISTER_EMAIL_RESEND_URL, { state: { dataToSubmit: { emailAddress: 'testemail@email.com' } } });
-  // });
-
   it('should clear API error when something is typed into input', async () => {
     const user = userEvent.setup();
 
