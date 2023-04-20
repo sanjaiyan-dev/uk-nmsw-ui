@@ -4,7 +4,13 @@ import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { GENERAL_DECLARATION_TEMPLATE_NAME, MAX_FILE_SIZE, MAX_FILE_SIZE_DISPLAY } from '../../constants/AppConstants';
-import { FILE_MISSING, FILE_TYPE_INVALID_PREFIX } from '../../constants/AppAPIConstants';
+import {
+  DUPLICATE_RECORDS,
+  FAL5_IS_EMPTY,
+  FAL6_IS_EMPTY,
+  FILE_MISSING,
+  FILE_TYPE_INVALID_CSV_XLSX,
+} from '../../constants/AppAPIConstants';
 import {
   FILE_UPLOAD_FIELD_ERRORS_URL,
   LOGGED_IN_LANDING,
@@ -138,13 +144,76 @@ describe('File upload tests', () => {
     expect(scrollIntoViewMock).toHaveBeenCalled();
   });
 
+  it('should show an error if the API returns a FAL 5 is empty response', async () => {
+    const user = userEvent.setup();
+    const file = new File(['template'], 'template.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    mockAxios
+      .onPost('/specific-endpoint-path-for-filetype')
+      .reply(400, {
+        message: FAL5_IS_EMPTY,
+      });
+    renderPage();
+    // make sure file is recognised so the FE no the FE file error isn't triggered
+    const input = screen.getByLabelText('Title from props');
+    await user.upload(input, file);
+    expect(input.files[0]).toStrictEqual(file);
+    await user.click(screen.getByRole('button', { name: 'Submit text from props' }));
+    await screen.findByRole('heading', { name: 'There is a problem' });
+    expect(screen.getByRole('alert', { name: 'There is a problem' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Template is empty' })).toBeInTheDocument();
+    expect(screen.getAllByText('Template is empty')).toHaveLength(2);
+    expect(scrollIntoViewMock).toHaveBeenCalled();
+  });
+
+  it('should show an error if the API returns a FAL 6 is empty response', async () => {
+    const user = userEvent.setup();
+    const file = new File(['template'], 'template.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    mockAxios
+      .onPost('/specific-endpoint-path-for-filetype')
+      .reply(400, {
+        message: FAL6_IS_EMPTY,
+      });
+    renderPage();
+    // make sure file is recognised so the FE no the FE file error isn't triggered
+    const input = screen.getByLabelText('Title from props');
+    await user.upload(input, file);
+    expect(input.files[0]).toStrictEqual(file);
+    await user.click(screen.getByRole('button', { name: 'Submit text from props' }));
+    await screen.findByRole('heading', { name: 'There is a problem' });
+    expect(screen.getByRole('alert', { name: 'There is a problem' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Template is empty' })).toBeInTheDocument();
+    expect(screen.getAllByText('Template is empty')).toHaveLength(2);
+    expect(scrollIntoViewMock).toHaveBeenCalled();
+  });
+
+  it('should show an error if the API returns a duplicate records response', async () => {
+    const user = userEvent.setup();
+    const file = new File(['template'], 'template.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    mockAxios
+      .onPost('/specific-endpoint-path-for-filetype')
+      .reply(400, {
+        message: DUPLICATE_RECORDS,
+      });
+    renderPage();
+    // make sure file is recognised so the FE no the FE file error isn't triggered
+    const input = screen.getByLabelText('Title from props');
+    await user.upload(input, file);
+    expect(input.files[0]).toStrictEqual(file);
+    await user.click(screen.getByRole('button', { name: 'Submit text from props' }));
+    await screen.findByRole('heading', { name: 'There is a problem' });
+    expect(screen.getByRole('alert', { name: 'There is a problem' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: "Details listed on this file are not allowed, because they're the same as details you've already uploaded. Check the details in your file and try uploading again." })).toBeInTheDocument();
+    expect(screen.getAllByText("Details listed on this file are not allowed, because they're the same as details you've already uploaded. Check the details in your file and try uploading again.")).toHaveLength(2);
+    expect(scrollIntoViewMock).toHaveBeenCalled();
+  });
+
   it('should show an error if API returns a file is invalid type response', async () => {
     const user = userEvent.setup();
     const file = new File(['template'], 'image.png', { type: 'image/png' });
     mockAxios
       .onPost('/specific-endpoint-path-for-filetype')
       .reply(400, {
-        message: `${FILE_TYPE_INVALID_PREFIX}: Not a ['xlsx', 'csv']`,
+        message: FILE_TYPE_INVALID_CSV_XLSX,
       });
     renderPage();
     const input = screen.getByLabelText('Title from props');
