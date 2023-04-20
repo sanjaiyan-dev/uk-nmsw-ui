@@ -6,6 +6,7 @@ import MockAdapter from 'axios-mock-adapter';
 import { GENERAL_DECLARATION_TEMPLATE_NAME, MAX_FILE_SIZE, MAX_FILE_SIZE_DISPLAY } from '../../constants/AppConstants';
 import {
   DUPLICATE_RECORDS,
+  DUPLICATE_RECORDS_FAL5,
   FAL5_IS_EMPTY,
   FAL6_IS_EMPTY,
   FILE_MISSING,
@@ -186,7 +187,28 @@ describe('File upload tests', () => {
     expect(scrollIntoViewMock).toHaveBeenCalled();
   });
 
-  it('should show an error if the API returns a duplicate records response', async () => {
+  it('should show an error if the API returns a duplicate records response after FAL5 upload', async () => {
+    const user = userEvent.setup();
+    const file = new File(['template'], 'template.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    mockAxios
+      .onPost('/specific-endpoint-path-for-filetype')
+      .reply(400, {
+        message: DUPLICATE_RECORDS_FAL5,
+      });
+    renderPage();
+    // make sure file is recognised so the FE no the FE file error isn't triggered
+    const input = screen.getByLabelText('Title from props');
+    await user.upload(input, file);
+    expect(input.files[0]).toStrictEqual(file);
+    await user.click(screen.getByRole('button', { name: 'Submit text from props' }));
+    await screen.findByRole('heading', { name: 'There is a problem' });
+    expect(screen.getByRole('alert', { name: 'There is a problem' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: "Details listed on this file are not allowed, because they're the same as details you've already uploaded. Check the details in your file and try uploading again." })).toBeInTheDocument();
+    expect(screen.getAllByText("Details listed on this file are not allowed, because they're the same as details you've already uploaded. Check the details in your file and try uploading again.")).toHaveLength(2);
+    expect(scrollIntoViewMock).toHaveBeenCalled();
+  });
+
+  it('should show an error if the API returns a duplicate records response after FAL 6 upload', async () => {
     const user = userEvent.setup();
     const file = new File(['template'], 'template.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     mockAxios
