@@ -8,6 +8,10 @@ class SignInPage {
     return cy.get('#email-input');
   }
 
+  get signInBtn() {
+    return cy.get('[data-testid="submit-button"]')
+  }
+
   checkSignInLink() {
     cy.contains('Sign in');
   }
@@ -45,6 +49,25 @@ class SignInPage {
     cy.contains('Sign out').click();
     cy.wait('@sign-out').then(({response}) => {
       expect(response.statusCode).to.equal(200);
+    })
+  }
+
+  defaultSignIn() {
+    cy.fixture('registration.json').then((registration) => {
+      let email = registration.signInEmail2;
+      let password = registration.password;
+      this.enterEmailAddress(email);
+      this.enterPassword(password);
+      this.signInBtn.click();
+    })
+  }
+
+  signInWithNewPassword() {
+    cy.fixture('registration.json').then((registration) => {
+      let email = registration.email;
+      this.enterEmailAddress(email);
+      this.enterPassword('NewPassword');
+      cy.contains('Sign in').click();
     })
   }
 }
