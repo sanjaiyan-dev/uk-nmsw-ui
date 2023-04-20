@@ -118,7 +118,9 @@ describe('Request password reset tests', () => {
     const user = userEvent.setup();
     mockAxios
       .onPost(PASSSWORD_RESET_ENDPOINT, { email: 'test@test.com' })
-      .reply(401);
+      .reply(401, {
+        message: 'User is not registered',
+      });
 
     render(<MemoryRouter><RequestPasswordReset /></MemoryRouter>);
     await user.type(screen.getByRole('textbox', { name: 'Email address' }), 'test@test.com');
@@ -126,11 +128,34 @@ describe('Request password reset tests', () => {
     expect(mockedUseNavigate).toHaveBeenCalledWith(REQUEST_PASSWORD_RESET_CONFIRMATION_URL, { state: { dataToSubmit: { emailAddress: 'test@test.com' } } });
   });
 
-  it('should navigate to message page if error POST response', async () => {
+  it('should show instructions to send verification email if user not yet activated', async () => {
     const user = userEvent.setup();
     mockAxios
       .onPost(PASSSWORD_RESET_ENDPOINT, { email: 'test@test.com' })
-      .reply(400);
+      .reply(400, {
+        message: [
+          {
+            error: 'BadRequestError',
+            message: 'Missing personalisation: user',
+          },
+        ],
+      });
+
+    render(<MemoryRouter><RequestPasswordReset /></MemoryRouter>);
+    await user.type(screen.getByRole('textbox', { name: 'Email address' }), 'test@test.com');
+    await user.click(screen.getByTestId('submit-button'));
+    screen.findByRole('heading', { name: 'Email address not activated' });
+    expect(screen.getByRole('heading', { name: 'Email address not activated' })).toBeInTheDocument();
+    expect(screen.getByText('Resend your activation link')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Resend confirmation email' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Resend confirmation email' }).outerHTML).toEqual('<button class="govuk-button" data-module="govuk-button" type="button">Resend confirmation email</button>');
+  });
+
+  it('should navigate to message page if other error POST response', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onPost(PASSSWORD_RESET_ENDPOINT, { email: 'test@test.com' })
+      .reply(404);
 
     render(<MemoryRouter><RequestPasswordReset /></MemoryRouter>);
     await user.type(screen.getByRole('textbox', { name: 'Email address' }), 'test@test.com');

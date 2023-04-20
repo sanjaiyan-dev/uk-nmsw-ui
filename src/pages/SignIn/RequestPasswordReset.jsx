@@ -8,8 +8,14 @@ import {
   VALIDATE_EMAIL_ADDRESS,
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
-import { MESSAGE_URL, REQUEST_PASSWORD_RESET_CONFIRMATION_URL, REQUEST_PASSWORD_RESET_URL } from '../../constants/AppUrlConstants';
+import {
+  MESSAGE_URL,
+  REGISTER_EMAIL_RESEND_URL,
+  REQUEST_PASSWORD_RESET_CONFIRMATION_URL,
+  REQUEST_PASSWORD_RESET_URL,
+} from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
+import Message from '../../components/Message';
 
 const SupportingText = () => (
   <div>
@@ -21,6 +27,7 @@ const RequestPasswordReset = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const [isLoading, setIsLoading] = useState(false);
+  const [isNotActivated, setIsNotActivated] = useState(false);
   document.title = 'Forgot password';
 
   const formActions = {
@@ -54,12 +61,15 @@ const RequestPasswordReset = () => {
       }, {
         signal: controller.signal,
       });
-
       if (response.status === 204) {
         navigate(REQUEST_PASSWORD_RESET_CONFIRMATION_URL, { state: { dataToSubmit: { emailAddress: emailToSendTo } } });
       }
     } catch (err) {
-      if (err.response.status === 401) {
+      // This error indicates user registered email address but didn't activate account yet
+      // Ticket in backlog to improve response from API but for now we will use this
+      if (err.response?.data?.message[0]?.message === 'Missing personalisation: user') {
+        setIsNotActivated(true);
+      } else if (err.response.status === 401) {
         // 401 is invalid email address but we don't message that to the user so we show them the same confirmation page
         navigate(REQUEST_PASSWORD_RESET_CONFIRMATION_URL, { state: { dataToSubmit: { emailAddress: emailToSendTo } } });
       } else {
@@ -74,6 +84,20 @@ const RequestPasswordReset = () => {
     setIsLoading(true);
     requestPasswordResetEmail({ emailToSendTo: formData.formData.emailAddress });
   };
+
+  if (isNotActivated) {
+    const buttonProps = {
+      buttonLabel: 'Resend confirmation email',
+      buttonNavigateTo: REGISTER_EMAIL_RESEND_URL,
+    };
+    return (
+      <Message
+        button={buttonProps}
+        title="Email address not activated"
+        message="Resend your activation link"
+      />
+    );
+  }
 
   return (
     <DisplayForm
