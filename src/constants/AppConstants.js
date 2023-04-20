@@ -1,5 +1,7 @@
 // Site
 export const SERVICE_NAME = 'National Maritime Single Window';
+export const SERVICE_URL = '';
+export const SERVICE_CONTACT_EMAIL = 'spcr@homeoffice.gov.uk';
 
 // Declarations
 export const DECLARATION_STATUS_DRAFT = 'Draft';
