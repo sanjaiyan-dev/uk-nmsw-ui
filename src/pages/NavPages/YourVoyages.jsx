@@ -3,8 +3,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { CREATE_VOYAGE_ENDPOINT, TOKEN_EXPIRED } from '../../constants/AppAPIConstants';
 import { SERVICE_NAME } from '../../constants/AppConstants';
+import { API_URL, CREATE_VOYAGE_ENDPOINT, ENDPOINT_DECLARATION_PATH, TOKEN_EXPIRED } from '../../constants/AppAPIConstants';
 import {
   SIGN_IN_URL,
   URL_DECLARATIONID_IDENTIFIER,
@@ -57,20 +57,42 @@ const YourVoyages = () => {
     }
   };
 
+  const deleteInvalidDeclarations = async (id) => {
+    try {
+      const response = await axios({
+        method: 'delete',
+        url: `${API_URL}${ENDPOINT_DECLARATION_PATH}/${id}`,
+        headers: {
+          Authorization: `Bearer ${Auth.retrieveToken()}`,
+        },
+      })
+      return response.data
+    } catch (err) {
+      if (err?.response?.status === 422) {
+        Auth.removeToken();
+        navigate(SIGN_IN_URL, { state: { redirectURL: YOUR_VOYAGES_URL } });
+      } else if (err?.response?.data?.msg === TOKEN_EXPIRED) {
+        Auth.removeToken();
+        navigate(SIGN_IN_URL, { state: { redirectURL: YOUR_VOYAGES_URL } });
+      }
+    }
+  }
+
   const getDeclarationData = async () => {
     try {
       const response = await axios.get(CREATE_VOYAGE_ENDPOINT, {
         headers: { Authorization: `Bearer ${Auth.retrieveToken()}` },
       });
       if (response.status === 200) {
-        // We will delete drafts without a general declaration here instead of filtering them out
-        const filteredData = response.data.results.reduce((results, data) => {
-          if (data.departureFromUk !== null) {
-            results.push(data);
+        const results = []
+        response.data.results.map((declaration) => {
+          if (declaration.departureFromUk !== null) {
+            results.push(declaration);
+          } else {
+            deleteInvalidDeclarations(declaration.id)
           }
-          return results;
-        }, []);
-        setVoyageData(filteredData);
+        });
+        setVoyageData(results);
       }
       setIsLoading(false);
     } catch (err) {
