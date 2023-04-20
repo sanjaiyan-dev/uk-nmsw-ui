@@ -1,11 +1,7 @@
 /* eslint-disable max-len */
-import { SERVICE_NAME } from '../../constants/AppConstants';
+import { SERVICE_CONTACT_EMAIL, SERVICE_NAME, SERVICE_URL } from '../../constants/AppConstants';
 
 const AccessibilityStatement = () => {
-  const thisSiteTitle = 'How to use the UK national maritime portal for submitting pre-arrival reports - GOV.UK';
-  const thisSiteUrl = 'https://www.gov.uk/government/publications/uk-national-maritime-single-window-launch-of-pilot';
-  const contactUsEmail = 'spcr@homeoffice.gov.uk';
-
   const abilityNetUrl = 'https://mcmw.abilitynet.org.uk';
   const escalateComplaintUrl = 'https://www.equalityadvisoryservice.com';
   const escalateComplaintNIUrl = 'https://www.equalityni.org/Home';
@@ -19,7 +15,7 @@ const AccessibilityStatement = () => {
       <h1 className="govuk-heading-xl">{`Accessibility statement for ${SERVICE_NAME}`}</h1>
 
       <p>
-        This accessibility statement applies to the service at <a href={thisSiteUrl} target="_blank" rel="noopener noreferrer">{thisSiteTitle}</a>.
+        This accessibility statement applies to the service at <a className="govuk-link" href={SERVICE_URL} target="_blank" rel="noopener noreferrer">{SERVICE_NAME}</a>.
       </p>
       <p>
         This website is run by the Home Office. We want as many people as possible to be able to use this website. For example, that means you should be able to:
@@ -32,7 +28,7 @@ const AccessibilityStatement = () => {
         <li>Listen to most of the website using a screen reader (including the most recent versions of JAWS, NVDA and VoiceOver)</li>
       </ul>
       <p>
-        We&apos;ve also made the website text as simple as possible to understand. <a href={abilityNetUrl} target="_blank" rel="noopener noreferrer">AbilityNet</a> has advice on making your device easier to use if you have a disability.
+        We&apos;ve also made the website text as simple as possible to understand. <a className="govuk-link" href={abilityNetUrl} target="_blank" rel="noopener noreferrer">AbilityNet</a> has advice on making your device easier to use if you have a disability.
       </p>
 
       <h2 className="govuk-heading-l">How accessible this website is</h2>
@@ -42,20 +38,20 @@ const AccessibilityStatement = () => {
 
       <h2 className="govuk-heading-l">Feedback and contact information</h2>
       <p>
-        If you need information on this website in a different format like accessible PDF, large print, easy read, audio recording or braille, email {alternativeFormatRequestEmail}.
+        If you need information on this website in a different format like accessible PDF, large print, easy read, audio recording or braille, email <a className="govuk-link" href={`mailto: ${alternativeFormatRequestEmail}`}>{alternativeFormatRequestEmail}</a>.
       </p>
 
       <h2 className="govuk-heading-l">Reporting accessibility problems with this website</h2>
       <p>
-        We&apos;re always looking to improve the accessibility of this website. If you find any problems not listed on this page or think we&apos;re not meeting accessibility requirements, contact {contactUsEmail}.
+        We&apos;re always looking to improve the accessibility of this website. If you find any problems not listed on this page or think we&apos;re not meeting accessibility requirements, contact <a className="govuk-link" href={`mailto: ${SERVICE_CONTACT_EMAIL}`}>{SERVICE_CONTACT_EMAIL}</a>.
       </p>
 
       <h2 className="govuk-heading-l">Enforcement procedure</h2>
       <p>
-        The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018 (the &apos;accessibility regulations&apos;). If you&apos;re not happy with how we respond to your complaint, <a href={escalateComplaintUrl} target="_blank" rel="noopener noreferrer">contact the Equality Advisory and Support Website (EASS)</a>.
+        The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018 (the &apos;accessibility regulations&apos;). If you&apos;re not happy with how we respond to your complaint, <a className="govuk-link" href={escalateComplaintUrl} target="_blank" rel="noopener noreferrer">contact the Equality Advisory and Support Website (EASS)</a>.
       </p>
       <p>
-        If you are in Northern Ireland and are not happy with how we respond to your complaint you can contact the <a href={escalateComplaintNIUrl} target="_blank" rel="noopener noreferrer">Equalities Commission for Northern Ireland</a> who are responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018 (the &apos;accessibility regulations&apos;) in Northern Ireland.
+        If you are in Northern Ireland and are not happy with how we respond to your complaint you can contact the <a className="govuk-link" href={escalateComplaintNIUrl} target="_blank" rel="noopener noreferrer">Equalities Commission for Northern Ireland</a> who are responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018 (the &apos;accessibility regulations&apos;) in Northern Ireland.
       </p>
       <h2 className="govuk-heading-l">Technical information about this website&apos;s accessibility</h2>
       <p>
@@ -63,7 +59,7 @@ const AccessibilityStatement = () => {
       </p>
       <h2 className="govuk-heading-l">Compliance status</h2>
       <p>
-        This website is partially compliant with the <a href={w3orgUrl} target="_blank" rel="noopener noreferrer">Web Content Accessibility Guidelines version 2.1</a> AA standard, due to the non-compliances listed below.
+        This website is partially compliant with the <a className="govuk-link" href={w3orgUrl} target="_blank" rel="noopener noreferrer">Web Content Accessibility Guidelines version 2.1</a> AA standard, due to the non-compliances listed below.
       </p>
       <h3 className="govuk-heading-m">Non-accessible content</h3>
       <p>
