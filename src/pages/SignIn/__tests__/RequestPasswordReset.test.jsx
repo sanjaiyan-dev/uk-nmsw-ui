@@ -144,11 +144,11 @@ describe('Request password reset tests', () => {
     render(<MemoryRouter><RequestPasswordReset /></MemoryRouter>);
     await user.type(screen.getByRole('textbox', { name: 'Email address' }), 'test@test.com');
     await user.click(screen.getByTestId('submit-button'));
-    screen.findByRole('heading', { name: 'Email address not activated' });
-    expect(screen.getByRole('heading', { name: 'Email address not activated' })).toBeInTheDocument();
-    expect(screen.getByText('Resend your activation link')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Resend confirmation email' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Resend confirmation email' }).outerHTML).toEqual('<button class="govuk-button" data-module="govuk-button" type="button">Resend confirmation email</button>');
+    screen.findByRole('heading', { name: 'Your email address has not been verified' });
+    expect(screen.getByRole('heading', { name: 'Your email address has not been verified' })).toBeInTheDocument();
+    expect(screen.getByText('You need to verify your email address to finish creating your account.')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Request a new email verification link' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Request a new email verification link' }).outerHTML).toEqual('<button class="govuk-button" data-module="govuk-button" type="button">Request a new email verification link</button>');
   });
 
   it('should navigate to message page if other error POST response', async () => {
