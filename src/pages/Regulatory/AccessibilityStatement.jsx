@@ -6,10 +6,10 @@ const AccessibilityStatement = () => {
   const thisSiteUrl = 'https://www.gov.uk/government/publications/uk-national-maritime-single-window-launch-of-pilot';
   const contactUsEmail = 'spcr@homeoffice.gov.uk';
 
-  const abilityNetUrl = 'https://mcmw.abilitynet.org.uk/';
-  const escalateComplaintUrl = 'https://www.equalityadvisoryservice.com/';
+  const abilityNetUrl = 'https://mcmw.abilitynet.org.uk';
+  const escalateComplaintUrl = 'https://www.equalityadvisoryservice.com';
   const escalateComplaintNIUrl = 'https://www.equalityni.org/Home';
-  const w3orgUrl = 'https://www.w3.org/TR/WCAG21/';
+  const w3orgUrl = 'https://www.w3.org/TR/WCAG21';
   const alternativeFormatRequestEmail = 'alternativeformats@homeoffice.gov.uk';
 
   document.title = `Accessibility statement for ${SERVICE_NAME}`;
