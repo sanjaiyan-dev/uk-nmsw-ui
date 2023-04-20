@@ -4,6 +4,7 @@ import FileUploadPage from "../../e2e/pages/file-upload.page";
 import LandingPage from "../../e2e/pages/landing.page";
 import TaskPage from "../../e2e/pages/task.page";
 import SignInPage from "../../e2e/pages/sign-in.page";
+import BasePage from "../../e2e/pages/base.page";
 
 let fileName;
 
@@ -25,6 +26,14 @@ Then('user is redirected to NMSW landing page', () => {
 });
 
 When('I click check for errors without uploading any file', () => {
+  FileUploadPage.clickCheckForErrors();
+});
+
+When('I click check for errors for file not of type .csv or .xlsx', () => {
+  FileUploadPage.clickCheckForErrors();
+});
+
+When('I click check for errors for file larger than 4MB', () => {
   FileUploadPage.clickCheckForErrors();
 });
 
@@ -54,6 +63,7 @@ Then('previous the error message should clear', () => {
 When('I click check for errors', () => {
   cy.intercept('POST', '**/declaration/**').as('declaration');
   FileUploadPage.clickCheckForErrors();
+  FileUploadPage.getDeclarationId();
 });
 
 Then('the FE sends a POST to the declarationId endpoint', () => {
@@ -65,6 +75,7 @@ Then('the FE sends a POST to the declarationId endpoint', () => {
 });
 
 When('there are no errors, I am shown the no errors found page', () => {
+  cy.intercept('POST', '**/declaration/**').as('declaration');
   FileUploadPage.checkNoErrors();
 });
 
@@ -74,6 +85,12 @@ When('I click save and continue', () => {
 
 Then('I am taken to task details page', () => {
   TaskPage.checkTaskPage();
+});
+
+When('I navigate back to task details page', () => {
+  BasePage.clickBackButton();
+  BasePage.clickBackButton();
+  cy.url().should('include', 'report-voyage?report=');
 });
 
 Then('I am directed back to the Upload general declaration FAL 1 page', () => {
@@ -86,12 +103,16 @@ Then('I sign-out', () => {
 
 When('I try to access a protected page with declaration Id', () => {
   cy.get('@declarationId').then(declarationId => {
- cy.visitUrl(`/report-voyage?report=${declarationId}`);
- });
+    cy.visitUrl(`/report-voyage?report=${declarationId}`);
+  });
 });
 
 When('I try to access a protected CYA page with declaration Id', () => {
   cy.get('@declarationId').then(declarationId => {
     cy.visitUrl(`/report-voyage/check-your-answers?report=${declarationId}`);
   });
+});
+
+Then('I can see the details of the voyage, I have uploaded', () => {
+  YourVoyagePage.checkVoyageDetails();
 });

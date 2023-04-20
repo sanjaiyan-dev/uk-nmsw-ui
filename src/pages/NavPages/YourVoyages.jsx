@@ -1,30 +1,21 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { CREATE_VOYAGE_ENDPOINT, TOKEN_EXPIRED } from '../../constants/AppAPIConstants';
 import {
   SIGN_IN_URL,
+  URL_DECLARATIONID_IDENTIFIER,
   VOYAGE_GENERAL_DECLARATION_UPLOAD_URL,
+  VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
+  VOYAGE_TASK_LIST_URL,
   YOUR_VOYAGES_URL,
 } from '../../constants/AppUrlConstants';
 import { SERVICE_NAME } from '../../constants/AppConstants';
 import Message from '../../components/Message';
 import Auth from '../../utils/Auth';
-
-const voyageList = [
-  {
-    id: '1', voyageType: 'Arrival to the UK', shipName: 'Disney Cruises', arrivalDate: '11th July 2023', departureDate: '15th July 2023', status: 'Submitted',
-  },
-  {
-    id: '2', voyageType: 'Departure from the UK', shipName: 'The Queen Mary', arrivalDate: '11th September 2023', departureDate: '15th September 2023', status: 'Draft',
-  },
-  // {
-  //   id: '3', voyageType: 'Departure from the UK', shipName: 'The Black Pearl', arrivalDate: '15th May 2023', departureDate: '27th May 2023', status: 'Cancelled',
-  // },
-  // {
-  //   id: '4', voyageType: 'Arrival to the UK', shipName: 'The Golden Hind', arrivalDate: '15th March 2023', departureDate: '27th March 2023', status: 'Failed',
-  // },
-];
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 // NOTES:
 // - The filter buttons do nothing
@@ -32,6 +23,7 @@ const voyageList = [
 // - There is commented out code for when the filter is working but there are no voyages relating to the filter
 
 const YourVoyages = () => {
+  dayjs.extend(customParseFormat);
   const { state } = useLocation();
   const navigate = useNavigate();
   const [isError, setIsError] = useState(false);
@@ -65,8 +57,39 @@ const YourVoyages = () => {
     }
   };
 
+  const getDeclarationData = async () => {
+    try {
+      const response = await axios.get(CREATE_VOYAGE_ENDPOINT, {
+        headers: { Authorization: `Bearer ${Auth.retrieveToken()}` },
+      });
+      if (response.status === 200) {
+        // We will delete drafts without a general declaration here instead of filtering them out
+        const filteredData = response.data.results.reduce((results, data) => {
+          if (data.departureFromUk !== null) {
+            results.push(data);
+          }
+          return results;
+        }, []);
+        setVoyageData(filteredData);
+      }
+      setIsLoading(false);
+    } catch (err) {
+      if (err?.response?.status === 422) {
+        Auth.removeToken();
+        navigate(SIGN_IN_URL, { state: { redirectURL: YOUR_VOYAGES_URL } });
+      } else if (err?.response?.data?.msg === TOKEN_EXPIRED) {
+        Auth.removeToken();
+        navigate(SIGN_IN_URL, { state: { redirectURL: YOUR_VOYAGES_URL } });
+      } else {
+        setIsError(true);
+      }
+    }
+    setIsLoading(false);
+  };
+
   useEffect(() => {
-    setVoyageData(voyageList);
+    setIsLoading(true);
+    getDeclarationData();
   }, []);
 
   if (isError) {
@@ -74,6 +97,8 @@ const YourVoyages = () => {
       <Message title="Something has gone wrong" redirectURL={YOUR_VOYAGES_URL} />
     );
   }
+
+  if (isLoading) { return (<LoadingSpinner />); }
 
   return (
     <>
@@ -103,7 +128,8 @@ const YourVoyages = () => {
           <br />
 
           <div className="govuk-grid-row your-voyages__flex">
-            <div className="govuk-grid-column-one-quarter">
+            {/* We are removing filtering for MVP  */}
+            {/* <div className="govuk-grid-column-one-quarter">
               <div className="light-grey__border">
                 <fieldset className="govuk-fieldset">
                   <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
@@ -151,7 +177,7 @@ const YourVoyages = () => {
                         Submitted
                       </label>
                     </div>
-                    {/* <div className="govuk-radios__item">
+                    <div className="govuk-radios__item">
                         <input
                           className="govuk-radios__input"
                           id="cancelled"
@@ -164,26 +190,12 @@ const YourVoyages = () => {
                           Cancelled
                         </label>
                       </div>
-
-                      <div className="govuk-radios__item">
-                        <input
-                          className="govuk-radios__input"
-                          id="failed"
-                          name="reports"
-                          type="radio"
-                          value="failed"
-                          onChange={() => { }}
-                        />
-                        <label className="govuk-label govuk-radios__label" htmlFor="failed">
-                          Failed
-                        </label>
-                      </div> */}
                   </div>
                 </fieldset>
               </div>
-            </div>
+            </div> */}
 
-            <div className="govuk-grid-column-three-quarters">
+            <div className="govuk-grid-column-full">
               <div className="govuk-grid-row">
                 <div className="govuk-grid-column-full">
                   <h2 className="govuk-heading-s govuk-!-margin-bottom-1 reported-voyages-margin--top">{`${voyageData.length} reported voyages`}</h2>
@@ -224,39 +236,32 @@ const YourVoyages = () => {
                   statusTagClass = 'govuk-tag govuk-tag--green';
                   statusLinkText = 'Review or cancel';
                   statusType = 'submitted';
-                }
-                if (voyage.status === 'Draft') {
+                } else if (voyage.status === 'Draft') {
                   statusTagClass = 'govuk-tag govuk-tag--grey';
                   statusLinkText = 'Continue';
                   statusType = 'draft';
+                } else if (voyage.status === 'Cancelled' || voyage.status === 'PreCancelled') {
+                  statusTagClass = 'govuk-tag govuk-tag--orange';
+                  statusLinkText = 'Review';
+                  statusType = 'cancelled';
+                } else {
+                  statusTagClass = 'govuk-tag govuk-tag--red';
+                  statusLinkText = 'Review and re-submit';
+                  statusType = 'failed';
                 }
-                // This is for if/when we implement showing cancelled/failed reports
-                // } else if (voyage.status === 'Draft') {
-                //   statusTagClass = 'govuk-tag govuk-tag--grey';
-                //   statusLinkText = 'Continue';
-                //   statusType = 'draft';
-                // } else if (voyage.status === 'Cancelled' || voyage.status === 'PreCancelled') {
-                //   statusTagClass = 'govuk-tag govuk-tag--red';
-                //   statusLinkText = 'Review';
-                //   statusType = 'cancelled';
-                // } else {
-                //   statusTagClass = 'govuk-tag govuk-tag--red';
-                //   statusLinkText = 'Review and re-submit';
-                //   statusType = 'failed';
-                // }
                 return (
                   <div key={voyage.id} className="govuk-!-margin-top-5 light-grey__border">
                     <div className="govuk-grid-row">
 
                       <div className="govuk-grid-column-one-quarter reported-voyages__columns reported-voyages__text">
-                        <p className="govuk-body-s govuk-!-font-weight-bold">{voyage.shipName}</p>
+                        <p className="govuk-body-s govuk-!-font-weight-bold">{voyage.nameOfShip}</p>
                       </div>
 
                       <div className="govuk-grid-column-one-quarter reported-voyages__columns reported-voyages__text">
                         <p className="govuk-body-s">
                           Voyage type:
                           <br />
-                          {voyage.voyageType}
+                          {voyage.departureFromUk ? 'Departure from the UK' : 'Arrival to the UK'}
                         </p>
                       </div>
 
@@ -264,7 +269,7 @@ const YourVoyages = () => {
                         <p className="govuk-body-s">
                           Date:
                           <br />
-                          {voyage.voyageType === 'Arrival to the UK' ? voyage.arrivalDate : voyage.departureDate}
+                          {voyage.departureFromUk ? dayjs(voyage.departureDate).format('DD MMMM YYYY') : dayjs(voyage.arrivalDate).format('DD MMMM YYYY')}
                         </p>
                       </div>
 
@@ -275,11 +280,17 @@ const YourVoyages = () => {
 
                       <div className="govuk-grid-column-one-quarter reported-voyages__columns reported-voyages__text">
                         <span className="govuk-body-s">Actions</span> <br />
-                        <a href="#change" className="govuk-link small-link-text">{statusLinkText}</a>
+                        <Link
+                          to={voyage.status === 'Draft' ? `${VOYAGE_TASK_LIST_URL}?${URL_DECLARATIONID_IDENTIFIER}=${voyage.id}` : `${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${voyage.id}`}
+                          className="govuk-link small-link-text"
+                        >
+                          {statusLinkText}
+                        </Link>
                       </div>
                     </div>
-
-                    <p className="govuk-!-font-size-16">Submitted: 3 January 2023 by John Smith</p>
+                    {/* Commenting out this code due to it creating more complications for MVP - needs more discussion */}
+                    {/* {statusType === 'submitted' && voyage.submissionDate && <p className="govuk-!-font-size-16">{`Submitted: ${dayjs(voyage.submissionDate).format('DD MMMM YYYY')} by ${voyage.signatory}`}</p>}
+                    {statusType !== 'submitted' && voyage.creationDate && <p className="govuk-!-font-size-16">{`Created: ${dayjs(voyage.creationDate).format('DD MMMM YYYY')} by ${voyage.signatory}`}</p>} */}
 
                   </div>
                 );

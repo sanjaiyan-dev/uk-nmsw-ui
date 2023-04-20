@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   CHANGE_YOUR_DETAILS_PAGE_URL,
-  CHANGE_YOUR_PASSWORD_PAGE_URL,
+  // CHANGE_YOUR_PASSWORD_PAGE_URL,
+  REQUEST_PASSWORD_RESET_URL,
   YOUR_DETAILS_PAGE_NAME,
 } from '../../../constants/AppUrlConstants';
 
@@ -102,7 +103,8 @@ const YourDetails = () => {
               Password
               <br />
               <p className="govuk-body">
-                <Link className="govuk-link" to={CHANGE_YOUR_PASSWORD_PAGE_URL}>Change your password</Link>
+                {/* This version not used for MVP: <Link className="govuk-link" to={CHANGE_YOUR_PASSWORD_PAGE_URL}>Change your password</Link> */}
+                <Link to={REQUEST_PASSWORD_RESET_URL} state={{ title: 'Change your password' }}>Change your password</Link>
               </p>
             </dt>
             <dd className="govuk-summary-list__value govuk-hint">

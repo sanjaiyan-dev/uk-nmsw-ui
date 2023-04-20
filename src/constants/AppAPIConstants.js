@@ -6,6 +6,7 @@ export const API_URL = apiUrl;
 export const REGISTER_ACCOUNT_ENDPOINT = `${apiUrl}/registration`;
 export const REGISTER_CHECK_TOKEN_ENDPOINT = `${apiUrl}/check-token`;
 export const REGISTER_RESEND_VERIFICATION_EMAIL_ENDPOINT = `${apiUrl}/resend-verification-email`;
+export const PASSSWORD_RESET_ENDPOINT = `${apiUrl}/reset-password`;
 export const SIGN_IN_ENDPOINT = `${apiUrl}/sign-in`;
 export const SIGN_OUT_ENDPOINT = `${apiUrl}/sign-out`;
 
@@ -15,6 +16,7 @@ export const ENDPOINT_DECLARATION_PATH = '/declaration';
 export const ENDPOINT_FILE_UPLOAD_GENERAL_DECLARATION_PATH = '/upload-fal1';
 export const ENDPOINT_FILE_UPLOAD_CREW_DETAILS_PATH = '/upload-fal5';
 export const ENDPOINT_FILE_UPLOAD_PASSENGER_DETAILS_PATH = '/upload-fal6';
+export const ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH = '/supporting';
 export const ENDPOINT_DECLARATION_ATTACHMENTS_PATH = '/attachments';
 
 // Responses

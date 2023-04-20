@@ -65,7 +65,7 @@ describe('Generic confirmation page', () => {
 
     render(<MemoryRouter><GenericConfirmation /></MemoryRouter>);
     expect(screen.getByRole('link', { name: 'Return to next page' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Return to next page' }).outerHTML).toEqual('<a href="/next-page">Return to next page</a>');
+    expect(screen.getByRole('link', { name: 'Return to next page' }).outerHTML).toEqual('<a class="govuk-link" href="/next-page">Return to next page</a>');
     await user.click(screen.getByRole('link', { name: 'Return to next page' }));
     expect(mockedUsedNavigate).toHaveBeenCalled();
     expect(mockedUsedNavigate).toHaveBeenCalledWith('/next-page', {

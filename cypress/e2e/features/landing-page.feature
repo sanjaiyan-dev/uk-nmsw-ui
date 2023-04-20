@@ -1,6 +1,7 @@
 Feature: Landing page with link to Fal templates
   As a user I can able to see Fal templates to download and links to navigate
 
+  @regression
   Scenario: Ensure landing page features are available for user to report a voyage
     Given I am on NMSW landing page
     When I click GOV UK logo

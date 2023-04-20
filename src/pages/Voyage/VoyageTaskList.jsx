@@ -66,6 +66,15 @@ const VoyageTaskList = () => {
       setDeclarationData(response.data);
       setVoyageTypeText(response.data?.FAL1.departureFromUk ? 'Departure from the UK' : 'Arrival to the UK');
 
+      let isPassengers;
+      if (response.data?.FAL1.passengers && response.data?.FAL6.length > 0) {
+        isPassengers = 'completed';
+      } else if (response.data?.FAL1.passengers === false) {
+        isPassengers = 'completed';
+      } else {
+        isPassengers = 'required';
+      }
+
       const updatedStatuses = [
         {
           item: 'generalDeclaration',
@@ -77,13 +86,13 @@ const VoyageTaskList = () => {
           item: 'crewDetails',
           link: `${VOYAGE_CREW_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
           label: CREW_DETAILS_LABEL,
-          status: response.data.FAL5 ? 'completed' : 'required',
+          status: response.data?.FAL5.length > 0 ? 'completed' : 'required',
         },
         {
           item: 'passengerDetails',
           link: `${VOYAGE_PASSENGERS_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
           label: PASSENGER_DETAILS_LABEL,
-          status: response.data.FAL6 ? 'completed' : 'required',
+          status: isPassengers,
         },
         {
           item: 'supportingDocuments',
@@ -95,7 +104,7 @@ const VoyageTaskList = () => {
 
       setStep(updatedStatuses);
 
-      if (response.data.FAL1 && response.data.FAL5 && response.data.FAL6) {
+      if (response.data?.FAL1 && response.data?.FAL5.length > 0 && isPassengers === 'completed') {
         setCompletedSections(1);
         setCheckYourAnswersStep({ ...checkYourAnswersStep, status: 'notStarted' });
       } else {
@@ -159,7 +168,7 @@ const VoyageTaskList = () => {
                 {
                   steps.map((item) => (
                     <li key={item.label} className="app-task-list__item">
-                      <Link to={item.link}>
+                      <Link className="govuk-link" to={item.link}>
                         <span>{item.label}</span>
                         <strong className={CLASSES_FOR_STATUS[item.status]}>{LABELS_FOR_STATUS[item.status]}</strong>
                       </Link>
@@ -181,7 +190,7 @@ const VoyageTaskList = () => {
                     )}
                   {checkYourAnswersStep.status !== 'cannotStartYet'
                     && (
-                      <Link to={checkYourAnswersStep.link}>
+                      <Link className="govuk-link" to={checkYourAnswersStep.link}>
                         <span>Check answers and submit</span>
                         <strong className={CLASSES_FOR_STATUS[checkYourAnswersStep.status]}>{LABELS_FOR_STATUS[checkYourAnswersStep.status]}</strong>
                       </Link>

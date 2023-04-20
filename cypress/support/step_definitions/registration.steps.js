@@ -218,8 +218,6 @@ Then('the user is redirected to request-new-verification-link', () => {
 Then('I am shown - You already have an account', () => {
   cy.url().should('include', 'account-already-exists');
   EmailPage.emailVerifyMessage();
-  BasePage.clickSignIn();
-  SignInPage.checkSignInPage();
 });
 
 When('I verify my email address again', () => {

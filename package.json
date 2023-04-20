@@ -1,6 +1,6 @@
 {
   "name": "nmsw-ui",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "description": "National Maritime Single Window",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,9 @@
     "cypress:open:dev": "cypress open --config-file cypress/config/dev.config.js",
     "cypress:run:staging": "cypress run --config-file cypress/config/staging.config.js",
     "cypress:open:staging": "cypress open --config-file cypress/config/staging.config.js",
-    "cypress:report": "node cucumber-html-report.js"
+    "cypress:report": "node cucumber-html-report.js",
+    "cypress:dev:regression": "cypress run --config-file cypress/config/dev.config.js --env TAGS=@regression",
+    "cypress:staging:regression": "cypress run --config-file cypress/config/staging.config.js --env TAGS=@regression"
   },
   "repository": {
     "type": "git",
@@ -77,6 +79,7 @@
   "dependencies": {
     "accessible-autocomplete": "^2.0.4",
     "axios": "^1.2.1",
+    "cypress-downloadfile": "^1.2.3",
     "dayjs": "^1.11.7",
     "govuk-frontend": "^4.3.1",
     "prop-types": "^15.8.1",

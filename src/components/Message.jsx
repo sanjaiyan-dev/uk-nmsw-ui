@@ -28,7 +28,7 @@ const Message = ({
           </button>
         )}
         {!button && (
-          <Link to={redirectURL || LANDING_URL}>Click here to continue</Link>
+          <Link className="govuk-link" to={redirectURL || LANDING_URL}>Click here to continue</Link>
         )}
       </div>
     </div>

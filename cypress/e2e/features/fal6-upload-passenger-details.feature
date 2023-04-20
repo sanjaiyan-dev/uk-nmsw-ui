@@ -12,10 +12,18 @@ Feature: Upload Passenger details (FAL6) file
     When there are no errors, I am shown the no errors found page
     When I click save and continue
     Then I am taken to task details page
+    And I can see status for FAL6 as required
     When I click Passenger details link
     Then I am taken to Passenger-details page
 
+  @regression
   Scenario: User should be able to upload fal6-Passenger details file for voyage report
+    When I select Yes to uploading passenger details
+    When I navigate back to task details page
+    Then I am taken to task details page
+    And I can see status for FAL6 as required
+    When I click Passenger details link
+    Then I am taken to Passenger-details page
     When I select Yes to uploading passenger details
     Then I am taken to upload-Passenger-details page
     When I have uploaded 'Fal6-Files''Passenger details FAL 6-PositiveData.xlsx'
@@ -23,10 +31,16 @@ Feature: Upload Passenger details (FAL6) file
     When there are no errors, I am shown the no errors found page
     When I click save and continue
     Then I am taken to task details page
+    And I can see status for FAL6 as completed and FAL5 as required
+    When I try to access a protected CYA page with declaration Id
+    When I click Save and Submit
+    Then I am shown form error message
+      | Error | Crew details (FAL 5) upload is required |
 
   Scenario: User taken to task details page when selected No to uploading passenger details
     When I select No to uploading passenger details
     Then I am taken to task details page
+    And I can see status for FAL6 as completed and FAL5 as required
 
   Scenario: Passenger details page validation
     When I select Yes to uploading passenger details

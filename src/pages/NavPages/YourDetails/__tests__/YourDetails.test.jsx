@@ -43,8 +43,8 @@ describe('Your details tests', () => {
     render(<MemoryRouter><YourDetails /></MemoryRouter>);
 
     await user.click(screen.getByRole('link', { name: 'Change your password' }));
-    expect(mockedUseNavigate).toHaveBeenCalledWith('/change-your-password', {
-      preventScrollReset: undefined, relative: undefined, replace: false, state: undefined,
+    expect(mockedUseNavigate).toHaveBeenCalledWith('/forgotten-password', {
+      preventScrollReset: undefined, relative: undefined, replace: false, state: { title: 'Change your password' },
     });
   });
 });

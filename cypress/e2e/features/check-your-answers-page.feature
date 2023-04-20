@@ -21,7 +21,21 @@ Feature: Check your answer page
     Then I am taken to task details page
     When I click Passenger details link
     Then I am taken to Passenger-details page
-    When I select Yes to uploading passenger details
+    When I select No to uploading passenger details
+    Then I am taken to task details page
+    And I can see status for FAL6 as completed
+    And I can see Check answers and submit enabled
+    When I click Check answers and submit
+    Then I can view Check Your Answers page
+    And passenger section state No passenger details provided
+    When I click on change next to Passenger details
+    And I select Yes to uploading passenger details
+    When I navigate back to check your answers page
+    When I click Save and Submit
+    Then I am shown form error message
+      | Error | Passenger details (FAL 6) upload is required for ships carrying passengers |
+    When I click on change next to Passenger details
+    And I select Yes to uploading passenger details
     Then I am taken to upload-Passenger-details page
     When I have uploaded 'Fal6-Files''Passenger details FAL 6-PositiveData.xlsx'
     When I click check for errors
@@ -33,8 +47,13 @@ Feature: Check your answer page
     Then I can view Check Your Answers page
     Then I can verify the Check Your Answers page
 
+  @regression
   Scenario Outline: User can Verify the details upload and change the details
     And the details from my FAL 1 form are displayed on CYA page
+    Then I can see a link to an uploaded crew file 'Fal5-Files''Crew details including supernumeraries FAL 5-Positive-Test.xlsx'
+    When I click on the file name for 'Fal5-Files', it is downloaded
+    Then I can see a link to an uploaded passenger file 'Fal6-Files''Passenger details FAL 6-PositiveData.xlsx'
+    When I click on the file name for 'Fal6-Files', it is downloaded
     When I click change the voyage details link
     Then I am taken to upload-general-declaration page
     When I have uploaded 'Fal1-Files''General declaration FAL 1 - goodData.xlsx'
@@ -56,5 +75,3 @@ Feature: Check your answer page
     Examples:
       | emailAddress                                       | password      |
       | 98748f98-2dcf-41b8-8bc9-9627e6cd0d80@mailslurp.com | Test-NMSW-Dev |
-
-

@@ -1,11 +1,20 @@
-import { useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import { SIGN_IN_URL } from '../constants/AppUrlConstants';
-import Auth from '../utils/Auth';
-import LoadingSpinner from './LoadingSpinner';
 import '../assets/css/multiFileUploadForm.scss';
+import {
+  MESSAGE_URL,
+  SIGN_IN_URL,
+  URL_DECLARATIONID_IDENTIFIER,
+  YOUR_VOYAGES_URL,
+} from '../constants/AppUrlConstants';
+import { FILE_TYPE_INVALID_PREFIX } from '../constants/AppAPIConstants';
+import { MAX_SUPPORTING_FILE_SIZE, MAX_SUPPORTING_FILE_SIZE_DISPLAY } from '../constants/AppConstants';
+import Auth from '../utils/Auth';
+import GetDeclaration from '../utils/GetDeclaration';
+import LoadingSpinner from './LoadingSpinner';
+import { scrollToTop } from '../utils/ScrollToElement';
 
 const FILE_STATUS_PENDING = 'Pending';
 const FILE_STATUS_IN_PROGRESS = 'in progress';
@@ -61,13 +70,41 @@ const MultiFileUploadForm = ({
   urlNextPage,
   urlThisPage,
 }) => {
+  const errorSummaryRef = useRef(null);
   const inputRef = useRef(null);
   const multiple = true;
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const declarationId = searchParams.get(URL_DECLARATIONID_IDENTIFIER);
   const [dragActive, setDragActive] = useState(false);
   const [errors, setErrors] = useState([]);
   const [filesAddedForUpload, setFilesAddedForUpload] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [maxFilesError, setMaxFilesError] = useState();
+  const [supportingDocumentsList, setSupportingDocumentsList] = useState([]);
+
+  const getDeclarationData = async () => {
+    const response = await GetDeclaration({ declarationId });
+    if (response.data) {
+      setSupportingDocumentsList(response?.data?.supporting);
+    } else {
+      switch (response?.status) {
+        case 401:
+        case 422:
+          Auth.removeToken();
+          navigate(SIGN_IN_URL, { state: { redirectURL: urlThisPage } });
+          break;
+        default: navigate(MESSAGE_URL, {
+          state: {
+            title: 'Something has gone wrong',
+            message: response?.message,
+            redirectURL: YOUR_VOYAGES_URL,
+          },
+        });
+      }
+    }
+    setIsLoading(false);
+  };
 
   const handleDrag = (e) => {
     e.preventDefault();
@@ -79,6 +116,11 @@ const MultiFileUploadForm = ({
     }
   };
 
+  const scrollToFocusErrors = () => {
+    scrollToTop();
+    errorSummaryRef?.current?.focus();
+  };
+
   const storeFilesForUpload = async (fileList) => {
     const fileCurrentlyInState = [...filesAddedForUpload];
     const filesUserAdded = [...fileList];
@@ -86,25 +128,32 @@ const MultiFileUploadForm = ({
     setMaxFilesError();
     setErrors();
     // Check we do not exceed max file count
-    const remainingFilesAvailable = MAX_FILES - filesAddedForUpload.length;
-
-    if (filesAddedForUpload.length === MAX_FILES) {
+    const remainingFilesAvailable = MAX_FILES - (filesAddedForUpload.length + supportingDocumentsList.length);
+    if (filesAddedForUpload.length + supportingDocumentsList.length === MAX_FILES) {
       setMaxFilesError(`You've selected too many files: you can add up to ${remainingFilesAvailable} more files`);
       setErrors([`You've selected too many files: you can add up to ${remainingFilesAvailable} more files`]);
-    } else if (filesAddedForUpload.length > 0 && (filesAddedForUpload.length + fileList.length > MAX_FILES)) {
+      scrollToFocusErrors();
+    } else if ((filesAddedForUpload.length > 0 || supportingDocumentsList.length > 0) && (filesAddedForUpload.length + fileList.length + supportingDocumentsList.length > MAX_FILES)) {
       setMaxFilesError(`You've selected too many files: you can add up to ${remainingFilesAvailable} more files`);
       setErrors([`You've selected too many files: you can add up to ${remainingFilesAvailable} more files`]);
+      scrollToFocusErrors();
     } else if (fileList.length > MAX_FILES) {
       setMaxFilesError(`You've selected too many files: you can only add ${MAX_FILES}`);
       setErrors([`You've selected too many files: you can only add ${MAX_FILES}`]);
+      scrollToFocusErrors();
     } else {
       const newFilesForUpload = filesUserAdded.reduce((results, fileToCheck) => {
-        if (fileCurrentlyInState.findIndex((existingFile) => existingFile.file.name === fileToCheck.name) === -1) {
-          results.push({ file: fileToCheck, status: FILE_STATUS_PENDING });
-        } else {
+        if (supportingDocumentsList.length > 0 && supportingDocumentsList.findIndex((existingFile) => existingFile.filename === fileToCheck.name) !== -1) {
           errorList.push(`A file called ${fileToCheck.name} already exists in your list`);
+        } else if (fileCurrentlyInState.length > 0 && fileCurrentlyInState.findIndex((existingFile) => existingFile.file.name === fileToCheck.name) !== -1) {
+          errorList.push(`A file called ${fileToCheck.name} already exists in your list`);
+        } else {
+          results.push({ file: fileToCheck, status: FILE_STATUS_PENDING });
         }
         setErrors(errorList);
+        if (errorList.length > 0) {
+          scrollToFocusErrors();
+        }
         return results;
       }, []);
 
@@ -135,11 +184,14 @@ const MultiFileUploadForm = ({
     inputRef.current.click();
   };
 
-  const updateFileStatus = ({ file, status, errorMessage }) => {
+  const updateFileStatus = ({
+    file, status, errorMessage, id,
+  }) => {
     const updatedFileIndex = filesAddedForUpload.findIndex((existingFile) => existingFile.file.name === file.file.name);
     const newState = [...filesAddedForUpload];
     newState[updatedFileIndex].status = status;
     if (errorMessage) { newState[updatedFileIndex].errorMessage = errorMessage; }
+    if (id) { newState[updatedFileIndex].id = id; }
     setFilesAddedForUpload(newState);
   };
 
@@ -155,16 +207,26 @@ const MultiFileUploadForm = ({
             'Content-Type': 'multipart/form-data',
           },
         });
-        updateFileStatus({ file: selectedFile, status: FILE_STATUS_SUCCESS });
+        updateFileStatus({ file: selectedFile, status: FILE_STATUS_SUCCESS, id: response.data.attachment_id });
         return response;
       } catch (err) {
-        switch (err?.response?.status) {
-          case 401:
-          case 422:
-            Auth.removeToken();
-            navigate(SIGN_IN_URL, { state: { redirectURL: urlThisPage } });
-            break;
-          default: updateFileStatus({
+        if (selectedFile.file.size >= MAX_SUPPORTING_FILE_SIZE) {
+          updateFileStatus({
+            file: selectedFile,
+            status: FILE_STATUS_ERROR,
+            errorMessage: `The file must be smaller than ${MAX_SUPPORTING_FILE_SIZE_DISPLAY}MB`,
+          });
+        } else if (err?.response?.data?.message?.startsWith(FILE_TYPE_INVALID_PREFIX)) {
+          updateFileStatus({
+            file: selectedFile,
+            status: FILE_STATUS_ERROR,
+            errorMessage: 'The file must be a csv, doc, docm, docx, rtf, txt, xls, xlsm, xlsx, xltm, xltx, xlw or xml',
+          });
+        } else if (err?.response?.status === 401 || err?.response?.status === 422) {
+          Auth.removeToken();
+          navigate(SIGN_IN_URL, { state: { redirectURL: urlThisPage } });
+        } else {
+          updateFileStatus({
             file: selectedFile,
             status: FILE_STATUS_ERROR,
             errorMessage: err?.response?.data?.message ? err.response.data.message : 'There was a problem check file and try again',
@@ -176,35 +238,71 @@ const MultiFileUploadForm = ({
 
     const asyncLoop = async () => {
       for (let i = 0; i < filesAddedForUpload.length; i++) {
-        updateFileStatus({ file: filesAddedForUpload[i], status: FILE_STATUS_IN_PROGRESS });
-        // eslint-disable-next-line no-await-in-loop
-        await postFile(filesAddedForUpload[i]);
+        if (filesAddedForUpload[i].status === FILE_STATUS_PENDING) {
+          updateFileStatus({ file: filesAddedForUpload[i], status: FILE_STATUS_IN_PROGRESS });
+          // eslint-disable-next-line no-await-in-loop
+          await postFile(filesAddedForUpload[i]);
+        }
       }
     };
 
     asyncLoop();
   };
 
-  const handleDelete = ({ e, fileName }) => {
+  const handleDelete = async ({ e, fileName, id }) => {
     e.preventDefault();
-    /* There will be two states a file could be in
-     * 1. in our filesAddedForUpload state (not stored in db)
-     * 2. already uploaded and stored to the db
-     * In future, when we do a GET request to see what files are
-     * stored on the db, then we can set a value to 'uploaded' on the file object
-     * that we keep in current state, and use that value to determine
-     * if we need to do a DELETE request.
-     * Until we build that we only have state 1, which is handled with the code below
-     */
-
-    const filtered = filesAddedForUpload.filter((file) => file.file.name !== fileName);
-    setFilesAddedForUpload(filtered);
+    if (id) {
+      try {
+        const response = await axios({
+          method: 'delete',
+          url: endpoint,
+          data: {
+            id,
+          },
+          headers: {
+            Authorization: `Bearer ${Auth.retrieveToken()}`,
+          },
+        });
+        if (response?.status === 200) {
+          getDeclarationData();
+        }
+      } catch (err) {
+        switch (err?.response?.status) {
+          case 401:
+          case 422:
+            Auth.removeToken();
+            navigate(SIGN_IN_URL, { state: { redirectURL: urlThisPage } });
+            break;
+          default: navigate(MESSAGE_URL, {
+            state: {
+              title: 'Something has gone wrong',
+              message: err?.response?.message,
+              redirectURL: YOUR_VOYAGES_URL,
+            },
+          });
+        }
+      }
+    } else {
+      const filtered = filesAddedForUpload.filter((file) => file.file.name !== fileName);
+      setFilesAddedForUpload(filtered);
+    }
   };
 
   const onContinue = (e) => {
     e.preventDefault();
     navigate(urlNextPage);
   };
+
+  useEffect(() => {
+    setIsLoading(true);
+    getDeclarationData();
+  }, []);
+
+  useEffect(() => {
+    if (errors) {
+      errorSummaryRef?.current?.focus();
+    }
+  }, [errors]);
 
   /*
    * when the drag goes over our button element in the dragarea,
@@ -215,12 +313,14 @@ const MultiFileUploadForm = ({
    * And this can also handle the drop.
    */
 
+  if (isLoading) { return (<LoadingSpinner />); }
+
   return (
     <>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-three-quarters">
           {errors.length > 0 && (
-            <div className="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary">
+            <div className="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary" ref={errorSummaryRef} tabIndex={-1}>
               <div className="govuk-error-summary__body">
                 <ul className="govuk-list govuk-error-summary__list multi-file-upload--error-summary">
                   {errors.map((error) => (
@@ -298,9 +398,30 @@ const MultiFileUploadForm = ({
       </div>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-three-quarters">
-          {filesAddedForUpload.length > 0 && (
+          {supportingDocumentsList.length > 0 && (
             <>
               <h2 className="govuk-heading-m">Files added</h2>
+              {supportingDocumentsList.map((file) => (
+                <div key={file.filename} className="govuk-grid-row  govuk-!-margin-bottom-5 multi-file-upload--filelist">
+                  <div className="nmsw-grid-column-ten-twelfths">
+                    <FileStatusSuccess fileName={file.filename} />
+                  </div>
+                  <div className="nmsw-grid-column-two-twelfths govuk-!-text-align-right">
+                    <button
+                      className="govuk-button govuk-button--warning govuk-!-margin-bottom-5"
+                      type="button"
+                      onClick={(e) => handleDelete({ e, fileName: file.filename, id: file.id })}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
+          {filesAddedForUpload.length > 0 && (
+            <>
+              {supportingDocumentsList.length === 0 && <h2 className="govuk-heading-m">Files added</h2>}
               {filesAddedForUpload.map((file) => (
                 <div key={file.file.name} className="govuk-grid-row  govuk-!-margin-bottom-5 multi-file-upload--filelist">
                   <div className="nmsw-grid-column-ten-twelfths">
@@ -313,7 +434,7 @@ const MultiFileUploadForm = ({
                     <button
                       className="govuk-button govuk-button--warning govuk-!-margin-bottom-5"
                       type="button"
-                      onClick={(e) => handleDelete({ e, fileName: file.file.name })}
+                      onClick={(e) => handleDelete({ e, fileName: file.file.name, id: file.id })}
                     >
                       Delete
                     </button>

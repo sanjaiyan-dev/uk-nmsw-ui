@@ -2,6 +2,7 @@ import {Then, When} from "@badeball/cypress-cucumber-preprocessor";
 import cyaPage from "../../e2e/pages/cya.page";
 import BasePage from "../../e2e/pages/base.page";
 import FileUploadPage from "../../e2e/pages/file-upload.page";
+import CyaPage from "../../e2e/pages/cya.page";
 
 When('I click Check answers and submit', () => {
   cyaPage.clickCheckAnswersAndSubmit();
@@ -59,4 +60,35 @@ When('I click - Click here to continue', () => {
 When('I click upload files', () => {
   FileUploadPage.clickUpload();
   cy.wait(1000);
+});
+
+Then('I can see a link to an uploaded crew file {string}{string}', (folderName, fileName) => {
+CyaPage.verifyFileUploaded(fileName);
+});
+
+When('I click on the file name for {string}, it is downloaded', (folderName) => {
+  CyaPage.clickFalUploadedFile(folderName);
+});
+
+Then('I can see a link to an uploaded passenger file {string}{string}', (folderName, fileName) => {
+  CyaPage.verifyFileUploaded(fileName);
+});
+
+Then('passenger section state No passenger details provided', () => {
+  cy.get('#passengerDetails').next().contains('No passenger details provided');
+  cy.get('#supportingDocuments').next().contains('No supporting documents provided');
+});
+
+When('I click on change next to Passenger details', () => {
+cy.get('#passengerDetails').parent().find('a').contains('Change').click();
+});
+
+When('I navigate back to check your answers page', () => {
+  BasePage.clickBackButton();
+  BasePage.clickBackButton();
+  cy.url().should('include', 'report-voyage/check-your-answers?');
+});
+
+When('I click Save and Submit', () => {
+  cyaPage.clickSaveAndSubmitButton();
 });

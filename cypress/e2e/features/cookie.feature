@@ -4,6 +4,7 @@ Feature: Cookie Page
   Background:
     Given I can see the cookie banner
 
+  @regression
   Scenario Outline: Accept or Reject the  cookie banner
     When I click '<cookie>' analytics cookies
     Then an essential cookie is set to store my preference to '<preference>'

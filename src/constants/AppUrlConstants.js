@@ -13,6 +13,10 @@ export const REGISTER_EMAIL_RESEND_URL = '/create-account/request-new-verificati
 export const REGISTER_EMAIL_VERIFIED_URL = '/activate-account';
 export const REGISTER_DETAILS_URL = '/create-account/your-details';
 export const REGISTER_PASSWORD_URL = '/create-account/your-password';
+export const REQUEST_PASSWORD_RESET_URL = '/forgotten-password';
+export const REQUEST_PASSWORD_RESET_CONFIRMATION_URL = '/forgotten-password/check-your-email';
+export const REQUEST_PASSWORD_RESET_RESEND_URL = '/forgotten-password/request-new-link';
+export const RESET_YOUR_PASSWORD = '/new-password'; // this is a logged out version
 export const SIGN_IN_PAGE_NAME = 'Sign in';
 export const SIGN_IN_URL = '/sign-in';
 export const LOGGED_IN_LANDING = '/your-voyages';
@@ -52,7 +56,7 @@ export const YOUR_DETAILS_PAGE_URL = '/your-details';
 export const CHANGE_YOUR_DETAILS_PAGE_NAME = 'Change your details';
 export const CHANGE_YOUR_DETAILS_PAGE_URL = '/change-your-details';
 export const CHANGE_YOUR_PASSWORD_PAGE_NAME = 'Change your password';
-export const CHANGE_YOUR_PASSWORD_PAGE_URL = '/change-your-password';
+export const CHANGE_YOUR_PASSWORD_PAGE_URL = '/change-your-password'; // this is a logged in version
 
 // Error/message pages
 export const MESSAGE_URL = '/message';

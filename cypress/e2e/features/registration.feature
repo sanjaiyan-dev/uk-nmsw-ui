@@ -4,7 +4,7 @@ Feature: User Registration
   Background:
     Given I am on NMSW landing page
 
-  @registration
+  @registration @regression
   Scenario: Successful user registration
     When I click create an account on the landing page
     Then the registration page is displayed
@@ -16,6 +16,8 @@ Feature: User Registration
     Then I am redirected to password page
     When I provide my password
     Then my account is created and taken to confirmation page
+    When I verify my email address again
+    Then I am shown - You already have an account
     When I click sign-in
     Then I am taken to the sign-in page
 
@@ -25,6 +27,9 @@ Feature: User Registration
     When I click create an account on the landing page
     Then the registration page is displayed
     And I provide my email address
+    Then I am taken to check your email page
+    When I navigate back to landing page
+    When I create an account with same email previously registered
     Then I am taken to check your email page
     When I click on not received an email
     Then the user is redirected to request-new-verification-link

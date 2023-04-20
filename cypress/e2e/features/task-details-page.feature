@@ -8,6 +8,7 @@ Feature: Task details page after file uploads
     When I click report a voyage
     Then I am taken to upload-general-declaration page
 
+  @regression
   Scenario: I can see task details page after fal1 gets uploaded successfully
     When I have uploaded 'Fal1-Files''General declaration FAL 1-Positive-test.xlsx'
     When I click check for errors
@@ -20,6 +21,7 @@ Feature: Task details page after file uploads
     Then I am taken to the sign-in page
     When I have entered a correct email address and password and sign in
     Then I am taken to task details page
+    And I can see status for FAL5 as required
     Then I can verify voyage details on the task details page
     And I can see Check answers and submit not enabled
     When I click crew details link
@@ -31,6 +33,7 @@ Feature: Task details page after file uploads
     Then I am taken to task details page
     And I can see status for FAL5 as completed
     And I can see Check answers and submit not enabled
+    And I can see status for FAL6 as required
     When I click Passenger details link
     Then I am taken to Passenger-details page
     When I select Yes to uploading passenger details
@@ -41,6 +44,7 @@ Feature: Task details page after file uploads
     When there are no errors, I am shown the no errors found page
     When I click save and continue
     Then I am taken to task details page
+    And I can see status for FAL6 as completed
     And I sign-out
     When I try to access a protected page with declaration Id
     Then I am taken to the sign-in page
@@ -48,6 +52,11 @@ Feature: Task details page after file uploads
     Then I am taken to task details page
     And I can see status for FAL6 as completed
     And I can see Check answers and submit enabled
+    When I click Your voyage tab
+    Then I am taken to your-voyages page
+    Then I can see the details of the voyage, I have uploaded
+    When I click continue under actions
+    Then I am taken to task details page
     When I click delete draft
     Then I am taken to confirm delete draft page
     When I click No to delete the draft

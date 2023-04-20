@@ -16,12 +16,17 @@ import {
   YOUR_DETAILS_PAGE_URL,
 } from '../../../constants/AppUrlConstants';
 
+/* NOTE: This page is not being used in MVP
+ * Keeping in the code as it's high on the list
+ * of postMVP UX fixes
+ */
+
 const PasswordSupportingText = () => (
   <div className="govuk-grid-column-two-thirds">
     <p className="govuk-body govuk-!-font-weight-bold">Enter a new password</p>
     <p className="govuk-body">Your password must be at least 10 characters long. There is no restriction on the characters you use.</p>
     <p className="govuk-body">
-      To create a long and strong password, the National Cyber Security Centre recommends using <a href={PASSWORD_GUIDENCE_URL} target="_blank" rel="noreferrer">3 random words (opens in new tab)</a>.
+      To create a long and strong password, the National Cyber Security Centre recommends using <a className="govuk-link" href={PASSWORD_GUIDENCE_URL} target="_blank" rel="noreferrer">3 random words (opens in new tab)</a>.
     </p>
   </div>
 );

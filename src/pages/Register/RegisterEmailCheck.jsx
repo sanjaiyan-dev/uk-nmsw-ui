@@ -9,7 +9,6 @@ const RegisterEmailCheck = () => {
     <>
       <h1 className="govuk-heading-xl">Check your email</h1>
       <p className="govuk-body">We have sent an email to  <strong className="govuk-label--s">{state?.dataToSubmit.emailAddress}</strong></p>
-      <p className="govuk-body">Click the link in the email to continue your registration.</p>
       <p>
         <Link
           className="govuk-body govuk-link"

@@ -6,11 +6,15 @@ const GenericMessage = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   document.title = state?.title || SERVICE_NAME;
+
+  // if an error message contains anything other than a string, don't show any message
+  const message = (state?.message && typeof state?.message === 'string') ? state.message : '';
+
   return (
     <div className="govuk-grid-row">
       <div className="govuk-grid-column-two-thirds">
         <h1 className="govuk-heading-xl">{state?.title}</h1>
-        {state?.message && <p className="govuk-body">{state?.message}</p>}
+        {message && <p className="govuk-body">{message}</p>}
         {state?.button && (
           <button
             className="govuk-button"
@@ -22,7 +26,11 @@ const GenericMessage = () => {
           </button>
         )}
         {!state.button && (
-          <Link to={state?.redirectURL || LANDING_URL} state={state}>
+          <Link
+            className="govuk-link"
+            to={state?.redirectURL || LANDING_URL}
+            state={state}
+          >
             {state?.linkText || 'Click here to continue'}
           </Link>
         )}
