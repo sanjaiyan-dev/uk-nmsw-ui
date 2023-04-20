@@ -138,9 +138,18 @@ const genderError = [
     cellNumber: 'H8',
     error: 'Enter M for male, F for female, or X for gender neutral if this is in the travel document'
   },
-  {cellNumber: 'H9', error: 'ensure this value has at most 6 characters'},
-  {cellNumber: 'H10', error: 'ensure this value has at most 6 characters'},
-  {cellNumber: 'H11', error: 'ensure this value has at most 6 characters'},
+  {
+    cellNumber: 'H9',
+    error: 'Enter M for male, F for female, or X for gender neutral if this is in the travel document'
+  },
+  {
+    cellNumber: 'H10',
+    error: 'Enter M for male, F for female, or X for gender neutral if this is in the travel document'
+  },
+  {
+    cellNumber: 'H11',
+    error: 'Enter M for male, F for female, or X for gender neutral if this is in the travel document'
+  },
 ]
 
 Then('I am shown error messages for {string}', (errorType) => {
