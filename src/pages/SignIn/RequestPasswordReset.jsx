@@ -87,14 +87,14 @@ const RequestPasswordReset = () => {
 
   if (isNotActivated) {
     const buttonProps = {
-      buttonLabel: 'Resend confirmation email',
+      buttonLabel: 'Request a new email verification link',
       buttonNavigateTo: REGISTER_EMAIL_RESEND_URL,
     };
     return (
       <Message
         button={buttonProps}
-        title="Email address not activated"
-        message="Resend your activation link"
+        title="Your email address has not been verified"
+        message="You need to verify your email address to finish creating your account."
       />
     );
   }
