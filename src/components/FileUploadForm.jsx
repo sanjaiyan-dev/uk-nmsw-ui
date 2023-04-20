@@ -5,10 +5,11 @@ import PropTypes from 'prop-types';
 import { GENERAL_DECLARATION_TEMPLATE_NAME, MAX_FILE_SIZE, MAX_FILE_SIZE_DISPLAY } from '../constants/AppConstants';
 import {
   DUPLICATE_RECORDS,
-  FILE_MISSING,
-  FILE_TYPE_INVALID_PREFIX,
   FAL5_IS_EMPTY,
   FAL6_IS_EMPTY,
+  FILE_MISSING,
+  FILE_TOO_LARGE,
+  FILE_TYPE_INVALID_CSV_XLSX,
 } from '../constants/AppAPIConstants';
 import {
   FILE_UPLOAD_FIELD_ERRORS_URL,
@@ -47,10 +48,13 @@ const FileUploadForm = ({
 
   const handleErrors = ({ errorData }) => {
     switch (errorData.message) {
+      case DUPLICATE_RECORDS:
+        setError({ id: FILE_UPLOAD_ID, message: "Details listed on this file are not allowed, because they're the same as details you've already uploaded. Check the details in your file and try uploading again." });
+        break;
       case FILE_MISSING:
         setError({ id: FILE_UPLOAD_ID, message: 'Select a file' });
         break;
-      case FILE_TYPE_INVALID_PREFIX:
+      case FILE_TYPE_INVALID_CSV_XLSX:
         setError({ id: FILE_UPLOAD_ID, message: `The file must be a ${fileTypesAllowed}` });
         break;
       case FAL5_IS_EMPTY:
@@ -59,8 +63,8 @@ const FileUploadForm = ({
       case FAL6_IS_EMPTY:
         setError({ id: FILE_UPLOAD_ID, message: 'Template is empty' });
         break;
-      case DUPLICATE_RECORDS:
-        setError({ id: FILE_UPLOAD_ID, message: 'Details listed on this file are not allowed, because they’re the same as details you’ve already uploaded. Check the details in your file and try uploading again.' });
+      case FILE_TOO_LARGE:
+        setError({ id: FILE_UPLOAD_ID, message: `The file must be smaller than ${MAX_FILE_SIZE_DISPLAY}MB` });
         break;
       default: {
         const errorList = MapErrorMessages({ errData: errorData, errorMessageMapFile });
@@ -122,7 +126,7 @@ const FileUploadForm = ({
     if (Object.entries(selectedFile).length < 1) {
       handleErrors({ errorData: { message: FILE_MISSING } });
     } else if (selectedFile?.file.size > MAX_FILE_SIZE) {
-      handleErrors({ errorData: { message: `The file must be smaller than ${MAX_FILE_SIZE_DISPLAY}MB` } });
+      handleErrors({ errorData: { message: FILE_TOO_LARGE } });
     } else {
       const dataToSubmit = new FormData();
       dataToSubmit.append('file', selectedFile?.file, selectedFile?.file?.name);
