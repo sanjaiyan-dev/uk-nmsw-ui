@@ -184,11 +184,14 @@ const MultiFileUploadForm = ({
     inputRef.current.click();
   };
 
-  const updateFileStatus = ({ file, status, errorMessage }) => {
+  const updateFileStatus = ({
+    file, status, errorMessage, id,
+  }) => {
     const updatedFileIndex = filesAddedForUpload.findIndex((existingFile) => existingFile.file.name === file.file.name);
     const newState = [...filesAddedForUpload];
     newState[updatedFileIndex].status = status;
     if (errorMessage) { newState[updatedFileIndex].errorMessage = errorMessage; }
+    if (id) { newState[updatedFileIndex].id = id; }
     setFilesAddedForUpload(newState);
   };
 
@@ -204,44 +207,30 @@ const MultiFileUploadForm = ({
             'Content-Type': 'multipart/form-data',
           },
         });
-        updateFileStatus({ file: selectedFile, status: FILE_STATUS_SUCCESS });
+        updateFileStatus({ file: selectedFile, status: FILE_STATUS_SUCCESS, id: response.data.attachment_id });
         return response;
       } catch (err) {
-        switch (err?.response?.status) {
-          case 400:
-            if (err?.response?.data?.message?.startsWith(FILE_TYPE_INVALID_PREFIX)) {
-              updateFileStatus({
-                file: selectedFile,
-                status: FILE_STATUS_ERROR,
-                errorMessage: 'The file must be a csv, doc, docm, docx, rtf, txt, xls, xlsm, xlsx, xltm, xltx, xlw or xml',
-              });
-            } else {
-              updateFileStatus({
-                file: selectedFile,
-                status: FILE_STATUS_ERROR,
-                errorMessage: err?.response?.data?.message ? err.response.data.message : 'There was a problem check file and try again',
-              });
-            }
-            break;
-          case 401:
-          case 422:
-            Auth.removeToken();
-            navigate(SIGN_IN_URL, { state: { redirectURL: urlThisPage } });
-            break;
-          default:
-            if (selectedFile.file.size >= MAX_SUPPORTING_FILE_SIZE) {
-              updateFileStatus({
-                file: selectedFile,
-                status: FILE_STATUS_ERROR,
-                errorMessage: `The file must be smaller than ${MAX_SUPPORTING_FILE_SIZE_DISPLAY}MB`,
-              });
-            } else {
-              updateFileStatus({
-                file: selectedFile,
-                status: FILE_STATUS_ERROR,
-                errorMessage: err?.response?.data?.message ? err.response.data.message : 'There was a problem check file and try again',
-              });
-            }
+        if (selectedFile.file.size >= MAX_SUPPORTING_FILE_SIZE) {
+          updateFileStatus({
+            file: selectedFile,
+            status: FILE_STATUS_ERROR,
+            errorMessage: `The file must be smaller than ${MAX_SUPPORTING_FILE_SIZE_DISPLAY}MB`,
+          });
+        } else if (err?.response?.data?.message?.startsWith(FILE_TYPE_INVALID_PREFIX)) {
+          updateFileStatus({
+            file: selectedFile,
+            status: FILE_STATUS_ERROR,
+            errorMessage: 'The file must be a csv, doc, docm, docx, rtf, txt, xls, xlsm, xlsx, xltm, xltx, xlw or xml',
+          });
+        } else if (err?.response?.status === 401 || err?.response?.status === 422) {
+          Auth.removeToken();
+          navigate(SIGN_IN_URL, { state: { redirectURL: urlThisPage } });
+        } else {
+          updateFileStatus({
+            file: selectedFile,
+            status: FILE_STATUS_ERROR,
+            errorMessage: err?.response?.data?.message ? err.response.data.message : 'There was a problem check file and try again',
+          });
         }
         return err;
       }
@@ -260,20 +249,43 @@ const MultiFileUploadForm = ({
     asyncLoop();
   };
 
-  const handleDelete = ({ e, fileName }) => {
+  const handleDelete = async ({ e, fileName, id }) => {
     e.preventDefault();
-    /* There will be two states a file could be in
-     * 1. in our filesAddedForUpload state (not stored in db)
-     * 2. already uploaded and stored to the db
-     * In future, when we do a GET request to see what files are
-     * stored on the db, then we can set a value to 'uploaded' on the file object
-     * that we keep in current state, and use that value to determine
-     * if we need to do a DELETE request.
-     * Until we build that we only have state 1, which is handled with the code below
-     */
-
-    const filtered = filesAddedForUpload.filter((file) => file.file.name !== fileName);
-    setFilesAddedForUpload(filtered);
+    if (id) {
+      try {
+        const response = await axios({
+          method: 'delete',
+          url: endpoint,
+          data: {
+            id,
+          },
+          headers: {
+            Authorization: `Bearer ${Auth.retrieveToken()}`,
+          },
+        });
+        if (response?.status === 200) {
+          getDeclarationData();
+        }
+      } catch (err) {
+        switch (err?.response?.status) {
+          case 401:
+          case 422:
+            Auth.removeToken();
+            navigate(SIGN_IN_URL, { state: { redirectURL: urlThisPage } });
+            break;
+          default: navigate(MESSAGE_URL, {
+            state: {
+              title: 'Something has gone wrong',
+              message: err?.response?.message,
+              redirectURL: YOUR_VOYAGES_URL,
+            },
+          });
+        }
+      }
+    } else {
+      const filtered = filesAddedForUpload.filter((file) => file.file.name !== fileName);
+      setFilesAddedForUpload(filtered);
+    }
   };
 
   const onContinue = (e) => {
@@ -398,7 +410,7 @@ const MultiFileUploadForm = ({
                     <button
                       className="govuk-button govuk-button--warning govuk-!-margin-bottom-5"
                       type="button"
-                      onClick={(e) => handleDelete({ e, fileName: file.filename })}
+                      onClick={(e) => handleDelete({ e, fileName: file.filename, id: file.id })}
                     >
                       Delete
                     </button>
@@ -422,7 +434,7 @@ const MultiFileUploadForm = ({
                     <button
                       className="govuk-button govuk-button--warning govuk-!-margin-bottom-5"
                       type="button"
-                      onClick={(e) => handleDelete({ e, fileName: file.file.name })}
+                      onClick={(e) => handleDelete({ e, fileName: file.file.name, id: file.id })}
                     >
                       Delete
                     </button>
