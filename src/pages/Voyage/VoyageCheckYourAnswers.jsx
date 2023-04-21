@@ -20,6 +20,7 @@ import { countries } from '../../constants/CountryData';
 import ConfirmationMessage from '../../components/ConfirmationMessage';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import Message from '../../components/Message';
+import StatusTag from '../../components/StatusTag';
 import GetDeclaration from '../../utils/GetDeclaration';
 import Auth from '../../utils/Auth';
 import { scrollToElementId, scrollToTop } from '../../utils/ScrollToElement';
@@ -86,6 +87,12 @@ const VoyageCheckYourAnswers = () => {
     if (response.data) {
       setDeclarationData(response.data);
       setVoyageDetails([
+        {
+          title: 'Status',
+          type: 'status',
+          // value: { status: response.data.FAL1.status, submissionDate: response.data.FAL1.submissionDate ? dayjs(response.data.FAL1.submissionDate).format('D MMMM YYYY') : null }), // it will be received here once BE is merged
+          value: { status: 'Submitted', submissionDate: '2021-12-31' ? dayjs('2021-12-31').format('D MMMM YYYY') : null }, // using this for testing for now
+        },
         {
           title: 'Voyage type',
           value: response.data.FAL1.departureFromUk ? 'Departure from the UK' : 'Arrival to the UK',
@@ -325,15 +332,22 @@ const VoyageCheckYourAnswers = () => {
                 </dt>
                 <dd className="govuk-summary-list__value">
                   {
-                    Array.isArray(item.value)
-                      ? item.value.map((subItem) => (
+                      Array.isArray(item.value)
+                      && item.value.map((subItem) => (
                         <React.Fragment key={subItem.label}>
                           <span>{subItem.label}</span>
                           <p className="govuk-!-margin-bottom-2 govuk-!-margin-top-0">{subItem.item}</p>
                         </React.Fragment>
                       ))
-                      : item.value
-                  }
+                    }
+                  {
+                      item.type === 'status'
+                      && <span><StatusTag status={item.value.status} /> {item.value.submissionDate}</span>
+                    }
+                  {
+                      (item.type !== 'status' && !Array.isArray(item.value))
+                      && <span>{item.value}</span>
+                    }
                 </dd>
                 <dd className="govuk-summary-list__actions" />
               </div>
