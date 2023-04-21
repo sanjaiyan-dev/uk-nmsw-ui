@@ -157,8 +157,6 @@ const VoyageCheckYourAnswers = () => {
       ]);
 
       setDeclarationStatus({
-        // status: 'Submitted', // response.data?.FAL1.status
-        // submissionDate: dayjs('2023-01-11').format('D MMMM YYYY'), // dayjs.(response.data?.FAL1.submissionDate).format('D MMMM YYYY')
         status: response.data?.FAL1.status,
         submissionDate: response.data?.FAL1.submissionDate ? dayjs(response.data?.FAL1.submissionDate).format('D MMMM YYYY') : null,
       });
