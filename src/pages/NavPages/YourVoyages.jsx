@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
@@ -25,14 +25,14 @@ import Auth from '../../utils/Auth';
 
 const YourVoyages = () => {
   dayjs.extend(customParseFormat);
-  // const { state } = useLocation();
+  const { state } = useLocation();
   const navigate = useNavigate();
+  const [notification, setNotification] = useState({});
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [voyageData, setVoyageData] = useState();
 
   document.title = SERVICE_NAME;
-  // console.log('confbanner', state?.confirmationBanner);
 
   const handleClick = async () => {
     setIsLoading(true);
@@ -90,7 +90,16 @@ const YourVoyages = () => {
   useEffect(() => {
     setIsLoading(true);
     getDeclarationData();
-  }, []);
+
+    if (state?.confirmationBanner?.message) {
+      setNotification({
+        show: true,
+        message: state?.confirmationBanner?.message,
+      });
+      // eslint-disable-next-line no-restricted-globals
+      navigate(location.pathname, { replace: true });
+    }
+  }, [state]);
 
   if (isError) {
     return (
@@ -104,6 +113,25 @@ const YourVoyages = () => {
     <>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">
+          {notification.show && (
+            <div
+              className="govuk-notification-banner govuk-notification-banner--success"
+              role="alert"
+              aria-labelledby="govuk-notification-banner-title"
+              data-module="govuk-notification-banner"
+            >
+              <div className="govuk-notification-banner__header">
+                <h2 className="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                  Success
+                </h2>
+              </div>
+              <div className="govuk-notification-banner__content">
+                <h3 className="govuk-notification-banner__heading">
+                  {notification.message}
+                </h3>
+              </div>
+            </div>
+          )}
           <h1 className="govuk-heading-xl govuk-!-margin-bottom-4">Your voyages</h1>
           {voyageData?.length === 0 && (
             <div className="govuk-inset-text">
