@@ -279,8 +279,8 @@ describe('Your voyages page tests', () => {
     render(<MemoryRouter><YourVoyages /></MemoryRouter>);
     expect(await screen.findByText('All report types')).toBeInTheDocument();
     expect(screen.getByText('Ship 6')).toBeInTheDocument();
-    expect(screen.getByText('Failed').outerHTML).toEqual('<strong class="govuk-tag govuk-tag--red">Cancelled</strong>');
-    expect(screen.getByText('Review and resubmit').outerHTML).toEqual('<a class="govuk-link small-link-text" href="/report-voyage/check-your-answers?report=6">Review and resubmit</a>');
+    expect(screen.getByText('Failed').outerHTML).toEqual('<strong class="govuk-tag govuk-tag--red">Failed</strong>');
+    expect(screen.getByText('Review and re-submit').outerHTML).toEqual('<a class="govuk-link small-link-text" href="/report-voyage/check-your-answers?report=6">Review and re-submit</a>');
 
     expect(screen.queryByText('Submitted')).not.toBeInTheDocument();
     expect(screen.queryByText('Cancelled')).not.toBeInTheDocument();
