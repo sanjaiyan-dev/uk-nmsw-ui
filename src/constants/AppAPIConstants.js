@@ -20,8 +20,12 @@ export const ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH = '/supporting';
 export const ENDPOINT_DECLARATION_ATTACHMENTS_PATH = '/attachments';
 
 // Responses
+export const DUPLICATE_RECORDS = 'Duplicate person records found. Please check the upload (note that duplication could be in FAL5).';
+export const DUPLICATE_RECORDS_FAL5 = 'Duplicate person records found. Please check the upload (note that duplication could be in FAL6).';
 export const FILE_MISSING = 'No file provided';
+export const FILE_TOO_LARGE = 'Large file';
 export const FILE_TYPE_INVALID_PREFIX = 'Invalid file type';
+export const FILE_TYPE_INVALID_CSV_XLSX = "Invalid file type: Not a ['csv', 'xlsx']";
 export const FAL5_IS_EMPTY = 'File has no crew data';
 export const FAL6_IS_EMPTY = 'No data rows found in file.';
 export const TOKEN_EXPIRED = 'Token has expired';

@@ -22,24 +22,9 @@ import {
 } from '../../constants/AppUrlConstants';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import Message from '../../components/Message';
+import StatusTag from '../../components/StatusTag';
 import Auth from '../../utils/Auth';
 import GetDeclaration from '../../utils/GetDeclaration';
-
-const CLASSES_FOR_STATUS = {
-  completed: 'govuk-tag app-task-list__tag',
-  required: 'govuk-tag govuk-tag--pink app-task-list__tag',
-  optional: 'govuk-tag govuk-tag--blue app-task-list__tag',
-  notStarted: 'govuk-tag govuk-tag--grey app-task-list__tag',
-  cannotStartYet: 'govuk-tag govuk-tag--grey app-task-list__tag',
-};
-
-const LABELS_FOR_STATUS = {
-  completed: 'Completed',
-  required: 'Required',
-  optional: 'Optional',
-  notStarted: 'Not started',
-  cannotStartYet: 'Cannot start yet',
-};
 
 const VoyageTaskList = () => {
   const navigate = useNavigate();
@@ -170,7 +155,7 @@ const VoyageTaskList = () => {
                     <li key={item.label} className="app-task-list__item">
                       <Link className="govuk-link" to={item.link}>
                         <span>{item.label}</span>
-                        <strong className={CLASSES_FOR_STATUS[item.status]}>{LABELS_FOR_STATUS[item.status]}</strong>
+                        <StatusTag status={item.status} />
                       </Link>
                     </li>
                   ))
@@ -185,14 +170,14 @@ const VoyageTaskList = () => {
                     && (
                       <div data-testid="checkYourAnswers">
                         <span>Check answers and submit</span>
-                        <strong className={CLASSES_FOR_STATUS[checkYourAnswersStep.status]}>{LABELS_FOR_STATUS[checkYourAnswersStep.status]}</strong>
+                        <StatusTag status={checkYourAnswersStep.status} />
                       </div>
                     )}
                   {checkYourAnswersStep.status !== 'cannotStartYet'
                     && (
                       <Link className="govuk-link" to={checkYourAnswersStep.link}>
                         <span>Check answers and submit</span>
-                        <strong className={CLASSES_FOR_STATUS[checkYourAnswersStep.status]}>{LABELS_FOR_STATUS[checkYourAnswersStep.status]}</strong>
+                        <StatusTag status={checkYourAnswersStep.status} />
                       </Link>
                     )}
                 </li>

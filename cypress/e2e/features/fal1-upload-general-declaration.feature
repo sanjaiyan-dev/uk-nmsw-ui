@@ -15,12 +15,12 @@ Feature: Upload General declaration (FAL1) page
       | Error | Error: Select a file  |
     When I upload the file is not of type .csv or .xlsx
     Then previous the error message should clear
-    When I click check for errors
+    When I click check for errors for file not of type .csv or .xlsx
     Then I am shown corresponding error message
       | Field | fileUploadInput-error                 |
       | Error | Error: The file must be a csv or xlsx |
     When I upload the file larger than 4MB
-    When I click check for errors
+    When I click check for errors for file larger than 4MB
     Then I am shown corresponding error message
       | Field | fileUploadInput-error                    |
       | Error | Error: The file must be smaller than 4MB |
@@ -32,3 +32,7 @@ Feature: Upload General declaration (FAL1) page
     When there are no errors, I am shown the no errors found for 'General declaration FAL 1-Positive-test.xlsx'
     When I click save and continue
     Then I am taken to task details page
+    When I try to access a protected CYA page with declaration Id
+    When I click Save and Submit
+    Then I am shown form error message
+      | Error | Crew details (FAL 5) upload is requiredYou need to provide passenger details, even if the ship is carrying no passengers |

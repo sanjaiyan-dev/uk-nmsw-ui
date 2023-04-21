@@ -89,7 +89,7 @@ describe('Your voyages page tests', () => {
     render(<MemoryRouter><YourVoyages /></MemoryRouter>);
     expect(await screen.findByText('All report types')).toBeInTheDocument();
     expect(await screen.findByText('Ship 1')).toBeInTheDocument();
-    expect(await screen.findByText('draft')).toBeInTheDocument();
+    expect(await screen.findByText('Draft')).toBeInTheDocument();
     expect(await screen.findByText('Continue')).toBeInTheDocument();
   });
 
@@ -143,7 +143,7 @@ describe('Your voyages page tests', () => {
     render(<MemoryRouter><YourVoyages /></MemoryRouter>);
     expect(await screen.findByText('Ship 2')).toBeInTheDocument();
     expect(await screen.findByText('Ship 3')).toBeInTheDocument();
-    expect(await screen.findAllByText('submitted')).toHaveLength(2);
+    expect(await screen.findAllByText('Submitted')).toHaveLength(2);
     expect(await screen.findAllByText('Review or cancel')).toHaveLength(2);
   });
 
@@ -197,7 +197,7 @@ describe('Your voyages page tests', () => {
     render(<MemoryRouter><YourVoyages /></MemoryRouter>);
     expect(await screen.findByText('Ship 5')).toBeInTheDocument();
     expect(await screen.findByText('Ship 5')).toBeInTheDocument();
-    expect(await screen.findAllByText('cancelled')).toHaveLength(2);
+    expect(await screen.findAllByText('Cancelled')).toHaveLength(2);
     expect(await screen.findAllByText('Review')).toHaveLength(2);
   });
 
@@ -230,7 +230,39 @@ describe('Your voyages page tests', () => {
       });
     render(<MemoryRouter><YourVoyages /></MemoryRouter>);
     expect(await screen.findByText('Ship 6')).toBeInTheDocument();
-    expect(await screen.findByText('failed')).toBeInTheDocument();
+    expect(await screen.findByText('Failed')).toBeInTheDocument();
+    expect(await screen.findByText('Review and re-submit')).toBeInTheDocument();
+  });
+
+  it('should default to a review status if no status/unknown is received (should not happen but it is our catchall incase of changes)', async () => {
+    mockAxios
+      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .reply(200, {
+        results: [
+          {
+            id: '6',
+            status: '',
+            submissionDate: '2023-02-11',
+            nameOfShip: 'Ship 6',
+            imoNumber: '123',
+            callSign: 'NA',
+            signatory: 'John Doe',
+            flagState: 'GBR',
+            departureFromUk: true,
+            departurePortUnlocode: 'AU XXX',
+            departureDate: '2023-02-12',
+            departureTime: '14:00:00',
+            arrivalPortUnlocode: 'GB POR',
+            arrivalDate: '2023-02-19',
+            arrivalTime: '14:00:00',
+            previousPortUnlocode: 'AU XXX',
+            nextPortUnlocode: 'NL RTM',
+            cargo: 'No cargo',
+          },
+        ],
+      });
+    render(<MemoryRouter><YourVoyages /></MemoryRouter>);
+    expect(await screen.findByText('Ship 6')).toBeInTheDocument();
     expect(await screen.findByText('Review and re-submit')).toBeInTheDocument();
   });
 

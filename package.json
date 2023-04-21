@@ -1,6 +1,6 @@
 {
   "name": "nmsw-ui",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "description": "National Maritime Single Window",
   "main": "index.js",
   "scripts": {
@@ -50,6 +50,7 @@
     "css-loader": "^6.7.1",
     "cypress": "^12.7.0",
     "cypress-axe": "^1.0.0",
+    "cypress-downloadfile": "^1.2.3",
     "dotenv-webpack": "^8.0.1",
     "esbuild": "^0.15.11",
     "eslint": "^8.31.0",
@@ -79,7 +80,6 @@
   "dependencies": {
     "accessible-autocomplete": "^2.0.4",
     "axios": "^1.2.1",
-    "cypress-downloadfile": "^1.2.3",
     "dayjs": "^1.11.7",
     "govuk-frontend": "^4.3.1",
     "prop-types": "^15.8.1",

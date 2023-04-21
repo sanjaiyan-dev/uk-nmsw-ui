@@ -17,7 +17,6 @@ async function setupNodeEvents(on, config) {
   );
   on(
       'task',
-      {downloadFile},
       {
         log(message) {
           // eslint-disable-next-line no-console
@@ -37,8 +36,8 @@ async function setupNodeEvents(on, config) {
             return true
           }
           return false
-        }
-
+        },
+  downloadFile
       }
   );
   config.env.MAIL_API_KEY = process.env.DEV_NMSW_MAILSLURP_API_KEY;
