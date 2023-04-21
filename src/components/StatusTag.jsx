@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import {
   DECLARATION_STATUS_CANCELLED,
   DECLARATION_STATUS_DRAFT,
+  DECLARATION_STATUS_FAILED,
   DECLARATION_STATUS_PRECANCELLED,
   DECLARATION_STATUS_PRESUBMITTED,
   DECLARATION_STATUS_SUBMITTED,
@@ -24,6 +25,10 @@ const StatusTag = ({ status }) => {
     case DECLARATION_STATUS_DRAFT:
       tagClass = 'govuk-tag govuk-tag--grey';
       label = 'Draft';
+      break;
+    case DECLARATION_STATUS_FAILED:
+      tagClass = 'govuk-tag govuk-tag--red';
+      label = 'Failed';
       break;
     case DECLARATION_STATUS_PRECANCELLED:
       tagClass = 'govuk-tag govuk-tag--orange';
@@ -59,7 +64,7 @@ const StatusTag = ({ status }) => {
       label = 'Required';
       break;
     default: {
-      tagClass = 'govuk-tag';
+      tagClass = '';
       label = '';
     }
   }

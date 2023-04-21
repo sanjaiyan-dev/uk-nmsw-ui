@@ -4,6 +4,7 @@ export const SERVICE_NAME = 'National Maritime Single Window';
 // Declarations
 export const DECLARATION_STATUS_CANCELLED = 'Cancelled';
 export const DECLARATION_STATUS_DRAFT = 'Draft';
+export const DECLARATION_STATUS_FAILED = 'Failed';
 export const DECLARATION_STATUS_PRECANCELLED = 'PreCancelled';
 export const DECLARATION_STATUS_PRESUBMITTED = 'PreSubmitted';
 export const DECLARATION_STATUS_SUBMITTED = 'Submitted';
