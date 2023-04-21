@@ -48,6 +48,7 @@ import {
   YOUR_DETAILS_PAGE_URL,
   HELP_URL,
   LOGGED_IN_HELP,
+  CONTACT_US_URL,
 } from './constants/AppUrlConstants';
 
 import LoadingSpinner from './components/LoadingSpinner';
@@ -78,6 +79,7 @@ const CookiePolicy = lazy(() => import('./pages/Regulatory/CookiePolicy'));
 const Landing = lazy(() => import('./pages/Landing/Landing'));
 const PrivacyNotice = lazy(() => import('./pages/Regulatory/PrivacyNotice'));
 const Help = lazy(() => import('./pages/Regulatory/Help'));
+const ContactUs = lazy(() => import('./pages/Regulatory/ContactUs'));
 // Downloadable templates pages
 const Templates = lazy(() => import('./pages/NavPages/Templates'));
 // Voyage pages
@@ -127,6 +129,7 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
           <Route path={LANDING_URL} element={<Landing />} />
           <Route path={PRIVACY_URL} element={<PrivacyNotice />} />
           <Route path={HELP_URL} element={<Help />} />
+          <Route path={CONTACT_US_URL} element={<ContactUs />}/>
 
 
           <Route element={<ProtectedRoutes isPermittedToView={isPermittedToView} />}>
