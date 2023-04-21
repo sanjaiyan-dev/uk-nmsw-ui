@@ -3,7 +3,11 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { DECLARATION_STATUS_DRAFT, DECLARATION_STATUS_PRESUBMITTED } from '../../constants/AppConstants';
+import {
+  DECLARATION_STATUS_DRAFT,
+  DECLARATION_STATUS_PRESUBMITTED,
+  DECLARATION_STATUS_SUBMITTED,
+} from '../../constants/AppConstants';
 import { API_URL, ENDPOINT_DECLARATION_PATH, TOKEN_EXPIRED } from '../../constants/AppAPIConstants';
 import {
   MESSAGE_URL,
@@ -330,14 +334,14 @@ const VoyageCheckYourAnswers = () => {
             {
               declarationStatus?.status !== DECLARATION_STATUS_DRAFT
               && (
-              <div className="govuk-summary-list__row">
-                <dt className="govuk-summary-list__key">
-                  Status
-                </dt>
-                <dd className="govuk-summary-list__value">
-                  <StatusTag status={declarationStatus?.status} /> {declarationStatus?.submissionDate}
-                </dd>
-              </div>
+                <div className="govuk-summary-list__row">
+                  <dt className="govuk-summary-list__key">
+                    Status
+                  </dt>
+                  <dd className="govuk-summary-list__value">
+                    <StatusTag status={declarationStatus?.status} /> {declarationStatus?.submissionDate}
+                  </dd>
+                </div>
               )
             }
 
@@ -411,18 +415,45 @@ const VoyageCheckYourAnswers = () => {
             </div>
           </dl>
 
-          <h2 className="govuk-heading-m">Now send your application</h2>
-          <p className="govuk-body">By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.</p>
+          {
+            declarationStatus?.status === DECLARATION_STATUS_DRAFT
+            && (
+              <>
+                <h2 className="govuk-heading-m">Now send your application</h2>
+                <p className="govuk-body">By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.</p>
 
-          <button
-            type="button"
-            className={isPendingSubmit ? 'govuk-button disabled' : 'govuk-button'}
-            data-module="govuk-button"
-            disabled={isPendingSubmit}
-            onClick={() => handleSubmit()}
-          >
-            Save and submit
-          </button>
+                <button
+                  type="button"
+                  className={isPendingSubmit ? 'govuk-button disabled' : 'govuk-button'}
+                  data-module="govuk-button"
+                  disabled={isPendingSubmit}
+                  onClick={() => handleSubmit()}
+                >
+                  Save and submit
+                </button>
+              </>
+            )
+          }
+          {
+            (declarationStatus?.status === DECLARATION_STATUS_SUBMITTED || declarationStatus?.status === DECLARATION_STATUS_PRESUBMITTED)
+            && (
+              <>
+                <h2 className="govuk-heading-m">Now send your application</h2>
+                <p className="govuk-body">By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.</p>
+
+                <button
+                  type="button"
+                  // className={isPendingCancel ? 'govuk-button disabled' : 'govuk-button govuk-button--warning'}
+                  className="govuk-button govuk-button--warning"
+                  data-module="govuk-button"
+                  // disabled={isPendingCancel}
+                  // onClick={() => handleCancel()}
+                >
+                  Cancel
+                </button>
+              </>
+            )
+          }
         </div>
       </div>
     </>
