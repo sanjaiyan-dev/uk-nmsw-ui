@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { SERVICE_CONTACT_EMAIL, SERVICE_NAME } from "../../constants/AppConstants";
-import { LOGGED_IN_HELP } from "../../constants/AppUrlConstants";
+import { HELP_URL, LOGGED_IN_HELP } from "../../constants/AppUrlConstants";
 import Auth from "../../utils/Auth";
 
 const HelpFooter = () => {
