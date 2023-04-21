@@ -41,6 +41,7 @@ describe('Voyage check your answers page', () => {
   const mockedFAL1And5Response = {
     FAL1: {
       nameOfShip: 'Test ship name',
+      status: 'Draft',
       imoNumber: '1234567',
       callSign: 'NA',
       signatory: 'Captain Name',
@@ -57,7 +58,7 @@ describe('Voyage check your answers page', () => {
       cargo: 'No cargo',
       passengers: false,
       creationDate: '2023-02-10',
-      submissionDate: '2023-02-11',
+      submissionDate: null,
     },
     FAL5: [
       {
@@ -758,5 +759,56 @@ describe('Voyage check your answers page', () => {
     expect(screen.getByText('We will send you an email that you can show to Border Force officers as proof that you have sent these reports.')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Return to your voyages' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Return to your voyages' }).outerHTML).toEqual('<a href="/your-voyages">Return to your voyages</a>');
+  });
+
+  // ==========================
+  // STATUS TESTS
+  // ==========================
+  it('should render the status as submitted, submission date, and a cancel CTA', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          status: 'Submitted',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: false,
+          departurePortUnlocode: 'AUPOR',
+          departureDate: '2023-02-12',
+          departureTime: '09:23:00',
+          arrivalPortUnlocode: 'GBDOV',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUPOR',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: false,
+          creationDate: '2023-02-10',
+          submissionDate: '2023-02-10',
+        },
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [],
+        supporting: [],
+      });
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(screen.getByText('Submitted').outerHTML).toEqual('<strong class="govuk-tag govuk-tag--green">Submitted</strong>');
+    expect(screen.getByText('10 February 2023')).toBeInTheDocument();
+    // expect cancel button
+    // expect no submission button
   });
 });
