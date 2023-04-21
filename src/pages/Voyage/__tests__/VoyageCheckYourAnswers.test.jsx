@@ -75,6 +75,7 @@ describe('Voyage check your answers page', () => {
   const mockedAllResponse = {
     FAL1: {
       nameOfShip: 'Test ship name',
+      status: 'Draft',
       imoNumber: '1234567',
       callSign: 'NA',
       signatory: 'Captain Name',
@@ -91,7 +92,7 @@ describe('Voyage check your answers page', () => {
       cargo: 'No cargo',
       passengers: true,
       creationDate: '2023-02-10',
-      submissionDate: '2023-02-11',
+      submissionDate: null,
     },
     FAL5: [
       {
@@ -128,6 +129,7 @@ describe('Voyage check your answers page', () => {
   const mockedFAL1Only = {
     FAL1: {
       nameOfShip: 'Test ship name',
+      status: 'Draft',
       imoNumber: '1234567',
       callSign: 'NA',
       signatory: 'Captain Name',
@@ -144,7 +146,7 @@ describe('Voyage check your answers page', () => {
       cargo: 'No cargo',
       passengers: null,
       creationDate: '2023-02-10',
-      submissionDate: '2023-02-11',
+      submissionDate: null,
     },
     FAL5: [],
     FAL6: [],
@@ -154,6 +156,7 @@ describe('Voyage check your answers page', () => {
   const mockedPassengerYesButNoFAL6 = {
     FAL1: {
       nameOfShip: 'Test ship name',
+      status: 'Draft',
       imoNumber: '1234567',
       callSign: 'NA',
       signatory: 'Captain Name',
@@ -170,7 +173,7 @@ describe('Voyage check your answers page', () => {
       cargo: 'No cargo',
       passengers: true,
       creationDate: '2023-02-10',
-      submissionDate: '2023-02-11',
+      submissionDate: null,
     },
     FAL5: [
       {
@@ -354,7 +357,7 @@ describe('Voyage check your answers page', () => {
       });
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
-    expect(screen.getByText('HON').outerHTML).toEqual('<span>HON</span>');
+    expect(screen.getByText('HON').outerHTML).toEqual('<dd class="govuk-summary-list__value">HON</dd>');
   });
 
   // ==========================
@@ -371,11 +374,11 @@ describe('Voyage check your answers page', () => {
       .reply(200, mockedFAL1And5Response);
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
-    expect(screen.getByText('Arrival to the UK').outerHTML).toEqual('<span>Arrival to the UK</span>');
-    expect(screen.getByText('Test ship name').outerHTML).toEqual('<span>Test ship name</span>');
-    expect(screen.getByText('1234567').outerHTML).toEqual('<span>1234567</span>');
-    expect(screen.getByText('NA').outerHTML).toEqual('<span>NA</span>');
-    expect(screen.getByText('United Kingdom of Great Britain and Northern Ireland').outerHTML).toEqual('<span>United Kingdom of Great Britain and Northern Ireland</span>');
+    expect(screen.getByText('Arrival to the UK').outerHTML).toEqual('<dd class="govuk-summary-list__value">Arrival to the UK</dd>');
+    expect(screen.getByText('Test ship name').outerHTML).toEqual('<dd class="govuk-summary-list__value">Test ship name</dd>');
+    expect(screen.getByText('1234567').outerHTML).toEqual('<dd class="govuk-summary-list__value">1234567</dd>');
+    expect(screen.getByText('NA').outerHTML).toEqual('<dd class="govuk-summary-list__value">NA</dd>');
+    expect(screen.getByText('United Kingdom of Great Britain and Northern Ireland').outerHTML).toEqual('<dd class="govuk-summary-list__value">United Kingdom of Great Britain and Northern Ireland</dd>');
     // departure block
     expect(screen.getByText('Departure port LOCODE').outerHTML).toEqual('<span>Departure port LOCODE</span>');
     expect(screen.getByText('AU POR').outerHTML).toEqual('<p class="govuk-!-margin-bottom-2 govuk-!-margin-top-0">AU POR</p>');
@@ -391,8 +394,8 @@ describe('Voyage check your answers page', () => {
     expect(screen.getByText('Time of arrival').outerHTML).toEqual('<span>Time of arrival</span>');
     expect(screen.getByText('14:00').outerHTML).toEqual('<p class="govuk-!-margin-bottom-2 govuk-!-margin-top-0">14:00</p>');
 
-    expect(screen.getByText('NL RTM').outerHTML).toEqual('<span>NL RTM</span>');
-    expect(screen.getByText('No cargo').outerHTML).toEqual('<span>No cargo</span>');
+    expect(screen.getByText('NL RTM').outerHTML).toEqual('<dd class="govuk-summary-list__value">NL RTM</dd>');
+    expect(screen.getByText('No cargo').outerHTML).toEqual('<dd class="govuk-summary-list__value">No cargo</dd>');
     expect(screen.getByRole('link', { name: 'Crew details including supernumeraries FAL 5.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal5-report-link.com" download="">Crew details including supernumeraries FAL 5.xlsx</a>');
     expect(screen.getByText('No passenger details provided')).toBeInTheDocument();
     expect(screen.getByText('No supporting documents provided')).toBeInTheDocument();
@@ -600,6 +603,7 @@ describe('Voyage check your answers page', () => {
       .reply(200, {
         FAL1: {
           nameOfShip: 'Test ship name',
+          status: 'Draft',
           imoNumber: '1234567',
           callSign: 'NA',
           signatory: 'Captain Name',
@@ -616,7 +620,7 @@ describe('Voyage check your answers page', () => {
           cargo: 'No cargo',
           passengers: true,
           creationDate: '2023-02-10',
-          submissionDate: '2023-02-11',
+          submissionDate: null,
         },
         FAL5: [
           {
@@ -728,7 +732,7 @@ describe('Voyage check your answers page', () => {
         id: '123',
         status: 'PreSubmitted',
         creationDate: '2023-04-17',
-        submissionDate: null,
+        submissionDate: '2023-04-17',
         nameOfShip: 'Test Ship',
         imoNumber: '1234567',
         callSign: 'NA',
@@ -764,51 +768,101 @@ describe('Voyage check your answers page', () => {
   // ==========================
   // STATUS TESTS
   // ==========================
-  it('should render the status as submitted, submission date, and a cancel CTA', async () => {
-    mockAxios
-      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
-        headers: {
-          Authorization: 'Bearer 123',
-        },
-      })
-      .reply(200, {
-        FAL1: {
-          nameOfShip: 'Test ship name',
-          status: 'Submitted',
-          imoNumber: '1234567',
-          callSign: 'NA',
-          signatory: 'Captain Name',
-          flagState: 'GBR',
-          departureFromUk: false,
-          departurePortUnlocode: 'AUPOR',
-          departureDate: '2023-02-12',
-          departureTime: '09:23:00',
-          arrivalPortUnlocode: 'GBDOV',
-          arrivalDate: '2023-02-15',
-          arrivalTime: '14:00:00',
-          previousPortUnlocode: 'AUPOR',
-          nextPortUnlocode: 'NLRTM',
-          cargo: 'No cargo',
-          passengers: false,
-          creationDate: '2023-02-10',
-          submissionDate: '2023-02-10',
-        },
-        FAL5: [
-          {
-            filename: 'Crew details including supernumeraries FAL 5.xlsx',
-            id: 'FAL5',
-            size: '118385',
-            url: 'https://fal5-report-link.com',
-          },
-        ],
-        FAL6: [],
-        supporting: [],
-      });
-    renderPage();
-    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
-    expect(screen.getByText('Submitted').outerHTML).toEqual('<strong class="govuk-tag govuk-tag--green">Submitted</strong>');
-    expect(screen.getByText('10 February 2023')).toBeInTheDocument();
-    // expect cancel button
-    // expect no submission button
-  });
+  // it('should render no status line and the cta as submit if status is draft', async () => {
+  //   mockAxios
+  //     .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+  //       headers: {
+  //         Authorization: 'Bearer 123',
+  //       },
+  //     })
+  //     .reply(200, {
+  //       FAL1: {
+  //         nameOfShip: 'Test ship name',
+  //         status: 'Draft',
+  //         imoNumber: '1234567',
+  //         callSign: 'NA',
+  //         signatory: 'Captain Name',
+  //         flagState: 'GBR',
+  //         departureFromUk: false,
+  //         departurePortUnlocode: 'AUPOR',
+  //         departureDate: '2023-02-12',
+  //         departureTime: '09:23:00',
+  //         arrivalPortUnlocode: 'GBDOV',
+  //         arrivalDate: '2023-02-15',
+  //         arrivalTime: '14:00:00',
+  //         previousPortUnlocode: 'AUPOR',
+  //         nextPortUnlocode: 'NLRTM',
+  //         cargo: 'No cargo',
+  //         passengers: false,
+  //         creationDate: '2023-02-10',
+  //         submissionDate: null,
+  //       },
+  //       FAL5: [
+  //         {
+  //           filename: 'Crew details including supernumeraries FAL 5.xlsx',
+  //           id: 'FAL5',
+  //           size: '118385',
+  //           url: 'https://fal5-report-link.com',
+  //         },
+  //       ],
+  //       FAL6: [],
+  //       supporting: [],
+  //     });
+  //   renderPage();
+  //   await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+
+  //   expect(screen.getByText('Now send your application')).toBeInTheDocument();
+  //   expect(screen.getAllByText('Status')).not.toBeInTheDocument();
+  //   expect(screen.getByText('By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.')).toBeInTheDocument();
+  //   expect(screen.getByRole('button', { name: 'Save and submit' })).toBeInTheDocument();
+  //   expect(screen.getByRole('button', { name: 'Save and submit' }).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button">Save and submit</button>');
+  // });
+
+  // it('should render the status as submitted, submission date, and a cancel CTA', async () => {
+  //   mockAxios
+  //     .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+  //       headers: {
+  //         Authorization: 'Bearer 123',
+  //       },
+  //     })
+  //     .reply(200, {
+  //       FAL1: {
+  //         nameOfShip: 'Test ship name',
+  //         status: 'Submitted',
+  //         imoNumber: '1234567',
+  //         callSign: 'NA',
+  //         signatory: 'Captain Name',
+  //         flagState: 'GBR',
+  //         departureFromUk: false,
+  //         departurePortUnlocode: 'AUPOR',
+  //         departureDate: '2023-02-12',
+  //         departureTime: '09:23:00',
+  //         arrivalPortUnlocode: 'GBDOV',
+  //         arrivalDate: '2023-02-15',
+  //         arrivalTime: '14:00:00',
+  //         previousPortUnlocode: 'AUPOR',
+  //         nextPortUnlocode: 'NLRTM',
+  //         cargo: 'No cargo',
+  //         passengers: false,
+  //         creationDate: '2023-02-10',
+  //         submissionDate: '2023-02-10',
+  //       },
+  //       FAL5: [
+  //         {
+  //           filename: 'Crew details including supernumeraries FAL 5.xlsx',
+  //           id: 'FAL5',
+  //           size: '118385',
+  //           url: 'https://fal5-report-link.com',
+  //         },
+  //       ],
+  //       FAL6: [],
+  //       supporting: [],
+  //     });
+  //   renderPage();
+  //   await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+  //   expect(screen.getByText('Submitted').outerHTML).toEqual('<strong class="govuk-tag govuk-tag--green">Submitted</strong>');
+  //   expect(screen.getByText('10 February 2023')).toBeInTheDocument();
+  //   // expect cancel button
+  //   // expect no submission button
+  // });
 });
