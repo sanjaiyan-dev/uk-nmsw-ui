@@ -89,7 +89,7 @@ describe('Your voyages page tests', () => {
     render(<MemoryRouter><YourVoyages /></MemoryRouter>);
     expect(await screen.findByText('All report types')).toBeInTheDocument();
     expect(await screen.findByText('Ship 1')).toBeInTheDocument();
-    expect(await screen.findByText('draft')).toBeInTheDocument();
+    expect(await screen.findByText('Draft')).toBeInTheDocument();
     expect(await screen.findByText('Continue')).toBeInTheDocument();
   });
 
@@ -143,7 +143,7 @@ describe('Your voyages page tests', () => {
     render(<MemoryRouter><YourVoyages /></MemoryRouter>);
     expect(await screen.findByText('Ship 2')).toBeInTheDocument();
     expect(await screen.findByText('Ship 3')).toBeInTheDocument();
-    expect(await screen.findAllByText('submitted')).toHaveLength(2);
+    expect(await screen.findAllByText('Submitted')).toHaveLength(2);
     expect(await screen.findAllByText('Review or cancel')).toHaveLength(2);
   });
 
@@ -197,7 +197,7 @@ describe('Your voyages page tests', () => {
     render(<MemoryRouter><YourVoyages /></MemoryRouter>);
     expect(await screen.findByText('Ship 5')).toBeInTheDocument();
     expect(await screen.findByText('Ship 5')).toBeInTheDocument();
-    expect(await screen.findAllByText('cancelled')).toHaveLength(2);
+    expect(await screen.findAllByText('Cancelled')).toHaveLength(2);
     expect(await screen.findAllByText('Review')).toHaveLength(2);
   });
 
@@ -230,7 +230,7 @@ describe('Your voyages page tests', () => {
       });
     render(<MemoryRouter><YourVoyages /></MemoryRouter>);
     expect(await screen.findByText('Ship 6')).toBeInTheDocument();
-    expect(await screen.findByText('failed')).toBeInTheDocument();
+    expect(await screen.findByText('Failed')).toBeInTheDocument();
     expect(await screen.findByText('Review and re-submit')).toBeInTheDocument();
   });
 
