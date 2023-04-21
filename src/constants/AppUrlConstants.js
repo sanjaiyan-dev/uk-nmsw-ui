@@ -51,6 +51,7 @@ export const TEMPLATE_PAGE_NAME = 'Templates';
 export const TEMPLATE_PAGE_URL = '/templates';
 export const LOGGED_IN_HELP = '/help-page';
 export const HELP_URL = '/help';
+export const HELP_PAGE_NAME = 'Help';
 
 // User details pages
 export const YOUR_DETAILS_PAGE_NAME = 'Your details';

@@ -14,6 +14,8 @@ import {
   YOUR_DETAILS_PAGE_URL,
   YOUR_DETAILS_PAGE_NAME,
   GOV_URL,
+  LOGGED_IN_HELP,
+  HELP_PAGE_NAME,
 } from '../constants/AppUrlConstants';
 import { SIGN_OUT_ENDPOINT } from '../constants/AppAPIConstants';
 import useUserIsPermitted from '../hooks/useUserIsPermitted';
@@ -40,6 +42,12 @@ const Nav = () => {
       id: 'Templates',
       urlStem: TEMPLATE_PAGE_URL,
       text: TEMPLATE_PAGE_NAME,
+      active: false,
+    },
+    {
+      id: 'Help',
+      urlStem: LOGGED_IN_HELP,
+      text: HELP_PAGE_NAME,
       active: false,
     },
   ];
