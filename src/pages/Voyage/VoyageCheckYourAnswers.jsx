@@ -437,21 +437,16 @@ const VoyageCheckYourAnswers = () => {
           {
             (declarationStatus?.status === DECLARATION_STATUS_SUBMITTED || declarationStatus?.status === DECLARATION_STATUS_PRESUBMITTED)
             && (
-              <>
-                <h2 className="govuk-heading-m">Now send your application</h2>
-                <p className="govuk-body">By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.</p>
-
-                <button
-                  type="button"
-                  // className={isPendingCancel ? 'govuk-button disabled' : 'govuk-button govuk-button--warning'}
-                  className="govuk-button govuk-button--warning"
-                  data-module="govuk-button"
-                  // disabled={isPendingCancel}
-                  // onClick={() => handleCancel()}
-                >
-                  Cancel
-                </button>
-              </>
+              <button
+                type="button"
+                // className={isPendingCancel ? 'govuk-button disabled' : 'govuk-button govuk-button--warning'}
+                className="govuk-button govuk-button--warning"
+                data-module="govuk-button"
+              // disabled={isPendingCancel}
+              // onClick={() => handleCancel()}
+              >
+                Cancel
+              </button>
             )
           }
         </div>
