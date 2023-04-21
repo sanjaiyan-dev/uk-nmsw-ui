@@ -46,6 +46,8 @@ import {
   VOYAGE_TASK_LIST_URL,
   YOUR_VOYAGES_URL,
   YOUR_DETAILS_PAGE_URL,
+  HELP_URL,
+  LOGGED_IN_HELP,
 } from './constants/AppUrlConstants';
 
 import LoadingSpinner from './components/LoadingSpinner';
@@ -75,6 +77,7 @@ const AccessibilityStatement = lazy(() => import('./pages/Regulatory/Accessibili
 const CookiePolicy = lazy(() => import('./pages/Regulatory/CookiePolicy'));
 const Landing = lazy(() => import('./pages/Landing/Landing'));
 const PrivacyNotice = lazy(() => import('./pages/Regulatory/PrivacyNotice'));
+const Help = lazy(() => import('./pages/Regulatory/Help'));
 // Downloadable templates pages
 const Templates = lazy(() => import('./pages/NavPages/Templates'));
 // Voyage pages
@@ -123,6 +126,8 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
           <Route path={COOKIE_URL} element={<CookiePolicy setIsCookieBannerShown={setIsCookieBannerShown} />} />
           <Route path={LANDING_URL} element={<Landing />} />
           <Route path={PRIVACY_URL} element={<PrivacyNotice />} />
+          <Route path={HELP_URL} element={<Help />} />
+
 
           <Route element={<ProtectedRoutes isPermittedToView={isPermittedToView} />}>
             <Route path={CHANGE_YOUR_DETAILS_PAGE_URL} element={<ChangeYourDetails />} />
@@ -130,6 +135,7 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
             <Route path={FILE_UPLOAD_FIELD_ERRORS_URL} element={<FileUploadFieldErrors />} />
             <Route path={FORM_CONFIRMATION_URL} element={<FormConfirmationPage />} />
             <Route path={GENERIC_CONFIRMATION_URL} element={<GenericConfirmationPage />} />
+            <Route path={LOGGED_IN_HELP} element={<Help />} />
             <Route path={TEMPLATE_PAGE_URL} element={<Templates />} />
             <Route path={YOUR_DETAILS_PAGE_URL} element={<YourDetails />} />
             <Route path={YOUR_VOYAGES_URL} element={<YourVoyages />} />
