@@ -353,7 +353,7 @@ describe('Voyage check your answers page', () => {
       });
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
-    expect(screen.getByText('HON').outerHTML).toEqual('<dd class="govuk-summary-list__value">HON</dd>');
+    expect(screen.getByText('HON').outerHTML).toEqual('<span>HON</span>');
   });
 
   // ==========================
@@ -370,11 +370,11 @@ describe('Voyage check your answers page', () => {
       .reply(200, mockedFAL1And5Response);
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
-    expect(screen.getByText('Arrival to the UK').outerHTML).toEqual('<dd class="govuk-summary-list__value">Arrival to the UK</dd>');
-    expect(screen.getByText('Test ship name').outerHTML).toEqual('<dd class="govuk-summary-list__value">Test ship name</dd>');
-    expect(screen.getByText('1234567').outerHTML).toEqual('<dd class="govuk-summary-list__value">1234567</dd>');
-    expect(screen.getByText('NA').outerHTML).toEqual('<dd class="govuk-summary-list__value">NA</dd>');
-    expect(screen.getByText('United Kingdom of Great Britain and Northern Ireland').outerHTML).toEqual('<dd class="govuk-summary-list__value">United Kingdom of Great Britain and Northern Ireland</dd>');
+    expect(screen.getByText('Arrival to the UK').outerHTML).toEqual('<span>Arrival to the UK</span>');
+    expect(screen.getByText('Test ship name').outerHTML).toEqual('<span>Test ship name</span>');
+    expect(screen.getByText('1234567').outerHTML).toEqual('<span>1234567</span>');
+    expect(screen.getByText('NA').outerHTML).toEqual('<span>NA</span>');
+    expect(screen.getByText('United Kingdom of Great Britain and Northern Ireland').outerHTML).toEqual('<span>United Kingdom of Great Britain and Northern Ireland</span>');
     // departure block
     expect(screen.getByText('Departure port LOCODE').outerHTML).toEqual('<span>Departure port LOCODE</span>');
     expect(screen.getByText('AU POR').outerHTML).toEqual('<p class="govuk-!-margin-bottom-2 govuk-!-margin-top-0">AU POR</p>');
@@ -390,8 +390,8 @@ describe('Voyage check your answers page', () => {
     expect(screen.getByText('Time of arrival').outerHTML).toEqual('<span>Time of arrival</span>');
     expect(screen.getByText('14:00').outerHTML).toEqual('<p class="govuk-!-margin-bottom-2 govuk-!-margin-top-0">14:00</p>');
 
-    expect(screen.getByText('NL RTM').outerHTML).toEqual('<dd class="govuk-summary-list__value">NL RTM</dd>');
-    expect(screen.getByText('No cargo').outerHTML).toEqual('<dd class="govuk-summary-list__value">No cargo</dd>');
+    expect(screen.getByText('NL RTM').outerHTML).toEqual('<span>NL RTM</span>');
+    expect(screen.getByText('No cargo').outerHTML).toEqual('<span>No cargo</span>');
     expect(screen.getByRole('link', { name: 'Crew details including supernumeraries FAL 5.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal5-report-link.com" download="">Crew details including supernumeraries FAL 5.xlsx</a>');
     expect(screen.getByText('No passenger details provided')).toBeInTheDocument();
     expect(screen.getByText('No supporting documents provided')).toBeInTheDocument();
