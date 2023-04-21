@@ -90,8 +90,10 @@ const VoyageCheckYourAnswers = () => {
         {
           title: 'Status',
           type: 'status',
-          // value: { status: response.data.FAL1.status, submissionDate: response.data.FAL1.submissionDate ? dayjs(response.data.FAL1.submissionDate).format('D MMMM YYYY') : null }), // it will be received here once BE is merged
-          value: { status: 'Submitted', submissionDate: '2021-12-31' ? dayjs('2021-12-31').format('D MMMM YYYY') : null }, // using this for testing for now
+          value: {
+            status: response.data.FAL1.status,
+            submissionDate: response.data.FAL1.submissionDate ? dayjs(response.data.FAL1.submissionDate).format('D MMMM YYYY') : null,
+          },
         },
         {
           title: 'Voyage type',
