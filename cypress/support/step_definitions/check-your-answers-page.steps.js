@@ -8,7 +8,7 @@ When('I click Check answers and submit', () => {
   cyaPage.clickCheckAnswersAndSubmit();
 });
 
-When('I can verify the Check Your Answers page', () => {
+Then('I can verify Check Your Answers page', () => {
   cyaPage.verifyCYAPage();
   cyaPage.verifySaveAndSubmitButton();
   cyaPage.verifyH2Headings();
@@ -74,6 +74,10 @@ Then('I can see a link to an uploaded passenger file {string}{string}', (folderN
   CyaPage.verifyFileUploaded(fileName);
 });
 
+Then('I can see a link to an uploaded supporting document files {string}{string}', (folderName, fileName) => {
+  CyaPage.verifyFileUploaded(fileName);
+});
+
 Then('passenger section state No passenger details provided', () => {
   cy.get('#passengerDetails').next().contains('No passenger details provided');
   cy.get('#supportingDocuments').next().contains('No supporting documents provided');
@@ -81,6 +85,10 @@ Then('passenger section state No passenger details provided', () => {
 
 When('I click on change next to Passenger details', () => {
 cy.get('#passengerDetails').parent().find('a').contains('Change').click();
+});
+
+When('I click change next to supporting documents', () => {
+  cy.get('#supportingDocuments').parent().find('a').contains('Change').click();
 });
 
 When('I navigate back to check your answers page', () => {
@@ -91,4 +99,8 @@ When('I navigate back to check your answers page', () => {
 
 When('I click Save and Submit', () => {
   cyaPage.clickSaveAndSubmitButton();
+});
+
+When('there is no supporting documents attached, I can see-no supporting documents message', () => {
+  cy.get('#supportingDocuments').parent().find('span').contains('No supporting documents provided');
 });
