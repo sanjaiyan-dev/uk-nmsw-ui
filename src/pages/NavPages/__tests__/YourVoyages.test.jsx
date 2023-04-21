@@ -1,9 +1,9 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { CREATE_VOYAGE_ENDPOINT, TOKEN_EXPIRED } from '../../../constants/AppAPIConstants';
+import { API_URL, CREATE_VOYAGE_ENDPOINT, ENDPOINT_DECLARATION_PATH, TOKEN_EXPIRED } from '../../../constants/AppAPIConstants';
 import {
   SIGN_IN_URL,
   URL_DECLARATIONID_IDENTIFIER,
@@ -458,6 +458,133 @@ describe('Your voyages page tests', () => {
     });
   });
 
+  it('should delete invalid draft declarations (no FAL 1)', async () => {
+    mockAxios
+      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .reply(200, {
+        results: [
+          {
+            id: '1',
+            status: 'Draft',
+            submissionDate: null,
+            nameOfShip: 'Ship 1',
+            imoNumber: '1234567',
+            callSign: 'NA',
+            signatory: 'John Smith',
+            flagState: 'GBR',
+            departureFromUk: false,
+            departurePortUnlocode: 'AU XXX',
+            departureDate: '2023-03-16',
+            departureTime: '14:00:00',
+            arrivalPortUnlocode: 'GB POR',
+            arrivalDate: '2023-02-15',
+            arrivalTime: '14:00:00',
+            previousPortUnlocode: 'AU XXX',
+            nextPortUnlocode: 'NL RTM',
+            cargo: 'No cargo',
+          },
+          {
+            id: '2',
+            status: 'Draft',
+            submissionDate: null,
+            nameOfShip: null,
+            imoNumber: null,
+            callSign: null,
+            signatory: null,
+            flagState: null,
+            departureFromUk: null,
+            departurePortUnlocode: null,
+            departureDate: null,
+            departureTime: null,
+            arrivalPortUnlocode: null,
+            arrivalDate: null,
+            arrivalTime: null,
+            previousPortUnlocode: null,
+            nextPortUnlocode: null,
+            cargo: null,
+          },
+        ],
+      })
+      .onDelete(`${API_URL}${ENDPOINT_DECLARATION_PATH}/2`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        }
+      })
+      .reply(200, {
+        msg: 'Draft successfully deleted'
+      })
+    render(<MemoryRouter><YourVoyages /></MemoryRouter>);
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+
+    expect(mockAxios.history.delete.length).toBe(1)
+    expect(screen.getByText('Ship 1')).toBeInTheDocument();
+    expect(screen.getByText('draft')).toBeInTheDocument();
+    expect(screen.getByText('Continue')).toBeInTheDocument();
+  });
+
+  it('should still only show valid reports if delete call fails', async () => {
+    mockAxios
+      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .reply(200, {
+        results: [
+          {
+            id: '1',
+            status: 'Draft',
+            submissionDate: null,
+            nameOfShip: 'Ship 1',
+            imoNumber: '1234567',
+            callSign: 'NA',
+            signatory: 'John Smith',
+            flagState: 'GBR',
+            departureFromUk: false,
+            departurePortUnlocode: 'AU XXX',
+            departureDate: '2023-03-16',
+            departureTime: '14:00:00',
+            arrivalPortUnlocode: 'GB POR',
+            arrivalDate: '2023-02-15',
+            arrivalTime: '14:00:00',
+            previousPortUnlocode: 'AU XXX',
+            nextPortUnlocode: 'NL RTM',
+            cargo: 'No cargo',
+          },
+          {
+            id: '2',
+            status: 'Draft',
+            submissionDate: null,
+            nameOfShip: null,
+            imoNumber: null,
+            callSign: null,
+            signatory: null,
+            flagState: null,
+            departureFromUk: null,
+            departurePortUnlocode: null,
+            departureDate: null,
+            departureTime: null,
+            arrivalPortUnlocode: null,
+            arrivalDate: null,
+            arrivalTime: null,
+            previousPortUnlocode: null,
+            nextPortUnlocode: null,
+            cargo: null,
+          },
+        ],
+      })
+      .onDelete(`${API_URL}${ENDPOINT_DECLARATION_PATH}/2`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        }
+      })
+      .reply(400, {
+        msg: 'Error message'
+      })
+    render(<MemoryRouter><YourVoyages /></MemoryRouter>);
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+
+    expect(screen.getByText('Ship 1')).toBeInTheDocument();
+    expect(screen.getByText('draft')).toBeInTheDocument();
+    expect(screen.getByText('Continue')).toBeInTheDocument();
+  });
+
   it('should redirect to sign in if getting the declarations returns a 401 token expired', async () => {
     mockAxios
       .onGet(CREATE_VOYAGE_ENDPOINT)
@@ -534,6 +661,130 @@ describe('Your voyages page tests', () => {
     render(<MemoryRouter><YourVoyages /></MemoryRouter>);
     await screen.findByRole('button', { name: 'Report a voyage' });
     await user.click(screen.getByRole('button', { name: 'Report a voyage' }));
+    expect(mockedUseNavigate).toHaveBeenCalledWith(SIGN_IN_URL, { state: { redirectURL: YOUR_VOYAGES_URL } });
+    expect(sessionStorage.getItem('token')).toBe(null);
+  });
+
+  it('should sign user out if delete request returns a 422', async () => {
+    mockAxios
+      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .reply(200, {
+        results: [
+          {
+            id: '1',
+            status: 'Draft',
+            submissionDate: null,
+            nameOfShip: 'Ship 1',
+            imoNumber: '1234567',
+            callSign: 'NA',
+            signatory: 'John Smith',
+            flagState: 'GBR',
+            departureFromUk: false,
+            departurePortUnlocode: 'AU XXX',
+            departureDate: '2023-03-16',
+            departureTime: '14:00:00',
+            arrivalPortUnlocode: 'GB POR',
+            arrivalDate: '2023-02-15',
+            arrivalTime: '14:00:00',
+            previousPortUnlocode: 'AU XXX',
+            nextPortUnlocode: 'NL RTM',
+            cargo: 'No cargo',
+          },
+          {
+            id: '2',
+            status: 'Draft',
+            submissionDate: null,
+            nameOfShip: null,
+            imoNumber: null,
+            callSign: null,
+            signatory: null,
+            flagState: null,
+            departureFromUk: null,
+            departurePortUnlocode: null,
+            departureDate: null,
+            departureTime: null,
+            arrivalPortUnlocode: null,
+            arrivalDate: null,
+            arrivalTime: null,
+            previousPortUnlocode: null,
+            nextPortUnlocode: null,
+            cargo: null,
+          },
+        ],
+      })
+      .onDelete(`${API_URL}${ENDPOINT_DECLARATION_PATH}/2`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        }
+      })
+      .reply(422, {
+        msg: 'Not enough segments'
+      })
+    render(<MemoryRouter><YourVoyages /></MemoryRouter>);
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+
+    expect(mockedUseNavigate).toHaveBeenCalledWith(SIGN_IN_URL, { state: { redirectURL: YOUR_VOYAGES_URL } });
+    expect(sessionStorage.getItem('token')).toBe(null);
+  });
+
+  it('should still only show valid reports if delete call returns token expired', async () => {
+    mockAxios
+      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .reply(200, {
+        results: [
+          {
+            id: '1',
+            status: 'Draft',
+            submissionDate: null,
+            nameOfShip: 'Ship 1',
+            imoNumber: '1234567',
+            callSign: 'NA',
+            signatory: 'John Smith',
+            flagState: 'GBR',
+            departureFromUk: false,
+            departurePortUnlocode: 'AU XXX',
+            departureDate: '2023-03-16',
+            departureTime: '14:00:00',
+            arrivalPortUnlocode: 'GB POR',
+            arrivalDate: '2023-02-15',
+            arrivalTime: '14:00:00',
+            previousPortUnlocode: 'AU XXX',
+            nextPortUnlocode: 'NL RTM',
+            cargo: 'No cargo',
+          },
+          {
+            id: '2',
+            status: 'Draft',
+            submissionDate: null,
+            nameOfShip: null,
+            imoNumber: null,
+            callSign: null,
+            signatory: null,
+            flagState: null,
+            departureFromUk: null,
+            departurePortUnlocode: null,
+            departureDate: null,
+            departureTime: null,
+            arrivalPortUnlocode: null,
+            arrivalDate: null,
+            arrivalTime: null,
+            previousPortUnlocode: null,
+            nextPortUnlocode: null,
+            cargo: null,
+          },
+        ],
+      })
+      .onDelete(`${API_URL}${ENDPOINT_DECLARATION_PATH}/2`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        }
+      })
+      .reply(401, {
+        msg: TOKEN_EXPIRED
+      })
+    render(<MemoryRouter><YourVoyages /></MemoryRouter>);
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+
     expect(mockedUseNavigate).toHaveBeenCalledWith(SIGN_IN_URL, { state: { redirectURL: YOUR_VOYAGES_URL } });
     expect(sessionStorage.getItem('token')).toBe(null);
   });
