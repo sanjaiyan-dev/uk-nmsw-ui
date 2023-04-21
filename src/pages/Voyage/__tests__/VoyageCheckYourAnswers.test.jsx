@@ -768,55 +768,55 @@ describe('Voyage check your answers page', () => {
   // ==========================
   // STATUS TESTS
   // ==========================
-  // it('should render no status line and the cta as submit if status is draft', async () => {
-  //   mockAxios
-  //     .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
-  //       headers: {
-  //         Authorization: 'Bearer 123',
-  //       },
-  //     })
-  //     .reply(200, {
-  //       FAL1: {
-  //         nameOfShip: 'Test ship name',
-  //         status: 'Draft',
-  //         imoNumber: '1234567',
-  //         callSign: 'NA',
-  //         signatory: 'Captain Name',
-  //         flagState: 'GBR',
-  //         departureFromUk: false,
-  //         departurePortUnlocode: 'AUPOR',
-  //         departureDate: '2023-02-12',
-  //         departureTime: '09:23:00',
-  //         arrivalPortUnlocode: 'GBDOV',
-  //         arrivalDate: '2023-02-15',
-  //         arrivalTime: '14:00:00',
-  //         previousPortUnlocode: 'AUPOR',
-  //         nextPortUnlocode: 'NLRTM',
-  //         cargo: 'No cargo',
-  //         passengers: false,
-  //         creationDate: '2023-02-10',
-  //         submissionDate: null,
-  //       },
-  //       FAL5: [
-  //         {
-  //           filename: 'Crew details including supernumeraries FAL 5.xlsx',
-  //           id: 'FAL5',
-  //           size: '118385',
-  //           url: 'https://fal5-report-link.com',
-  //         },
-  //       ],
-  //       FAL6: [],
-  //       supporting: [],
-  //     });
-  //   renderPage();
-  //   await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+  it('should render no status line and the cta as submit if status is draft', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          status: 'Draft',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: false,
+          departurePortUnlocode: 'AUPOR',
+          departureDate: '2023-02-12',
+          departureTime: '09:23:00',
+          arrivalPortUnlocode: 'GBDOV',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUPOR',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: false,
+          creationDate: '2023-02-10',
+          submissionDate: null,
+        },
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [],
+        supporting: [],
+      });
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
 
-  //   expect(screen.getByText('Now send your application')).toBeInTheDocument();
-  //   expect(screen.getAllByText('Status')).not.toBeInTheDocument();
-  //   expect(screen.getByText('By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.')).toBeInTheDocument();
-  //   expect(screen.getByRole('button', { name: 'Save and submit' })).toBeInTheDocument();
-  //   expect(screen.getByRole('button', { name: 'Save and submit' }).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button">Save and submit</button>');
-  // });
+    expect(screen.getByText('Now send your application')).toBeInTheDocument();
+    expect(screen.queryByText('Status')).not.toBeInTheDocument();
+    expect(screen.getByText('By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Save and submit' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Save and submit' }).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button">Save and submit</button>');
+  });
 
   // it('should render the status as submitted, submission date, and a cancel CTA', async () => {
   //   mockAxios
