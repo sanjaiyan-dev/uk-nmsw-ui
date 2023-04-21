@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { CREATE_VOYAGE_ENDPOINT, TOKEN_EXPIRED } from '../../constants/AppAPIConstants';
+import { SERVICE_NAME } from '../../constants/AppConstants';
 import {
   SIGN_IN_URL,
   URL_DECLARATIONID_IDENTIFIER,
@@ -12,10 +13,10 @@ import {
   VOYAGE_TASK_LIST_URL,
   YOUR_VOYAGES_URL,
 } from '../../constants/AppUrlConstants';
-import { SERVICE_NAME } from '../../constants/AppConstants';
-import Message from '../../components/Message';
-import Auth from '../../utils/Auth';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import Message from '../../components/Message';
+import StatusTag from '../../components/StatusTag';
+import Auth from '../../utils/Auth';
 
 // NOTES:
 // - The filter buttons do nothing
@@ -24,14 +25,14 @@ import LoadingSpinner from '../../components/LoadingSpinner';
 
 const YourVoyages = () => {
   dayjs.extend(customParseFormat);
-  const { state } = useLocation();
+  // const { state } = useLocation();
   const navigate = useNavigate();
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [voyageData, setVoyageData] = useState();
 
   document.title = SERVICE_NAME;
-  console.log('confbanner', state?.confirmationBanner);
+  // console.log('confbanner', state?.confirmationBanner);
 
   const handleClick = async () => {
     setIsLoading(true);
@@ -40,7 +41,6 @@ const YourVoyages = () => {
         headers: { Authorization: `Bearer ${Auth.retrieveToken()}` },
       });
       if (response.status === 200) {
-        console.log('declaration id', response.data.id);
         navigate(`${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}?report=${response.data.id}`);
       }
     } catch (err) {
@@ -227,27 +227,18 @@ const YourVoyages = () => {
                 </div>
               </div>
 
-              {/* TODO: See if there is a cleaner way to set these attributes for diffrerent statuses */}
               {voyageData?.map((voyage) => {
-                let statusTagClass;
                 let statusLinkText;
-                let statusType;
                 if (voyage.status === 'Submitted' || voyage.status === 'PreSubmitted') {
-                  statusTagClass = 'govuk-tag govuk-tag--green';
                   statusLinkText = 'Review or cancel';
-                  statusType = 'submitted';
                 } else if (voyage.status === 'Draft') {
-                  statusTagClass = 'govuk-tag govuk-tag--grey';
                   statusLinkText = 'Continue';
-                  statusType = 'draft';
                 } else if (voyage.status === 'Cancelled' || voyage.status === 'PreCancelled') {
-                  statusTagClass = 'govuk-tag govuk-tag--orange';
                   statusLinkText = 'Review';
-                  statusType = 'cancelled';
-                } else {
-                  statusTagClass = 'govuk-tag govuk-tag--red';
+                } else if (voyage.status === 'Failed') {
                   statusLinkText = 'Review and re-submit';
-                  statusType = 'failed';
+                } else {
+                  statusLinkText = 'Review and re-submit';
                 }
                 return (
                   <div key={voyage.id} className="govuk-!-margin-top-5 light-grey__border">
@@ -275,7 +266,7 @@ const YourVoyages = () => {
 
                       <div className="govuk-grid-column-one-quarter reported-voyages__columns reported-voyages__text">
                         <span className="govuk-body-s">Status</span> <br />
-                        <strong className={statusTagClass}>{statusType}</strong>
+                        <StatusTag status={voyage.status} />
                       </div>
 
                       <div className="govuk-grid-column-one-quarter reported-voyages__columns reported-voyages__text">
