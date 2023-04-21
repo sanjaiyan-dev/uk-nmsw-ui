@@ -2,8 +2,16 @@
 export const SERVICE_NAME = 'National Maritime Single Window';
 
 // Declarations
+export const DECLARATION_STATUS_CANCELLED = 'Cancelled';
 export const DECLARATION_STATUS_DRAFT = 'Draft';
+export const DECLARATION_STATUS_PRECANCELLED = 'PreCancelled';
 export const DECLARATION_STATUS_PRESUBMITTED = 'PreSubmitted';
+export const DECLARATION_STATUS_SUBMITTED = 'Submitted';
+export const DECLARATION_STEP_STATUS_COMPLETED = 'completed';
+export const DECLARATION_STEP_STATUS_CANNOT_START = 'cannotStartYet';
+export const DECLARATION_STEP_STATUS_NOT_STARTED = 'notStarted';
+export const DECLARATION_STEP_STATUS_OPTIONAL = 'optional';
+export const DECLARATION_STEP_STATUS_REQUIRED = 'required';
 
 // Forms: display types
 export const DISPLAY_DETAILS = 'details';
