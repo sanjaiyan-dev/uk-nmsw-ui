@@ -3,7 +3,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { DECLARATION_STATUS_PRESUBMITTED } from '../../constants/AppConstants';
+import { DECLARATION_STATUS_DRAFT, DECLARATION_STATUS_PRESUBMITTED } from '../../constants/AppConstants';
 import { API_URL, ENDPOINT_DECLARATION_PATH, TOKEN_EXPIRED } from '../../constants/AppAPIConstants';
 import {
   MESSAGE_URL,
@@ -39,6 +39,7 @@ const VoyageCheckYourAnswers = () => {
   const declarationId = searchParams.get(URL_DECLARATIONID_IDENTIFIER);
   const errorSummaryRef = useRef(null);
   const [declarationData, setDeclarationData] = useState();
+  const [declarationStatus, setDeclarationStatus] = useState();
   const [errors, setErrors] = useState();
   const [fal5Details, setFal5Details] = useState();
   const [fal6Details, setFal6Details] = useState();
@@ -87,14 +88,6 @@ const VoyageCheckYourAnswers = () => {
     if (response.data) {
       setDeclarationData(response.data);
       setVoyageDetails([
-        {
-          title: 'Status',
-          type: 'status',
-          value: {
-            status: response.data.FAL1.status,
-            submissionDate: response.data.FAL1.submissionDate ? dayjs(response.data.FAL1.submissionDate).format('D MMMM YYYY') : null,
-          },
-        },
         {
           title: 'Voyage type',
           value: response.data.FAL1.departureFromUk ? 'Departure from the UK' : 'Arrival to the UK',
@@ -159,6 +152,12 @@ const VoyageCheckYourAnswers = () => {
         },
       ]);
 
+      setDeclarationStatus({
+        // status: 'Submitted', // response.data?.FAL1.status
+        // submissionDate: dayjs('2023-01-11').format('D MMMM YYYY'), // dayjs.(response.data?.FAL1.submissionDate).format('D MMMM YYYY')
+        status: response.data?.FAL1.status,
+        submissionDate: response.data?.FAL1.submissionDate ? dayjs(response.data?.FAL1.submissionDate).format('D MMMM YYYY') : null,
+      });
       setFal5Details(response.data?.FAL5[0]);
 
       if (response.data?.FAL6) {
@@ -327,6 +326,21 @@ const VoyageCheckYourAnswers = () => {
                 </Link>
               </dd>
             </div>
+
+            {
+              declarationStatus?.status !== DECLARATION_STATUS_DRAFT
+              && (
+              <div className="govuk-summary-list__row">
+                <dt className="govuk-summary-list__key">
+                  Status
+                </dt>
+                <dd className="govuk-summary-list__value">
+                  <StatusTag status={declarationStatus?.status} /> {declarationStatus?.submissionDate}
+                </dd>
+              </div>
+              )
+            }
+
             {voyageDetails.map((item) => (
               <div key={item.title} className="govuk-summary-list__row">
                 <dt className="govuk-summary-list__key">
@@ -334,22 +348,15 @@ const VoyageCheckYourAnswers = () => {
                 </dt>
                 <dd className="govuk-summary-list__value">
                   {
-                      Array.isArray(item.value)
-                      && item.value.map((subItem) => (
+                    Array.isArray(item.value)
+                      ? item.value.map((subItem) => (
                         <React.Fragment key={subItem.label}>
                           <span>{subItem.label}</span>
                           <p className="govuk-!-margin-bottom-2 govuk-!-margin-top-0">{subItem.item}</p>
                         </React.Fragment>
                       ))
-                    }
-                  {
-                      item.type === 'status'
-                      && <span><StatusTag status={item.value.status} /> {item.value.submissionDate}</span>
-                    }
-                  {
-                      (item.type !== 'status' && !Array.isArray(item.value))
-                      && <span>{item.value}</span>
-                    }
+                      : item.value
+                  }
                 </dd>
                 <dd className="govuk-summary-list__actions" />
               </div>
