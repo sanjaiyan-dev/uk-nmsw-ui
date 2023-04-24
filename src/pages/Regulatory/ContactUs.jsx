@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
-import { SERVICE_CONTACT_EMAIL, SERVICE_NAME } from "../../constants/AppConstants";
-import { HELP_URL, LOGGED_IN_HELP } from "../../constants/AppUrlConstants";
-import Auth from "../../utils/Auth";
+import { Link } from 'react-router-dom';
+import { SERVICE_CONTACT_EMAIL, SERVICE_NAME } from '../../constants/AppConstants';
+import { HELP_URL, LOGGED_IN_HELP } from '../../constants/AppUrlConstants';
+import Auth from '../../utils/Auth';
 
 const HelpFooter = () => {
   document.title = 'Help';
@@ -11,9 +11,9 @@ const HelpFooter = () => {
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
           <p className="govuk-body">
-            {`Check the `}
+            {'Check the '}
             <Link className="govuk-link" to={Auth.isAuthorized() ? `${LOGGED_IN_HELP}` : `${HELP_URL}`}>help section</Link>
-            {` first, to see if that will answer your query`}
+            {' first, to see if that will answer your query'}
           </p>
           <h2 className="govuk-heading-m">General Maritime Commercial Ship reporting</h2>
           <p>

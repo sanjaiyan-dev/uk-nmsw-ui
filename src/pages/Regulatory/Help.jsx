@@ -1,6 +1,6 @@
 import { SERVICE_CONTACT_EMAIL, SERVICE_NAME } from '../../constants/AppConstants';
 import { DownloadFile } from '../../utils/DownloadFile';
-import regionMap from '../../assets/images/region-map.png'
+import regionMap from '../../assets/images/region-map.png';
 
 const Help = () => {
   const centralEmail = 'BFCentralRCCGMteam@homeoffice.gov.uk';
@@ -18,7 +18,7 @@ const Help = () => {
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
           <div className="govuk-inset-text govuk-!-margin-top-0">
-            {`For support for commercial shipping with providing the correct information to Border Force, email: `}
+            {'For support for commercial shipping with providing the correct information to Border Force, email: '}
             <a className="govuk-link" href={`mailto: ${SERVICE_CONTACT_EMAIL}`}>
               {SERVICE_CONTACT_EMAIL}
             </a>

@@ -1,5 +1,5 @@
 import { MemoryRouter } from 'react-router-dom';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
   DISPLAY_GROUPED,
@@ -142,7 +142,9 @@ describe('Display Form', () => {
     await screen.findByRole('button', { name: 'Submit test button' });
     await user.click(screen.getByRole('button', { name: 'Submit test button' }));
     // Input field has the error class attached as component rendered with errors > 0
-    expect(screen.getByRole('textbox', { name: 'Text input' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testField-input" name="testField" type="text" aria-describedby="testField-hint" value="">');
+    await waitFor(() => {
+      expect(screen.getByRole('textbox', { name: 'Text input' }).outerHTML).toEqual('<input class="govuk-input govuk-input--error" id="testField-input" name="testField" type="text" aria-describedby="testField-hint" value="">');
+    });
     // user starts to type
     await user.type(screen.getByRole('textbox', { name: 'Text input' }), 'Hello');
     // error class and message is cleared

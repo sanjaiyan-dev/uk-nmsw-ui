@@ -58,7 +58,7 @@ const Landing = () => {
         </Link>
         <h2 className="govuk-heading-m">More help with this service</h2>
         <p className="govuk-body">
-          {`If you need more support, email `}
+          {'If you need more support, email '}
           <a className="govuk-link" href={`mailto: ${SERVICE_CONTACT_EMAIL}`}>
             {SERVICE_CONTACT_EMAIL}
           </a>

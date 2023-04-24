@@ -163,7 +163,7 @@ const SignIn = () => {
           <h2 className="govuk-heading-m">Problems signing in</h2>
           <Link to={REQUEST_PASSWORD_RESET_URL}>Forgotten your password?</Link>
           <p className="govuk-body govuk-!-margin-top-5">
-            {`If you cannot use this service to send your forms, you can still `}
+            {'If you cannot use this service to send your forms, you can still '}
             <Link className="govuk-link" to={HELP_URL}>submit the required forms using email</Link>
             .
           </p>

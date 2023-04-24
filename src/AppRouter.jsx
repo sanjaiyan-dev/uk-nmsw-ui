@@ -129,8 +129,7 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
           <Route path={LANDING_URL} element={<Landing />} />
           <Route path={PRIVACY_URL} element={<PrivacyNotice />} />
           <Route path={HELP_URL} element={<Help />} />
-          <Route path={CONTACT_US_URL} element={<ContactUs />}/>
-
+          <Route path={CONTACT_US_URL} element={<ContactUs />} />
 
           <Route element={<ProtectedRoutes isPermittedToView={isPermittedToView} />}>
             <Route path={CHANGE_YOUR_DETAILS_PAGE_URL} element={<ChangeYourDetails />} />
