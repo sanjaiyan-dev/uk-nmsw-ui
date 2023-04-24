@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import {
   ACCESSIBILITY_URL,
+  CONTACT_US_URL,
   COOKIE_URL,
   CROWN_COPYRIGHT_URL,
   PRIVACY_URL,
@@ -26,6 +27,11 @@ const Footer = () => (
             <li className="govuk-footer__inline-list-item">
               <Link className="govuk-footer__link" to={ACCESSIBILITY_URL}>
                 Accessibility
+              </Link>
+            </li>
+            <li className="govuk-footer__inline-list-item">
+              <Link className="govuk-footer__link" to={CONTACT_US_URL}>
+                Contact us
               </Link>
             </li>
           </ul>

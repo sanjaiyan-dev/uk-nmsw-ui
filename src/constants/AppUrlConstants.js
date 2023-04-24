@@ -26,6 +26,7 @@ export const ACCESSIBILITY_URL = '/accessibility-statement';
 export const COOKIE_URL = '/cookies';
 export const LANDING_URL = '/';
 export const PRIVACY_URL = '/privacy-notice';
+export const CONTACT_US_URL = '/contact-us';
 
 // Voyage pages
 export const URL_DECLARATIONID_IDENTIFIER = 'report';
@@ -49,6 +50,9 @@ export const FILE_UPLOAD_FIELD_ERRORS_URL = '/field-errors';
 export const GENERIC_CONFIRMATION_URL = '/confirmation';
 export const TEMPLATE_PAGE_NAME = 'Templates';
 export const TEMPLATE_PAGE_URL = '/templates';
+export const LOGGED_IN_HELP = '/help-page';
+export const HELP_URL = '/help';
+export const HELP_PAGE_NAME = 'Help';
 
 // User details pages
 export const YOUR_DETAILS_PAGE_NAME = 'Your details';

@@ -21,6 +21,7 @@ import {
   REGISTER_EMAIL_RESEND_URL,
   REQUEST_PASSWORD_RESET_URL,
   SIGN_IN_URL,
+  HELP_URL,
 } from '../../constants/AppUrlConstants';
 import Auth from '../../utils/Auth';
 import { scrollToTop } from '../../utils/ScrollToElement';
@@ -157,7 +158,17 @@ const SignIn = () => {
       >
         <SupportingText />
       </DisplayForm>
-      <Link to={REQUEST_PASSWORD_RESET_URL}>Forgotten your password?</Link>
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-two-thirds">
+          <h2 className="govuk-heading-m">Problems signing in</h2>
+          <Link to={REQUEST_PASSWORD_RESET_URL}>Forgotten your password?</Link>
+          <p className="govuk-body govuk-!-margin-top-5">
+            {'If you cannot use this service to send your forms, you can still '}
+            <Link className="govuk-link" to={HELP_URL}>submit the required forms using email</Link>
+            .
+          </p>
+        </div>
+      </div>
     </>
   );
 };
