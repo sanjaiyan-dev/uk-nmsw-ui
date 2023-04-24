@@ -335,34 +335,70 @@ describe('Multi file upload tests', () => {
     expect(mockAxios.history.delete.length).toBe(1);
   });
 
-  // This currently will fail because the file gets deleted from the S3 but not the database so the file is still present in the list and will be displayed
-  // it('should remove an already uploaded file from the list if its delete button is clicked', async () => {
-  //   const user = userEvent.setup();
-  //   mockAxios
-  //     .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
-  //       headers: {
-  //         Authorization: 'Bearer 123',
-  //       },
-  //     })
-  //     .reply(200, mockedFAL1AndSupportingResponse)
-  //     .onDelete(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, { id: 'supporting1' }, {
-  //       headers: {
-  //         Authorization: 'Bearer 123',
-  //       }
-  //     })
-  //     .reply(200, {
-  //       message: 'File successfully deleted'
-  //     })
-  //   renderPage();
-  //   await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+  it('should remove an already uploaded file from the list if its delete button is clicked', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, mockedFAL1AndSupportingResponse)
+      .onDelete(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, { id: 'supporting1' }, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        message: 'File successfully deleted',
+      })
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: false,
+          departurePortUnlocode: 'AUPOR',
+          departureDate: '2023-02-12',
+          departureTime: '09:23:00',
+          arrivalPortUnlocode: 'GBDOV',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUPOR',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: false,
+          creationDate: '2023-02-10',
+          submissionDate: '2023-02-11',
+        },
+        FAL5: [],
+        FAL6: [],
+        supporting: [
+          {
+            id: 'supporting2',
+            filename: 'supportingFile2',
+            size: '118687',
+            url: 'https://supporting2-link.com',
+          },
+        ],
+      });
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
 
-  //   // user clicks delete on one
-  //   await user.click(screen.getAllByRole('button', { name: 'Delete' })[0]);
+    // user clicks delete on one
+    await user.click(screen.getAllByRole('button', { name: 'Delete' })[0]);
 
-  //   expect(screen.queryByText('supportingFile1')).not.toBeInTheDocument();
-  //   expect(screen.getByText('supportingFile2')).toBeInTheDocument();
-  //   expect(screen.getAllByRole('button', { name: 'Delete' })).toHaveLength(1);
-  // });
+    expect(screen.queryByText('supportingFile1')).not.toBeInTheDocument();
+    expect(screen.getByText('supportingFile2')).toBeInTheDocument();
+    expect(screen.getAllByRole('button', { name: 'Delete' })).toHaveLength(1);
+  });
 
   it('should load the next page on submit button click', async () => {
     const user = userEvent.setup();
