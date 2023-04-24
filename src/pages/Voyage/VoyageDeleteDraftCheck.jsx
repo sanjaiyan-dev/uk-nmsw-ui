@@ -1,19 +1,30 @@
+import { useState } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import axios from 'axios';
+import { API_URL, ENDPOINT_DECLARATION_PATH } from '../../constants/AppAPIConstants';
 import {
   DISPLAY_GROUPED,
   FIELD_RADIO,
   SINGLE_PAGE_FORM,
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
-import { URL_DECLARATIONID_IDENTIFIER, VOYAGE_TASK_LIST_URL, YOUR_VOYAGES_URL } from '../../constants/AppUrlConstants';
+import {
+  MESSAGE_URL,
+  SIGN_IN_URL,
+  URL_DECLARATIONID_IDENTIFIER,
+  VOYAGE_TASK_LIST_URL,
+  YOUR_VOYAGES_URL,
+} from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/DisplayForm';
 import Message from '../../components/Message';
+import Auth from '../../utils/Auth';
 
 const VoyageDeleteDraftCheck = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const declarationId = searchParams.get(URL_DECLARATIONID_IDENTIFIER);
+  const [isLoading, setIsLoading] = useState(false);
 
   document.title = 'Delete voyage';
 
@@ -53,9 +64,36 @@ const VoyageDeleteDraftCheck = () => {
     },
   ];
 
-  const handleSubmit = (formData) => {
+  const handleSubmit = async (formData) => {
     if (formData?.formData?.deleteDraft === 'deleteDraftYes') {
-      navigate(YOUR_VOYAGES_URL, { state: { confirmationBanner: { message: `Report for ${state?.shipName} deleted.` } } });
+      setIsLoading(true);
+      try {
+        await axios({
+          method: 'delete',
+          url: `${API_URL}${ENDPOINT_DECLARATION_PATH}/${declarationId}`,
+          headers: {
+            Authorization: `Bearer ${Auth.retrieveToken()}`,
+          },
+        });
+        navigate(YOUR_VOYAGES_URL, { state: { confirmationBanner: { message: `Report for ${state?.shipName} deleted.` } } });
+      } catch (err) {
+        switch (err?.response?.status) {
+          case 401:
+          case 422:
+            Auth.removeToken();
+            navigate(SIGN_IN_URL, { state: { redirectURL: `${VOYAGE_TASK_LIST_URL}?report=${declarationId}` } });
+            break;
+          default: navigate(MESSAGE_URL, {
+            state: {
+              title: 'Something has gone wrong',
+              message: err?.response?.message,
+              redirectURL: `${VOYAGE_TASK_LIST_URL}?report=${declarationId}`,
+            },
+          });
+        }
+      } finally {
+        setIsLoading(false);
+      }
     } else if (formData?.formData?.deleteDraft === 'deleteDraftNo') {
       navigate(`${VOYAGE_TASK_LIST_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`);
     }
@@ -75,6 +113,7 @@ const VoyageDeleteDraftCheck = () => {
       fields={formFields}
       formActions={formActions}
       formType={SINGLE_PAGE_FORM}
+      isLoading={isLoading}
       handleSubmit={handleSubmit}
     />
   );

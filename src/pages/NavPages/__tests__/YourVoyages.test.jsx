@@ -13,9 +13,11 @@ import {
 } from '../../../constants/AppUrlConstants';
 import YourVoyages from '../YourVoyages';
 
+let mockUseLocationState = { state: {} };
 const mockedUseNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
+  useLocation: jest.fn().mockImplementation(() => mockUseLocationState),
   useNavigate: () => mockedUseNavigate,
 }));
 
@@ -24,6 +26,7 @@ describe('Your voyages page tests', () => {
 
   beforeEach(() => {
     mockAxios.reset();
+    mockUseLocationState = { state: {} };
     window.sessionStorage.clear();
   });
 
@@ -551,5 +554,40 @@ describe('Your voyages page tests', () => {
     await screen.findByRole('heading', { name: 'Something has gone wrong' });
     expect(screen.getByRole('heading', { name: 'Something has gone wrong' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Click here to continue' }).outerHTML).toEqual(`<a class="govuk-link" href="${YOUR_VOYAGES_URL}">Click here to continue</a>`);
+  });
+
+  // ========================
+  // NOTIFICATION BANNER
+  // ========================
+  it('should show a notification banner if state contains confirmationBanner and a message', async () => {
+    mockUseLocationState.state = {
+      confirmationBanner: {
+        message: 'Test notification message',
+      },
+    };
+    mockAxios
+      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .reply(200, {
+        results: [],
+      });
+    render(<MemoryRouter><YourVoyages /></MemoryRouter>);
+    expect(await screen.findByText(YOUR_VOYAGES_PAGE_NAME)).toBeInTheDocument();
+    expect(screen.getByRole('alert', { name: 'Success' })).toBeInTheDocument();
+    expect(screen.getByRole('alert', { name: 'Success' }).outerHTML).toEqual('<div class="govuk-notification-banner govuk-notification-banner--success" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner"><div class="govuk-notification-banner__header"><h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">Success</h2></div><div class="govuk-notification-banner__content"><h3 class="govuk-notification-banner__heading">Test notification message</h3></div></div>');
+    expect(screen.getByRole('heading', { name: 'Success' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Test notification message' })).toBeInTheDocument();
+  });
+
+  it('should NOT show a notification banner if state does NOT contain confirmationBanner and a message', async () => {
+    mockAxios
+      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .reply(200, {
+        results: [],
+      });
+    render(<MemoryRouter><YourVoyages /></MemoryRouter>);
+    expect(await screen.findByText(YOUR_VOYAGES_PAGE_NAME)).toBeInTheDocument();
+    expect(screen.queryByRole('alert', { name: 'Success' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'Success' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'Test notification message' })).not.toBeInTheDocument();
   });
 });
