@@ -8,8 +8,8 @@ import { SERVICE_NAME } from '../../constants/AppConstants';
 import {
   SIGN_IN_URL,
   URL_DECLARATIONID_IDENTIFIER,
+  VOYAGE_CHECK_YOUR_ANSWERS,
   VOYAGE_GENERAL_DECLARATION_UPLOAD_URL,
-  VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
   VOYAGE_TASK_LIST_URL,
   YOUR_VOYAGES_URL,
 } from '../../constants/AppUrlConstants';
@@ -238,7 +238,7 @@ const YourVoyages = () => {
                 } else if (voyage.status === 'Failed') {
                   statusLinkText = 'Review and re-submit';
                 } else {
-                  statusLinkText = 'Review and re-submit';
+                  statusLinkText = 'Review';
                 }
                 return (
                   <div key={voyage.id} className="govuk-!-margin-top-5 light-grey__border">
@@ -272,7 +272,7 @@ const YourVoyages = () => {
                       <div className="govuk-grid-column-one-quarter reported-voyages__columns reported-voyages__text">
                         <span className="govuk-body-s">Actions</span> <br />
                         <Link
-                          to={voyage.status === 'Draft' ? `${VOYAGE_TASK_LIST_URL}?${URL_DECLARATIONID_IDENTIFIER}=${voyage.id}` : `${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${voyage.id}`}
+                          to={voyage.status === 'Draft' ? `${VOYAGE_TASK_LIST_URL}?${URL_DECLARATIONID_IDENTIFIER}=${voyage.id}` : `${VOYAGE_CHECK_YOUR_ANSWERS}?${URL_DECLARATIONID_IDENTIFIER}=${voyage.id}`}
                           className="govuk-link small-link-text"
                         >
                           {statusLinkText}
