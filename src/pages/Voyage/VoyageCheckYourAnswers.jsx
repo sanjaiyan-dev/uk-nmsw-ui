@@ -3,7 +3,11 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { DECLARATION_STATUS_PRESUBMITTED } from '../../constants/AppConstants';
+import {
+  DECLARATION_STATUS_DRAFT,
+  DECLARATION_STATUS_PRESUBMITTED,
+  DECLARATION_STATUS_SUBMITTED,
+} from '../../constants/AppConstants';
 import { API_URL, ENDPOINT_DECLARATION_PATH, TOKEN_EXPIRED } from '../../constants/AppAPIConstants';
 import {
   MESSAGE_URL,
@@ -20,6 +24,7 @@ import { countries } from '../../constants/CountryData';
 import ConfirmationMessage from '../../components/ConfirmationMessage';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import Message from '../../components/Message';
+import StatusTag from '../../components/StatusTag';
 import GetDeclaration from '../../utils/GetDeclaration';
 import Auth from '../../utils/Auth';
 import { scrollToElementId, scrollToTop } from '../../utils/ScrollToElement';
@@ -38,6 +43,7 @@ const VoyageCheckYourAnswers = () => {
   const declarationId = searchParams.get(URL_DECLARATIONID_IDENTIFIER);
   const errorSummaryRef = useRef(null);
   const [declarationData, setDeclarationData] = useState();
+  const [declarationStatus, setDeclarationStatus] = useState();
   const [errors, setErrors] = useState();
   const [fal5Details, setFal5Details] = useState();
   const [fal6Details, setFal6Details] = useState();
@@ -150,6 +156,10 @@ const VoyageCheckYourAnswers = () => {
         },
       ]);
 
+      setDeclarationStatus({
+        status: response.data?.FAL1.status,
+        submissionDate: response.data?.FAL1.submissionDate ? dayjs(response.data?.FAL1.submissionDate).format('D MMMM YYYY') : null,
+      });
       setFal5Details(response.data?.FAL5[0]);
 
       if (response.data?.FAL6) {
@@ -318,6 +328,21 @@ const VoyageCheckYourAnswers = () => {
                 </Link>
               </dd>
             </div>
+
+            {
+              declarationStatus?.status !== DECLARATION_STATUS_DRAFT
+              && (
+                <div className="govuk-summary-list__row">
+                  <dt className="govuk-summary-list__key">
+                    Status
+                  </dt>
+                  <dd className="govuk-summary-list__value">
+                    <StatusTag status={declarationStatus?.status} /> {declarationStatus?.submissionDate}
+                  </dd>
+                </div>
+              )
+            }
+
             {voyageDetails.map((item) => (
               <div key={item.title} className="govuk-summary-list__row">
                 <dt className="govuk-summary-list__key">
@@ -388,18 +413,40 @@ const VoyageCheckYourAnswers = () => {
             </div>
           </dl>
 
-          <h2 className="govuk-heading-m">Now send your application</h2>
-          <p className="govuk-body">By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.</p>
+          {
+            declarationStatus?.status === DECLARATION_STATUS_DRAFT
+            && (
+              <>
+                <h2 className="govuk-heading-m">Now send your application</h2>
+                <p className="govuk-body">By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.</p>
 
-          <button
-            type="button"
-            className={isPendingSubmit ? 'govuk-button disabled' : 'govuk-button'}
-            data-module="govuk-button"
-            disabled={isPendingSubmit}
-            onClick={() => handleSubmit()}
-          >
-            Save and submit
-          </button>
+                <button
+                  type="button"
+                  className={isPendingSubmit ? 'govuk-button disabled' : 'govuk-button'}
+                  data-module="govuk-button"
+                  disabled={isPendingSubmit}
+                  onClick={() => handleSubmit()}
+                >
+                  Save and submit
+                </button>
+              </>
+            )
+          }
+          {
+            (declarationStatus?.status === DECLARATION_STATUS_SUBMITTED || declarationStatus?.status === DECLARATION_STATUS_PRESUBMITTED)
+            && (
+              <button
+                type="button"
+                // className={isPendingCancel ? 'govuk-button disabled' : 'govuk-button govuk-button--warning'}
+                className="govuk-button govuk-button--warning"
+                data-module="govuk-button"
+              // disabled={isPendingCancel}
+              // onClick={() => handleCancel()}
+              >
+                Cancel
+              </button>
+            )
+          }
         </div>
       </div>
     </>
