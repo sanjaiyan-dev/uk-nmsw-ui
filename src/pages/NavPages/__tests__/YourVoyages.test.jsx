@@ -1,9 +1,13 @@
-import { render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
+import {
+  render, screen, waitFor, waitForElementToBeRemoved,
+} from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { API_URL, CREATE_VOYAGE_ENDPOINT, ENDPOINT_DECLARATION_PATH, TOKEN_EXPIRED } from '../../../constants/AppAPIConstants';
+import {
+  API_URL, CREATE_VOYAGE_ENDPOINT, ENDPOINT_DECLARATION_PATH, TOKEN_EXPIRED,
+} from '../../../constants/AppAPIConstants';
 import {
   SIGN_IN_URL,
   URL_DECLARATIONID_IDENTIFIER,
@@ -508,17 +512,17 @@ describe('Your voyages page tests', () => {
       .onDelete(`${API_URL}${ENDPOINT_DECLARATION_PATH}/2`, {
         headers: {
           Authorization: 'Bearer 123',
-        }
+        },
       })
       .reply(200, {
-        msg: 'Draft successfully deleted'
-      })
+        msg: 'Draft successfully deleted',
+      });
     render(<MemoryRouter><YourVoyages /></MemoryRouter>);
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
 
-    expect(mockAxios.history.delete.length).toBe(1)
+    expect(mockAxios.history.delete.length).toBe(1);
     expect(screen.getByText('Ship 1')).toBeInTheDocument();
-    expect(screen.getByText('draft')).toBeInTheDocument();
+    expect(screen.getByText('Draft')).toBeInTheDocument();
     expect(screen.getByText('Continue')).toBeInTheDocument();
   });
 
@@ -572,16 +576,16 @@ describe('Your voyages page tests', () => {
       .onDelete(`${API_URL}${ENDPOINT_DECLARATION_PATH}/2`, {
         headers: {
           Authorization: 'Bearer 123',
-        }
+        },
       })
       .reply(400, {
-        msg: 'Error message'
-      })
+        msg: 'Error message',
+      });
     render(<MemoryRouter><YourVoyages /></MemoryRouter>);
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
 
     expect(screen.getByText('Ship 1')).toBeInTheDocument();
-    expect(screen.getByText('draft')).toBeInTheDocument();
+    expect(screen.getByText('Draft')).toBeInTheDocument();
     expect(screen.getByText('Continue')).toBeInTheDocument();
   });
 
@@ -715,11 +719,11 @@ describe('Your voyages page tests', () => {
       .onDelete(`${API_URL}${ENDPOINT_DECLARATION_PATH}/2`, {
         headers: {
           Authorization: 'Bearer 123',
-        }
+        },
       })
       .reply(422, {
-        msg: 'Not enough segments'
-      })
+        msg: 'Not enough segments',
+      });
     render(<MemoryRouter><YourVoyages /></MemoryRouter>);
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
 
@@ -777,11 +781,11 @@ describe('Your voyages page tests', () => {
       .onDelete(`${API_URL}${ENDPOINT_DECLARATION_PATH}/2`, {
         headers: {
           Authorization: 'Bearer 123',
-        }
+        },
       })
       .reply(401, {
-        msg: TOKEN_EXPIRED
-      })
+        msg: TOKEN_EXPIRED,
+      });
     render(<MemoryRouter><YourVoyages /></MemoryRouter>);
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
 

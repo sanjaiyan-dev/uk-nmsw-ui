@@ -4,7 +4,9 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { SERVICE_NAME } from '../../constants/AppConstants';
-import { API_URL, CREATE_VOYAGE_ENDPOINT, ENDPOINT_DECLARATION_PATH, TOKEN_EXPIRED } from '../../constants/AppAPIConstants';
+import {
+  API_URL, CREATE_VOYAGE_ENDPOINT, ENDPOINT_DECLARATION_PATH, TOKEN_EXPIRED,
+} from '../../constants/AppAPIConstants';
 import {
   SIGN_IN_URL,
   URL_DECLARATIONID_IDENTIFIER,
@@ -65,8 +67,8 @@ const YourVoyages = () => {
         headers: {
           Authorization: `Bearer ${Auth.retrieveToken()}`,
         },
-      })
-      return response.data
+      });
+      return response.data;
     } catch (err) {
       if (err?.response?.status === 422) {
         Auth.removeToken();
@@ -76,7 +78,8 @@ const YourVoyages = () => {
         navigate(SIGN_IN_URL, { state: { redirectURL: YOUR_VOYAGES_URL } });
       }
     }
-  }
+    return null;
+  };
 
   const getDeclarationData = async () => {
     try {
@@ -84,13 +87,14 @@ const YourVoyages = () => {
         headers: { Authorization: `Bearer ${Auth.retrieveToken()}` },
       });
       if (response.status === 200) {
-        const results = []
+        const results = [];
         response.data.results.map((declaration) => {
           if (declaration.departureFromUk !== null) {
             results.push(declaration);
           } else {
-            deleteInvalidDeclarations(declaration.id)
+            deleteInvalidDeclarations(declaration.id);
           }
+          return results;
         });
         setVoyageData(results);
       }
