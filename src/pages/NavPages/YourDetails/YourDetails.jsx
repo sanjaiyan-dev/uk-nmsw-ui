@@ -1,30 +1,52 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import LoadingSpinner from '../../../components/LoadingSpinner';
+import { USER_ENDPOINT } from '../../../constants/AppAPIConstants';
 import {
-  CHANGE_YOUR_DETAILS_PAGE_URL,
+  // CHANGE_YOUR_DETAILS_PAGE_URL,
+  MESSAGE_URL,
   // CHANGE_YOUR_PASSWORD_PAGE_URL,
   REQUEST_PASSWORD_RESET_URL,
+  SIGN_IN_URL,
   YOUR_DETAILS_PAGE_NAME,
+  YOUR_DETAILS_PAGE_URL,
 } from '../../../constants/AppUrlConstants';
-
-const mockedUserData = {
-  fullName: 'John Doe',
-  emailAddress: 'john@example.com',
-  phoneNumber: '07123456576',
-  country: 'England',
-  userType: 'Standard user',
-  company: 'Company 1',
-  companyType: 'Shipping agent',
-  passwordChanged: '9 June 2021 14:22',
-};
+import Auth from '../../../utils/Auth';
 
 const YourDetails = () => {
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [userData, setUserData] = useState({});
+
   document.title = YOUR_DETAILS_PAGE_NAME;
-  const [formData, setFormData] = useState({});
+
+  const getUserData = async () => {
+    try {
+      const response = await axios.get(USER_ENDPOINT, {
+        headers: {
+          Authorization: `Bearer ${Auth.retrieveToken()}`,
+        },
+      });
+      setUserData(response.data);
+    } catch (err) {
+      if (err?.response?.status === 401 || err?.response?.status === 422) {
+        Auth.removeToken();
+        navigate(SIGN_IN_URL, { state: { redirectURL: YOUR_DETAILS_PAGE_URL } });
+      } else {
+        navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: YOUR_DETAILS_PAGE_URL } });
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    setFormData(mockedUserData);
-  }, []);
+    setIsLoading(true);
+    getUserData();
+  }, [setUserData]);
+
+  if (isLoading) { return (<LoadingSpinner />); }
 
   return (
     <div className="govuk-grid-row">
@@ -36,7 +58,7 @@ const YourDetails = () => {
               Email address
             </dt>
             <dd className="govuk-summary-list__value">
-              {formData.emailAddress}
+              {userData.email}
             </dd>
           </div>
 
@@ -45,7 +67,7 @@ const YourDetails = () => {
               Full name
             </dt>
             <dd className="govuk-summary-list__value">
-              {formData.fullName}
+              {userData.fullName}
             </dd>
           </div>
 
@@ -54,7 +76,7 @@ const YourDetails = () => {
               Your company name
             </dt>
             <dd className="govuk-summary-list__value">
-              {formData.company}
+              {/* {userData.company} */}
             </dd>
           </div>
 
@@ -63,7 +85,7 @@ const YourDetails = () => {
               Phone number
             </dt>
             <dd className="govuk-summary-list__value">
-              {formData.phoneNumber}
+              {userData.phoneNumber}
             </dd>
           </div>
 
@@ -72,11 +94,12 @@ const YourDetails = () => {
               Country
             </dt>
             <dd className="govuk-summary-list__value">
-              {formData.country}
+              {userData.countryCode}
             </dd>
           </div>
         </dl>
-        <Link className="govuk-link" to={CHANGE_YOUR_DETAILS_PAGE_URL}>Change your details</Link>
+        {/* Not available in MVP */}
+        {/* <Link className="govuk-link" to={CHANGE_YOUR_DETAILS_PAGE_URL}>Change your details</Link> */}
 
         <h2 className="govuk-heading-m govuk-!-margin-top-6">Account details</h2>
         <dl className="govuk-summary-list">
@@ -85,7 +108,7 @@ const YourDetails = () => {
               Type of account
             </dt>
             <dd className="govuk-summary-list__value">
-              {formData.userType}
+              {userData?.userType?.name}
             </dd>
           </div>
 
@@ -94,7 +117,7 @@ const YourDetails = () => {
               Company type
             </dt>
             <dd className="govuk-summary-list__value">
-              {formData.companyType}
+              {/* {userData.companyType} */}
             </dd>
           </div>
 
@@ -107,14 +130,16 @@ const YourDetails = () => {
                 <Link to={REQUEST_PASSWORD_RESET_URL} state={{ title: 'Change your password' }}>Change your password</Link>
               </p>
             </dt>
-            <dd className="govuk-summary-list__value govuk-hint">
-              {`Last changed ${formData.passwordChanged}`}
-            </dd>
+            {/* Not available for MVP */}
+            {/* <dd className="govuk-summary-list__value govuk-hint">
+              {`Last changed ${userData.passwordChanged}`}
+            </dd> */}
           </div>
         </dl>
-        <button type="button" className="govuk-button govuk-button--warning" data-module="govuk-button" onClick={() => { }}>
+        {/* Not available for MVP */}
+        {/* <button type="button" className="govuk-button govuk-button--warning" data-module="govuk-button" onClick={() => { }}>
           Delete your account
-        </button>
+        </button> */}
       </div>
     </div>
   );

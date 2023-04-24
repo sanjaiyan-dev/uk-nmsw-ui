@@ -10,6 +10,9 @@ export const PASSSWORD_RESET_ENDPOINT = `${apiUrl}/reset-password`;
 export const SIGN_IN_ENDPOINT = `${apiUrl}/sign-in`;
 export const SIGN_OUT_ENDPOINT = `${apiUrl}/sign-out`;
 
+// Manager user
+export const USER_ENDPOINT = `${apiUrl}/user`;
+
 // Report a voyage
 export const CREATE_VOYAGE_ENDPOINT = `${apiUrl}/user/declaration`;
 export const ENDPOINT_DECLARATION_PATH = '/declaration';
