@@ -4,7 +4,7 @@ import axios from 'axios';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import { USER_ENDPOINT } from '../../../constants/AppAPIConstants';
 import {
-  CHANGE_YOUR_DETAILS_PAGE_URL,
+  // CHANGE_YOUR_DETAILS_PAGE_URL,
   MESSAGE_URL,
   // CHANGE_YOUR_PASSWORD_PAGE_URL,
   REQUEST_PASSWORD_RESET_URL,
@@ -98,7 +98,8 @@ const YourDetails = () => {
             </dd>
           </div>
         </dl>
-        <Link className="govuk-link" to={CHANGE_YOUR_DETAILS_PAGE_URL}>Change your details</Link>
+        {/* Not available in MVP */}
+        {/* <Link className="govuk-link" to={CHANGE_YOUR_DETAILS_PAGE_URL}>Change your details</Link> */}
 
         <h2 className="govuk-heading-m govuk-!-margin-top-6">Account details</h2>
         <dl className="govuk-summary-list">
