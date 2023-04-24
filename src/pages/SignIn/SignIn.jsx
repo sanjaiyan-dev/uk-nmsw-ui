@@ -109,14 +109,14 @@ const SignIn = () => {
 
   if (isNotActivated) {
     const buttonProps = {
-      buttonLabel: 'Request a new email verification link',
+      buttonLabel: 'Send confirmation email',
       buttonNavigateTo: REGISTER_EMAIL_RESEND_URL,
     };
     return (
       <Message
         button={buttonProps}
-        title="Your email address has not been verified"
-        message="You need to verify your email address to finish creating your account."
+        title="Email address not verified"
+        message="We can send you a verification link so you can continue creating your account."
       />
     );
   }

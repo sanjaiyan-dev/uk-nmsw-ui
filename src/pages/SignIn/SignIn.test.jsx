@@ -281,11 +281,11 @@ describe('Sign in tests', () => {
     await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
     await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
     await user.click(screen.getByTestId('submit-button'));
-    screen.findByRole('heading', { name: 'Your email address has not been verified' });
-    expect(screen.getByRole('heading', { name: 'Your email address has not been verified' })).toBeInTheDocument();
-    expect(screen.getByText('You need to verify your email address to finish creating your account.')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Request a new email verification link' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Request a new email verification link' }).outerHTML).toEqual('<button class="govuk-button" data-module="govuk-button" type="button">Request a new email verification link</button>');
+    screen.findByRole('heading', { name: 'Email address not verified' });
+    expect(screen.getByRole('heading', { name: 'Email address not verified' })).toBeInTheDocument();
+    expect(screen.getByText('We can send you a verification link so you can continue creating your account.')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Send confirmation email' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Send confirmation email' }).outerHTML).toEqual('<button class="govuk-button" data-module="govuk-button" type="button">Send confirmation email</button>');
   });
 
   it('should redirect to message page if 500 from sign in and 500/unknown error received', async () => {
