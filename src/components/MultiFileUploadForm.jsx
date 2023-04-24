@@ -83,10 +83,23 @@ const MultiFileUploadForm = ({
   const [maxFilesError, setMaxFilesError] = useState();
   const [supportingDocumentsList, setSupportingDocumentsList] = useState([]);
 
+  const getPendingFiles = () => {
+    const pendingFiles = filesAddedForUpload.reduce((results, fileToCheck) => {
+      if (fileToCheck.status === FILE_STATUS_PENDING) {
+        results.push(fileToCheck);
+      }
+      return results;
+    }, []);
+    setFilesAddedForUpload(pendingFiles);
+  };
+
   const getDeclarationData = async () => {
     const response = await GetDeclaration({ declarationId });
     if (response.data) {
       setSupportingDocumentsList(response?.data?.supporting);
+      if (filesAddedForUpload.length > 0) {
+        getPendingFiles();
+      }
     } else {
       switch (response?.status) {
         case 401:
