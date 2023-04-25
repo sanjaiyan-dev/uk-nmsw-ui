@@ -29,9 +29,6 @@ When('I click the password reset link received', () => {
         cy.wrap(token).as('token');
         cy.intercept('PATCH', '**/reset-password').as('passwordReset');
         cy.visitUrl(`/new-password?token=${token}`);
-        // cy.wait('@passwordReset').then(({response}) => {
-        //     expect(response.statusCode).to.equal(204);
-        // });
     });
 });
 
