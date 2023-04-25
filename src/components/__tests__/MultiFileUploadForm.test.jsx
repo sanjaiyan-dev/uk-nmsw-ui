@@ -415,4 +415,38 @@ describe('Multi file upload tests', () => {
     await user.click(screen.getByRole('button', { name: 'Submit button label from props' }));
     expect(mockedUseNavigate).toHaveBeenCalledWith('/next-page/123');
   });
+
+  it('should not leave buttons in a disabled state when actions are complete', async () => {
+    const user = userEvent.setup();
+    const files = [
+      new File(['template1'], 'template1.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
+    ];
+
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, mockedFAL1Response);
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+
+    const input = screen.getByTestId('multiFileUploadInput');
+    await user.upload(input, files);
+
+    await user.click(screen.getByRole('button', { name: 'Upload files' }));
+    expect(screen.getByRole('button', { name: 'Upload files' })).not.toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Submit button label from props' })).not.toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Delete' })).not.toBeDisabled();
+
+    await user.click(screen.getByRole('button', { name: 'Submit button label from props' }));
+    expect(screen.getByRole('button', { name: 'Upload files' })).not.toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Submit button label from props' })).not.toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Delete' })).not.toBeDisabled();
+
+    await user.click(screen.getByRole('button', { name: 'Delete' }));
+    expect(screen.getByRole('button', { name: 'Upload files' })).not.toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Submit button label from props' })).not.toBeDisabled();
+  });
 });
