@@ -6,7 +6,6 @@ import MockAdapter from 'axios-mock-adapter';
 import { GENERAL_DECLARATION_TEMPLATE_NAME, MAX_FILE_SIZE, MAX_FILE_SIZE_DISPLAY } from '../../constants/AppConstants';
 import {
   DUPLICATE_RECORDS,
-  DUPLICATE_RECORDS_FAL5,
   FAL5_IS_EMPTY,
   FAL6_IS_EMPTY,
   FILE_MISSING,
@@ -193,7 +192,7 @@ describe('File upload tests', () => {
     mockAxios
       .onPost('/specific-endpoint-path-for-filetype')
       .reply(400, {
-        message: DUPLICATE_RECORDS_FAL5,
+        message: DUPLICATE_RECORDS,
       });
     renderPage();
     // make sure file is recognised so the FE no the FE file error isn't triggered

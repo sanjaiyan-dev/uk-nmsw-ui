@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import { GENERAL_DECLARATION_TEMPLATE_NAME, MAX_FILE_SIZE, MAX_FILE_SIZE_DISPLAY } from '../constants/AppConstants';
 import {
   DUPLICATE_RECORDS,
-  DUPLICATE_RECORDS_FAL5,
   FAL5_IS_EMPTY,
   FAL6_IS_EMPTY,
   FILE_MISSING,
@@ -50,9 +49,6 @@ const FileUploadForm = ({
   const handleErrors = ({ errorData }) => {
     switch (errorData.message) {
       case DUPLICATE_RECORDS:
-        setError({ id: FILE_UPLOAD_ID, message: "Details listed on this file are not allowed, because they're the same as details you've already uploaded. Check the details in your file and try uploading again." });
-        break;
-      case DUPLICATE_RECORDS_FAL5:
         setError({ id: FILE_UPLOAD_ID, message: "Details listed on this file are not allowed, because they're the same as details you've already uploaded. Check the details in your file and try uploading again." });
         break;
       case FILE_MISSING:
