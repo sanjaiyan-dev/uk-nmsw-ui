@@ -9,6 +9,7 @@ import {
   API_URL,
   ENDPOINT_DECLARATION_ATTACHMENTS_PATH,
   ENDPOINT_DECLARATION_PATH,
+  ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH,
 } from '../../constants/AppAPIConstants';
 import {
   SIGN_IN_URL,
@@ -28,7 +29,7 @@ const renderPage = () => {
   render(
     <MemoryRouter initialEntries={[`${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=123`]}>
       <MultiFileUploadForm
-        endpoint="/upload-file-endpoint"
+        endpoint={`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH}`}
         pageHeading="Title from props"
         submitButtonLabel="Submit button label from props"
         urlNextPage="/next-page/123"
@@ -128,7 +129,7 @@ describe('Multi file upload status tests', () => {
         },
       })
       .reply(200, mockedFAL1Response)
-      .onPost('/upload-file-endpoint')
+      .onPost(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH}`)
       .reply(() => new Promise((resolve) => {
         setTimeout(() => {
           resolve([201, null]);
@@ -161,7 +162,7 @@ describe('Multi file upload status tests', () => {
         },
       })
       .reply(200, mockedFAL1Response)
-      .onPost('/upload-file-endpoint')
+      .onPost(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH}`)
       .reply(() => new Promise((resolve) => {
         setTimeout(() => {
           resolve([201, null]);
@@ -195,7 +196,7 @@ describe('Multi file upload status tests', () => {
         },
       })
       .reply(200, mockedFAL1Response)
-      .onPost('/upload-file-endpoint')
+      .onPost(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH}`)
       .reply(200, {
         message: 'success response',
       });
@@ -227,7 +228,7 @@ describe('Multi file upload status tests', () => {
         },
       })
       .reply(200, mockedFAL1Response)
-      .onPost('/upload-file-endpoint')
+      .onPost(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH}`)
       .reply(400, {
         message: 'Invalid file type',
       });
@@ -258,7 +259,7 @@ describe('Multi file upload status tests', () => {
         },
       })
       .reply(200, mockedFAL1Response)
-      .onPost('/upload-file-endpoint')
+      .onPost(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH}`)
       .reply(400, {
         message: MAX_SUPPORTING_FILE_SIZE,
       });
@@ -290,7 +291,7 @@ describe('Multi file upload status tests', () => {
         },
       })
       .reply(200, mockedFAL1Response)
-      .onPost('/upload-file-endpoint')
+      .onPost(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH}`)
       .reply(400, {
         message: 'error response',
       });
@@ -322,7 +323,7 @@ describe('Multi file upload status tests', () => {
         },
       })
       .reply(200, mockedFAL1Response)
-      .onPost('/upload-file-endpoint')
+      .onPost(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH}`)
       .reply(500);
 
     renderPage();
@@ -349,7 +350,7 @@ describe('Multi file upload status tests', () => {
         },
       })
       .reply(200, mockedFAL1Response)
-      .onPost('/upload-file-endpoint')
+      .onPost(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH}`)
       .reply(422);
 
     renderPage();
@@ -375,7 +376,7 @@ describe('Multi file upload status tests', () => {
         },
       })
       .reply(200, mockedFAL1Response)
-      .onPost('/upload-file-endpoint')
+      .onPost(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH}`)
       .reply(401);
 
     renderPage();
@@ -401,11 +402,7 @@ describe('Multi file upload status tests', () => {
         },
       })
       .reply(200, mockedFAL1AndSupportingResponse)
-      .onDelete(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, { id: 'supporting1' }, {
-        headers: {
-          Authorization: 'Bearer 123',
-        },
-      })
+      .onDelete(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`)
       .reply(() => new Promise((resolve) => {
         setTimeout(() => {
           resolve([200, null]);
@@ -433,11 +430,7 @@ describe('Multi file upload status tests', () => {
         },
       })
       .reply(200, mockedFAL1AndSupportingResponse)
-      .onDelete(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, { id: 'supporting1' }, {
-        headers: {
-          Authorization: 'Bearer 123',
-        },
-      })
+      .onDelete(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`)
       .reply(() => new Promise((resolve) => {
         setTimeout(() => {
           resolve([200, null]);
@@ -453,5 +446,47 @@ describe('Multi file upload status tests', () => {
     expect(screen.getByRole('button', { name: 'Submit button label from props' })).toBeDisabled();
     expect(screen.getAllByRole('button', { name: 'Delete' })[0]).toBeDisabled();
     expect(screen.getAllByRole('button', { name: 'Delete' })[1]).toBeDisabled();
+  });
+
+  it('should redirect user to sign in if auth token missing on DELETE', async () => {
+    const user = userEvent.setup();
+    // Force a delay so we can test the file goes to an inprogress state
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, mockedFAL1AndSupportingResponse)
+      .onDelete(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH}`)
+      .reply(422);
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(screen.getAllByText('has been uploaded')).toHaveLength(2);
+
+    // user clicks delete on one
+    await user.click(screen.getAllByRole('button', { name: 'Delete' })[0]);
+    expect(mockedUseNavigate).toHaveBeenCalledWith(SIGN_IN_URL, { state: { redirectURL: '/this-page/123' } });
+  });
+
+  it('should redirect user to sign in if auth token invalid/expired on DELETE', async () => {
+    const user = userEvent.setup();
+    // Force a delay so we can test the file goes to an inprogress state
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, mockedFAL1AndSupportingResponse)
+      .onDelete(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH}`)
+      .reply(401);
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(screen.getAllByText('has been uploaded')).toHaveLength(2);
+
+    // user clicks delete on one
+    await user.click(screen.getAllByRole('button', { name: 'Delete' })[0]);
+    expect(mockedUseNavigate).toHaveBeenCalledWith(SIGN_IN_URL, { state: { redirectURL: '/this-page/123' } });
   });
 });
