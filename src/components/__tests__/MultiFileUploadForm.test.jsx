@@ -318,20 +318,19 @@ describe('Multi file upload tests', () => {
         },
       })
       .reply(200, mockedFAL1AndSupportingResponse)
-      .onDelete(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, { id: 'supporting1' }, {
-        headers: {
-          Authorization: 'Bearer 123',
-        },
-      })
+      .onDelete(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH}`)
       .reply(200, {
         message: 'File successfully deleted',
       });
+
     renderPage();
+
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(screen.getByText('supportingFile1')).toBeInTheDocument();
+    expect(screen.getByText('supportingFile2')).toBeInTheDocument();
 
     // user clicks delete on one
     await user.click(screen.getAllByRole('button', { name: 'Delete' })[0]);
-
     expect(mockAxios.history.delete.length).toBe(1);
   });
 
