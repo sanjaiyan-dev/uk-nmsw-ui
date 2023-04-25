@@ -16,6 +16,7 @@ import {
   VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
 } from '../../constants/AppUrlConstants';
 import MultiFileUploadForm from '../MultiFileUploadForm';
+import { MAX_SUPPORTING_FILE_SIZE, MAX_SUPPORTING_FILE_SIZE_DISPLAY } from '../../constants/AppConstants';
 
 const mockedUseNavigate = jest.fn();
 jest.mock('react-router', () => ({
@@ -211,6 +212,69 @@ describe('Multi file upload status tests', () => {
       expect(screen.queryByText('Loading')).not.toBeInTheDocument();
     });
     expect(screen.getAllByText('has been uploaded')).toHaveLength(2);
+  });
+
+  it('should change the status of a file to error when the POST returns an error starting with Invalid file type', async () => {
+    const user = userEvent.setup();
+    const files = [
+      new File(['template1'], 'template1.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
+      new File(['template2'], 'template2.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
+    ];
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, mockedFAL1Response)
+      .onPost('/upload-file-endpoint')
+      .reply(400, {
+        message: 'Invalid file type',
+      });
+
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+
+    const input = screen.getByTestId('multiFileUploadInput');
+    await user.upload(input, files);
+    expect(screen.getAllByText('Pending')).toHaveLength(2);
+
+    await user.click(screen.getByRole('button', { name: 'Upload files' }));
+    await waitFor(() => {
+      expect(screen.queryByText('Loading')).not.toBeInTheDocument();
+    });
+    expect(screen.getAllByText('The file must be a csv, doc, docm, docx, rtf, txt, xls, xlsm, xlsx, xltm, xltx, xlw or xml')).toHaveLength(2);
+  });
+
+  it('should change the status of a file to error when the selected file size is too large', async () => {
+    const user = userEvent.setup();
+    const file = new File(['template1'], 'template1.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    Object.defineProperty(file, 'size', { value: MAX_SUPPORTING_FILE_SIZE * MAX_SUPPORTING_FILE_SIZE + 1, configurable: true });
+
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, mockedFAL1Response)
+      .onPost('/upload-file-endpoint')
+      .reply(400, {
+        message: MAX_SUPPORTING_FILE_SIZE,
+      });
+
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+
+    const input = screen.getByTestId('multiFileUploadInput');
+    await user.upload(input, file);
+    expect(screen.getAllByText('Pending')).toHaveLength(1);
+
+    await user.click(screen.getByRole('button', { name: 'Upload files' }));
+    await waitFor(() => {
+      expect(screen.queryByText('Loading')).not.toBeInTheDocument();
+    });
+    expect(screen.getAllByText(`The file must be smaller than ${MAX_SUPPORTING_FILE_SIZE_DISPLAY}MB`)).toHaveLength(1);
   });
 
   it('should change the status of a file to error when the POST returns an error', async () => {
