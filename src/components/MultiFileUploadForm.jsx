@@ -297,11 +297,11 @@ const MultiFileUploadForm = ({
         await axios({
           method: 'delete',
           url: endpoint,
-          data: {
-            id,
-          },
           headers: {
             Authorization: `Bearer ${Auth.retrieveToken()}`,
+          },
+          data: {
+            id,
           },
         });
         getDeclarationData();

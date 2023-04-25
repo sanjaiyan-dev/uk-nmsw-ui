@@ -9,7 +9,13 @@ import {
   ENDPOINT_DECLARATION_PATH,
   ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH,
 } from '../../constants/AppAPIConstants';
-import { URL_DECLARATIONID_IDENTIFIER, VOYAGE_SUPPORTING_DOCS_UPLOAD_URL } from '../../constants/AppUrlConstants';
+import {
+  MESSAGE_URL,
+  SIGN_IN_URL,
+  URL_DECLARATIONID_IDENTIFIER,
+  VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
+  YOUR_VOYAGES_URL,
+} from '../../constants/AppUrlConstants';
 import MultiFileUploadForm from '../MultiFileUploadForm';
 
 const mockedUseNavigate = jest.fn();
@@ -147,6 +153,45 @@ describe('Multi file upload tests', () => {
     expect(screen.getByText('supportingFile1')).toBeInTheDocument();
     expect(screen.getAllByRole('button', { name: 'Delete' })).toHaveLength(2);
     expect(screen.getAllByText('has been uploaded')).toHaveLength(2);
+  });
+
+  it('should redirect user to sign in if 422 response received on GET call', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(422);
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(mockedUseNavigate).toHaveBeenCalledWith(SIGN_IN_URL, { state: { redirectURL: '/this-page/123' } });
+  });
+
+  it('should redirect user to sign in if 401 response received on GET call', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(401);
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(mockedUseNavigate).toHaveBeenCalledWith(SIGN_IN_URL, { state: { redirectURL: '/this-page/123' } });
+  });
+
+  it('should redirect user to sign in if other error response received on GET call', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(500);
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: undefined, redirectURL: YOUR_VOYAGES_URL } });
   });
 
   it('should accept one file added and display it in the file list', async () => {
