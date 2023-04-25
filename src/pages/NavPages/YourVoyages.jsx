@@ -81,9 +81,10 @@ const YourVoyages = () => {
     return null;
   };
 
-  const getDeclarationData = async () => {
+  const getDeclarationData = async (signal) => {
     try {
       const response = await axios.get(CREATE_VOYAGE_ENDPOINT, {
+        signal,
         headers: { Authorization: `Bearer ${Auth.retrieveToken()}` },
       });
       if (response.status === 200) {
@@ -98,8 +99,8 @@ const YourVoyages = () => {
         });
         setVoyageData(results);
       }
-      setIsLoading(false);
     } catch (err) {
+      if (err?.code === 'ERR_CANCELED') { return; }
       if (err?.response?.status === 422) {
         Auth.removeToken();
         navigate(SIGN_IN_URL, { state: { redirectURL: YOUR_VOYAGES_URL } });
@@ -109,13 +110,17 @@ const YourVoyages = () => {
       } else {
         setIsError(true);
       }
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   useEffect(() => {
+    const controller = new AbortController();
+    const { signal } = controller;
+
     setIsLoading(true);
-    getDeclarationData();
+    getDeclarationData(signal);
 
     if (state?.confirmationBanner?.message) {
       setNotification({
@@ -125,6 +130,9 @@ const YourVoyages = () => {
       // eslint-disable-next-line no-restricted-globals
       navigate(location.pathname, { replace: true });
     }
+
+    // cleanup function
+    return () => { controller.abort(); };
   }, [state]);
 
   if (isError) {
