@@ -291,7 +291,7 @@ const MultiFileUploadForm = ({
           newState[indexInSupportingDocumentsList].status = FILE_STATUS_IN_PROGRESS;
           setSupportingDocumentsList(newState);
         } else {
-          updateFileStatus({ file: fileName, status: FILE_STATUS_IN_PROGRESS });
+          updateFileStatus({ file: { file: { name: fileName } }, status: FILE_STATUS_IN_PROGRESS });
         }
 
         await axios({
