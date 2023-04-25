@@ -294,7 +294,7 @@ const MultiFileUploadForm = ({
           updateFileStatus({ file: fileName, status: FILE_STATUS_IN_PROGRESS });
         }
 
-        const response = await axios({
+        await axios({
           method: 'delete',
           url: endpoint,
           data: {
@@ -304,9 +304,7 @@ const MultiFileUploadForm = ({
             Authorization: `Bearer ${Auth.retrieveToken()}`,
           },
         });
-        if (response?.status === 200) {
-          getDeclarationData();
-        }
+        getDeclarationData();
       } catch (err) {
         switch (err?.response?.status) {
           case 401:
