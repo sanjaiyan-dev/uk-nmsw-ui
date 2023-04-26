@@ -38,9 +38,12 @@ const groupResponse = {
   groupName: 'Company Name',
   website: null,
   dateCreated: '2023-02-06T16:21:09.633696',
-  typeOfCompany: 'Shipping Agency',
+  typeOfCompany: null,
   lastUpdated: '2023-02-07T08:21:09.667603',
-  groupType: null,
+  groupType: {
+    groupTypeId: 'type123',
+    name: 'Shipping Agency',
+  },
 };
 
 describe('Your details tests', () => {

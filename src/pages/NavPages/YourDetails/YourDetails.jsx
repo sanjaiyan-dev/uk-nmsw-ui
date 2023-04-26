@@ -126,7 +126,7 @@ const YourDetails = () => {
               Company type
             </dt>
             <dd className="govuk-summary-list__value">
-              {groupData.typeOfCompany}
+              {groupData.groupType?.name}
             </dd>
           </div>
 
