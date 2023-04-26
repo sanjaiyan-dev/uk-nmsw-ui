@@ -768,7 +768,7 @@ describe('Voyage check your answers page', () => {
   // ==========================
   // STATUS TESTS
   // ==========================
-  it('should render no status line and the cta as submit if status is draft', async () => {
+  it('should render no status line and the cta as submit and the h1 as check your answers if status is draft', async () => {
     mockAxios
       .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
         headers: {
@@ -810,6 +810,7 @@ describe('Voyage check your answers page', () => {
       });
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(screen.getByText('Check your answers')).toBeInTheDocument();
     expect(screen.getByText('Now send your application')).toBeInTheDocument();
     expect(screen.getByText('By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Save and submit' })).toBeInTheDocument();
@@ -818,7 +819,7 @@ describe('Voyage check your answers page', () => {
     expect(screen.queryByText('Status')).not.toBeInTheDocument();
   });
 
-  it('should render the status as submitted, submission date, and a cancel CTA if status is submitted', async () => {
+  it('should render the status as submitted, submission date, h1 of review your report, and a cancel CTA if status is submitted', async () => {
     mockAxios
       .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
         headers: {
@@ -860,6 +861,7 @@ describe('Voyage check your answers page', () => {
       });
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(screen.getByText('Review your report')).toBeInTheDocument();
     expect(screen.getByText('Status')).toBeInTheDocument();
     expect(screen.getByText('Submitted').outerHTML).toEqual('<strong class="govuk-tag govuk-tag--green">Submitted</strong>');
     expect(screen.getByText('10 February 2023')).toBeInTheDocument();
@@ -870,7 +872,7 @@ describe('Voyage check your answers page', () => {
     expect(screen.queryByText('By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.')).not.toBeInTheDocument();
   });
 
-  it('should render the status as submitted, submission date, and a cancel CTA if status is presubmitted', async () => {
+  it('should render the status as submitted, submission date, h1 of review your report, and a cancel CTA if status is presubmitted', async () => {
     mockAxios
       .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
         headers: {
@@ -912,6 +914,7 @@ describe('Voyage check your answers page', () => {
       });
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(screen.getByText('Review your report')).toBeInTheDocument();
     expect(screen.getByText('Status')).toBeInTheDocument();
     expect(screen.getByText('Submitted').outerHTML).toEqual('<strong class="govuk-tag govuk-tag--green">Submitted</strong>');
     expect(screen.getByText('10 February 2023')).toBeInTheDocument();
@@ -922,7 +925,7 @@ describe('Voyage check your answers page', () => {
     expect(screen.queryByText('By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.')).not.toBeInTheDocument();
   });
 
-  it('should render the status as cancelled, submission date, and a no CTA if status is canceled', async () => {
+  it('should render the status as cancelled, submission date, h1 of review your report, and a no CTA if status is canceled', async () => {
     mockAxios
       .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
         headers: {
@@ -964,6 +967,7 @@ describe('Voyage check your answers page', () => {
       });
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(screen.getByText('Review your report')).toBeInTheDocument();
     expect(screen.getByText('Status')).toBeInTheDocument();
     expect(screen.getByText('Cancelled').outerHTML).toEqual('<strong class="govuk-tag govuk-tag--orange">Cancelled</strong>');
     expect(screen.getByText('10 February 2023')).toBeInTheDocument();
@@ -973,7 +977,7 @@ describe('Voyage check your answers page', () => {
     expect(screen.queryByText('By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.')).not.toBeInTheDocument();
   });
 
-  it('should render the status as cancelled, submission date, and a no CTA if status is precanceled', async () => {
+  it('should render the status as cancelled, submission date, h1 of review your report, and a no CTA if status is precanceled', async () => {
     mockAxios
       .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
         headers: {
@@ -1015,6 +1019,7 @@ describe('Voyage check your answers page', () => {
       });
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(screen.getByText('Review your report')).toBeInTheDocument();
     expect(screen.getByText('Status')).toBeInTheDocument();
     expect(screen.getByText('Cancelled').outerHTML).toEqual('<strong class="govuk-tag govuk-tag--orange">Cancelled</strong>');
     expect(screen.getByText('10 February 2023')).toBeInTheDocument();
@@ -1024,7 +1029,7 @@ describe('Voyage check your answers page', () => {
     expect(screen.queryByText('By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.')).not.toBeInTheDocument();
   });
 
-  it('should render the status as failed, submission date, and a no CTA if status is failed', async () => {
+  it('should render the status as failed, submission date, h1 of review your report, and a no CTA if status is failed', async () => {
     mockAxios
       .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
         headers: {
@@ -1066,6 +1071,7 @@ describe('Voyage check your answers page', () => {
       });
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(screen.getByText('Review your report')).toBeInTheDocument();
     expect(screen.getByText('Status')).toBeInTheDocument();
     expect(screen.getByText('Failed').outerHTML).toEqual('<strong class="govuk-tag govuk-tag--red">Failed</strong>');
     expect(screen.getByText('10 February 2023')).toBeInTheDocument();
@@ -1227,7 +1233,7 @@ describe('Voyage check your answers page', () => {
 
     await user.click(screen.getByRole('radio', { name: 'No' }));
     await user.click(screen.getByRole('button', { name: 'Confirm' }));
-    await screen.findByRole('heading', { name: 'Check your answers' });
+    await screen.findByRole('heading', { name: 'Review your report' });
     expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
   });
 

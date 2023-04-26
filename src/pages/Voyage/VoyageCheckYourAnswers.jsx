@@ -348,7 +348,8 @@ const VoyageCheckYourAnswers = () => {
           )}
         </div>
         <div className="govuk-grid-column-full">
-          <h1 className="govuk-heading-xl">Check your answers</h1>
+          {declarationStatus?.status === DECLARATION_STATUS_DRAFT && <h1 className="govuk-heading-xl">Check your answers</h1>}
+          {declarationStatus?.status !== DECLARATION_STATUS_DRAFT && <h1 className="govuk-heading-xl">Review your report</h1>}
         </div>
       </div>
       <div className="govuk-grid-row">
