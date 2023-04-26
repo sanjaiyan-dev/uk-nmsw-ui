@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import LoadingSpinner from '../../../components/LoadingSpinner';
-import { USER_ENDPOINT } from '../../../constants/AppAPIConstants';
+import { GROUP_ENDPOINT, USER_ENDPOINT } from '../../../constants/AppAPIConstants';
 import {
   // CHANGE_YOUR_DETAILS_PAGE_URL,
   MESSAGE_URL,
@@ -17,18 +17,27 @@ import Auth from '../../../utils/Auth';
 const YourDetails = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [groupData, setGroupData] = useState({});
   const [userData, setUserData] = useState({});
 
   document.title = YOUR_DETAILS_PAGE_NAME;
 
   const getUserData = async () => {
     try {
-      const response = await axios.get(USER_ENDPOINT, {
+      const userResponse = await axios.get(USER_ENDPOINT, {
         headers: {
           Authorization: `Bearer ${Auth.retrieveToken()}`,
         },
       });
-      setUserData(response.data);
+
+      const groupResponse = await axios.get(GROUP_ENDPOINT, {
+        headers: {
+          Authorization: `Bearer ${Auth.retrieveToken()}`,
+        },
+      });
+
+      setUserData(userResponse.data);
+      setGroupData(groupResponse.data);
     } catch (err) {
       if (err?.response?.status === 401 || err?.response?.status === 422) {
         Auth.removeToken();
@@ -76,7 +85,7 @@ const YourDetails = () => {
               Your company name
             </dt>
             <dd className="govuk-summary-list__value">
-              {/* {userData.company} */}
+              {groupData.groupName}
             </dd>
           </div>
 
@@ -117,7 +126,7 @@ const YourDetails = () => {
               Company type
             </dt>
             <dd className="govuk-summary-list__value">
-              {/* {userData.companyType} */}
+              {groupData.typeOfCompany}
             </dd>
           </div>
 
