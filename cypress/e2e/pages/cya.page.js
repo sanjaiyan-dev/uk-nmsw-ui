@@ -50,25 +50,31 @@ class CyaPage {
       case 'Fal6-Files':
         cy.get(':nth-child(2) > .govuk-summary-list__value > .govuk-link').should('include', fileName);
         break;
+      case 'Supporting-Docs':
+        cy.get('#supportingDocuments').parent.find('govuk-summary-list__value').should('include', fileName);
+        break;
     }
   }
 
   clickFalUploadedFile(folderName) {
     switch (folderName) {
       case 'Fal5-Files':
-        cy.get(':nth-child(1) > .govuk-summary-list__value > .govuk-link').invoke('attr','href').then((href) => {
-          cy.log(href);
-          cy.downloadFile(href,'downloads','fal5.xlsx');
+        cy.get(':nth-child(1) > .govuk-summary-list__value > .govuk-link').invoke('attr', 'href').then((href) => {
+          cy.downloadFile(href, 'downloads', 'fal5.xlsx');
         })
         break;
       case 'Fal6-Files':
-        cy.get(':nth-child(2) > .govuk-summary-list__value > .govuk-link').invoke('attr','href').then((href) => {
-          cy.downloadFile(href,'downloads','fal6.xlsx');
+        cy.get(':nth-child(2) > .govuk-summary-list__value > .govuk-link').invoke('attr', 'href').then((href) => {
+          cy.downloadFile(href, 'downloads', 'fal6.xlsx');
+        })
+        break;
+      case 'supportingDocs':
+        cy.get('#supportingDocuments').parent().find('a').invoke('attr', 'href').then((href) => {
+          cy.downloadFile(href, 'downloads', 'supportingDocs.xlsx');
         })
         break;
     }
   }
-
 }
 
 export default new CyaPage();
