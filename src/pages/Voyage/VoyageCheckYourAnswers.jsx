@@ -472,7 +472,7 @@ const VoyageCheckYourAnswers = () => {
             )
           }
           {
-            (declarationStatus?.status === DECLARATION_STATUS_DRAFT || declarationStatus?.status === DECLARATION_STATUS_SUBMITTED || declarationStatus?.status === DECLARATION_STATUS_PRESUBMITTED)
+            (declarationStatus?.status === DECLARATION_STATUS_SUBMITTED || declarationStatus?.status === DECLARATION_STATUS_PRESUBMITTED)
             && (
               <button
                 type="button"
