@@ -453,6 +453,374 @@ describe('Voyage check your answers page', () => {
    * for now in the tests below we're testing the a href is correct
    * and in the Cypress tests that the correct looking page loads
   */
+
+  it('should show change links if status is Draft', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, mockedFAL1And5Response);
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(screen.getByRole('link', { name: 'Change change Supporting documents' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Change change Supporting documents' }).outerHTML).toEqual('<a class="govuk-link" aria-describedby="supportingDocuments" href="/report-voyage/upload-supporting-documents?report=123">Change<span class="govuk-visually-hidden"> change Supporting documents</span></a>');
+    expect(screen.getByRole('link', { name: 'Change change voyage details' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Change change voyage details' }).outerHTML).toEqual('<a class="govuk-link" aria-describedby="voyageDetails" href="/report-voyage/upload-general-declaration?report=123">Change<span class="govuk-visually-hidden"> change voyage details</span></a>');
+    expect(screen.getByRole('link', { name: 'Change change Crew details' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Change change Crew details' }).outerHTML).toEqual('<a class="govuk-link" aria-describedby="crewDetails" href="/report-voyage/upload-crew-details?report=123">Change<span class="govuk-visually-hidden"> change Crew details</span></a>');
+    expect(screen.getByRole('link', { name: 'Change change Passenger details' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Change change Passenger details' }).outerHTML).toEqual('<a class="govuk-link" aria-describedby="passengerDetails" href="/report-voyage/passenger-details?report=123">Change<span class="govuk-visually-hidden"> change Passenger details</span></a>');
+    expect(screen.getByRole('link', { name: 'Change change Supporting documents' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Change change Supporting documents' }).outerHTML).toEqual('<a class="govuk-link" aria-describedby="supportingDocuments" href="/report-voyage/upload-supporting-documents?report=123">Change<span class="govuk-visually-hidden"> change Supporting documents</span></a>');
+  });
+
+  it('should NOT show change links if status is PreSubmitted', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          status: 'PreSubmitted',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: false,
+          departurePortUnlocode: 'AUPOR',
+          departureDate: '2023-02-12',
+          departureTime: '09:23:00',
+          arrivalPortUnlocode: 'GBDOV',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUPOR',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: true,
+          creationDate: '2023-02-10',
+          submissionDate: null,
+        },
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [
+          {
+            filename: 'Passenger details FAL 6.xlsx',
+            id: 'FAL6',
+            size: '118385',
+            url: 'https://fal6-report-link.com',
+          },
+        ],
+        supporting: [
+          {
+            id: '123abc',
+            filename: 'MyFirstDocument.xlsx',
+            size: '90610',
+            url: 'https://first-doc-link.com',
+          },
+          {
+            id: '123def',
+            filename: 'My-second-doc.xlsx',
+            size: '90610',
+            url: 'https://second-doc-link.com',
+          },
+        ],
+      });
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(screen.queryByRole('link', { name: 'Change change Supporting documents' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change voyage details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Crew details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Passenger details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Supporting documents' })).not.toBeInTheDocument();
+  });
+
+  it('should NOT show change links if status is Submitted', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          status: 'Submitted',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: false,
+          departurePortUnlocode: 'AUPOR',
+          departureDate: '2023-02-12',
+          departureTime: '09:23:00',
+          arrivalPortUnlocode: 'GBDOV',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUPOR',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: true,
+          creationDate: '2023-02-10',
+          submissionDate: null,
+        },
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [
+          {
+            filename: 'Passenger details FAL 6.xlsx',
+            id: 'FAL6',
+            size: '118385',
+            url: 'https://fal6-report-link.com',
+          },
+        ],
+        supporting: [
+          {
+            id: '123abc',
+            filename: 'MyFirstDocument.xlsx',
+            size: '90610',
+            url: 'https://first-doc-link.com',
+          },
+          {
+            id: '123def',
+            filename: 'My-second-doc.xlsx',
+            size: '90610',
+            url: 'https://second-doc-link.com',
+          },
+        ],
+      });
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(screen.queryByRole('link', { name: 'Change change Supporting documents' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change voyage details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Crew details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Passenger details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Supporting documents' })).not.toBeInTheDocument();
+  });
+
+  it('should NOT show change links if status is PreCancelled', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          status: 'PreCancelled',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: false,
+          departurePortUnlocode: 'AUPOR',
+          departureDate: '2023-02-12',
+          departureTime: '09:23:00',
+          arrivalPortUnlocode: 'GBDOV',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUPOR',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: true,
+          creationDate: '2023-02-10',
+          submissionDate: null,
+        },
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [
+          {
+            filename: 'Passenger details FAL 6.xlsx',
+            id: 'FAL6',
+            size: '118385',
+            url: 'https://fal6-report-link.com',
+          },
+        ],
+        supporting: [
+          {
+            id: '123abc',
+            filename: 'MyFirstDocument.xlsx',
+            size: '90610',
+            url: 'https://first-doc-link.com',
+          },
+          {
+            id: '123def',
+            filename: 'My-second-doc.xlsx',
+            size: '90610',
+            url: 'https://second-doc-link.com',
+          },
+        ],
+      });
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(screen.queryByRole('link', { name: 'Change change Supporting documents' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change voyage details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Crew details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Passenger details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Supporting documents' })).not.toBeInTheDocument();
+  });
+
+  it('should NOT show change links if status is Cancelled', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          status: 'Cancelled',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: false,
+          departurePortUnlocode: 'AUPOR',
+          departureDate: '2023-02-12',
+          departureTime: '09:23:00',
+          arrivalPortUnlocode: 'GBDOV',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUPOR',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: true,
+          creationDate: '2023-02-10',
+          submissionDate: null,
+        },
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [
+          {
+            filename: 'Passenger details FAL 6.xlsx',
+            id: 'FAL6',
+            size: '118385',
+            url: 'https://fal6-report-link.com',
+          },
+        ],
+        supporting: [
+          {
+            id: '123abc',
+            filename: 'MyFirstDocument.xlsx',
+            size: '90610',
+            url: 'https://first-doc-link.com',
+          },
+          {
+            id: '123def',
+            filename: 'My-second-doc.xlsx',
+            size: '90610',
+            url: 'https://second-doc-link.com',
+          },
+        ],
+      });
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(screen.queryByRole('link', { name: 'Change change Supporting documents' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change voyage details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Crew details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Passenger details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Supporting documents' })).not.toBeInTheDocument();
+  });
+
+  it('should NOT show change links if status is Failed', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          status: 'Failed',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: false,
+          departurePortUnlocode: 'AUPOR',
+          departureDate: '2023-02-12',
+          departureTime: '09:23:00',
+          arrivalPortUnlocode: 'GBDOV',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUPOR',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: true,
+          creationDate: '2023-02-10',
+          submissionDate: null,
+        },
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [
+          {
+            filename: 'Passenger details FAL 6.xlsx',
+            id: 'FAL6',
+            size: '118385',
+            url: 'https://fal6-report-link.com',
+          },
+        ],
+        supporting: [
+          {
+            id: '123abc',
+            filename: 'MyFirstDocument.xlsx',
+            size: '90610',
+            url: 'https://first-doc-link.com',
+          },
+          {
+            id: '123def',
+            filename: 'My-second-doc.xlsx',
+            size: '90610',
+            url: 'https://second-doc-link.com',
+          },
+        ],
+      });
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(screen.queryByRole('link', { name: 'Change change Supporting documents' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change voyage details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Crew details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Passenger details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Supporting documents' })).not.toBeInTheDocument();
+  });
+
   it('should load the General Declarations upload page if Change next to Voyage Details is clicked', async () => {
     // const user = userEvent.setup();
     mockAxios
@@ -465,7 +833,6 @@ describe('Voyage check your answers page', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     expect(screen.getByRole('link', { name: 'Change change voyage details' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Change change voyage details' }).outerHTML).toEqual('<a class="govuk-link" aria-describedby="voyageDetails" href="/report-voyage/upload-general-declaration?report=123">Change<span class="govuk-visually-hidden"> change voyage details</span></a>');
     // await user.click(screen.getByRole('link', { name: 'Change change voyage details' }));
     // await waitFor(() => {
     //   expect(mockedUseNavigate).toHaveBeenCalledWith(`${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=123`, {
@@ -486,7 +853,6 @@ describe('Voyage check your answers page', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     expect(screen.getByRole('link', { name: 'Change change Crew details' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Change change Crew details' }).outerHTML).toEqual('<a class="govuk-link" aria-describedby="crewDetails" href="/report-voyage/upload-crew-details?report=123">Change<span class="govuk-visually-hidden"> change Crew details</span></a>');
     // await user.click(screen.getByRole('link', { name: 'Change change Crew details' }));
     // await waitFor(() => {
     //   expect(mockedUseNavigate).toHaveBeenCalledWith(`${VOYAGE_CREW_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=123`, {
@@ -507,7 +873,6 @@ describe('Voyage check your answers page', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     expect(screen.getByRole('link', { name: 'Change change Passenger details' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Change change Passenger details' }).outerHTML).toEqual('<a class="govuk-link" aria-describedby="passengerDetails" href="/report-voyage/passenger-details?report=123">Change<span class="govuk-visually-hidden"> change Passenger details</span></a>');
     // await user.click(screen.getByRole('link', { name: 'Change change Passenger details' }));
     // await waitFor(() => {
     //   expect(mockedUseNavigate).toHaveBeenCalledWith(`${VOYAGE_PASSENGERS_URL}?${URL_DECLARATIONID_IDENTIFIER}=123`, {
@@ -528,7 +893,6 @@ describe('Voyage check your answers page', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     expect(screen.getByRole('link', { name: 'Change change Supporting documents' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Change change Supporting documents' }).outerHTML).toEqual('<a class="govuk-link" aria-describedby="supportingDocuments" href="/report-voyage/upload-supporting-documents?report=123">Change<span class="govuk-visually-hidden"> change Supporting documents</span></a>');
     // await user.click(screen.getByRole('link', { name: 'Change change Supporting documents' }));
     // await waitFor(() => {
     //   expect(mockedUseNavigate).toHaveBeenCalledWith(`${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=123`, {
