@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import {
   DECLARATION_STATUS_DRAFT,
+  DECLARATION_STATUS_PRECANCELLED,
   DECLARATION_STATUS_PRESUBMITTED,
   DECLARATION_STATUS_SUBMITTED,
 } from '../../constants/AppConstants';
@@ -28,6 +29,7 @@ import StatusTag from '../../components/StatusTag';
 import GetDeclaration from '../../utils/GetDeclaration';
 import Auth from '../../utils/Auth';
 import { scrollToElementId, scrollToTop } from '../../utils/ScrollToElement';
+import VoyageCancelConfirmation from './VoyageCheckYourAnswers/VoyageCancelConfirmation';
 
 const SubmitConfirmation = () => (
   <>
@@ -48,6 +50,7 @@ const VoyageCheckYourAnswers = () => {
   const [fal5Details, setFal5Details] = useState();
   const [fal6Details, setFal6Details] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const [isPendingCancel, setIsPendingCancel] = useState(false);
   const [isPendingSubmit, setIsPendingSubmit] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [supportingDocs, setSupportingDocs] = useState([]);
@@ -246,6 +249,36 @@ const VoyageCheckYourAnswers = () => {
     }
   };
 
+  const checkCancelRequest = async () => {
+    setIsPendingCancel(true);
+  };
+
+  const handleCancel = async (formData) => {
+    if (formData.formData.deleteVoyage === 'deleteVoyageNo') {
+      setIsPendingCancel(false);
+    } else if (formData.formData.deleteVoyage === 'deleteVoyageYes') {
+      setIsPendingSubmit(true);
+      try {
+        const response = await axios.patch(`${API_URL}${ENDPOINT_DECLARATION_PATH}/${declarationId}`, { status: DECLARATION_STATUS_PRECANCELLED }, {
+          headers: { Authorization: `Bearer ${Auth.retrieveToken()}` },
+        });
+        if (response.status === 200) {
+          navigate(YOUR_VOYAGES_URL, { state: { confirmationBanner: { message: `Report for ${declarationData.FAL1.nameOfShip} cancelled.` } } });
+        }
+      } catch (err) {
+        if (err?.response?.status === 422 || err?.response?.data?.msg === TOKEN_EXPIRED) {
+          Auth.removeToken();
+          navigate(SIGN_IN_URL, { state: { redirectURL: `${VOYAGE_CHECK_YOUR_ANSWERS}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}` } });
+        } else {
+          // 500 errors will fall into this bucket
+          navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: `${VOYAGE_CHECK_YOUR_ANSWERS}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}` } });
+        }
+      } finally {
+        setIsPendingSubmit(false);
+      }
+    }
+  };
+
   useEffect(() => {
     if (declarationId) {
       setIsLoading(true);
@@ -266,6 +299,14 @@ const VoyageCheckYourAnswers = () => {
   }
 
   if (isLoading) { return (<LoadingSpinner />); }
+  if (isPendingCancel) {
+    return (
+      <VoyageCancelConfirmation
+        isLoading={isPendingSubmit}
+        handleSubmit={handleCancel}
+      />
+    );
+  }
   if (showConfirmation) {
     return (
       <ConfirmationMessage
@@ -307,7 +348,8 @@ const VoyageCheckYourAnswers = () => {
           )}
         </div>
         <div className="govuk-grid-column-full">
-          <h1 className="govuk-heading-xl">Check your answers</h1>
+          {declarationStatus?.status === DECLARATION_STATUS_DRAFT && <h1 className="govuk-heading-xl">Check your answers</h1>}
+          {declarationStatus?.status !== DECLARATION_STATUS_DRAFT && <h1 className="govuk-heading-xl">Review your report</h1>}
         </div>
       </div>
       <div className="govuk-grid-row">
@@ -437,11 +479,10 @@ const VoyageCheckYourAnswers = () => {
             && (
               <button
                 type="button"
-                // className={isPendingCancel ? 'govuk-button disabled' : 'govuk-button govuk-button--warning'}
-                className="govuk-button govuk-button--warning"
+                className={isPendingSubmit ? 'govuk-button govuk-button--warning disabled' : 'govuk-button govuk-button--warning'}
                 data-module="govuk-button"
-              // disabled={isPendingCancel}
-              // onClick={() => handleCancel()}
+                disabled={isPendingSubmit}
+                onClick={() => checkCancelRequest()}
               >
                 Cancel
               </button>
