@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import LoadingSpinner from '../../../components/LoadingSpinner';
-import { GROUP_ENDPOINT, USER_ENDPOINT } from '../../../constants/AppAPIConstants';
+import { USER_ENDPOINT } from '../../../constants/AppAPIConstants';
 import {
   // CHANGE_YOUR_DETAILS_PAGE_URL,
   MESSAGE_URL,
@@ -17,10 +17,22 @@ import Auth from '../../../utils/Auth';
 const YourDetails = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const [groupData, setGroupData] = useState({});
   const [userData, setUserData] = useState({});
 
   document.title = YOUR_DETAILS_PAGE_NAME;
+
+  const formatCompanyType = (value) => {
+    // using a switch as we know post MVP this list will be extended to include more types
+    let response;
+    switch (value) {
+      case 'ShippingAgent': response = 'Shipping agent';
+        break;
+      case 'OtherEmail': response = 'Other';
+        break;
+      default: response = 'Other';
+    }
+    return response;
+  };
 
   const getUserData = async () => {
     try {
@@ -30,14 +42,10 @@ const YourDetails = () => {
         },
       });
 
-      const groupResponse = await axios.get(GROUP_ENDPOINT, {
-        headers: {
-          Authorization: `Bearer ${Auth.retrieveToken()}`,
-        },
+      setUserData({
+        ...userResponse.data,
+        companyType: formatCompanyType(userResponse?.data?.group?.groupName),
       });
-
-      setUserData(userResponse.data);
-      setGroupData(groupResponse.data);
     } catch (err) {
       if (err?.response?.status === 401 || err?.response?.status === 422) {
         Auth.removeToken();
@@ -80,14 +88,14 @@ const YourDetails = () => {
             </dd>
           </div>
 
-          <div className="govuk-summary-list__row">
+          {/* <div className="govuk-summary-list__row">
             <dt className="govuk-summary-list__key">
               Your company name
             </dt>
             <dd className="govuk-summary-list__value">
-              {groupData.groupName}
+              {}
             </dd>
-          </div>
+          </div> */}
 
           <div className="govuk-summary-list__row">
             <dt className="govuk-summary-list__key">
@@ -126,7 +134,7 @@ const YourDetails = () => {
               Company type
             </dt>
             <dd className="govuk-summary-list__value">
-              {groupData.groupType?.name}
+              {userData.companyType}
             </dd>
           </div>
 
