@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import LoadingSpinner from '../../../components/LoadingSpinner';
-import { USER_ENDPOINT } from '../../../constants/AppAPIConstants';
+import { GROUP_ENDPOINT, USER_ENDPOINT } from '../../../constants/AppAPIConstants';
 import {
   // CHANGE_YOUR_DETAILS_PAGE_URL,
   MESSAGE_URL,
@@ -16,6 +16,7 @@ import Auth from '../../../utils/Auth';
 
 const YourDetails = () => {
   const navigate = useNavigate();
+  const [groupData, setGroupData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState({});
 
@@ -29,7 +30,14 @@ const YourDetails = () => {
         },
       });
 
+      const groupResponse = await axios.get(GROUP_ENDPOINT, {
+        headers: {
+          Authorization: `Bearer ${Auth.retrieveToken()}`,
+        },
+      });
+
       setUserData(userResponse.data);
+      setGroupData(groupResponse.data);
     } catch (err) {
       if (err?.response?.status === 401 || err?.response?.status === 422) {
         Auth.removeToken();
@@ -77,7 +85,7 @@ const YourDetails = () => {
               Your company name
             </dt>
             <dd className="govuk-summary-list__value">
-              {userData.group?.groupName}
+              {groupData.groupName}
             </dd>
           </div>
 
@@ -113,12 +121,13 @@ const YourDetails = () => {
             </dd>
           </div>
 
-          {/* <div className="govuk-summary-list__row">
+          {/* although this is the right keys, we're only getting 'null' back for accounts so commenting out for MVP
+          <div className="govuk-summary-list__row">
             <dt className="govuk-summary-list__key">
               Company type
             </dt>
             <dd className="govuk-summary-list__value">
-              {userData.companyType}
+              {groupData.groupType?.name}
             </dd>
           </div> */}
 

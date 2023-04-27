@@ -9,7 +9,7 @@ import userEvent from '@testing-library/user-event';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import YourDetails from '../YourDetails';
-import { TOKEN_EXPIRED, USER_ENDPOINT } from '../../../../constants/AppAPIConstants';
+import { GROUP_ENDPOINT, TOKEN_EXPIRED, USER_ENDPOINT } from '../../../../constants/AppAPIConstants';
 import { MESSAGE_URL, SIGN_IN_URL, YOUR_DETAILS_PAGE_URL } from '../../../../constants/AppUrlConstants';
 
 const mockedUseNavigate = jest.fn();
@@ -34,11 +34,23 @@ const userResponse = {
   group: {
     dateCreated: '2023-01-05T11:45:40.485831',
     groupId: 'abc',
-    groupName: 'something here',
+    groupName: 'Company Name',
     groupType: null,
     lastUpdated: '2023-04-27T07:32:17.186731',
     typeOfCompany: null,
     website: null,
+  },
+};
+const groupResponse = {
+  groupId: 'abc',
+  groupName: 'Company Name',
+  website: null,
+  dateCreated: '2023-02-06T16:21:09.633696',
+  typeOfCompany: null,
+  lastUpdated: '2023-02-07T08:21:09.667603',
+  groupType: {
+    groupTypeId: 'type123',
+    name: 'Shipping Agency',
   },
 };
 
@@ -60,7 +72,7 @@ describe('Your details tests', () => {
     expect(screen.getByText('Country')).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Account details' })).toBeInTheDocument();
     expect(screen.getByText('Type of account')).toBeInTheDocument();
-    // expect(screen.getByText('Company type')).toBeInTheDocument();
+    // expect(screen.getByText('Company type')).toBeInTheDocument();  is not being returned in actual data so commented out in code for MVP
     expect(screen.getByText('Password')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Change your password' })).toBeInTheDocument();
   });
@@ -68,7 +80,9 @@ describe('Your details tests', () => {
   it('should render user & group details if success response', async () => {
     mockAxios
       .onGet(USER_ENDPOINT)
-      .reply(200, userResponse);
+      .reply(200, userResponse)
+      .onGet(GROUP_ENDPOINT)
+      .reply(200, groupResponse);
 
     render(<MemoryRouter><YourDetails /></MemoryRouter>);
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
@@ -77,13 +91,29 @@ describe('Your details tests', () => {
     expect(screen.getByText('(44)123456789')).toBeInTheDocument();
     expect(screen.getByText('GBR')).toBeInTheDocument();
     expect(screen.getByText('Admin')).toBeInTheDocument();
-    expect(screen.getByText('something here')).toBeInTheDocument();
-    // expect(screen.getByText('Other')).toBeInTheDocument(); company type not being returned in our dataset right now
+    expect(screen.getByText('Company Name')).toBeInTheDocument();
+    // expect(screen.getByText('Shipping Agency')).toBeInTheDocument();
   });
 
   it('should redirect to sign in if getting the user declarations returns a 422', async () => {
     mockAxios
       .onGet(USER_ENDPOINT)
+      .reply(422, { msg: 'Not enough segments' })
+      .onGet(GROUP_ENDPOINT)
+      .reply(200, groupResponse);
+
+    render(<MemoryRouter><YourDetails /></MemoryRouter>);
+
+    await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith(SIGN_IN_URL, { state: { redirectURL: YOUR_DETAILS_PAGE_URL } });
+    });
+  });
+
+  it('should redirect to sign in if getting the group declarations returns a 422', async () => {
+    mockAxios
+      .onGet(USER_ENDPOINT)
+      .reply(200, userResponse)
+      .onGet(GROUP_ENDPOINT)
       .reply(422, { msg: 'Not enough segments' });
     render(<MemoryRouter><YourDetails /></MemoryRouter>);
 
@@ -95,6 +125,21 @@ describe('Your details tests', () => {
   it('should redirect to sign in if getting the user declarations returns a 401 token expired', async () => {
     mockAxios
       .onGet(USER_ENDPOINT)
+      .reply(401, { msg: TOKEN_EXPIRED })
+      .onGet(GROUP_ENDPOINT)
+      .reply(200, groupResponse);
+    render(<MemoryRouter><YourDetails /></MemoryRouter>);
+
+    await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith(SIGN_IN_URL, { state: { redirectURL: YOUR_DETAILS_PAGE_URL } });
+    });
+  });
+
+  it('should redirect to sign in if getting the group declarations returns a 401 token expired', async () => {
+    mockAxios
+      .onGet(USER_ENDPOINT)
+      .reply(200, userResponse)
+      .onGet(GROUP_ENDPOINT)
       .reply(401, { msg: TOKEN_EXPIRED });
     render(<MemoryRouter><YourDetails /></MemoryRouter>);
 
@@ -106,6 +151,21 @@ describe('Your details tests', () => {
   it('should redirect to message page on other user endpoint errors', async () => {
     mockAxios
       .onGet(USER_ENDPOINT)
+      .reply(500)
+      .onGet(GROUP_ENDPOINT)
+      .reply(200, groupResponse);
+    render(<MemoryRouter><YourDetails /></MemoryRouter>);
+
+    await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, { state: { title: 'Something has gone wrong', undefined, redirectURL: YOUR_DETAILS_PAGE_URL } });
+    });
+  });
+
+  it('should redirect to message page on group endpoint other errors', async () => {
+    mockAxios
+      .onGet(USER_ENDPOINT)
+      .reply(200, userResponse)
+      .onGet(GROUP_ENDPOINT)
       .reply(500);
     render(<MemoryRouter><YourDetails /></MemoryRouter>);
 
