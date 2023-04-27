@@ -1,4 +1,4 @@
-const Fal1Fal5PassengersTrueSupporting = {
+const Fal1Supporting = {
   FAL1: {
     nameOfShip: 'Test ship name',
     status: 'Draft',
@@ -20,14 +20,7 @@ const Fal1Fal5PassengersTrueSupporting = {
     creationDate: '2023-02-10',
     submissionDate: null,
   },
-  FAL5: [
-    {
-      filename: 'Crew details including supernumeraries FAL 5.xlsx',
-      id: 'FAL5',
-      size: '118385',
-      url: 'https://fal5-report-link.com',
-    },
-  ],
+  FAL5: [],
   FAL6: [],
   supporting: [
     {
@@ -45,4 +38,4 @@ const Fal1Fal5PassengersTrueSupporting = {
   ],
 };
 
-export default Fal1Fal5PassengersTrueSupporting;
+export default Fal1Supporting;
