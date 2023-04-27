@@ -9,7 +9,7 @@ import userEvent from '@testing-library/user-event';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import YourDetails from '../YourDetails';
-import { GROUP_ENDPOINT, TOKEN_EXPIRED, USER_ENDPOINT } from '../../../../constants/AppAPIConstants';
+import { TOKEN_EXPIRED, USER_ENDPOINT } from '../../../../constants/AppAPIConstants';
 import { MESSAGE_URL, SIGN_IN_URL, YOUR_DETAILS_PAGE_URL } from '../../../../constants/AppUrlConstants';
 
 const mockedUseNavigate = jest.fn();
