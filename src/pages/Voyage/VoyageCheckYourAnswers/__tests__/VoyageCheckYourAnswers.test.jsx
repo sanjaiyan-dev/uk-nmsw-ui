@@ -24,6 +24,7 @@ import Failed from '../../__tests__/fixtures/getVoyage-Failed';
 import Fal1 from '../../__tests__/fixtures/getVoyage-Fal1';
 import Fal1PassengersTrue from '../../__tests__/fixtures/getVoyage-Fal1PassengersTrue';
 import Fal1Fal5 from '../../__tests__/fixtures/getVoyage-Fal1Fal5';
+import Fal1Fal5PassengersFalse from '../../__tests__/fixtures/getVoyage-Fal1Fal5PassengersFalse';
 import Fal1Fal5Fal6 from '../../__tests__/fixtures/getVoyage-Fal1Fal5Fal6';
 import Fal1Fal5Fal6Supporting from '../../__tests__/fixtures/getVoyage-Fal1Fal5Fal6Supporting';
 import PreCancelled from '../../__tests__/fixtures/getVoyage-PreCancelled';
@@ -252,7 +253,7 @@ describe('Voyage check your answers page', () => {
     expect(screen.getByText('No supporting documents provided')).toBeInTheDocument();
   });
 
-  it('should render none present text if no passengers and/or no supporting docs', async () => {
+  it('should render none present text if null passengers and/or no supporting docs', async () => {
     mockAxios
       .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
         headers: {
@@ -264,6 +265,20 @@ describe('Voyage check your answers page', () => {
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     expect(screen.getByText('No passenger details provided')).toBeInTheDocument();
     expect(screen.getByText('No supporting documents provided')).toBeInTheDocument();
+  });
+
+  it('should render none provided if passengers answer is no', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, Fal1Fal5PassengersFalse);
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+
+    expect(screen.getByText('No passenger details provided')).toBeInTheDocument();
   });
 
   it('should render link for Passenger details if a file is present', async () => {
