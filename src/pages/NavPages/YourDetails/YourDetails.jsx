@@ -21,19 +21,6 @@ const YourDetails = () => {
 
   document.title = YOUR_DETAILS_PAGE_NAME;
 
-  const formatCompanyType = (value) => {
-    // using a switch as we know post MVP this list will be extended to include more types
-    let response;
-    switch (value) {
-      case 'ShippingAgent': response = 'Shipping agent';
-        break;
-      case 'OtherEmail': response = 'Other';
-        break;
-      default: response = 'Other';
-    }
-    return response;
-  };
-
   const getUserData = async () => {
     try {
       const userResponse = await axios.get(USER_ENDPOINT, {
@@ -42,10 +29,7 @@ const YourDetails = () => {
         },
       });
 
-      setUserData({
-        ...userResponse.data,
-        companyType: formatCompanyType(userResponse?.data?.group?.groupName),
-      });
+      setUserData(userResponse.data);
     } catch (err) {
       if (err?.response?.status === 401 || err?.response?.status === 422) {
         Auth.removeToken();
@@ -88,14 +72,14 @@ const YourDetails = () => {
             </dd>
           </div>
 
-          {/* <div className="govuk-summary-list__row">
+          <div className="govuk-summary-list__row">
             <dt className="govuk-summary-list__key">
               Your company name
             </dt>
             <dd className="govuk-summary-list__value">
-              {}
+              {userData.group?.groupName}
             </dd>
-          </div> */}
+          </div>
 
           <div className="govuk-summary-list__row">
             <dt className="govuk-summary-list__key">
@@ -129,14 +113,14 @@ const YourDetails = () => {
             </dd>
           </div>
 
-          <div className="govuk-summary-list__row">
+          {/* <div className="govuk-summary-list__row">
             <dt className="govuk-summary-list__key">
               Company type
             </dt>
             <dd className="govuk-summary-list__value">
               {userData.companyType}
             </dd>
-          </div>
+          </div> */}
 
           <div className="govuk-summary-list__row">
             <dt className="govuk-summary-list__key">

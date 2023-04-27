@@ -55,12 +55,12 @@ describe('Your details tests', () => {
     expect(screen.getByRole('heading', { name: 'Your details' })).toBeInTheDocument();
     expect(screen.getByText('Email address')).toBeInTheDocument();
     expect(screen.getByText('Full name')).toBeInTheDocument();
-    // expect(screen.getByText('Your company name')).toBeInTheDocument();
+    expect(screen.getByText('Your company name')).toBeInTheDocument();
     expect(screen.getByText('Phone number')).toBeInTheDocument();
     expect(screen.getByText('Country')).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Account details' })).toBeInTheDocument();
     expect(screen.getByText('Type of account')).toBeInTheDocument();
-    expect(screen.getByText('Company type')).toBeInTheDocument();
+    // expect(screen.getByText('Company type')).toBeInTheDocument();
     expect(screen.getByText('Password')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Change your password' })).toBeInTheDocument();
   });
@@ -77,72 +77,8 @@ describe('Your details tests', () => {
     expect(screen.getByText('(44)123456789')).toBeInTheDocument();
     expect(screen.getByText('GBR')).toBeInTheDocument();
     expect(screen.getByText('Admin')).toBeInTheDocument();
-    // expect(screen.getByText('Company Name')).toBeInTheDocument();
-    expect(screen.getByText('Other')).toBeInTheDocument();
-  });
-
-  it('should translate ShippingAgent to Shipping agent if type is ShippingAgent', async () => {
-    mockAxios
-      .onGet(USER_ENDPOINT)
-      .reply(200, {
-        userId: '123',
-        email: 'useremail@test.com',
-        fullName: 'Bob Doe',
-        phoneNumber: '(44)123456789',
-        countryCode: 'GBR',
-        verified: true,
-        dateCreated: '2023-02-06T16:21:09.958032',
-        lastUpdated: '2023-04-18T09:09:54.759977',
-        userType: {
-          userTypeId: '321',
-          name: 'Admin',
-        },
-        group: {
-          dateCreated: '2023-01-05T11:45:40.485831',
-          groupId: 'abc',
-          groupName: 'ShippingAgent',
-          groupType: null,
-          lastUpdated: '2023-04-27T07:32:17.186731',
-          typeOfCompany: null,
-          website: null,
-        },
-      });
-
-    render(<MemoryRouter><YourDetails /></MemoryRouter>);
-    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
-    expect(screen.getByText('Shipping agent')).toBeInTheDocument();
-  });
-
-  it('should translate OtherEmail to Other if type is OtherEmail', async () => {
-    mockAxios
-      .onGet(USER_ENDPOINT)
-      .reply(200, {
-        userId: '123',
-        email: 'useremail@test.com',
-        fullName: 'Bob Doe',
-        phoneNumber: '(44)123456789',
-        countryCode: 'GBR',
-        verified: true,
-        dateCreated: '2023-02-06T16:21:09.958032',
-        lastUpdated: '2023-04-18T09:09:54.759977',
-        userType: {
-          userTypeId: '321',
-          name: 'Admin',
-        },
-        group: {
-          dateCreated: '2023-01-05T11:45:40.485831',
-          groupId: 'abc',
-          groupName: 'OtherEmail',
-          groupType: null,
-          lastUpdated: '2023-04-27T07:32:17.186731',
-          typeOfCompany: null,
-          website: null,
-        },
-      });
-
-    render(<MemoryRouter><YourDetails /></MemoryRouter>);
-    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
-    expect(screen.getByText('Other')).toBeInTheDocument();
+    expect(screen.getByText('something here')).toBeInTheDocument();
+    // expect(screen.getByText('Other')).toBeInTheDocument(); company type not being returned in our dataset right now
   });
 
   it('should redirect to sign in if getting the user declarations returns a 422', async () => {
