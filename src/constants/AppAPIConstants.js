@@ -11,6 +11,7 @@ export const SIGN_IN_ENDPOINT = `${apiUrl}/sign-in`;
 export const SIGN_OUT_ENDPOINT = `${apiUrl}/sign-out`;
 
 // Manager user
+export const GROUP_ENDPOINT = `${apiUrl}/group`;
 export const USER_ENDPOINT = `${apiUrl}/user`;
 
 // Report a voyage
