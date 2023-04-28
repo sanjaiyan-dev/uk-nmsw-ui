@@ -332,7 +332,7 @@ describe('Your voyages page tests', () => {
     expect(screen.queryByText('Draft')).not.toBeInTheDocument();
   });
 
-  it('should render all reports recieved', async () => {
+  it('should render all reports recieved ordered by latest first', async () => {
     mockAxios
       .onGet(CREATE_VOYAGE_ENDPOINT)
       .reply(200, {
@@ -340,7 +340,7 @@ describe('Your voyages page tests', () => {
           {
             id: '1',
             status: 'Draft',
-            submissionDate: '2023-02-11',
+            submissionDate: '2023-01-01',
             nameOfShip: 'Ship 1',
             imoNumber: '123',
             callSign: 'NA',
@@ -360,7 +360,7 @@ describe('Your voyages page tests', () => {
           {
             id: '2',
             status: 'Draft',
-            submissionDate: '2023-02-11',
+            submissionDate: '2023-02-02',
             nameOfShip: 'Ship 2',
             imoNumber: '123',
             callSign: 'NA',
@@ -400,7 +400,7 @@ describe('Your voyages page tests', () => {
           {
             id: '4',
             status: 'PreCancelled',
-            submissionDate: '2023-02-11',
+            submissionDate: '2023-03-03',
             nameOfShip: 'Ship 4',
             imoNumber: '123',
             callSign: 'NA',
@@ -420,7 +420,7 @@ describe('Your voyages page tests', () => {
           {
             id: '5',
             status: 'PreSubmitted',
-            submissionDate: '2023-02-11',
+            submissionDate: '2023-03-03',
             nameOfShip: 'Ship 5',
             imoNumber: '123',
             callSign: 'NA',
@@ -449,6 +449,7 @@ describe('Your voyages page tests', () => {
     expect(screen.getAllByText('Draft')).toHaveLength(2);
     expect(screen.getAllByText('Cancelled')).toHaveLength(1);
     expect(screen.getAllByText('Submitted')).toHaveLength(2);
+    /* testing the order of declarations being displayed will be done with Cypress */
   });
 
   it('should redirect to sign in if getting the declarations returns a 422', async () => {

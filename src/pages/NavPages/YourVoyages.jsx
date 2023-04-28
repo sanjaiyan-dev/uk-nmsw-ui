@@ -97,7 +97,9 @@ const YourVoyages = () => {
           }
           return results;
         });
-        setVoyageData(results);
+
+        const sortByLatestFirst = results.sort((a, b) => dayjs(b.creationDate) - dayjs(a.creationDate));
+        setVoyageData(sortByLatestFirst);
       }
     } catch (err) {
       if (err?.code === 'ERR_CANCELED') { return; }
