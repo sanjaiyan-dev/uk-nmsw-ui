@@ -449,11 +449,7 @@ describe('Your voyages page tests', () => {
     expect(screen.getAllByText('Draft')).toHaveLength(2);
     expect(screen.getAllByText('Cancelled')).toHaveLength(1);
     expect(screen.getAllByText('Submitted')).toHaveLength(2);
-    // Ship5 should come before Ship4, which comes before Ship3 and so on based on their created dates
-    expect(screen.getByText('Ship 5').compareDocumentPosition(screen.getByText('Ship 4'))).toBe(2);
-    expect(screen.getByText('Ship 4').compareDocumentPosition(screen.getByText('Ship 3'))).toBe(2);
-    expect(screen.getByText('Ship 3').compareDocumentPosition(screen.getByText('Ship 2'))).toBe(2);
-    expect(screen.getByText('Ship 2').compareDocumentPosition(screen.getByText('Ship 1'))).toBe(2);
+    /* testing the order of declarations being displayed will be done with Cypress */
   });
 
   it('should redirect to sign in if getting the declarations returns a 422', async () => {
