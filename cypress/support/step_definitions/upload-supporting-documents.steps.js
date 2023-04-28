@@ -54,11 +54,12 @@ When('I upload a valid files, it gets uploaded', (table) => {
   fileUploadPage.selectMultipleFalFiles(table);
   const files = table.hashes();
   const fileNames = files.map(item => item.fileName);
-  cy.contains('Upload files').click({timeout: 7000});
-  cy.get('.success .multi-file-upload--filelist-filename').each(($el, index) => {
+  cy.intercept('POST', '**/supporting').as('uploadFile');
+  cy.contains('Upload files').click();
+  cy.get('.nmsw-grid-column-ten-twelfths').each(($el, index) => {
     cy.contains(`${fileNames[index]} has been uploaded`).should('have.css', 'color', 'rgb(0, 112, 60)');
   });
-  cy.wait(5000);
+  cy.wait('@uploadFile');
 });
 
 When('I upload a file type that is not valid', (table) => {
@@ -71,17 +72,33 @@ Then('I am shown error message to upload correct file type for the files uploade
 });
 
 Then('I can delete files added to add more files', () => {
-  cy.get('.nmsw-grid-column-two-twelfths > .govuk-button').each(($el) => {
-    cy.wrap($el).click({force: true});
-  });
+  fileUploadPage.deleteMoreFiles();
 });
 
 When('I add files more than 1Mb', (table) => {
   fileUploadPage.selectMultipleFalFiles(table);
   cy.contains('Upload files').click();
-  cy.wait(5000);
+  cy.wait(1000);
 });
 
-Then('I am shown error message to check file and try again', (table) => {
+Then('I am shown error message file must be smaller than 1MB', (table) => {
   fileUploadPage.checkErrorForFileMaxSize(table);
+});
+
+When('I click on supporting documents link', () => {
+  cy.contains('Supporting documents').click();
+});
+
+Then('I can see the supporting documents I have uploaded', (table) => {
+  const files = table.hashes();
+  const fileNames = files.map(item => item.fileName);
+  cy.get('.success .multi-file-upload--filelist-filename').each(($el, index) => {
+    cy.contains(`${fileNames[index]} has been uploaded`).should('have.css', 'color', 'rgb(0, 112, 60)');
+  });
+});
+
+When('auth token is no longer available to upload file', () => {
+  cy.window().its('sessionStorage').invoke('clear').then(() => {
+    cy.reload();
+  });
 });
