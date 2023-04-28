@@ -9,6 +9,7 @@ import BasePage from "../../e2e/pages/base.page";
 let fileName;
 
 When('I click report a voyage', () => {
+  cy.intercept('POST', '**/declaration').as('newDeclaration');
   YourVoyagePage.clickReportVoyage();
 });
 
@@ -115,4 +116,31 @@ When('I try to access a protected CYA page with declaration Id', () => {
 
 Then('I can see the details of the voyage, I have uploaded', () => {
   YourVoyagePage.checkVoyageDetails();
+});
+
+Then('I navigate back to your-voyage page without adding General Declaration', () => {
+  cy.intercept('DELETE', '**/declaration/*').as('deleteDec');
+  cy.wait('@newDeclaration').then(({response}) => {
+    const decID = response.body.id;
+    cy.wrap(decID).as('decID');
+  });
+  cy.visitUrl('/your-voyages');
+  cy.wait('@deleteDec').then((result) => {
+    let url = result.request.url;
+    let delDecId = url.split("/")[5];
+    cy.wrap(delDecId).as('delDecId');
+  });
+  cy.get('@delDecId').then((delDecId) => {
+    cy.get('@decID').then((decID) => {
+      expect(delDecId).to.eq(decID);
+    });
+  });
+});
+
+Then('the voyage without general declaration is not added to the reported voyage', () => {
+  cy.get('@totalReport').then((totalReport) => {
+    cy.get('main#content h2').invoke('text').then((voyageReport) => {
+      expect(voyageReport).to.eq(totalReport);
+    })
+  })
 });
