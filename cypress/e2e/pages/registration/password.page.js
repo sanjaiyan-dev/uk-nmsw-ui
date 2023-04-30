@@ -55,9 +55,10 @@ class PasswordPage {
   }
 
   checkYourDetails() {
-    cy.get('dl:nth-child(2) > div:nth-child(1) > dt').should('have.text','Email address').next().should('have.text','4f3a5d85-99bd-46db-b8ea-80ea8772c9c5@mailslurp.com');
-    cy.get('dl:nth-child(2) > div:nth-child(2) > dt').should('have.text','Full name').next().should('have.text','NMSW-test2');
-    cy.get('dl:nth-child(2) > div:nth-child(4) > dt').should('have.text','Phone number').next().should('have.text','(44)7098654321');
+    cy.get('dl:nth-child(2) > div:nth-child(1) > dt').should('have.text','Email address').next().should('have.text','0c4e8b60-43f2-4255-a712-6984d089782d@mailslurp.com');
+    cy.get('dl:nth-child(2) > div:nth-child(2) > dt').should('have.text','Full name').next().should('have.text','Auto-test-sign-in');
+    cy.get('dl:nth-child(2) > div:nth-child(3) > dt').should('have.text','Your company name').next().should('have.text','Test NMSW');
+    cy.get('dl:nth-child(2) > div:nth-child(4) > dt').should('have.text','Phone number').next().should('have.text','(44)0699999999');
     cy.get('dl:nth-child(2) > div:nth-child(5) > dt').should('have.text','Country').next().should('have.text','GBR');
     cy.get('dl:nth-of-type(2) div:nth-child(1) dt').should('have.text','Type of account').next().should('have.text','Admin');
   }
