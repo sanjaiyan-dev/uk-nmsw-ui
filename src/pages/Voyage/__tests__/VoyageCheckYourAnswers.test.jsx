@@ -1092,7 +1092,7 @@ describe('Voyage check your answers page', () => {
       })
       .reply(200, mockedFAL1And5Response)
       .onPatch(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123`, { status: DECLARATION_STATUS_PRESUBMITTED })
-      .reply(200, {
+      .reply(202, {
         id: '123',
         status: 'PreSubmitted',
         creationDate: '2023-04-17',
@@ -1643,7 +1643,7 @@ describe('Voyage check your answers page', () => {
         supporting: [],
       })
       .onPatch(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123`, { status: DECLARATION_STATUS_PRECANCELLED })
-      .reply(200, {
+      .reply(202, {
         id: '123',
         status: 'PreSubmitted',
         creationDate: '2023-04-17',
