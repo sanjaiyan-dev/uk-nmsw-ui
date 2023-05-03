@@ -228,13 +228,11 @@ const VoyageCheckYourAnswers = () => {
     } else {
       try {
         setIsPendingSubmit(true);
-        const response = await axios.patch(`${API_URL}${ENDPOINT_DECLARATION_PATH}/${declarationId}`, { status: DECLARATION_STATUS_PRESUBMITTED }, {
+        await axios.patch(`${API_URL}${ENDPOINT_DECLARATION_PATH}/${declarationId}`, { status: DECLARATION_STATUS_PRESUBMITTED }, {
           headers: { Authorization: `Bearer ${Auth.retrieveToken()}` },
         });
-        if (response.status === 200) {
-          setShowConfirmation(true);
-          scrollToTop();
-        }
+        setShowConfirmation(true);
+        scrollToTop();
       } catch (err) {
         if (err?.response?.status === 422 || err?.response?.data?.msg === TOKEN_EXPIRED) {
           Auth.removeToken();
@@ -259,12 +257,10 @@ const VoyageCheckYourAnswers = () => {
     } else if (formData.formData.deleteVoyage === 'deleteVoyageYes') {
       setIsPendingSubmit(true);
       try {
-        const response = await axios.patch(`${API_URL}${ENDPOINT_DECLARATION_PATH}/${declarationId}`, { status: DECLARATION_STATUS_PRECANCELLED }, {
+        await axios.patch(`${API_URL}${ENDPOINT_DECLARATION_PATH}/${declarationId}`, { status: DECLARATION_STATUS_PRECANCELLED }, {
           headers: { Authorization: `Bearer ${Auth.retrieveToken()}` },
         });
-        if (response.status === 200) {
-          navigate(YOUR_VOYAGES_URL, { state: { confirmationBanner: { message: `Report for ${declarationData.FAL1.nameOfShip} cancelled.` } } });
-        }
+        navigate(YOUR_VOYAGES_URL, { state: { confirmationBanner: { message: `Report for ${declarationData.FAL1.nameOfShip} cancelled.` } } });
       } catch (err) {
         if (err?.response?.status === 422 || err?.response?.data?.msg === TOKEN_EXPIRED) {
           Auth.removeToken();
