@@ -56,7 +56,7 @@ const VoyageCheckYourAnswers = () => {
   const [isPendingSubmit, setIsPendingSubmit] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [supportingDocs, setSupportingDocs] = useState([]);
-  const [voyageDetails, setVoyageDetails] = useState([]);
+  const [generalDeclarationData, setgeneralDeclarationData] = useState();
   const errorsExist = !!errors;
 
   document.title = 'Check your answers';
@@ -83,70 +83,7 @@ const VoyageCheckYourAnswers = () => {
     const response = await GetDeclaration({ declarationId });
     if (response.data) {
       setDeclarationData(response.data);
-      setVoyageDetails([
-        {
-          title: 'Voyage type',
-          value: response.data.FAL1.departureFromUk ? 'Departure from the UK' : 'Arrival to the UK',
-        },
-        {
-          title: 'Ship name',
-          value: response.data.FAL1.nameOfShip,
-        },
-        {
-          title: 'IMO number',
-          value: response.data.FAL1.imoNumber,
-        },
-        {
-          title: 'Call sign',
-          value: response.data.FAL1.callSign,
-        },
-        {
-          title: 'Flag state of ship',
-          value: formatCountry(response.data.FAL1.flagState),
-        },
-        {
-          title: 'Departure details',
-          value: [
-            {
-              label: 'Departure port LOCODE',
-              item: formatUnlocode(response.data.FAL1.departurePortUnlocode),
-            },
-            {
-              label: 'Date of departure',
-              item: dayjs(response.data.FAL1.departureDate).format('DD MMMM YYYY'),
-            },
-            {
-              label: 'Time of departure',
-              item: dayjs(response.data.FAL1.departureTime, 'HH:mm:ss').format('HH:mm'),
-            },
-          ],
-        },
-        {
-          title: 'Arrival details',
-          value: [
-            {
-              label: 'Arrival port LOCODE',
-              item: formatUnlocode(response.data.FAL1.arrivalPortUnlocode),
-            },
-            {
-              label: 'Date of arrival',
-              item: dayjs(response.data.FAL1.arrivalDate).format('DD MMMM YYYY'),
-            },
-            {
-              label: 'Time of arrival',
-              item: dayjs(response.data.FAL1.arrivalTime, 'HH:mm:ss').format('HH:mm'),
-            },
-          ],
-        },
-        {
-          title: 'Next port of call',
-          value: formatUnlocode(response.data.FAL1.nextPortUnlocode),
-        },
-        {
-          title: 'Brief description of the cargo',
-          value: response.data.FAL1.cargo,
-        },
-      ]);
+      setgeneralDeclarationData(response.data.FAL1);
 
       setDeclarationStatus({
         status: response.data?.FAL1.status,
@@ -167,13 +104,15 @@ const VoyageCheckYourAnswers = () => {
         case 422:
           navigate(SIGN_IN_URL, { state: { redirectURL: `${VOYAGE_CHECK_YOUR_ANSWERS}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}` } });
           break;
-        default: navigate(MESSAGE_URL, {
-          state: {
-            title: 'Something has gone wrong',
-            message: response?.message,
-            redirectURL: YOUR_VOYAGES_URL,
-          },
-        });
+        default: {
+          navigate(MESSAGE_URL, {
+            state: {
+              title: 'Something has gone wrong',
+              message: response?.message,
+              redirectURL: YOUR_VOYAGES_URL,
+            },
+          });
+        }
       }
     }
     setIsLoading(false);
@@ -284,6 +223,8 @@ const VoyageCheckYourAnswers = () => {
   }
 
   if (isLoading) { return (<LoadingSpinner />); }
+  if (!generalDeclarationData) { return null; }
+
   if (isPendingCancel) {
     return (
       <VoyageCancelConfirmation
@@ -343,7 +284,7 @@ const VoyageCheckYourAnswers = () => {
           <CYAGeneralDeclaration
             declarationId={declarationId}
             declarationStatus={declarationStatus}
-            voyageDetails={voyageDetails}
+            generalDeclarationData={generalDeclarationData}
           />
 
           <h2 id="uploadedFalDocuments" className="govuk-heading-m">Uploaded documents</h2>
