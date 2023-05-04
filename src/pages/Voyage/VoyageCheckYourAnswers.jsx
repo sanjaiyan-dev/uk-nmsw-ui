@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -16,7 +16,6 @@ import {
   URL_DECLARATIONID_IDENTIFIER,
   VOYAGE_CHECK_YOUR_ANSWERS,
   VOYAGE_CREW_UPLOAD_URL,
-  VOYAGE_GENERAL_DECLARATION_UPLOAD_URL,
   VOYAGE_PASSENGERS_URL,
   VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
   YOUR_VOYAGES_URL,
@@ -24,13 +23,10 @@ import {
 import ConfirmationMessage from '../../components/ConfirmationMessage';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import Message from '../../components/Message';
-import StatusTag from '../../components/StatusTag';
 import GetDeclaration from '../../utils/GetDeclaration';
 import Auth from '../../utils/Auth';
 import { scrollToElementId, scrollToTop } from '../../utils/ScrollToElement';
 import VoyageCancelConfirmation from './VoyageCheckYourAnswers/VoyageCancelConfirmation';
-import formatCountry from '../../utils/Formatters/formatCountry';
-import formatUnlocode from '../../utils/Formatters/formatUnlocode';
 import CYAGeneralDeclaration from './VoyageCheckYourAnswers/CYAGeneralDeclaration';
 
 const SubmitConfirmation = () => (

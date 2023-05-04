@@ -1,13 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
+import PropTypes from 'prop-types';
 import { DECLARATION_STATUS_DRAFT } from '../../../constants/AppConstants';
 import { URL_DECLARATIONID_IDENTIFIER, VOYAGE_GENERAL_DECLARATION_UPLOAD_URL } from '../../../constants/AppUrlConstants';
 import StatusTag from '../../../components/StatusTag';
 import formatCountry from '../../../utils/Formatters/formatCountry';
 import formatUnlocode from '../../../utils/Formatters/formatUnlocode';
 
-const CYAGeneralDeclaration = ({ declarationId, declarationStatus, generalDeclarationData }) => {
+const CYAGeneralDeclaration = ({ declarationId, generalDeclarationData }) => {
   const data = ([
     {
       title: 'Voyage type',
@@ -81,7 +82,7 @@ const CYAGeneralDeclaration = ({ declarationId, declarationStatus, generalDeclar
         </dt>
         <dd className="govuk-summary-list__value" />
         <dd className="govuk-summary-list__actions">
-          {declarationStatus?.status === DECLARATION_STATUS_DRAFT
+          {generalDeclarationData?.status === DECLARATION_STATUS_DRAFT
             && (
               <Link
                 className="govuk-link"
@@ -94,14 +95,14 @@ const CYAGeneralDeclaration = ({ declarationId, declarationStatus, generalDeclar
         </dd>
       </div>
 
-      {declarationStatus?.status !== DECLARATION_STATUS_DRAFT
+      {generalDeclarationData?.status !== DECLARATION_STATUS_DRAFT
         && (
           <div className="govuk-summary-list__row">
             <dt className="govuk-summary-list__key">
               Status
             </dt>
             <dd className="govuk-summary-list__value">
-              <StatusTag status={declarationStatus?.status} /> {declarationStatus?.submissionDate}
+              <StatusTag status={generalDeclarationData?.status} /> {generalDeclarationData?.submissionDate}
             </dd>
           </div>
         )}
@@ -131,3 +132,24 @@ const CYAGeneralDeclaration = ({ declarationId, declarationStatus, generalDeclar
 };
 
 export default CYAGeneralDeclaration;
+
+CYAGeneralDeclaration.propTypes = {
+  declarationId: PropTypes.string.isRequired,
+  generalDeclarationData: PropTypes.shape({
+    status: PropTypes.string,
+    departureFromUk: PropTypes.bool.isRequired,
+    nameOfShip: PropTypes.string.isRequired,
+    imoNumber: PropTypes.string.isRequired,
+    callSign: PropTypes.string.isRequired,
+    flagState: PropTypes.string.isRequired,
+    departurePortUnlocode: PropTypes.string.isRequired,
+    departureDate: PropTypes.string.isRequired,
+    departureTime: PropTypes.string.isRequired,
+    arrivalPortUnlocode: PropTypes.string.isRequired,
+    arrivalDate: PropTypes.string.isRequired,
+    arrivalTime: PropTypes.string.isRequired,
+    nextPortUnlocode: PropTypes.string.isRequired,
+    cargo: PropTypes.string.isRequired,
+    submissionDate: PropTypes.string,
+  }).isRequired,
+};
