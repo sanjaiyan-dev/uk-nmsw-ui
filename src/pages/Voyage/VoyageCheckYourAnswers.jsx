@@ -21,7 +21,6 @@ import {
   VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
   YOUR_VOYAGES_URL,
 } from '../../constants/AppUrlConstants';
-import { countries } from '../../constants/CountryData';
 import ConfirmationMessage from '../../components/ConfirmationMessage';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import Message from '../../components/Message';
@@ -30,6 +29,8 @@ import GetDeclaration from '../../utils/GetDeclaration';
 import Auth from '../../utils/Auth';
 import { scrollToElementId, scrollToTop } from '../../utils/ScrollToElement';
 import VoyageCancelConfirmation from './VoyageCheckYourAnswers/VoyageCancelConfirmation';
+import formatCountry from '../../utils/Formatters/formatCountry';
+import formatUnlocode from '../../utils/Formatters/formatUnlocode';
 
 const SubmitConfirmation = () => (
   <>
@@ -76,19 +77,6 @@ const VoyageCheckYourAnswers = () => {
       noFileText: 'No passenger details provided',
     },
   ];
-
-  /* until we have a unlocode lookup API we need to format it here */
-  const formatUnlocode = (code) => {
-    const formattedCode = `${code.substr(0, 2)} ${code.substr(2)}`;
-    return formattedCode;
-  };
-
-  /* until we have a country lookup API we need to map the code to name here */
-  const formatCountry = (code) => {
-    const result = countries.find((country) => country.alphaCode === code);
-    const countryName = result?.countryName ? result.countryName : code;
-    return countryName;
-  };
 
   const updateDeclarationData = async () => {
     const response = await GetDeclaration({ declarationId });
