@@ -102,7 +102,7 @@ const CYAGeneralDeclaration = ({ declarationId, generalDeclarationData }) => {
               Status
             </dt>
             <dd className="govuk-summary-list__value">
-              <StatusTag status={generalDeclarationData?.status} /> {generalDeclarationData?.submissionDate}
+              <StatusTag status={generalDeclarationData?.status} /> {generalDeclarationData?.submissionDate ? dayjs(generalDeclarationData?.submissionDate).format('DD MMMM YYYY') : null}
             </dd>
           </div>
         )}
