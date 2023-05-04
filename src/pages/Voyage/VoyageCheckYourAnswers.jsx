@@ -15,8 +15,6 @@ import {
   SIGN_IN_URL,
   URL_DECLARATIONID_IDENTIFIER,
   VOYAGE_CHECK_YOUR_ANSWERS,
-  VOYAGE_CREW_UPLOAD_URL,
-  VOYAGE_PASSENGERS_URL,
   YOUR_VOYAGES_URL,
 } from '../../constants/AppUrlConstants';
 import ConfirmationMessage from '../../components/ConfirmationMessage';
@@ -52,46 +50,24 @@ const VoyageCheckYourAnswers = () => {
   const [isPendingSubmit, setIsPendingSubmit] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [supportingDocs, setSupportingDocs] = useState([]);
-  const [generalDeclarationData, setgeneralDeclarationData] = useState();
+  const [generalDeclarationData, setGeneralDeclarationData] = useState();
   const errorsExist = !!errors;
 
   document.title = 'Check your answers';
-
-  const uploadedFalDocuments = [
-    {
-      id: 'crewDetails',
-      title: 'Crew details',
-      value: fal5Details?.filename ? fal5Details?.filename : '',
-      fileLink: fal5Details?.url ? fal5Details?.url : '',
-      changeLink: `${VOYAGE_CREW_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
-    },
-    {
-      id: 'passengerDetails',
-      title: 'Passenger details',
-      value: fal6Details?.filename ? fal6Details?.filename : '',
-      fileLink: fal6Details?.url ? fal6Details?.url : '',
-      changeLink: `${VOYAGE_PASSENGERS_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
-      noFileText: 'No passenger details provided',
-    },
-  ];
 
   const updateDeclarationData = async () => {
     const response = await GetDeclaration({ declarationId });
     if (response.data) {
       setDeclarationData(response.data);
-      setgeneralDeclarationData(response.data.FAL1);
+      setGeneralDeclarationData(response.data.FAL1);
+      setFal5Details(response.data?.FAL5[0]);
+      setFal6Details(response.data?.FAL6[0]);
+      setSupportingDocs(response.data?.supporting);
 
       setDeclarationStatus({
         status: response.data?.FAL1.status,
         submissionDate: response.data?.FAL1.submissionDate ? dayjs(response.data?.FAL1.submissionDate).format('D MMMM YYYY') : null,
       });
-      setFal5Details(response.data?.FAL5[0]);
-
-      if (response.data?.FAL6) {
-        setFal6Details(response.data?.FAL6[0]);
-      }
-
-      setSupportingDocs(response.data?.supporting);
 
       setIsLoading(false);
     } else {
@@ -276,7 +252,6 @@ const VoyageCheckYourAnswers = () => {
       </div>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
-
           <CYAGeneralDeclaration
             declarationId={declarationId}
             generalDeclarationData={generalDeclarationData}
@@ -286,61 +261,10 @@ const VoyageCheckYourAnswers = () => {
           <CYAUploadedDocs
             declarationId={declarationId}
             declarationStatus={declarationStatus}
+            fal5Details={fal5Details}
+            fal6Details={fal6Details}
             supportingDocs={supportingDocs}
-            uploadedFalDocuments={uploadedFalDocuments}
           />
-          {/* <dl className="govuk-summary-list govuk-!-margin-bottom-9">
-            {uploadedFalDocuments.map((item) => (
-              <div key={item.id} className="govuk-summary-list__row">
-                <dt id={item.id} className="govuk-summary-list__key">
-                  {item.title}
-                </dt>
-                <dd className="govuk-summary-list__value">
-                  {item.fileLink ? <a className="govuk-link" href={item.fileLink} download>{item.value}</a> : item.noFileText}
-                </dd>
-                <dd className="govuk-summary-list__actions">
-                  {declarationStatus?.status === DECLARATION_STATUS_DRAFT
-                    && (
-                      <Link
-                        className="govuk-link"
-                        to={item.changeLink}
-                        aria-describedby={item.id}
-                      >
-                        Change<span className="govuk-visually-hidden">{` change ${item.title}`}</span>
-                      </Link>
-                    )}
-                </dd>
-              </div>
-            ))}
-
-            <div className="govuk-summary-list__row">
-              <dt id="supportingDocuments" className="govuk-summary-list__key">
-                Supporting documents
-              </dt>
-              <dd className="govuk-summary-list__value">
-                {supportingDocs.length < 1 && <span>No supporting documents provided</span>}
-                {
-                  supportingDocs.length > 0 && supportingDocs.map((doc) => (
-                    <div key={doc.id}>
-                      <a className="govuk-link" href={doc.url} download>{doc.filename}</a>
-                    </div>
-                  ))
-                }
-              </dd>
-              <dd className="govuk-summary-list__actions">
-                {declarationStatus?.status === DECLARATION_STATUS_DRAFT
-                  && (
-                    <Link
-                      className="govuk-link"
-                      to={`${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`}
-                      aria-describedby="supportingDocuments"
-                    >
-                      Change<span className="govuk-visually-hidden">{' change Supporting documents'}</span>
-                    </Link>
-                  )}
-              </dd>
-            </div>
-          </dl> */}
 
           {
             declarationStatus?.status === DECLARATION_STATUS_DRAFT

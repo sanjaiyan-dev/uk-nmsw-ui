@@ -1,15 +1,37 @@
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { DECLARATION_STATUS_DRAFT } from '../../../constants/AppConstants';
-import { URL_DECLARATIONID_IDENTIFIER, VOYAGE_SUPPORTING_DOCS_UPLOAD_URL } from '../../../constants/AppUrlConstants';
+import {
+  URL_DECLARATIONID_IDENTIFIER,
+  VOYAGE_CREW_UPLOAD_URL,
+  VOYAGE_PASSENGERS_URL,
+  VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
+} from '../../../constants/AppUrlConstants';
 
 const CYAUploadedDocs = ({
   declarationId,
   declarationStatus,
+  fal5Details,
+  fal6Details,
   supportingDocs,
-  uploadedFalDocuments,
 }) => {
-  console.log('sd', uploadedFalDocuments);
+  const uploadedFalDocuments = [
+    {
+      id: 'crewDetails',
+      title: 'Crew details',
+      value: fal5Details?.filename ? fal5Details?.filename : '',
+      fileLink: fal5Details?.url ? fal5Details?.url : '',
+      changeLink: `${VOYAGE_CREW_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
+    },
+    {
+      id: 'passengerDetails',
+      title: 'Passenger details',
+      value: fal6Details?.filename ? fal6Details?.filename : '',
+      fileLink: fal6Details?.url ? fal6Details?.url : '',
+      changeLink: `${VOYAGE_PASSENGERS_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
+      noFileText: 'No passenger details provided',
+    },
+  ];
 
   return (
     <dl className="govuk-summary-list govuk-!-margin-bottom-9">
@@ -75,6 +97,13 @@ CYAUploadedDocs.propTypes = {
     status: PropTypes.string.isRequired,
     submissionDate: PropTypes.string,
   }).isRequired,
-  supportingDocs: PropTypes.array.isRequired,
-  uploadedFalDocuments: PropTypes.array.isRequired,
+  fal5Details: PropTypes.shape({
+    filename: PropTypes.string,
+    url: PropTypes.string,
+  }),
+  fal6Details: PropTypes.shape({
+    filename: PropTypes.string,
+    url: PropTypes.string,
+  }),
+  supportingDocs: PropTypes.array,
 };
