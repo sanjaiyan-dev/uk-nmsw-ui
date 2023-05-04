@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
@@ -17,7 +17,6 @@ import {
   VOYAGE_CHECK_YOUR_ANSWERS,
   VOYAGE_CREW_UPLOAD_URL,
   VOYAGE_PASSENGERS_URL,
-  VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
   YOUR_VOYAGES_URL,
 } from '../../constants/AppUrlConstants';
 import ConfirmationMessage from '../../components/ConfirmationMessage';
@@ -28,6 +27,7 @@ import Auth from '../../utils/Auth';
 import { scrollToElementId, scrollToTop } from '../../utils/ScrollToElement';
 import VoyageCancelConfirmation from './VoyageCheckYourAnswers/VoyageCancelConfirmation';
 import CYAGeneralDeclaration from './VoyageCheckYourAnswers/CYAGeneralDeclaration';
+import CYAUploadedDocs from './VoyageCheckYourAnswers/CYAUploadedDocs';
 
 const SubmitConfirmation = () => (
   <>
@@ -279,12 +279,17 @@ const VoyageCheckYourAnswers = () => {
 
           <CYAGeneralDeclaration
             declarationId={declarationId}
-            declarationStatus={declarationStatus}
             generalDeclarationData={generalDeclarationData}
           />
 
           <h2 id="uploadedFalDocuments" className="govuk-heading-m">Uploaded documents</h2>
-          <dl className="govuk-summary-list govuk-!-margin-bottom-9">
+          <CYAUploadedDocs
+            declarationId={declarationId}
+            declarationStatus={declarationStatus}
+            supportingDocs={supportingDocs}
+            uploadedFalDocuments={uploadedFalDocuments}
+          />
+          {/* <dl className="govuk-summary-list govuk-!-margin-bottom-9">
             {uploadedFalDocuments.map((item) => (
               <div key={item.id} className="govuk-summary-list__row">
                 <dt id={item.id} className="govuk-summary-list__key">
@@ -335,7 +340,7 @@ const VoyageCheckYourAnswers = () => {
                   )}
               </dd>
             </div>
-          </dl>
+          </dl> */}
 
           {
             declarationStatus?.status === DECLARATION_STATUS_DRAFT
