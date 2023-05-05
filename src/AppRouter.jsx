@@ -89,7 +89,7 @@ const VoyagePassengers = lazy(() => import('./pages/Voyage/VoyagePassengers'));
 const VoyagePassengerUpload = lazy(() => import('./pages/Voyage/VoyagePassengerUpload'));
 const VoyageSupportingDocsUpload = lazy(() => import('./pages/Voyage/VoyageSupportingDocsUpload'));
 const VoyageTaskList = lazy(() => import('./pages/Voyage/VoyageTaskList'));
-const YourVoyages = lazy(() => import('./pages/NavPages/YourVoyages'));
+const YourVoyages = lazy(() => import('./pages/NavPages/YourVoyages/YourVoyages'));
 const FileUploadFieldErrors = lazy(() => import('./pages/Message/FileUploadFieldErrors'));
 // Your details pages
 const YourDetails = lazy(() => import('./pages/NavPages/YourDetails/YourDetails'));
