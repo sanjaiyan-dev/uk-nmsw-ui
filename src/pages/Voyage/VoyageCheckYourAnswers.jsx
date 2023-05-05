@@ -7,7 +7,6 @@ import {
   DECLARATION_STATUS_DRAFT,
   DECLARATION_STATUS_PRECANCELLED,
   DECLARATION_STATUS_PRESUBMITTED,
-  DECLARATION_STATUS_SUBMITTED,
 } from '../../constants/AppConstants';
 import { API_URL, ENDPOINT_DECLARATION_PATH, TOKEN_EXPIRED } from '../../constants/AppAPIConstants';
 import {
@@ -22,10 +21,12 @@ import LoadingSpinner from '../../components/LoadingSpinner';
 import Message from '../../components/Message';
 import GetDeclaration from '../../utils/GetDeclaration';
 import Auth from '../../utils/Auth';
-import { scrollToElementId, scrollToTop } from '../../utils/ScrollToElement';
+import { scrollToTop } from '../../utils/ScrollToElement';
 import VoyageCancelConfirmation from './VoyageCheckYourAnswers/VoyageCancelConfirmation';
 import CYAGeneralDeclaration from './VoyageCheckYourAnswers/CYAGeneralDeclaration';
 import CYAUploadedDocs from './VoyageCheckYourAnswers/CYAUploadedDocs';
+import CYACallToActions from './VoyageCheckYourAnswers/CYACallToActions';
+import CYAErrorSummary from './VoyageCheckYourAnswers/CYAErrorSummary';
 
 const SubmitConfirmation = () => (
   <>
@@ -220,31 +221,12 @@ const VoyageCheckYourAnswers = () => {
 
   return (
     <>
+      <CYAErrorSummary
+        errors={errors}
+        errorSummaryRef={errorSummaryRef}
+        elementId="uploadedFalDocuments"
+      />
       <div className="govuk-grid-row">
-        <div className="govuk-grid-column-two-thirds">
-          {errors?.length > 0 && (
-            <div className="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary" ref={errorSummaryRef} tabIndex={-1}>
-              <h2 className="govuk-error-summary__title" id="error-summary-title">
-                There is a problem
-              </h2>
-              <div className="govuk-error-summary__body">
-                <ul className="govuk-list govuk-error-summary__list">
-                  {errors.map((error) => (
-                    <li key={error.name}>
-                      <button
-                        className="govuk-button--text"
-                        type="button"
-                        onClick={(e) => { e.preventDefault(); scrollToElementId('uploadedFalDocuments'); }}
-                      >
-                        {error.message}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          )}
-        </div>
         <div className="govuk-grid-column-full">
           {declarationStatus?.status === DECLARATION_STATUS_DRAFT && <h1 className="govuk-heading-xl">Check your answers</h1>}
           {declarationStatus?.status !== DECLARATION_STATUS_DRAFT && <h1 className="govuk-heading-xl">Review your report</h1>}
@@ -265,40 +247,12 @@ const VoyageCheckYourAnswers = () => {
             fal6Details={fal6Details}
             supportingDocs={supportingDocs}
           />
-
-          {
-            declarationStatus?.status === DECLARATION_STATUS_DRAFT
-            && (
-              <>
-                <h2 className="govuk-heading-m">Now send your application</h2>
-                <p className="govuk-body">By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.</p>
-
-                <button
-                  type="button"
-                  className={isPendingSubmit ? 'govuk-button disabled' : 'govuk-button'}
-                  data-module="govuk-button"
-                  disabled={isPendingSubmit}
-                  onClick={() => handleSubmit()}
-                >
-                  Save and submit
-                </button>
-              </>
-            )
-          }
-          {
-            (declarationStatus?.status === DECLARATION_STATUS_SUBMITTED || declarationStatus?.status === DECLARATION_STATUS_PRESUBMITTED)
-            && (
-              <button
-                type="button"
-                className={isPendingSubmit ? 'govuk-button govuk-button--warning disabled' : 'govuk-button govuk-button--warning'}
-                data-module="govuk-button"
-                disabled={isPendingSubmit}
-                onClick={() => checkCancelRequest()}
-              >
-                Cancel
-              </button>
-            )
-          }
+          <CYACallToActions
+            checkCancelRequest={checkCancelRequest}
+            declarationStatus={declarationStatus}
+            handleSubmit={handleSubmit}
+            isPendingSubmit={isPendingSubmit}
+          />
         </div>
       </div>
     </>
