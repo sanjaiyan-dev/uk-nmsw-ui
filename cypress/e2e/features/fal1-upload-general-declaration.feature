@@ -5,6 +5,7 @@ Feature: Upload General declaration (FAL1) page
     Given I am on the sign-in page
     When I have entered a correct email address and password and sign in
     Then I am taken to your-voyages page
+    Then I am able to see the total number of voyage reports
     When I click report a voyage
     Then I am taken to upload-general-declaration page
 
@@ -29,7 +30,7 @@ Feature: Upload General declaration (FAL1) page
       | Field | fileUploadInput-error                    |
       | Error | Error: The file must be smaller than 4MB |
 
-  @regression
+  @regression @deleteDeclaration
   Scenario: Upload general declaration (Fal1) successfully
     When I have uploaded 'Fal1-Files''General declaration FAL 1-Positive-test.xlsx'
     When I click check for errors
