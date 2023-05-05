@@ -1,9 +1,13 @@
 import {Then, When} from "@badeball/cypress-cucumber-preprocessor";
 import TaskPage from "../../e2e/pages/task.page";
 
+Then('I am taken to task details page', () => {
+  TaskPage.checkTaskPage();
+});
+
 Then('I can verify voyage details on the task details page', () => {
   TaskPage.checkShipName('NMSW Test Ship');
-  TaskPage.checkVoyageType('Arrival to the UK');
+  TaskPage.checkVoyageType('Departure from the UK');
   TaskPage.checkFal1UploadDocStatus();
 });
 
@@ -19,8 +23,12 @@ When('I click No to delete the draft', () => {
   TaskPage.clickNoDeleteDraft();
 });
 
-When('I click Yes to delete the draft', () => {
+When('I click Yes to delete the draft and confirm', () => {
+  cy.intercept('DELETE', '**/declaration/*').as('deleteDraft');
   TaskPage.clickYesDeleteDraft();
+  cy.wait('@deleteDraft').then(({response}) => {
+    expect(response.statusCode).to.equal(204);
+  })
 });
 
 Then('I can see status for FAL5 as completed', () => {
@@ -54,5 +62,5 @@ Then('I can see Check answers and submit enabled', () => {
 });
 
 When('I click continue under actions', () => {
-  cy.get('main#content a').contains('Continue').click();
+  cy.get('main#content a').first().contains('Continue').click();
 });
