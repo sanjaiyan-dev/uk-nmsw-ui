@@ -15,10 +15,10 @@ const invalidCharacters = [
     cellNumber: 'E5',
     error: `Rank or rating: Enter the rank or rating using only English letters, numbers or spaces. The following found characters are not allowed: '!'`
   },
-  {
+  /*{
     cellNumber: 'F5',
-    error: `Surname: Enter the surname using only English letters, numbers or spaces. The following found characters are not allowed: '(','''`
-  },
+    error: `Surname: Enter the surname using only English letters, numbers or spaces. The following found characters are not allowed:  ''','('`
+  },*/
   {
     cellNumber: 'G5',
     error: `Forenames: Enter the forenames using only English letters, numbers or spaces. The following found characters are not allowed: '?'`

@@ -2,42 +2,42 @@ import FileUploadPage from "../../e2e/pages/file-upload.page";
 import {Then, When} from "@badeball/cypress-cucumber-preprocessor";
 
 const errorWithNullValues = [
-  {cellNumber: 'B2', error: `Must be either 'Departure from the UK' or 'Arrival in the UK'`},
-  {cellNumber: 'D3', error: 'Enter 7 numbers for the IMO number'},
+  {cellNumber: 'B2', error: `You must select either 'arrival in the UK' or 'departure from the UK'`},
+  {cellNumber: 'D3', error: 'Enter the IMO number'},
   {
     cellNumber: 'D4',
-    error: 'Flag state should indicate a country using 3 letters as given in the ISO list of 3166-1 alpha 3 codes'
+    error: 'Enter the 3-letter code for the flag state or the country where the vessel is usually based'
   },
   {
     cellNumber: 'B5',
-    error: 'Arrival port unlocode should be a LOCODE that contains 5 letters, for example NL RTM or NLRTM. If no LOCODE exists for the location, enter NOXXX'
+    error: 'Enter a LOCODE for the arrival port'
   },
-  {cellNumber: 'D5', error: 'arrival date must be in the dd/mm/yyyy format, for example, 22/02/2002'},
+  {cellNumber: 'D5', error: 'Enter a date of arrival'},
   {
     cellNumber: 'F5',
-    error: 'arrival time must be in the HH:MM:SS or HH:MM:SS am/pm format, for example, 01:00:00 pm or 13:00:00'
+    error: 'Enter an arrival time'
   },
   {
     cellNumber: 'B6',
-    error: 'Departure port unlocode should be a LOCODE that contains 5 letters, for example NL RTM or NLRTM. If no LOCODE exists for the location, enter NOXXX'
+    error: 'Enter a LOCODE for the departure port'
   },
-  {cellNumber: 'D6', error: 'departure date must be in the dd/mm/yyyy format, for example, 22/02/2002'},
+  {cellNumber: 'D6', error: 'Enter a date of departure'},
   {
     cellNumber: 'F6',
-    error: 'departure time must be in the HH:MM:SS or HH:MM:SS am/pm format, for example, 01:00:00 pm or 13:00:00'
+    error: 'Enter a departure time'
   },
   {
     cellNumber: 'D7',
-    error: 'Previous port unlocode should be a LOCODE that contains 5 letters, for example NL RTM or NLRTM. If no LOCODE exists for the location, enter NOXXX'
+    error: 'Enter a last port of call LOCODE'
   },
   {
     cellNumber: 'F7',
-    error: 'Next port unlocode should be a LOCODE that contains 5 letters, for example NL RTM or NLRTM. If no LOCODE exists for the location, enter NOXXX'
+    error: 'Enter a next port of call LOCODE'
   },
-  // {cellNumber: 'B3', error: 'You must enter the name of the ship'},
-  // {cellNumber: 'F3', error: 'Enter the call sign'},
-  // {cellNumber: 'B4', error: 'Enter the name of master or authorised officer on board'},
-  // {cellNumber: 'B13', error: 'Enter a brief description of the cargo, or put \'No cargo\''},
+  {cellNumber: 'B3', error: 'You must enter the name of the ship'},
+  {cellNumber: 'F3', error: 'Enter the call sign'},
+  {cellNumber: 'B4', error: 'Enter the name of master or authorised officer on board'},
+  {cellNumber: 'B13', error: `Enter a brief description of the cargo, or put \'No cargo\'`},
 ]
 
 const errorMaxCharacters = [
@@ -58,7 +58,7 @@ const errorInvalidCharacters = [
   },
   {
     cellNumber: 'F3',
-    error: 'Enter the call sign using only English letters, numbers, or one of ` -()/`. The following found characters are not allowed: \'$\',\'%\''
+    error: `Enter the call sign using only English letters, numbers, or one of \` -()/\`. The following found characters are not allowed: '%','$'`
   },
   {
     cellNumber: 'B4',
@@ -66,7 +66,7 @@ const errorInvalidCharacters = [
   },
   {
     cellNumber: 'B13',
-    error: 'Enter the cargo using only English letters, numbers, or one of ` -()/`. The following found characters are not allowed: \'&\''
+    error: `Enter the cargo using only English letters, numbers, or one of \` -()/\`. The following found characters are not allowed: '&'`
   },
 ]
 
@@ -200,7 +200,6 @@ Then('I am shown error messages to help me fix them for {string}', (errorType) =
     case 'bad-dateTime':
       errList = errBadDateTime
       break;
-
   }
 
   cy.get('tbody > tr').each(($row) => {
