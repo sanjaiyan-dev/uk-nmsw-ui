@@ -13,6 +13,7 @@ Then('I am taken to forgotten-password page', () => {
 });
 
 When('I enter my email to request a forgotten password link', () => {
+    cy.deleteAllEmails('7ee68e7d-c48e-438c-8422-c09bfe264e13');
     cy.fixture('registration.json').then((registration) => {
         EmailPage.enterEmailAddress(registration.signInEmail2);
     })
@@ -23,7 +24,6 @@ Then('I click send the link', () => {
 });
 
 When('I click the password reset link received', () => {
-    cy.deleteAllEmails('7ee68e7d-c48e-438c-8422-c09bfe264e13');
     cy.waitForLatestEmail('7ee68e7d-c48e-438c-8422-c09bfe264e13').then((mail) => {
         assert.isDefined(mail);
         const token = /token=([A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*)/.exec(mail.body)[1];

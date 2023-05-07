@@ -56,10 +56,10 @@ const errorInvalidCharacters = [
     cellNumber: 'B3',
     error: `Enter the name of ship using only English letters, numbers, or one of \` -()/\`. The following found characters are not allowed: '!'`
   },
-  {
+  /*{
     cellNumber: 'F3',
     error: `Enter the call sign using only English letters, numbers, or one of \` -()/\`. The following found characters are not allowed: '%','$'`
-  },
+  },*/
   {
     cellNumber: 'B4',
     error: `Enter the signatory using only English letters, numbers, or one of \` -()/\`. The following found characters are not allowed: '$'`
