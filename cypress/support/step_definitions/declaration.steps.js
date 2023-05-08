@@ -19,7 +19,7 @@ Then('I can see the confirmation banner for cancellation', () => {
 });
 
 Then('I can see the status of reported voyage as SUBMITTED', () => {
-  DeclarationPage.checkVoyageDetailsSubmittedStatus();
+  DeclarationPage.checkVoyageDetailsStatus('submitted');
 });
 
 Then('I am taken to review your report with submitted status', () => {
@@ -34,7 +34,7 @@ When('I click cancel, to cancel the submitted voyage report', () => {
 });
 
 Then('I can see the status of reported voyage as CANCELLED', () => {
-  DeclarationPage.checkVoyageDetailsCancelledStatus();
+  DeclarationPage.checkVoyageDetailsStatus('cancelled');
 });
 
 Then('I am taken to review your report with Cancelled status', () => {
@@ -45,13 +45,13 @@ Then('I am taken to review your report with Cancelled status', () => {
 });
 
 When('I click review or cancel action link next to Submitted status', () => {
-  cy.get('@currentDeclaration').should('have.text','Review or cancel').click();
+  cy.get('@currentDeclaration').should('have.text', 'Review or cancel').click();
 });
 
 When('I click review action link next to Cancelled status', () => {
-  cy.get('@currentDeclaration').should('have.text','Review').click();
+  cy.get('@currentDeclaration').should('have.text', 'Review').click();
 });
 
 When('I click review action link next to Failed status', () => {
-  cy.get('@currentDeclaration').should('have.text','Review and re-submit').click();
+  cy.get('@currentDeclaration').should('have.text', 'Review and re-submit').click();
 });

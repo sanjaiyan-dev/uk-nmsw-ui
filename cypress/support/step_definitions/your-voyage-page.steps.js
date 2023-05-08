@@ -2,7 +2,7 @@ import {Then} from "@badeball/cypress-cucumber-preprocessor";
 import DeclarationPage from "../../e2e/pages/declaration.page";
 
 Then('I can see the draft details of the voyage, I have uploaded', () => {
-  DeclarationPage.checkVoyageDetailsDraftStatus();
+  DeclarationPage.checkVoyageDetailsStatus('draft');
 });
 
 Then('I click Yes to confirm the voyage report cancel', () => {
