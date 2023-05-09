@@ -107,6 +107,7 @@ Cypress.Commands.add('signIn', () => {
     let password = registration.password;
     SignInPage.enterEmailAddress(signInEmail);
     SignInPage.enterPassword(password);
+    cy.checkAxe();
     cy.intercept('POST', '**/sign-in*').as('signIn');
     SignInPage.clickSignIn();
     cy.wait('@signIn').then(({response}) => {

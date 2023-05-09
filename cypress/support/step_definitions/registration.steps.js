@@ -26,7 +26,9 @@ After({tags: "@registration"}, () => {
 
 Given('I am on NMSW landing page', () => {
   cy.visitUrl('/');
+  cy.injectAxe();
   LandingPage.checkHeading();
+  cy.checkAxe();
 });
 
 When('I click create an account on the landing page', () => {
@@ -35,6 +37,7 @@ When('I click create an account on the landing page', () => {
 
 Then('the registration page is displayed', () => {
   EmailPage.verifyEmailPage();
+  cy.injectAxe();
 });
 
 When('I provide my email address', () => {
@@ -62,13 +65,16 @@ When('I verify the email address', () => {
 });
 
 Then('the email address verified page is loaded with a continue button', () => {
+  cy.injectAxe();
   EmailPage.checkActivateAccountPage();
+  cy.checkAxe();
   cy.contains('Continue').click();
 });
 
 Then('I am redirected to provide my other details', () => {
   cy.wait(1000);
   cy.url().should('include', '/your-details');
+  cy.injectAxe();
 });
 
 When('I provide all my details', () => {
@@ -80,10 +86,12 @@ When('I provide all my details', () => {
   yourDetailsPage.typeCountry('usa', 'country-input__option--0');
   yourDetailsPage.typeCountry('GBR', 'country-input__option--0');
   YourDetailPage.isShippingAgentYes();
+  cy.checkAxe();
   BasePage.clickContinue();
 });
 
 Then('I am redirected to password page', () => {
+  cy.injectAxe();
   cy.url().should('include', 'your-password');
 });
 
@@ -103,6 +111,7 @@ When('I provide my new password', () => {
   PasswordPage.typePassword(password);
   PasswordPage.typeRepeatPassword(password);
   cy.intercept('PATCH', '*/registration').as('registration');
+  cy.checkAxe();
   BasePage.clickContinue();
   cy.wait('@registration').then(({response}) => {
     expect(response.statusCode).to.equal(409);
@@ -110,10 +119,12 @@ When('I provide my new password', () => {
 });
 
 Then('my account is created and taken to confirmation page', () => {
+  cy.injectAxe();
   cy.url().should('include', '/account-created');
   ConfirmationPage.verifyAccountTitle();
   ConfirmationPage.verifyCompanyName(fullName, companyName);
   cy.contains('Sign in');
+  cy.checkAxe();
 });
 
 When('I click continue without providing any details', () => {
@@ -121,7 +132,9 @@ When('I click continue without providing any details', () => {
 });
 
 When('I click send verification email without providing any details', () => {
+  cy.checkAxe();
   BasePage.clickSendConfirmationEmail();
+  cy.checkAxe();
 });
 
 Then('I am shown form error message', (table) => {
@@ -130,6 +143,7 @@ Then('I am shown form error message', (table) => {
 });
 
 Then('I am shown corresponding error message', (table) => {
+  cy.checkAxe();
   const data = table.rowsHash();
   BasePage.verifyFieldError(data['Field'], data['Error']);
 });
@@ -189,6 +203,7 @@ When('I click sign-in', () => {
 
 Then('I am taken to the sign-in page', () => {
   SignInPage.checkSignInPage();
+  cy.injectAxe();
 });
 
 When('I click back navigation button', () => {
@@ -247,14 +262,18 @@ Then('I am shown \'link expired\' and the link to \'request new link\'', () => {
 });
 
 Then('I am taken to check your email page', () => {
+  cy.injectAxe();
   EmailPage.verifyCheckYourEmailPage();
+  cy.checkAxe();
 });
 
 When('I am on request-new-verification-link', () => {
   cy.visitUrl('/create-account/request-new-verification-link');
+  cy.injectAxe();
 });
 
 Then('I click `Request New Link` button', () => {
+  cy.checkAxe();
   BasePage.clickRequestNewLink();
 });
 

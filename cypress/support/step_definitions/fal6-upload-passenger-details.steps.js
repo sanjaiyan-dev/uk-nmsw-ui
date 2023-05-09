@@ -6,16 +6,20 @@ When('I click Passenger details link', () => {
 });
 
 Then('I am taken to Passenger-details page', () => {
+  cy.injectAxe();
   FileUploadPage.verifyPassengerDetailsPage();
+  cy.checkAxe();
 });
 
 Then('I am taken to upload-Passenger-details page', () => {
-  FileUploadPage.verifyUploadPassengerDetailsPage()
+  FileUploadPage.verifyUploadPassengerDetailsPage();
+  cy.injectAxe();
 });
 
 When('I select Yes to uploading passenger details', () => {
   FileUploadPage.selectYesPassenger();
   cy.intercept('PATCH','**/declaration/*').as('patch');
+  cy.checkAxe();
   FileUploadPage.clickSaveAndContinue();
   cy.wait('@patch').its('request.body').should('deep.include',{passengers: true});
 });

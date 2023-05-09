@@ -8,6 +8,7 @@ When('I click supporting documents link', () => {
 
 Then('I am taken to upload supporting documents page', () => {
   fileUploadPage.verifySupportingDocumentsPage();
+  cy.injectAxe();
 });
 
 When('I am able to choose valid number of documents and upload in Files added section', (table) => {
@@ -65,6 +66,7 @@ When('I upload a valid files, it gets uploaded', (table) => {
 When('I upload a file type that is not valid', (table) => {
   fileUploadPage.selectMultipleFalFiles(table);
   cy.contains('Upload files').click();
+  cy.checkAxe();
 });
 
 Then('I am shown error message to upload correct file type for the files uploaded', (table) => {
