@@ -53,11 +53,11 @@ Feature: Check your answer page
     When I click save and continue
     Then I am taken to task details page
     When I click Check answers and submit
-    Then I can verify Check Your Answers page
+    Then I am taken to Check Your Answers page
+    And the details from my FAL 1 form are displayed on CYA page
 
   @regression
-  Scenario Outline: User can Verify the details upload and change the details
-    And the details from my FAL 1 form are displayed on CYA page
+  Scenario Outline: User can verify the details uploaded and change the details
     Then I can see a link to an uploaded crew file 'Fal5-Files''Crew details including supernumeraries FAL 5-Positive-Test.xlsx'
     When I click on the file name for 'Fal5-Files', it is downloaded
     Then I can see a link to an uploaded passenger file 'Fal6-Files''Passenger details FAL 6-PositiveData.xlsx'

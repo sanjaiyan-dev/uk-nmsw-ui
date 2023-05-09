@@ -55,7 +55,7 @@ class PasswordPage {
   }
 
   checkYourDetails() {
-    cy.get('dl:nth-child(2) > div:nth-child(1) > dt').should('have.text','Email address').next().should('have.text','0c4e8b60-43f2-4255-a712-6984d089782d@mailslurp.com');
+    cy.get('dl:nth-child(2) > div:nth-child(1) > dt').should('have.text','Email address').next().should('have.text','1e3a4687-a22f-41eb-976c-d4c75b391692@mailslurp.com');
     cy.get('dl:nth-child(2) > div:nth-child(2) > dt').should('have.text','Full name').next().should('have.text','Auto-test-sign-in');
     cy.get('dl:nth-child(2) > div:nth-child(3) > dt').should('have.text','Your company name').next().should('have.text','Test NMSW');
     cy.get('dl:nth-child(2) > div:nth-child(4) > dt').should('have.text','Phone number').next().should('have.text','(44)0699999999');

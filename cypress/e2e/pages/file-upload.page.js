@@ -132,6 +132,31 @@ class FileUploadPage {
       cy.contains(`${fileNames[index]} The file must be smaller than 1MB`)
     })
   }
+
+  getTotalReportsBefore() {
+    try {
+      cy.get('#content .govuk-grid-row.your-voyages__flex').then(() => {
+        cy.get('h2[class="govuk-heading-s govuk-!-margin-bottom-1 reported-voyages-margin--top"]').then($el => {
+          cy.wrap($el).invoke('text').as('totalReportsBefore');
+        })
+      })
+    } catch (e) {
+      cy.wrap(0).as('totalReportsBefore');
+    }
+  }
+
+  getTotalReportsAfter() {
+    try {
+      cy.get('#content .govuk-grid-row.your-voyages__flex').then(() => {
+        cy.get('h2[class="govuk-heading-s govuk-!-margin-bottom-1 reported-voyages-margin--top"]').then($el => {
+          cy.wrap($el).invoke('text').as('totalReportsAfter');
+        })
+      })
+    } catch (e) {
+      cy.wrap(0).as('totalReportsAfter');
+    }
+  }
+
 }
 
 export default new FileUploadPage();
