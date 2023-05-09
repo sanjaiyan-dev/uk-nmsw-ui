@@ -14,6 +14,7 @@ When('I click report a voyage', () => {
 
 Then('I am taken to upload-general-declaration page', () => {
   FileUploadPage.verifyUploadGeneralDecPage();
+  cy.injectAxe();
 });
 
 When('auth token is no longer available', () => {
@@ -27,6 +28,7 @@ Then('user is redirected to NMSW landing page', () => {
 
 When('I click check for errors without uploading any file', () => {
   FileUploadPage.clickCheckForErrors();
+  cy.checkAxe();
 });
 
 When('I click check for errors for file not of type .csv or .xlsx', () => {
@@ -62,6 +64,7 @@ Then('previous the error message should clear', () => {
 
 When('I click check for errors', () => {
   cy.intercept('POST', '**/declaration/**').as('declaration');
+  cy.checkAxe();
   FileUploadPage.clickCheckForErrors();
   FileUploadPage.getDeclarationId();
 });
@@ -80,6 +83,7 @@ When('there are no errors, I am shown the no errors found page', () => {
 });
 
 When('I click save and continue', () => {
+  cy.checkAxe();
   FileUploadPage.clickSaveAndContinue();
 });
 

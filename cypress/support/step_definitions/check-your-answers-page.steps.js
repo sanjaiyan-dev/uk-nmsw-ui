@@ -9,10 +9,12 @@ When('I click Check answers and submit', () => {
 });
 
 Then('I am taken to Check Your Answers page', () => {
+  cy.injectAxe();
   cyaPage.verifyCYAPage();
   cyaPage.verifySaveAndSubmitButton();
   cyaPage.verifyH2Headings();
   cyaPage.verifyChangeLink();
+  cy.checkAxe();
 });
 
 Then('I can view Check Your Answers page', () => {

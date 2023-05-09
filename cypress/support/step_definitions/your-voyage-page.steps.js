@@ -3,6 +3,7 @@ import DeclarationPage from "../../e2e/pages/declaration.page";
 
 Then('I can see the draft details of the voyage, I have uploaded', () => {
   DeclarationPage.checkVoyageDetailsStatus('draft');
+  cy.checkAxe();
 });
 
 Then('I click Yes to confirm the voyage report cancel', () => {

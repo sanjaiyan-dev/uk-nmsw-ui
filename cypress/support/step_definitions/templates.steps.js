@@ -2,14 +2,14 @@ import {When, Then} from '@badeball/cypress-cucumber-preprocessor';
 import LandingPage from '../../e2e/pages/landing.page';
 import BasePage from '../../e2e/pages/base.page';
 
-When('I click template tab on the navigation bar', () => {
+Then('I click template tab on the navigation bar', () => {
   LandingPage.clickTemplateTab();
   cy.injectAxe();
 });
 
 Then('I am taken to templates page, listing templates', () => {
   BasePage.checkH1('Templates');
-  cy.injectAxe();
+  cy.checkAxe();
 });
 
 When('I click File templates, I can able to download', () => {
