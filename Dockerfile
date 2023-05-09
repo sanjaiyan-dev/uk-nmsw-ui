@@ -1,18 +1,19 @@
 FROM quay.io/ukhomeofficedigital/cop-node:18-alpine as builder
 
-# apk is Alpine Package Keeper
-RUN apk update && apk upgrade --no-cache && rm -Rf /var/cache/apk/*
-
-RUN mkdir -p /src
-WORKDIR /src
-
-COPY package*.json ./
-RUN npm ci && npm cache clean --force
-COPY . /src
-
-# This allows to pass env vars on runtime, see webpack.config.js:58 and run.sh
 ENV NMSW_DATA_API_BASE_URL=REPLACE_NMSW_DATA_API_BASE_URL
 ENV GA_TOKEN=REPLACE_GA_TOKEN
+
+COPY package*.json ./
+COPY . /src
+
+# apk is Alpine Package Keeper
+RUN apk update && apk upgrade --no-cache && rm -Rf /var/cache/apk/* \
+	&& mkdir -p /src
+
+WORKDIR /src
+RUN npm ci && npm cache clean --force
+
+# This allows to pass env vars on runtime, see webpack.config.js:58 and run.sh
 
 RUN npm run build
 
