@@ -11,6 +11,7 @@ import {
 } from '../../constants/AppAPIConstants';
 import { URL_DECLARATIONID_IDENTIFIER, VOYAGE_SUPPORTING_DOCS_UPLOAD_URL } from '../../constants/AppUrlConstants';
 import MultiFileUploadForm from '../MultiFileUploadForm';
+import { MAX_SUPPORTING_FILE_SIZE, MAX_SUPPORTING_FILE_SIZE_DISPLAY } from '../../constants/AppConstants';
 
 const mockedUseNavigate = jest.fn();
 jest.mock('react-router', () => ({
@@ -401,5 +402,31 @@ describe('Multi file upload error tests', () => {
     await user.click(screen.getByRole('button', { name: 'Upload files' }));
 
     expect(screen.getByText('The file must be a csv, doc, docm, docx, rtf, txt, xls, xlsm, xlsx, xltm, xltx, xlw or xml')).toBeInTheDocument();
+  });
+
+  it('should show a file error if file size is too large', async () => {
+    const user = userEvent.setup();
+    const file = new File(['template1'], 'template1.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    Object.defineProperty(file, 'size', { value: MAX_SUPPORTING_FILE_SIZE * MAX_SUPPORTING_FILE_SIZE + 1, configurable: true });
+
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, mockedFAL1Response)
+      .onPost(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH}`)
+      .reply(400, {
+        message: 'Invalid file type',
+      });
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+
+    const input = screen.getByTestId('multiFileUploadInput');
+    await user.upload(input, file);
+    await user.click(screen.getByRole('button', { name: 'Upload files' }));
+
+    expect(screen.getByText(`The file must be smaller than ${MAX_SUPPORTING_FILE_SIZE_DISPLAY}MB`)).toBeInTheDocument();
   });
 });

@@ -8,7 +8,7 @@ import {
 import userEvent from '@testing-library/user-event';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { DECLARATION_STATUS_PRESUBMITTED } from '../../../constants/AppConstants';
+import { DECLARATION_STATUS_PRECANCELLED, DECLARATION_STATUS_PRESUBMITTED } from '../../../constants/AppConstants';
 import {
   MESSAGE_URL,
   SIGN_IN_URL,
@@ -41,6 +41,7 @@ describe('Voyage check your answers page', () => {
   const mockedFAL1And5Response = {
     FAL1: {
       nameOfShip: 'Test ship name',
+      status: 'Draft',
       imoNumber: '1234567',
       callSign: 'NA',
       signatory: 'Captain Name',
@@ -57,7 +58,7 @@ describe('Voyage check your answers page', () => {
       cargo: 'No cargo',
       passengers: false,
       creationDate: '2023-02-10',
-      submissionDate: '2023-02-11',
+      submissionDate: null,
     },
     FAL5: [
       {
@@ -74,6 +75,7 @@ describe('Voyage check your answers page', () => {
   const mockedAllResponse = {
     FAL1: {
       nameOfShip: 'Test ship name',
+      status: 'Draft',
       imoNumber: '1234567',
       callSign: 'NA',
       signatory: 'Captain Name',
@@ -90,7 +92,7 @@ describe('Voyage check your answers page', () => {
       cargo: 'No cargo',
       passengers: true,
       creationDate: '2023-02-10',
-      submissionDate: '2023-02-11',
+      submissionDate: null,
     },
     FAL5: [
       {
@@ -127,6 +129,7 @@ describe('Voyage check your answers page', () => {
   const mockedFAL1Only = {
     FAL1: {
       nameOfShip: 'Test ship name',
+      status: 'Draft',
       imoNumber: '1234567',
       callSign: 'NA',
       signatory: 'Captain Name',
@@ -143,7 +146,7 @@ describe('Voyage check your answers page', () => {
       cargo: 'No cargo',
       passengers: null,
       creationDate: '2023-02-10',
-      submissionDate: '2023-02-11',
+      submissionDate: null,
     },
     FAL5: [],
     FAL6: [],
@@ -153,6 +156,7 @@ describe('Voyage check your answers page', () => {
   const mockedPassengerYesButNoFAL6 = {
     FAL1: {
       nameOfShip: 'Test ship name',
+      status: 'Draft',
       imoNumber: '1234567',
       callSign: 'NA',
       signatory: 'Captain Name',
@@ -169,7 +173,7 @@ describe('Voyage check your answers page', () => {
       cargo: 'No cargo',
       passengers: true,
       creationDate: '2023-02-10',
-      submissionDate: '2023-02-11',
+      submissionDate: null,
     },
     FAL5: [
       {
@@ -449,6 +453,374 @@ describe('Voyage check your answers page', () => {
    * for now in the tests below we're testing the a href is correct
    * and in the Cypress tests that the correct looking page loads
   */
+
+  it('should show change links if status is Draft', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, mockedFAL1And5Response);
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(screen.getByRole('link', { name: 'Change change Supporting documents' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Change change Supporting documents' }).outerHTML).toEqual('<a class="govuk-link" aria-describedby="supportingDocuments" href="/report-voyage/upload-supporting-documents?report=123">Change<span class="govuk-visually-hidden"> change Supporting documents</span></a>');
+    expect(screen.getByRole('link', { name: 'Change change voyage details' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Change change voyage details' }).outerHTML).toEqual('<a class="govuk-link" aria-describedby="voyageDetails" href="/report-voyage/upload-general-declaration?report=123">Change<span class="govuk-visually-hidden"> change voyage details</span></a>');
+    expect(screen.getByRole('link', { name: 'Change change Crew details' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Change change Crew details' }).outerHTML).toEqual('<a class="govuk-link" aria-describedby="crewDetails" href="/report-voyage/upload-crew-details?report=123">Change<span class="govuk-visually-hidden"> change Crew details</span></a>');
+    expect(screen.getByRole('link', { name: 'Change change Passenger details' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Change change Passenger details' }).outerHTML).toEqual('<a class="govuk-link" aria-describedby="passengerDetails" href="/report-voyage/passenger-details?report=123">Change<span class="govuk-visually-hidden"> change Passenger details</span></a>');
+    expect(screen.getByRole('link', { name: 'Change change Supporting documents' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Change change Supporting documents' }).outerHTML).toEqual('<a class="govuk-link" aria-describedby="supportingDocuments" href="/report-voyage/upload-supporting-documents?report=123">Change<span class="govuk-visually-hidden"> change Supporting documents</span></a>');
+  });
+
+  it('should NOT show change links if status is PreSubmitted', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          status: 'PreSubmitted',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: false,
+          departurePortUnlocode: 'AUPOR',
+          departureDate: '2023-02-12',
+          departureTime: '09:23:00',
+          arrivalPortUnlocode: 'GBDOV',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUPOR',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: true,
+          creationDate: '2023-02-10',
+          submissionDate: null,
+        },
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [
+          {
+            filename: 'Passenger details FAL 6.xlsx',
+            id: 'FAL6',
+            size: '118385',
+            url: 'https://fal6-report-link.com',
+          },
+        ],
+        supporting: [
+          {
+            id: '123abc',
+            filename: 'MyFirstDocument.xlsx',
+            size: '90610',
+            url: 'https://first-doc-link.com',
+          },
+          {
+            id: '123def',
+            filename: 'My-second-doc.xlsx',
+            size: '90610',
+            url: 'https://second-doc-link.com',
+          },
+        ],
+      });
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(screen.queryByRole('link', { name: 'Change change Supporting documents' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change voyage details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Crew details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Passenger details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Supporting documents' })).not.toBeInTheDocument();
+  });
+
+  it('should NOT show change links if status is Submitted', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          status: 'Submitted',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: false,
+          departurePortUnlocode: 'AUPOR',
+          departureDate: '2023-02-12',
+          departureTime: '09:23:00',
+          arrivalPortUnlocode: 'GBDOV',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUPOR',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: true,
+          creationDate: '2023-02-10',
+          submissionDate: null,
+        },
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [
+          {
+            filename: 'Passenger details FAL 6.xlsx',
+            id: 'FAL6',
+            size: '118385',
+            url: 'https://fal6-report-link.com',
+          },
+        ],
+        supporting: [
+          {
+            id: '123abc',
+            filename: 'MyFirstDocument.xlsx',
+            size: '90610',
+            url: 'https://first-doc-link.com',
+          },
+          {
+            id: '123def',
+            filename: 'My-second-doc.xlsx',
+            size: '90610',
+            url: 'https://second-doc-link.com',
+          },
+        ],
+      });
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(screen.queryByRole('link', { name: 'Change change Supporting documents' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change voyage details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Crew details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Passenger details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Supporting documents' })).not.toBeInTheDocument();
+  });
+
+  it('should NOT show change links if status is PreCancelled', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          status: 'PreCancelled',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: false,
+          departurePortUnlocode: 'AUPOR',
+          departureDate: '2023-02-12',
+          departureTime: '09:23:00',
+          arrivalPortUnlocode: 'GBDOV',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUPOR',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: true,
+          creationDate: '2023-02-10',
+          submissionDate: null,
+        },
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [
+          {
+            filename: 'Passenger details FAL 6.xlsx',
+            id: 'FAL6',
+            size: '118385',
+            url: 'https://fal6-report-link.com',
+          },
+        ],
+        supporting: [
+          {
+            id: '123abc',
+            filename: 'MyFirstDocument.xlsx',
+            size: '90610',
+            url: 'https://first-doc-link.com',
+          },
+          {
+            id: '123def',
+            filename: 'My-second-doc.xlsx',
+            size: '90610',
+            url: 'https://second-doc-link.com',
+          },
+        ],
+      });
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(screen.queryByRole('link', { name: 'Change change Supporting documents' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change voyage details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Crew details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Passenger details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Supporting documents' })).not.toBeInTheDocument();
+  });
+
+  it('should NOT show change links if status is Cancelled', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          status: 'Cancelled',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: false,
+          departurePortUnlocode: 'AUPOR',
+          departureDate: '2023-02-12',
+          departureTime: '09:23:00',
+          arrivalPortUnlocode: 'GBDOV',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUPOR',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: true,
+          creationDate: '2023-02-10',
+          submissionDate: null,
+        },
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [
+          {
+            filename: 'Passenger details FAL 6.xlsx',
+            id: 'FAL6',
+            size: '118385',
+            url: 'https://fal6-report-link.com',
+          },
+        ],
+        supporting: [
+          {
+            id: '123abc',
+            filename: 'MyFirstDocument.xlsx',
+            size: '90610',
+            url: 'https://first-doc-link.com',
+          },
+          {
+            id: '123def',
+            filename: 'My-second-doc.xlsx',
+            size: '90610',
+            url: 'https://second-doc-link.com',
+          },
+        ],
+      });
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(screen.queryByRole('link', { name: 'Change change Supporting documents' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change voyage details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Crew details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Passenger details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Supporting documents' })).not.toBeInTheDocument();
+  });
+
+  it('should NOT show change links if status is Failed', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          status: 'Failed',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: false,
+          departurePortUnlocode: 'AUPOR',
+          departureDate: '2023-02-12',
+          departureTime: '09:23:00',
+          arrivalPortUnlocode: 'GBDOV',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUPOR',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: true,
+          creationDate: '2023-02-10',
+          submissionDate: null,
+        },
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [
+          {
+            filename: 'Passenger details FAL 6.xlsx',
+            id: 'FAL6',
+            size: '118385',
+            url: 'https://fal6-report-link.com',
+          },
+        ],
+        supporting: [
+          {
+            id: '123abc',
+            filename: 'MyFirstDocument.xlsx',
+            size: '90610',
+            url: 'https://first-doc-link.com',
+          },
+          {
+            id: '123def',
+            filename: 'My-second-doc.xlsx',
+            size: '90610',
+            url: 'https://second-doc-link.com',
+          },
+        ],
+      });
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(screen.queryByRole('link', { name: 'Change change Supporting documents' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change voyage details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Crew details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Passenger details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Supporting documents' })).not.toBeInTheDocument();
+  });
+
   it('should load the General Declarations upload page if Change next to Voyage Details is clicked', async () => {
     // const user = userEvent.setup();
     mockAxios
@@ -461,7 +833,6 @@ describe('Voyage check your answers page', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     expect(screen.getByRole('link', { name: 'Change change voyage details' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Change change voyage details' }).outerHTML).toEqual('<a class="govuk-link" aria-describedby="voyageDetails" href="/report-voyage/upload-general-declaration?report=123">Change<span class="govuk-visually-hidden"> change voyage details</span></a>');
     // await user.click(screen.getByRole('link', { name: 'Change change voyage details' }));
     // await waitFor(() => {
     //   expect(mockedUseNavigate).toHaveBeenCalledWith(`${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=123`, {
@@ -482,7 +853,6 @@ describe('Voyage check your answers page', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     expect(screen.getByRole('link', { name: 'Change change Crew details' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Change change Crew details' }).outerHTML).toEqual('<a class="govuk-link" aria-describedby="crewDetails" href="/report-voyage/upload-crew-details?report=123">Change<span class="govuk-visually-hidden"> change Crew details</span></a>');
     // await user.click(screen.getByRole('link', { name: 'Change change Crew details' }));
     // await waitFor(() => {
     //   expect(mockedUseNavigate).toHaveBeenCalledWith(`${VOYAGE_CREW_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=123`, {
@@ -503,7 +873,6 @@ describe('Voyage check your answers page', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     expect(screen.getByRole('link', { name: 'Change change Passenger details' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Change change Passenger details' }).outerHTML).toEqual('<a class="govuk-link" aria-describedby="passengerDetails" href="/report-voyage/passenger-details?report=123">Change<span class="govuk-visually-hidden"> change Passenger details</span></a>');
     // await user.click(screen.getByRole('link', { name: 'Change change Passenger details' }));
     // await waitFor(() => {
     //   expect(mockedUseNavigate).toHaveBeenCalledWith(`${VOYAGE_PASSENGERS_URL}?${URL_DECLARATIONID_IDENTIFIER}=123`, {
@@ -524,7 +893,6 @@ describe('Voyage check your answers page', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     expect(screen.getByRole('link', { name: 'Change change Supporting documents' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Change change Supporting documents' }).outerHTML).toEqual('<a class="govuk-link" aria-describedby="supportingDocuments" href="/report-voyage/upload-supporting-documents?report=123">Change<span class="govuk-visually-hidden"> change Supporting documents</span></a>');
     // await user.click(screen.getByRole('link', { name: 'Change change Supporting documents' }));
     // await waitFor(() => {
     //   expect(mockedUseNavigate).toHaveBeenCalledWith(`${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=123`, {
@@ -599,6 +967,7 @@ describe('Voyage check your answers page', () => {
       .reply(200, {
         FAL1: {
           nameOfShip: 'Test ship name',
+          status: 'Draft',
           imoNumber: '1234567',
           callSign: 'NA',
           signatory: 'Captain Name',
@@ -615,7 +984,7 @@ describe('Voyage check your answers page', () => {
           cargo: 'No cargo',
           passengers: true,
           creationDate: '2023-02-10',
-          submissionDate: '2023-02-11',
+          submissionDate: null,
         },
         FAL5: [
           {
@@ -723,11 +1092,11 @@ describe('Voyage check your answers page', () => {
       })
       .reply(200, mockedFAL1And5Response)
       .onPatch(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123`, { status: DECLARATION_STATUS_PRESUBMITTED })
-      .reply(200, {
+      .reply(202, {
         id: '123',
         status: 'PreSubmitted',
         creationDate: '2023-04-17',
-        submissionDate: null,
+        submissionDate: '2023-04-17',
         nameOfShip: 'Test Ship',
         imoNumber: '1234567',
         callSign: 'NA',
@@ -758,5 +1127,726 @@ describe('Voyage check your answers page', () => {
     expect(screen.getByText('We will send you an email that you can show to Border Force officers as proof that you have sent these reports.')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Return to your voyages' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Return to your voyages' }).outerHTML).toEqual('<a href="/your-voyages">Return to your voyages</a>');
+  });
+
+  // ==========================
+  // STATUS TESTS
+  // ==========================
+  it('should render no status line and the cta as submit and the h1 as check your answers if status is draft', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          status: 'Draft',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: false,
+          departurePortUnlocode: 'AUPOR',
+          departureDate: '2023-02-12',
+          departureTime: '09:23:00',
+          arrivalPortUnlocode: 'GBDOV',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUPOR',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: false,
+          creationDate: '2023-02-10',
+          submissionDate: null,
+        },
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [],
+        supporting: [],
+      });
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(screen.getByText('Check your answers')).toBeInTheDocument();
+    expect(screen.getByText('Now send your application')).toBeInTheDocument();
+    expect(screen.getByText('By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Save and submit' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Save and submit' }).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button">Save and submit</button>');
+    expect(screen.queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument();
+    expect(screen.queryByText('Status')).not.toBeInTheDocument();
+  });
+
+  it('should render the status as submitted, submission date, h1 of review your report, and a cancel CTA if status is submitted', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          status: 'Submitted',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: false,
+          departurePortUnlocode: 'AUPOR',
+          departureDate: '2023-02-12',
+          departureTime: '09:23:00',
+          arrivalPortUnlocode: 'GBDOV',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUPOR',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: false,
+          creationDate: '2023-02-10',
+          submissionDate: '2023-02-10',
+        },
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [],
+        supporting: [],
+      });
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(screen.getByText('Review your report')).toBeInTheDocument();
+    expect(screen.getByText('Status')).toBeInTheDocument();
+    expect(screen.getByText('Submitted').outerHTML).toEqual('<strong class="govuk-tag govuk-tag--green">Submitted</strong>');
+    expect(screen.getByText('10 February 2023')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Cancel' }).outerHTML).toEqual('<button type="button" class="govuk-button govuk-button--warning" data-module="govuk-button">Cancel</button>');
+    expect(screen.queryByRole('button', { name: 'Save and submit' })).not.toBeInTheDocument();
+    expect(screen.queryByText('Now send your application')).not.toBeInTheDocument();
+    expect(screen.queryByText('By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.')).not.toBeInTheDocument();
+  });
+
+  it('should render the status as submitted, submission date, h1 of review your report, and a cancel CTA if status is presubmitted', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          status: 'PreSubmitted',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: false,
+          departurePortUnlocode: 'AUPOR',
+          departureDate: '2023-02-12',
+          departureTime: '09:23:00',
+          arrivalPortUnlocode: 'GBDOV',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUPOR',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: false,
+          creationDate: '2023-02-10',
+          submissionDate: '2023-02-10',
+        },
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [],
+        supporting: [],
+      });
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(screen.getByText('Review your report')).toBeInTheDocument();
+    expect(screen.getByText('Status')).toBeInTheDocument();
+    expect(screen.getByText('Submitted').outerHTML).toEqual('<strong class="govuk-tag govuk-tag--green">Submitted</strong>');
+    expect(screen.getByText('10 February 2023')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Cancel' }).outerHTML).toEqual('<button type="button" class="govuk-button govuk-button--warning" data-module="govuk-button">Cancel</button>');
+    expect(screen.queryByRole('button', { name: 'Save and submit' })).not.toBeInTheDocument();
+    expect(screen.queryByText('Now send your application')).not.toBeInTheDocument();
+    expect(screen.queryByText('By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.')).not.toBeInTheDocument();
+  });
+
+  it('should render the status as cancelled, submission date, h1 of review your report, and a no CTA if status is canceled', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          status: 'Cancelled',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: false,
+          departurePortUnlocode: 'AUPOR',
+          departureDate: '2023-02-12',
+          departureTime: '09:23:00',
+          arrivalPortUnlocode: 'GBDOV',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUPOR',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: false,
+          creationDate: '2023-02-10',
+          submissionDate: '2023-02-10',
+        },
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [],
+        supporting: [],
+      });
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(screen.getByText('Review your report')).toBeInTheDocument();
+    expect(screen.getByText('Status')).toBeInTheDocument();
+    expect(screen.getByText('Cancelled').outerHTML).toEqual('<strong class="govuk-tag govuk-tag--orange">Cancelled</strong>');
+    expect(screen.getByText('10 February 2023')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Save and submit' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument();
+    expect(screen.queryByText('Now send your application')).not.toBeInTheDocument();
+    expect(screen.queryByText('By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.')).not.toBeInTheDocument();
+  });
+
+  it('should render the status as cancelled, submission date, h1 of review your report, and a no CTA if status is precanceled', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          status: 'PreCancelled',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: false,
+          departurePortUnlocode: 'AUPOR',
+          departureDate: '2023-02-12',
+          departureTime: '09:23:00',
+          arrivalPortUnlocode: 'GBDOV',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUPOR',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: false,
+          creationDate: '2023-02-10',
+          submissionDate: '2023-02-10',
+        },
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [],
+        supporting: [],
+      });
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(screen.getByText('Review your report')).toBeInTheDocument();
+    expect(screen.getByText('Status')).toBeInTheDocument();
+    expect(screen.getByText('Cancelled').outerHTML).toEqual('<strong class="govuk-tag govuk-tag--orange">Cancelled</strong>');
+    expect(screen.getByText('10 February 2023')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Save and submit' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument();
+    expect(screen.queryByText('Now send your application')).not.toBeInTheDocument();
+    expect(screen.queryByText('By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.')).not.toBeInTheDocument();
+  });
+
+  it('should render the status as failed, submission date, h1 of review your report, and a no CTA if status is failed', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          status: 'Failed',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: false,
+          departurePortUnlocode: 'AUPOR',
+          departureDate: '2023-02-12',
+          departureTime: '09:23:00',
+          arrivalPortUnlocode: 'GBDOV',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUPOR',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: false,
+          creationDate: '2023-02-10',
+          submissionDate: '2023-02-10',
+        },
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [],
+        supporting: [],
+      });
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(screen.getByText('Review your report')).toBeInTheDocument();
+    expect(screen.getByText('Status')).toBeInTheDocument();
+    expect(screen.getByText('Failed').outerHTML).toEqual('<strong class="govuk-tag govuk-tag--red">Failed</strong>');
+    expect(screen.getByText('10 February 2023')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Save and submit' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument();
+    expect(screen.queryByText('Now send your application')).not.toBeInTheDocument();
+    expect(screen.queryByText('By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.')).not.toBeInTheDocument();
+  });
+
+  it('should render the status as null, submission date, and a no CTA if status is unknown', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          status: null,
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: false,
+          departurePortUnlocode: 'AUPOR',
+          departureDate: '2023-02-12',
+          departureTime: '09:23:00',
+          arrivalPortUnlocode: 'GBDOV',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUPOR',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: false,
+          creationDate: '2023-02-10',
+          submissionDate: '2023-02-10',
+        },
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [],
+        supporting: [],
+      });
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(screen.getByText('Status')).toBeInTheDocument();
+    expect(screen.getByText('10 February 2023')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Save and submit' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument();
+    expect(screen.queryByText('Now send your application')).not.toBeInTheDocument();
+    expect(screen.queryByText('By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.')).not.toBeInTheDocument();
+  });
+
+  // ==========================
+  // CANCEL TESTS
+  // ==========================
+
+  it('should show the are you sure question if cancel button clicked', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          status: 'Submitted',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: false,
+          departurePortUnlocode: 'AUPOR',
+          departureDate: '2023-02-12',
+          departureTime: '09:23:00',
+          arrivalPortUnlocode: 'GBDOV',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUPOR',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: false,
+          creationDate: '2023-02-10',
+          submissionDate: '2023-02-10',
+        },
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [],
+        supporting: [],
+      });
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    await user.click(screen.getByRole('button', { name: 'Cancel' }));
+    await screen.findByRole('heading', { name: 'Are you sure you want to cancel the voyage report?' });
+    expect(screen.getByRole('radio', { name: 'Yes' })).toBeInTheDocument();
+    expect(screen.getByRole('radio', { name: 'No' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Confirm' })).toBeInTheDocument();
+  });
+
+  it('should return to CYA page if no is selected', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          status: 'Submitted',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: false,
+          departurePortUnlocode: 'AUPOR',
+          departureDate: '2023-02-12',
+          departureTime: '09:23:00',
+          arrivalPortUnlocode: 'GBDOV',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUPOR',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: false,
+          creationDate: '2023-02-10',
+          submissionDate: '2023-02-10',
+        },
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [],
+        supporting: [],
+      });
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    await user.click(screen.getByRole('button', { name: 'Cancel' }));
+    await screen.findByRole('heading', { name: 'Are you sure you want to cancel the voyage report?' });
+
+    await user.click(screen.getByRole('radio', { name: 'No' }));
+    await user.click(screen.getByRole('button', { name: 'Confirm' }));
+    await screen.findByRole('heading', { name: 'Review your report' });
+    expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
+  });
+
+  it('should send status to PreCancelled and on success go to your voyages if yes is selected', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          status: 'Submitted',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: false,
+          departurePortUnlocode: 'AUPOR',
+          departureDate: '2023-02-12',
+          departureTime: '09:23:00',
+          arrivalPortUnlocode: 'GBDOV',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUPOR',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: false,
+          creationDate: '2023-02-10',
+          submissionDate: '2023-02-10',
+        },
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [],
+        supporting: [],
+      })
+      .onPatch(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123`, { status: DECLARATION_STATUS_PRECANCELLED })
+      .reply(202, {
+        id: '123',
+        status: 'PreSubmitted',
+        creationDate: '2023-04-17',
+        submissionDate: '2023-04-17',
+        nameOfShip: 'Test Ship',
+        imoNumber: '1234567',
+        callSign: 'NA',
+        signatory: 'Bob Smith',
+        flagState: 'GBR',
+        departureFromUk: false,
+        departurePortUnlocode: 'AU POR',
+        departureDate: '2023-02-12',
+        departureTime: '09:32:00',
+        arrivalPortUnlocode: 'GB DOV',
+        arrivalDate: '2023-02-15',
+        arrivalTime: '14:00:00',
+        previousPortUnlocode: 'AU POR',
+        nextPortUnlocode: 'NL RTM',
+        cargo: 'No cargo',
+        passengers: false,
+        cbpId: null,
+      });
+
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    await user.click(screen.getByRole('button', { name: 'Cancel' }));
+    await screen.findByRole('heading', { name: 'Are you sure you want to cancel the voyage report?' });
+
+    await user.click(screen.getByRole('radio', { name: 'Yes' }));
+    await user.click(screen.getByRole('button', { name: 'Confirm' }));
+
+    expect(mockedUseNavigate).toHaveBeenCalledWith(YOUR_VOYAGES_URL, { state: { confirmationBanner: { message: 'Report for Test ship name cancelled.' } } });
+  });
+
+  it('should redirect to message page if Cancel Yes returns a 500 response', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          status: 'Submitted',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: false,
+          departurePortUnlocode: 'AUPOR',
+          departureDate: '2023-02-12',
+          departureTime: '09:23:00',
+          arrivalPortUnlocode: 'GBDOV',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUPOR',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: false,
+          creationDate: '2023-02-10',
+          submissionDate: '2023-02-10',
+        },
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [],
+        supporting: [],
+      })
+      .onPatch(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123`, { status: DECLARATION_STATUS_PRECANCELLED })
+      .reply(500);
+
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    await user.click(screen.getByRole('button', { name: 'Cancel' }));
+    await screen.findByRole('heading', { name: 'Are you sure you want to cancel the voyage report?' });
+    await user.click(screen.getByRole('radio', { name: 'Yes' }));
+    await user.click(screen.getByRole('button', { name: 'Confirm' }));
+
+    expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, {
+      state: {
+        title: 'Something has gone wrong',
+        message: undefined,
+        redirectURL: `${VOYAGE_CHECK_YOUR_ANSWERS}?${URL_DECLARATIONID_IDENTIFIER}=123`,
+      },
+    });
+  });
+
+  it('should redirect to signin page if Cancel Yes returns a 422 response', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          status: 'Submitted',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: false,
+          departurePortUnlocode: 'AUPOR',
+          departureDate: '2023-02-12',
+          departureTime: '09:23:00',
+          arrivalPortUnlocode: 'GBDOV',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUPOR',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: false,
+          creationDate: '2023-02-10',
+          submissionDate: '2023-02-10',
+        },
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [],
+        supporting: [],
+      })
+      .onPatch(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123`, { status: DECLARATION_STATUS_PRECANCELLED })
+      .reply(422, { message: 'Not enough segments' });
+
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    await user.click(screen.getByRole('button', { name: 'Cancel' }));
+    await screen.findByRole('heading', { name: 'Are you sure you want to cancel the voyage report?' });
+    await user.click(screen.getByRole('radio', { name: 'Yes' }));
+    await user.click(screen.getByRole('button', { name: 'Confirm' }));
+
+    expect(mockedUseNavigate).toHaveBeenCalledWith(SIGN_IN_URL, {
+      state: { redirectURL: `${VOYAGE_CHECK_YOUR_ANSWERS}?${URL_DECLARATIONID_IDENTIFIER}=123` },
+    });
+  });
+
+  it('should redirect to signin page if Cancel Yes returns a 401 token expired response', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          status: 'Submitted',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: false,
+          departurePortUnlocode: 'AUPOR',
+          departureDate: '2023-02-12',
+          departureTime: '09:23:00',
+          arrivalPortUnlocode: 'GBDOV',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUPOR',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: false,
+          creationDate: '2023-02-10',
+          submissionDate: '2023-02-10',
+        },
+        FAL5: [
+          {
+            filename: 'Crew details including supernumeraries FAL 5.xlsx',
+            id: 'FAL5',
+            size: '118385',
+            url: 'https://fal5-report-link.com',
+          },
+        ],
+        FAL6: [],
+        supporting: [],
+      })
+      .onPatch(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123`, { status: DECLARATION_STATUS_PRECANCELLED })
+      .reply(401, { msg: TOKEN_EXPIRED });
+
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    await user.click(screen.getByRole('button', { name: 'Cancel' }));
+    await screen.findByRole('heading', { name: 'Are you sure you want to cancel the voyage report?' });
+    await user.click(screen.getByRole('radio', { name: 'Yes' }));
+    await user.click(screen.getByRole('button', { name: 'Confirm' }));
+
+    expect(mockedUseNavigate).toHaveBeenCalledWith(SIGN_IN_URL, {
+      state: { redirectURL: `${VOYAGE_CHECK_YOUR_ANSWERS}?${URL_DECLARATIONID_IDENTIFIER}=123` },
+    });
   });
 });

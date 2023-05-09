@@ -76,17 +76,37 @@ const MultiFileUploadForm = ({
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const declarationId = searchParams.get(URL_DECLARATIONID_IDENTIFIER);
+  const [disableButtons, setDisableButtons] = useState(false);
   const [dragActive, setDragActive] = useState(false);
   const [errors, setErrors] = useState([]);
   const [filesAddedForUpload, setFilesAddedForUpload] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingFilelist, setIsLoadingFilelist] = useState(false);
   const [maxFilesError, setMaxFilesError] = useState();
   const [supportingDocumentsList, setSupportingDocumentsList] = useState([]);
 
+  const getPendingFiles = () => {
+    const pendingFiles = filesAddedForUpload.reduce((results, fileToCheck) => {
+      if (fileToCheck.status === FILE_STATUS_PENDING) {
+        results.push(fileToCheck);
+      }
+      return results;
+    }, []);
+    setFilesAddedForUpload(pendingFiles);
+  };
+
   const getDeclarationData = async () => {
+    setIsLoadingFilelist(true);
     const response = await GetDeclaration({ declarationId });
     if (response.data) {
-      setSupportingDocumentsList(response?.data?.supporting);
+      const addedStatus = response.data.supporting.map((document) => ({
+        ...document,
+        status: FILE_STATUS_SUCCESS,
+      }));
+      setSupportingDocumentsList(addedStatus);
+      if (filesAddedForUpload.length > 0) {
+        getPendingFiles();
+      }
     } else {
       switch (response?.status) {
         case 401:
@@ -104,6 +124,7 @@ const MultiFileUploadForm = ({
       }
     }
     setIsLoading(false);
+    setIsLoadingFilelist(false);
   };
 
   const handleDrag = (e) => {
@@ -201,6 +222,7 @@ const MultiFileUploadForm = ({
       const dataToSubmit = new FormData();
       dataToSubmit.append('file', selectedFile?.file, selectedFile?.file?.name);
       try {
+        setDisableButtons(true);
         const response = await axios.post(endpoint, dataToSubmit, {
           headers: {
             Authorization: `Bearer ${Auth.retrieveToken()}`,
@@ -233,6 +255,8 @@ const MultiFileUploadForm = ({
           });
         }
         return err;
+      } finally {
+        setDisableButtons(false);
       }
     };
 
@@ -253,19 +277,34 @@ const MultiFileUploadForm = ({
     e.preventDefault();
     if (id) {
       try {
-        const response = await axios({
+        setDisableButtons(true);
+
+        /* If user has just uploaded a file it doesn't exist in the supportingDocumentsList
+         * however if they uploaded it previously it does
+         * so on delete we have to check two places to change status to in progress
+         * which in turn shows the loading spinner
+         * TODO: refactor this to make it less repetative
+         */
+        const indexInSupportingDocumentsList = supportingDocumentsList.findIndex((existingFile) => existingFile.id === id);
+        if (indexInSupportingDocumentsList !== -1) {
+          const newState = [...supportingDocumentsList];
+          newState[indexInSupportingDocumentsList].status = FILE_STATUS_IN_PROGRESS;
+          setSupportingDocumentsList(newState);
+        } else {
+          updateFileStatus({ file: { file: { name: fileName } }, status: FILE_STATUS_IN_PROGRESS });
+        }
+
+        await axios({
           method: 'delete',
           url: endpoint,
-          data: {
-            id,
-          },
           headers: {
             Authorization: `Bearer ${Auth.retrieveToken()}`,
           },
+          data: {
+            id,
+          },
         });
-        if (response?.status === 200) {
-          getDeclarationData();
-        }
+        getDeclarationData();
       } catch (err) {
         switch (err?.response?.status) {
           case 401:
@@ -295,6 +334,7 @@ const MultiFileUploadForm = ({
 
   useEffect(() => {
     setIsLoading(true);
+    setDisableButtons(true);
     getDeclarationData();
   }, []);
 
@@ -303,6 +343,12 @@ const MultiFileUploadForm = ({
       errorSummaryRef?.current?.focus();
     }
   }, [errors]);
+
+  useEffect(() => {
+    if (!isLoadingFilelist) {
+      setDisableButtons(false);
+    }
+  }, [isLoadingFilelist]);
 
   /*
    * when the drag goes over our button element in the dragarea,
@@ -369,6 +415,7 @@ const MultiFileUploadForm = ({
                       className="govuk-button--text"
                       type="button"
                       onClick={onChooseFilesButtonClick}
+                      disabled={disableButtons}
                     >
                       Choose files
                     </button>
@@ -390,6 +437,7 @@ const MultiFileUploadForm = ({
               className="govuk-button govuk-button--secondary"
               type="button"
               onClick={onUploadFiles}
+              disabled={disableButtons}
             >
               Upload files
             </button>
@@ -404,13 +452,15 @@ const MultiFileUploadForm = ({
               {supportingDocumentsList.map((file) => (
                 <div key={file.filename} className="govuk-grid-row  govuk-!-margin-bottom-5 multi-file-upload--filelist">
                   <div className="nmsw-grid-column-ten-twelfths">
-                    <FileStatusSuccess fileName={file.filename} />
+                    {file.status === FILE_STATUS_SUCCESS && <FileStatusSuccess fileName={file.filename} />}
+                    {file.status === FILE_STATUS_IN_PROGRESS && <FileStatusInProgress fileName={file.filename} />}
                   </div>
                   <div className="nmsw-grid-column-two-twelfths govuk-!-text-align-right">
                     <button
                       className="govuk-button govuk-button--warning govuk-!-margin-bottom-5"
                       type="button"
                       onClick={(e) => handleDelete({ e, fileName: file.filename, id: file.id })}
+                      disabled={disableButtons}
                     >
                       Delete
                     </button>
@@ -435,6 +485,7 @@ const MultiFileUploadForm = ({
                       className="govuk-button govuk-button--warning govuk-!-margin-bottom-5"
                       type="button"
                       onClick={(e) => handleDelete({ e, fileName: file.file.name, id: file.id })}
+                      disabled={disableButtons}
                     >
                       Delete
                     </button>
@@ -447,6 +498,7 @@ const MultiFileUploadForm = ({
             className="govuk-button govuk-button--primary"
             type="button"
             onClick={onContinue}
+            disabled={disableButtons}
           >
             {submitButtonLabel || 'Save and continue'}
           </button>

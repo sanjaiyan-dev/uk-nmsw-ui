@@ -79,6 +79,16 @@ class FileUploadPage {
     cy.get(':nth-child(2) > .nmsw-grid-column-two-twelfths').contains('Delete').click();
   }
 
+  deleteMoreFiles() {
+    cy.get('.nmsw-grid-column-two-twelfths button').then($ele => {
+      let count = $ele.length
+      for (let i = 0; i < count; i++) {
+        cy.get('.nmsw-grid-column-two-twelfths button').first().click().should('not.exist')
+      }
+      cy.get('.multi-file-upload--filelist').should('have.length', 0);
+    })
+  }
+
   verifyPassengerDetailsPage() {
     cy.url().should('include', 'passenger-details');
   }
@@ -119,9 +129,34 @@ class FileUploadPage {
     const files = table.hashes();
     const fileNames = files.map(item => item.fileName);
     cy.get('.multi-file-upload--filelist-filename').each(($ele, index) => {
-      cy.contains(`${fileNames[index]} There was a problem check file and try again`)
+      cy.contains(`${fileNames[index]} The file must be smaller than 1MB`)
     })
   }
+
+  getTotalReportsBefore() {
+    try {
+      cy.get('#content .govuk-grid-row.your-voyages__flex').then(() => {
+        cy.get('h2[class="govuk-heading-s govuk-!-margin-bottom-1 reported-voyages-margin--top"]').then($el => {
+          cy.wrap($el).invoke('text').as('totalReportsBefore');
+        })
+      })
+    } catch (e) {
+      cy.wrap(0).as('totalReportsBefore');
+    }
+  }
+
+  getTotalReportsAfter() {
+    try {
+      cy.get('#content .govuk-grid-row.your-voyages__flex').then(() => {
+        cy.get('h2[class="govuk-heading-s govuk-!-margin-bottom-1 reported-voyages-margin--top"]').then($el => {
+          cy.wrap($el).invoke('text').as('totalReportsAfter');
+        })
+      })
+    } catch (e) {
+      cy.wrap(0).as('totalReportsAfter');
+    }
+  }
+
 }
 
 export default new FileUploadPage();

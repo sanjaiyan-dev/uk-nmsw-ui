@@ -1,4 +1,5 @@
 import SignInPage from "../e2e/pages/sign-in.page";
+
 const {terminalLog} = require('../utils/axeTableLog.js');
 import EmailPage from '../e2e/pages/registration/email.page.js';
 import BasePage from '../e2e/pages/base.page';
@@ -78,23 +79,23 @@ Cypress.Commands.add('removeTestUser', () => {
       method: 'POST',
       url: `${apiServer}/sign-in`,
       body:
-          {
-            email: regEmail,
-            password: pwd
-          }
+        {
+          email: regEmail,
+          password: pwd
+        }
     }).then((response) => {
       // response.body is automatically serialized into JSON
       token = response.body.token;
       cy.request({
-            method: 'DELETE',
-            url: `${apiServer}/user`,
-            auth: {
-              'bearer': token
-            },
-            body: {
-              email: regEmail,
-            }
+          method: 'DELETE',
+          url: `${apiServer}/user`,
+          auth: {
+            'bearer': token
+          },
+          body: {
+            email: regEmail,
           }
+        }
       )
     })
   })
@@ -106,6 +107,7 @@ Cypress.Commands.add('signIn', () => {
     let password = registration.password;
     SignInPage.enterEmailAddress(signInEmail);
     SignInPage.enterPassword(password);
+    cy.checkAxe();
     cy.intercept('POST', '**/sign-in*').as('signIn');
     SignInPage.clickSignIn();
     cy.wait('@signIn').then(({response}) => {
@@ -113,3 +115,29 @@ Cypress.Commands.add('signIn', () => {
     });
   })
 });
+
+Cypress.Commands.add('deleteDeclaration', () => {
+  let token = sessionStorage.getItem('token');
+  cy.request({
+      method: 'GET',
+      url: `${apiServer}/declaration?status=Draft`,
+      auth: {
+        'bearer': token
+      }
+    })
+    .then((response) => {
+      let declarations = response.body.results;
+      for (declaration of declarations) {
+        cy.request({
+          url: `${apiServer}/declaration/${declaration.id}`,
+          method: 'DELETE',
+          auth: {
+            'bearer': token
+          }
+        }).then((response) => {
+          expect(response.status).to.eq(204);
+        })
+      }
+    })
+})
+

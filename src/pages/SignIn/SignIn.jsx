@@ -10,24 +10,22 @@ import {
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
 import {
-  REGISTER_RESEND_VERIFICATION_EMAIL_ENDPOINT,
   SIGN_IN_ENDPOINT,
-  USER_ALREADY_VERIFIED,
   USER_NOT_VERIFIED,
   USER_SIGN_IN_DETAILS_INVALID,
 } from '../../constants/AppAPIConstants';
 import {
+  LOGGED_IN_LANDING,
   MESSAGE_URL,
   REGISTER_ACCOUNT_URL,
-  SIGN_IN_URL,
-  LOGGED_IN_LANDING,
   REGISTER_EMAIL_RESEND_URL,
-  REGISTER_EMAIL_CHECK_URL,
-  ERROR_ACCOUNT_ALREADY_ACTIVE_URL,
   REQUEST_PASSWORD_RESET_URL,
+  SIGN_IN_URL,
+  HELP_URL,
 } from '../../constants/AppUrlConstants';
 import Auth from '../../utils/Auth';
 import { scrollToTop } from '../../utils/ScrollToElement';
+import Message from '../../components/Message';
 
 const SupportingText = () => (
   <div className="govuk-inset-text">
@@ -42,6 +40,7 @@ const SignIn = () => {
   const { state } = useLocation();
   const [errors, setErrors] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const [isNotActivated, setIsNotActivated] = useState(false);
   document.title = 'Sign in';
 
   // Form fields
@@ -84,31 +83,6 @@ const SignIn = () => {
     setIsLoading(false);
   };
 
-  const resendVerificationEmail = async (emailToSendTo) => {
-    try {
-      const controller = new AbortController();
-      const response = await axios.post(REGISTER_RESEND_VERIFICATION_EMAIL_ENDPOINT, {
-        email: emailToSendTo,
-      }, {
-        signal: controller.signal,
-      });
-
-      if (response.status === 204) {
-        navigate(REGISTER_EMAIL_CHECK_URL, { state: { dataToSubmit: { emailAddress: emailToSendTo } } });
-      }
-    } catch (err) {
-      if (err?.response?.data?.message === USER_ALREADY_VERIFIED) {
-        // Edgecase where somehow user activates their account while we're processing a resend verification email
-        navigate(ERROR_ACCOUNT_ALREADY_ACTIVE_URL, { state: { dataToSubmit: { emailAddress: emailToSendTo } } });
-      } else {
-        // USER_NOT_REGISTERED & 500 errors will fall into this bucket (error out on USER_NOT_REGISTERED as it shouldn't occur here and we don't want to cause a loop of register/resend running)
-        navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: SIGN_IN_URL } });
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const handleSubmit = async ({ formData }) => {
     setIsLoading(true);
     try {
@@ -124,23 +98,29 @@ const SignIn = () => {
         setErrors('Email and password combination is invalid');
         scrollToTop();
       } else if (err?.response?.data?.message === USER_NOT_VERIFIED) {
-        navigate(REGISTER_EMAIL_RESEND_URL, { state: { dataToSubmit: { emailAddress: formData?.email } } });
+        setIsNotActivated(true);
+        scrollToTop();
       } else {
-        /* currently if a user is registered but not verified
-         * (aka in database but not able to sign in yet) we get a 500 response
-         * To handle that until API can be updated with a clear response
-         * for this scenario, any other error we will attempt to re-send verification
-         * email.
-         * Once we have an error response we can use to identify this scenario then
-         * we can go back to the navigate(MESSAGE ...) code below
-         */
-        resendVerificationEmail(formData.email);
-        // navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: SIGN_IN_URL } });
+        navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: SIGN_IN_URL } });
       }
     } finally {
       setIsLoading(false);
     }
   };
+
+  if (isNotActivated) {
+    const buttonProps = {
+      buttonLabel: 'Send confirmation email',
+      buttonNavigateTo: REGISTER_EMAIL_RESEND_URL,
+    };
+    return (
+      <Message
+        button={buttonProps}
+        title="Email address not verified"
+        message="We can send you a verification link so you can continue creating your account."
+      />
+    );
+  }
 
   return (
     <>
@@ -178,7 +158,17 @@ const SignIn = () => {
       >
         <SupportingText />
       </DisplayForm>
-      <Link to={REQUEST_PASSWORD_RESET_URL}>Forgotten your password?</Link>
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-two-thirds">
+          <h2 className="govuk-heading-m">Problems signing in</h2>
+          <Link to={REQUEST_PASSWORD_RESET_URL}>Forgotten your password?</Link>
+          <p className="govuk-body govuk-!-margin-top-5">
+            {'If you cannot use this service to send your forms, you can still '}
+            <Link className="govuk-link" to={HELP_URL}>submit the required forms using email</Link>
+            .
+          </p>
+        </div>
+      </div>
     </>
   );
 };

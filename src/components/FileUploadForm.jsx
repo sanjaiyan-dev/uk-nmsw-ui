@@ -4,10 +4,12 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import { GENERAL_DECLARATION_TEMPLATE_NAME, MAX_FILE_SIZE, MAX_FILE_SIZE_DISPLAY } from '../constants/AppConstants';
 import {
-  FILE_MISSING,
-  FILE_TYPE_INVALID_PREFIX,
+  DUPLICATE_RECORDS,
   FAL5_IS_EMPTY,
   FAL6_IS_EMPTY,
+  FILE_MISSING,
+  FILE_TOO_LARGE,
+  FILE_TYPE_INVALID_CSV_XLSX,
 } from '../constants/AppAPIConstants';
 import {
   FILE_UPLOAD_FIELD_ERRORS_URL,
@@ -34,8 +36,6 @@ const FileUploadForm = ({
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const errorSummaryRef = useRef(null);
-  const FIELD_ERROR = 'fieldError';
-  const FILE_ERROR = 'fileError';
   const FILE_UPLOAD_ID = 'fileUploadInput';
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -46,22 +46,40 @@ const FileUploadForm = ({
     fileInputRef.current.scrollIntoView({ block: 'start' });
   };
 
-  const handleErrors = ({ errType, errMessage, errData }) => {
-    if (errType === FILE_ERROR) {
-      setError({ id: FILE_UPLOAD_ID, message: errMessage });
-      scrollToTop();
-      errorSummaryRef?.current?.focus();
-      setIsLoading(false);
-    } else {
-      const errorList = MapErrorMessages({ errData, errorMessageMapFile });
-      navigate(FILE_UPLOAD_FIELD_ERRORS_URL, {
-        state: {
-          errorList,
-          fileName: selectedFile?.file?.name,
-          returnURL: urlThisPage,
-        },
-      });
+  const handleErrors = ({ errorData }) => {
+    switch (errorData.message) {
+      case DUPLICATE_RECORDS:
+        setError({ id: FILE_UPLOAD_ID, message: "Details listed on this file are not allowed, because they're the same as details you've already uploaded. Check the details in your file and try uploading again." });
+        break;
+      case FILE_MISSING:
+        setError({ id: FILE_UPLOAD_ID, message: 'Select a file' });
+        break;
+      case FILE_TYPE_INVALID_CSV_XLSX:
+        setError({ id: FILE_UPLOAD_ID, message: `The file must be a ${fileTypesAllowed}` });
+        break;
+      case FAL5_IS_EMPTY:
+        setError({ id: FILE_UPLOAD_ID, message: 'Template is empty' });
+        break;
+      case FAL6_IS_EMPTY:
+        setError({ id: FILE_UPLOAD_ID, message: 'Template is empty' });
+        break;
+      case FILE_TOO_LARGE:
+        setError({ id: FILE_UPLOAD_ID, message: `The file must be smaller than ${MAX_FILE_SIZE_DISPLAY}MB` });
+        break;
+      default: {
+        const errorList = MapErrorMessages({ errData: errorData, errorMessageMapFile });
+        navigate(FILE_UPLOAD_FIELD_ERRORS_URL, {
+          state: {
+            errorList,
+            fileName: selectedFile?.file?.name,
+            returnURL: urlThisPage,
+          },
+        });
+      }
     }
+    scrollToTop();
+    errorSummaryRef?.current?.focus();
+    setIsLoading(false);
   };
 
   /*
@@ -106,9 +124,9 @@ const FileUploadForm = ({
     setIsLoading(true);
 
     if (Object.entries(selectedFile).length < 1) {
-      handleErrors({ errType: FILE_ERROR, errMessage: 'Select a file' });
+      handleErrors({ errorData: { message: FILE_MISSING } });
     } else if (selectedFile?.file.size > MAX_FILE_SIZE) {
-      handleErrors({ errType: FILE_ERROR, errMessage: `The file must be smaller than ${MAX_FILE_SIZE_DISPLAY}MB` });
+      handleErrors({ errorData: { message: FILE_TOO_LARGE } });
     } else {
       const dataToSubmit = new FormData();
       dataToSubmit.append('file', selectedFile?.file, selectedFile?.file?.name);
@@ -129,15 +147,7 @@ const FileUploadForm = ({
       } catch (err) {
         switch (err?.response?.status) {
           case 400:
-            if (err?.response?.data?.message === FILE_MISSING) {
-              handleErrors({ errType: FILE_ERROR, errMessage: 'Select a file' });
-            } else if (err?.response?.data?.message?.startsWith(FILE_TYPE_INVALID_PREFIX)) {
-              handleErrors({ errType: FILE_ERROR, errMessage: `The file must be a ${fileTypesAllowed}` });
-            } else if ((err?.response?.data?.message === FAL5_IS_EMPTY) || (err?.response?.data?.message === FAL6_IS_EMPTY)) {
-              handleErrors({ errType: FILE_ERROR, errMessage: 'Template is empty' });
-            } else {
-              handleErrors({ errType: FIELD_ERROR, errData: err?.response?.data });
-            }
+            handleErrors({ errorData: err?.response?.data });
             break;
           case 401:
           case 422:
@@ -204,9 +214,13 @@ const FileUploadForm = ({
                 {children}
               </div>
             </div>
-            <p id={`${FILE_UPLOAD_ID}-error`} className="govuk-error-message">
-              <span className="govuk-visually-hidden">Error:</span> {error?.message}
-            </p>
+            <div className="govuk-grid-row">
+              <div className="govuk-grid-column-three-quarters">
+                <p id={`${FILE_UPLOAD_ID}-error`} className="govuk-error-message">
+                  <span className="govuk-visually-hidden">Error:</span> {error?.message}
+                </p>
+              </div>
+            </div>
             <input
               className="govuk-file-upload"
               data-testid={FILE_UPLOAD_ID}

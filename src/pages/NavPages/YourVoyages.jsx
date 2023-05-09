@@ -3,19 +3,22 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { CREATE_VOYAGE_ENDPOINT, TOKEN_EXPIRED } from '../../constants/AppAPIConstants';
+import { SERVICE_NAME } from '../../constants/AppConstants';
+import {
+  API_URL, CREATE_VOYAGE_ENDPOINT, ENDPOINT_DECLARATION_PATH, TOKEN_EXPIRED,
+} from '../../constants/AppAPIConstants';
 import {
   SIGN_IN_URL,
   URL_DECLARATIONID_IDENTIFIER,
+  VOYAGE_CHECK_YOUR_ANSWERS,
   VOYAGE_GENERAL_DECLARATION_UPLOAD_URL,
-  VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
   VOYAGE_TASK_LIST_URL,
   YOUR_VOYAGES_URL,
 } from '../../constants/AppUrlConstants';
-import { SERVICE_NAME } from '../../constants/AppConstants';
-import Message from '../../components/Message';
-import Auth from '../../utils/Auth';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import Message from '../../components/Message';
+import StatusTag from '../../components/StatusTag';
+import Auth from '../../utils/Auth';
 
 // NOTES:
 // - The filter buttons do nothing
@@ -26,12 +29,12 @@ const YourVoyages = () => {
   dayjs.extend(customParseFormat);
   const { state } = useLocation();
   const navigate = useNavigate();
+  const [notification, setNotification] = useState({});
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [voyageData, setVoyageData] = useState();
 
   document.title = SERVICE_NAME;
-  console.log('confbanner', state?.confirmationBanner);
 
   const handleClick = async () => {
     setIsLoading(true);
@@ -40,7 +43,6 @@ const YourVoyages = () => {
         headers: { Authorization: `Bearer ${Auth.retrieveToken()}` },
       });
       if (response.status === 200) {
-        console.log('declaration id', response.data.id);
         navigate(`${VOYAGE_GENERAL_DECLARATION_UPLOAD_URL}?report=${response.data.id}`);
       }
     } catch (err) {
@@ -57,23 +59,50 @@ const YourVoyages = () => {
     }
   };
 
-  const getDeclarationData = async () => {
+  const deleteInvalidDeclarations = async (id) => {
+    try {
+      const response = await axios({
+        method: 'delete',
+        url: `${API_URL}${ENDPOINT_DECLARATION_PATH}/${id}`,
+        headers: {
+          Authorization: `Bearer ${Auth.retrieveToken()}`,
+        },
+      });
+      return response.data;
+    } catch (err) {
+      if (err?.response?.status === 422) {
+        Auth.removeToken();
+        navigate(SIGN_IN_URL, { state: { redirectURL: YOUR_VOYAGES_URL } });
+      } else if (err?.response?.data?.msg === TOKEN_EXPIRED) {
+        Auth.removeToken();
+        navigate(SIGN_IN_URL, { state: { redirectURL: YOUR_VOYAGES_URL } });
+      }
+    }
+    return null;
+  };
+
+  const getDeclarationData = async (signal) => {
     try {
       const response = await axios.get(CREATE_VOYAGE_ENDPOINT, {
+        signal,
         headers: { Authorization: `Bearer ${Auth.retrieveToken()}` },
       });
       if (response.status === 200) {
-        // We will delete drafts without a general declaration here instead of filtering them out
-        const filteredData = response.data.results.reduce((results, data) => {
-          if (data.departureFromUk !== null) {
-            results.push(data);
+        const results = [];
+        response.data.results.map((declaration) => {
+          if (declaration.departureFromUk !== null) {
+            results.push(declaration);
+          } else {
+            deleteInvalidDeclarations(declaration.id);
           }
           return results;
-        }, []);
-        setVoyageData(filteredData);
+        });
+
+        const sortByLatestFirst = results.sort((a, b) => dayjs(b.creationDate) - dayjs(a.creationDate));
+        setVoyageData(sortByLatestFirst);
       }
-      setIsLoading(false);
     } catch (err) {
+      if (err?.code === 'ERR_CANCELED') { return; }
       if (err?.response?.status === 422) {
         Auth.removeToken();
         navigate(SIGN_IN_URL, { state: { redirectURL: YOUR_VOYAGES_URL } });
@@ -83,14 +112,30 @@ const YourVoyages = () => {
       } else {
         setIsError(true);
       }
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   useEffect(() => {
+    const controller = new AbortController();
+    const { signal } = controller;
+
     setIsLoading(true);
-    getDeclarationData();
-  }, []);
+    getDeclarationData(signal);
+
+    if (state?.confirmationBanner?.message) {
+      setNotification({
+        show: true,
+        message: state?.confirmationBanner?.message,
+      });
+      // eslint-disable-next-line no-restricted-globals
+      navigate(location.pathname, { replace: true });
+    }
+
+    // cleanup function
+    return () => { controller.abort(); };
+  }, [state]);
 
   if (isError) {
     return (
@@ -104,6 +149,25 @@ const YourVoyages = () => {
     <>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">
+          {notification.show && (
+            <div
+              className="govuk-notification-banner govuk-notification-banner--success"
+              role="alert"
+              aria-labelledby="govuk-notification-banner-title"
+              data-module="govuk-notification-banner"
+            >
+              <div className="govuk-notification-banner__header">
+                <h2 className="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                  Success
+                </h2>
+              </div>
+              <div className="govuk-notification-banner__content">
+                <h3 className="govuk-notification-banner__heading">
+                  {notification.message}
+                </h3>
+              </div>
+            </div>
+          )}
           <h1 className="govuk-heading-xl govuk-!-margin-bottom-4">Your voyages</h1>
           {voyageData?.length === 0 && (
             <div className="govuk-inset-text">
@@ -227,27 +291,18 @@ const YourVoyages = () => {
                 </div>
               </div>
 
-              {/* TODO: See if there is a cleaner way to set these attributes for diffrerent statuses */}
               {voyageData?.map((voyage) => {
-                let statusTagClass;
                 let statusLinkText;
-                let statusType;
                 if (voyage.status === 'Submitted' || voyage.status === 'PreSubmitted') {
-                  statusTagClass = 'govuk-tag govuk-tag--green';
                   statusLinkText = 'Review or cancel';
-                  statusType = 'submitted';
                 } else if (voyage.status === 'Draft') {
-                  statusTagClass = 'govuk-tag govuk-tag--grey';
                   statusLinkText = 'Continue';
-                  statusType = 'draft';
                 } else if (voyage.status === 'Cancelled' || voyage.status === 'PreCancelled') {
-                  statusTagClass = 'govuk-tag govuk-tag--orange';
                   statusLinkText = 'Review';
-                  statusType = 'cancelled';
-                } else {
-                  statusTagClass = 'govuk-tag govuk-tag--red';
+                } else if (voyage.status === 'Failed') {
                   statusLinkText = 'Review and re-submit';
-                  statusType = 'failed';
+                } else {
+                  statusLinkText = 'Review';
                 }
                 return (
                   <div key={voyage.id} className="govuk-!-margin-top-5 light-grey__border">
@@ -275,13 +330,13 @@ const YourVoyages = () => {
 
                       <div className="govuk-grid-column-one-quarter reported-voyages__columns reported-voyages__text">
                         <span className="govuk-body-s">Status</span> <br />
-                        <strong className={statusTagClass}>{statusType}</strong>
+                        <StatusTag status={voyage.status} />
                       </div>
 
                       <div className="govuk-grid-column-one-quarter reported-voyages__columns reported-voyages__text">
                         <span className="govuk-body-s">Actions</span> <br />
                         <Link
-                          to={voyage.status === 'Draft' ? `${VOYAGE_TASK_LIST_URL}?${URL_DECLARATIONID_IDENTIFIER}=${voyage.id}` : `${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${voyage.id}`}
+                          to={voyage.status === 'Draft' ? `${VOYAGE_TASK_LIST_URL}?${URL_DECLARATIONID_IDENTIFIER}=${voyage.id}` : `${VOYAGE_CHECK_YOUR_ANSWERS}?${URL_DECLARATIONID_IDENTIFIER}=${voyage.id}`}
                           className="govuk-link small-link-text"
                         >
                           {statusLinkText}

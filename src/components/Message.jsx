@@ -13,25 +13,31 @@ const Message = ({
   document.title = title || SERVICE_NAME;
 
   return (
-    <div className="govuk-grid-row">
-      <div className="govuk-grid-column-two-thirds">
-        <h1 className="govuk-heading-xl">{title}</h1>
-        {message && <p className="govuk-body">{message}</p>}
-        {button && (
-          <button
-            className="govuk-button"
-            data-module="govuk-button"
-            type="button"
-            onClick={() => { navigate(button?.buttonNavigateTo, button?.buttonState); }}
-          >
-            {button?.buttonLabel}
-          </button>
-        )}
-        {!button && (
-          <Link className="govuk-link" to={redirectURL || LANDING_URL}>Click here to continue</Link>
-        )}
+    <>
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-full">
+          <h1 className="govuk-heading-xl">{title}</h1>
+        </div>
       </div>
-    </div>
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-two-thirds">
+          {message && <p className="govuk-body">{message}</p>}
+          {button && (
+            <button
+              className="govuk-button"
+              data-module="govuk-button"
+              type="button"
+              onClick={() => { navigate(button?.buttonNavigateTo, button?.buttonState); }}
+            >
+              {button?.buttonLabel}
+            </button>
+          )}
+          {!button && (
+            <Link className="govuk-link" to={redirectURL || LANDING_URL}>Click here to continue</Link>
+          )}
+        </div>
+      </div>
+    </>
   );
 };
 

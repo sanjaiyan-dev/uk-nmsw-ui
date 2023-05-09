@@ -14,9 +14,11 @@ Feature: User sign-in
     Then I am taken to your-voyages page
     Then I can able to sign-out
 
-  Scenario: User is shown - Request a new verification link when account is inactive
+  Scenario: User is shown - info page asking them to verify their email that is registered not verified
     When I have entered an email address for an unverified email address
-    Then I am shown - Request a new verification link
+    Then I shown email address has not been verified
+    When I click send verification email
+#    Then I am taken to check your email page
 
   Scenario:  User should not be signed-in when email is in invalid format
     When the user enters invalid email address and sign-in
@@ -36,7 +38,7 @@ Feature: User sign-in
     Examples:
       | emailAddress                                       | password |
       | TestEmail@test.com                                 | 12345    |
-      | 4f3a5d85-99bd-46db-b8ea-80ea8772c9c5@mailslurp.com | test-12  |
+      | 1e3a4687-a22f-41eb-976c-d4c75b391692@mailslurp.com | test-12  |
 
   Scenario: User should not be signed-in without providing email and password
     When I try to access a protected page

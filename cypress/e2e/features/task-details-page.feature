@@ -12,7 +12,6 @@ Feature: Task details page after file uploads
   Scenario: I can see task details page after fal1 gets uploaded successfully
     When I have uploaded 'Fal1-Files''General declaration FAL 1-Positive-test.xlsx'
     When I click check for errors
-    Then the FE sends a POST to the declarationId endpoint
     When there are no errors, I am shown the no errors found page
     When I click save and continue
     Then I am taken to task details page
@@ -54,7 +53,7 @@ Feature: Task details page after file uploads
     And I can see Check answers and submit enabled
     When I click Your voyage tab
     Then I am taken to your-voyages page
-    Then I can see the details of the voyage, I have uploaded
+    Then I can see the draft details of the voyage, I have uploaded
     When I click continue under actions
     Then I am taken to task details page
     When I click delete draft
@@ -63,7 +62,7 @@ Feature: Task details page after file uploads
     Then I am taken to task details page
     When I click delete draft
     Then I am taken to confirm delete draft page
-    When I click Yes to delete the draft
+    When I click Yes to delete the draft and confirm
     Then I am taken to your-voyages page
 
   Scenario: Verify application navigates user to sign-in page with missing auth token
@@ -74,4 +73,38 @@ Feature: Task details page after file uploads
     When I click save and continue
     Then I am taken to the sign-in page
     When I have entered a correct email address and password and sign in
+    Then I am taken to task details page
+
+  Scenario: Error messages shown when user uploads Fal5 and 6 with same same document number and country
+    When I have uploaded 'Fal1-Files''General declaration FAL 1 - goodData.xlsx'
+    When I click check for errors
+    When there are no errors, I am shown the no errors found page
+    When I click save and continue
+    Then I am taken to task details page
+    When I click crew details link
+    When I have uploaded 'Fal5-Files''FAL 5-With-2same-NumberAndCountry.xlsx'
+    When I click check for errors
+    Then I am shown corresponding error message
+      | Field | fileUploadInput-error                                                                                                                                                    |
+      | Error | Error: Details listed on this file are not allowed, because they're the same as details you've already uploaded. Check the details in your file and try uploading again. |
+    When I have uploaded 'Fal5-Files''Crew details including supernumeraries FAL 5-Positive-Test.xlsx'
+    When I click check for errors
+    When there are no errors, I am shown the no errors found page
+    When I click save and continue
+    Then I am taken to task details page
+    When I click Passenger details link
+    When I select Yes to uploading passenger details
+    When I have uploaded 'Fal6-Files''FAL 6-With-2same-NumberAndCountry.xlsx'
+    When I click check for errors
+    Then I am shown corresponding error message
+      | Field | fileUploadInput-error                                                                                                                                                    |
+      | Error | Error: Details listed on this file are not allowed, because they're the same as details you've already uploaded. Check the details in your file and try uploading again. |
+    When I have uploaded 'Fal6-Files''FAL 6-With-same-TD-NumberAndCountry-asFAL5.xlsx'
+    When I click check for errors
+    Then I am shown corresponding error message
+      | Field | fileUploadInput-error                                                                                                                                                    |
+      | Error | Error: Details listed on this file are not allowed, because they're the same as details you've already uploaded. Check the details in your file and try uploading again. |
+    When I have uploaded 'Fal6-Files''Passenger details FAL 6-PositiveData.xlsx'
+    When I click check for errors
+    When I click save and continue
     Then I am taken to task details page

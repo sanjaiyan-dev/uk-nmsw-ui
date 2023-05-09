@@ -9,7 +9,13 @@ import {
   ENDPOINT_DECLARATION_PATH,
   ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH,
 } from '../../constants/AppAPIConstants';
-import { URL_DECLARATIONID_IDENTIFIER, VOYAGE_SUPPORTING_DOCS_UPLOAD_URL } from '../../constants/AppUrlConstants';
+import {
+  MESSAGE_URL,
+  SIGN_IN_URL,
+  URL_DECLARATIONID_IDENTIFIER,
+  VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
+  YOUR_VOYAGES_URL,
+} from '../../constants/AppUrlConstants';
 import MultiFileUploadForm from '../MultiFileUploadForm';
 
 const mockedUseNavigate = jest.fn();
@@ -147,6 +153,45 @@ describe('Multi file upload tests', () => {
     expect(screen.getByText('supportingFile1')).toBeInTheDocument();
     expect(screen.getAllByRole('button', { name: 'Delete' })).toHaveLength(2);
     expect(screen.getAllByText('has been uploaded')).toHaveLength(2);
+  });
+
+  it('should redirect user to sign in if 422 response received on GET call', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(422);
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(mockedUseNavigate).toHaveBeenCalledWith(SIGN_IN_URL, { state: { redirectURL: '/this-page/123' } });
+  });
+
+  it('should redirect user to sign in if 401 response received on GET call', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(401);
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(mockedUseNavigate).toHaveBeenCalledWith(SIGN_IN_URL, { state: { redirectURL: '/this-page/123' } });
+  });
+
+  it('should redirect user to sign in if other error response received on GET call', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(500);
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: undefined, redirectURL: YOUR_VOYAGES_URL } });
   });
 
   it('should accept one file added and display it in the file list', async () => {
@@ -318,6 +363,31 @@ describe('Multi file upload tests', () => {
         },
       })
       .reply(200, mockedFAL1AndSupportingResponse)
+      .onDelete(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH}`)
+      .reply(200, {
+        message: 'File successfully deleted',
+      });
+
+    renderPage();
+
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(screen.getByText('supportingFile1')).toBeInTheDocument();
+    expect(screen.getByText('supportingFile2')).toBeInTheDocument();
+
+    // user clicks delete on one
+    await user.click(screen.getAllByRole('button', { name: 'Delete' })[0]);
+    expect(mockAxios.history.delete.length).toBe(1);
+  });
+
+  it('should remove an already uploaded file from the list if its delete button is clicked', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, mockedFAL1AndSupportingResponse)
       .onDelete(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, { id: 'supporting1' }, {
         headers: {
           Authorization: 'Bearer 123',
@@ -325,6 +395,43 @@ describe('Multi file upload tests', () => {
       })
       .reply(200, {
         message: 'File successfully deleted',
+      })
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, {
+        FAL1: {
+          nameOfShip: 'Test ship name',
+          imoNumber: '1234567',
+          callSign: 'NA',
+          signatory: 'Captain Name',
+          flagState: 'GBR',
+          departureFromUk: false,
+          departurePortUnlocode: 'AUPOR',
+          departureDate: '2023-02-12',
+          departureTime: '09:23:00',
+          arrivalPortUnlocode: 'GBDOV',
+          arrivalDate: '2023-02-15',
+          arrivalTime: '14:00:00',
+          previousPortUnlocode: 'AUPOR',
+          nextPortUnlocode: 'NLRTM',
+          cargo: 'No cargo',
+          passengers: false,
+          creationDate: '2023-02-10',
+          submissionDate: '2023-02-11',
+        },
+        FAL5: [],
+        FAL6: [],
+        supporting: [
+          {
+            id: 'supporting2',
+            filename: 'supportingFile2',
+            size: '118687',
+            url: 'https://supporting2-link.com',
+          },
+        ],
       });
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
@@ -332,37 +439,10 @@ describe('Multi file upload tests', () => {
     // user clicks delete on one
     await user.click(screen.getAllByRole('button', { name: 'Delete' })[0]);
 
-    expect(mockAxios.history.delete.length).toBe(1);
+    expect(screen.queryByText('supportingFile1')).not.toBeInTheDocument();
+    expect(screen.getByText('supportingFile2')).toBeInTheDocument();
+    expect(screen.getAllByRole('button', { name: 'Delete' })).toHaveLength(1);
   });
-
-  // This currently will fail because the file gets deleted from the S3 but not the database so the file is still present in the list and will be displayed
-  // it('should remove an already uploaded file from the list if its delete button is clicked', async () => {
-  //   const user = userEvent.setup();
-  //   mockAxios
-  //     .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
-  //       headers: {
-  //         Authorization: 'Bearer 123',
-  //       },
-  //     })
-  //     .reply(200, mockedFAL1AndSupportingResponse)
-  //     .onDelete(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, { id: 'supporting1' }, {
-  //       headers: {
-  //         Authorization: 'Bearer 123',
-  //       }
-  //     })
-  //     .reply(200, {
-  //       message: 'File successfully deleted'
-  //     })
-  //   renderPage();
-  //   await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
-
-  //   // user clicks delete on one
-  //   await user.click(screen.getAllByRole('button', { name: 'Delete' })[0]);
-
-  //   expect(screen.queryByText('supportingFile1')).not.toBeInTheDocument();
-  //   expect(screen.getByText('supportingFile2')).toBeInTheDocument();
-  //   expect(screen.getAllByRole('button', { name: 'Delete' })).toHaveLength(1);
-  // });
 
   it('should load the next page on submit button click', async () => {
     const user = userEvent.setup();
@@ -378,5 +458,39 @@ describe('Multi file upload tests', () => {
 
     await user.click(screen.getByRole('button', { name: 'Submit button label from props' }));
     expect(mockedUseNavigate).toHaveBeenCalledWith('/next-page/123');
+  });
+
+  it('should not leave buttons in a disabled state when actions are complete', async () => {
+    const user = userEvent.setup();
+    const files = [
+      new File(['template1'], 'template1.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),
+    ];
+
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, mockedFAL1Response);
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+
+    const input = screen.getByTestId('multiFileUploadInput');
+    await user.upload(input, files);
+
+    await user.click(screen.getByRole('button', { name: 'Upload files' }));
+    expect(screen.getByRole('button', { name: 'Upload files' })).not.toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Submit button label from props' })).not.toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Delete' })).not.toBeDisabled();
+
+    await user.click(screen.getByRole('button', { name: 'Submit button label from props' }));
+    expect(screen.getByRole('button', { name: 'Upload files' })).not.toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Submit button label from props' })).not.toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Delete' })).not.toBeDisabled();
+
+    await user.click(screen.getByRole('button', { name: 'Delete' }));
+    expect(screen.getByRole('button', { name: 'Upload files' })).not.toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Submit button label from props' })).not.toBeDisabled();
   });
 });

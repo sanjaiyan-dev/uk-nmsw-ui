@@ -17,9 +17,29 @@ Feature: Landing page with link to Fal templates
     Then I am taken to your-voyages page
     When I click service name header
     Then user is redirected to NMSW landing page
-    When I click template tab on the navigation bar
+    Then I click template tab on the navigation bar
     When I click Your voyage tab
     Then I am taken to your-voyages page
     When I click your details tab
     Then I am taken to your details page
+    When I click help tab
+    Then I am taken to help and support page
+    When I click File templates, I can able to download to use
+    When I click footer Contact us Link
+    Then I am taken to contact us page
+    When I click help section in contact us page
+    Then I am taken to help and support page with help menu highlighted
     And I can able to sign-out
+    Then I am taken to the sign-in page
+    When I click submit required forms using email
+    Then I am taken to help and support page
+    When I click footer Contact us Link
+    Then I am taken to contact us page
+    When I click help section in contact us page
+    Then I am taken to help and support page
+    When I click footer Accessibility link
+    Then I am taken to accessibility page
+    When I click footer Cookies link
+    Then I am taken to cookie page
+    When I click Privacy link
+    Then I am taken to Privacy notice page

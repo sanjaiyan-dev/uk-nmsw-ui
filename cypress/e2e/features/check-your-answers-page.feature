@@ -44,16 +44,26 @@ Feature: Check your answer page
     Then I am taken to task details page
     And I can see Check answers and submit enabled
     When I click Check answers and submit
-    Then I can view Check Your Answers page
-    Then I can verify the Check Your Answers page
+    When there is no supporting documents attached, I can see-no supporting documents message
+    When I click change next to supporting documents
+    Then I am taken to upload supporting documents page
+    Then I am able to choose valid number of documents and upload in Files added section
+      | fileName                       |
+      | ValidMELLINA CREW EFFECTS.xlsx |
+    When I click save and continue
+    Then I am taken to task details page
+    When I click Check answers and submit
+    Then I am taken to Check Your Answers page
+    And the details from my FAL 1 form are displayed on CYA page
 
   @regression
-  Scenario Outline: User can Verify the details upload and change the details
-    And the details from my FAL 1 form are displayed on CYA page
+  Scenario Outline: User can verify the details uploaded and change the details
     Then I can see a link to an uploaded crew file 'Fal5-Files''Crew details including supernumeraries FAL 5-Positive-Test.xlsx'
     When I click on the file name for 'Fal5-Files', it is downloaded
     Then I can see a link to an uploaded passenger file 'Fal6-Files''Passenger details FAL 6-PositiveData.xlsx'
     When I click on the file name for 'Fal6-Files', it is downloaded
+    Then I can see a link to an uploaded supporting document files 'Supporting-Documents''ValidMELLINA CREW EFFECTS.xlsx'
+    When I click on the file name for 'Supporting-Documents', it is downloaded
     When I click change the voyage details link
     Then I am taken to upload-general-declaration page
     When I have uploaded 'Fal1-Files''General declaration FAL 1 - goodData.xlsx'

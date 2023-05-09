@@ -7,4 +7,5 @@ When('I click crew details link', () => {
 
 Then('I am taken to upload-crew-details page', () => {
   FileUploadPage.verifyUploadCrewDetailsPage();
+  cy.injectAxe();
 });
