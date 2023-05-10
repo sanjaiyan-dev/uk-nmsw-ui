@@ -15,6 +15,7 @@ import Message from '../../../components/Message';
 import Auth from '../../../utils/Auth';
 import useGetAllDeclarations from '../../../utils/API/useGetAllDeclarations';
 import YourVoyagesDisplay from './YourVoyagesDisplay';
+import Pagination from '../../../components/Pagination/Pagination';
 
 // NOTES:
 // - The filter buttons do nothing
@@ -29,10 +30,11 @@ const YourVoyages = () => {
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [maxPageNumber, setMaxPageNumber] = useState();
+  const [pageNumber, setPageNumber] = useState();
   const [updatePagination, setUpdatePagination] = useState();
   const [totalNumberVoyages, setTotalNumberVoyages] = useState();
   const [voyageData, setVoyageData] = useState();
-  const apiResponse = useGetAllDeclarations({ pageNumber: 1 });
+  const apiResponse = useGetAllDeclarations({ pageNumber });
 
   document.title = SERVICE_NAME;
 
@@ -134,10 +136,19 @@ const YourVoyages = () => {
       </div>
 
       {voyageData?.length > 0 && (
-        <YourVoyagesDisplay
-          voyageData={voyageData}
-          totalVoyages={totalNumberVoyages}
-        />
+        <>
+          <YourVoyagesDisplay
+            voyageData={voyageData}
+            totalVoyages={totalNumberVoyages}
+          />
+
+          <Pagination
+            maxPageNumber={maxPageNumber}
+            updatePagination={updatePagination}
+            // getContent={useGetAllDeclarations}
+            setPageNumber={setPageNumber}
+          />
+        </>
       )}
     </>
   );

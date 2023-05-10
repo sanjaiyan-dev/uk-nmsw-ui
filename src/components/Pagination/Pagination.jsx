@@ -13,7 +13,7 @@ import createPaginationArray from './createPaginationArray';
 const Pagination = ({
   maxPageNumber,
   updatePagination,
-  getContent,
+  setPageNumber,
 }) => {
   const pageOnLoad = parseInt(sessionStorage.getItem(PAGINATION_PAGE_LABEL), 10) || 1;
   const [currentPage, setCurrentPage] = useState();
@@ -29,7 +29,7 @@ const Pagination = ({
     e.preventDefault();
     const calculatedNextPage = await calculatePaginationNextPageNumber({ clickType, clickedOnPageNumber, currentPage });
 
-    getContent({ pageNumber: calculatedNextPage });
+    setPageNumber({ pageNumber: calculatedNextPage });
     setCurrentPage(calculatedNextPage);
     sessionStorage.setItem(PAGINATION_PAGE_LABEL, calculatedNextPage);
 
@@ -107,5 +107,5 @@ export default Pagination;
 Pagination.propTypes = {
   maxPageNumber: PropTypes.number.isRequired,
   updatePagination: PropTypes.string.isRequired,
-  getContent: PropTypes.func.isRequired,
+  setPageNumber: PropTypes.func.isRequired,
 };

@@ -32,7 +32,7 @@ const useGetAlLDeclarations = ({ pageNumber }) => {
       return response.data;
     } catch (err) {
       handleAuthErrors({ error: err, navigate, redirectUrl: YOUR_VOYAGES_URL });
-      // when deleting we don't
+      // when deleting here we don't show the user an error as it's unnecessary
     }
     return null;
   };
