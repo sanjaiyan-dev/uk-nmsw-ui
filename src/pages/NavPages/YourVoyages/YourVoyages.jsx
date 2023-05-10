@@ -72,7 +72,7 @@ const YourVoyages = () => {
     if (apiResponse?.apiData) {
       setVoyageData(apiResponse.apiData);
       setIsLoading(apiResponse.isLoading);
-    } else if (apiResponse?.serverError) {
+    } else if (apiResponse?.error) {
       setIsError(true);
       setIsLoading(apiResponse.isLoading);
     }

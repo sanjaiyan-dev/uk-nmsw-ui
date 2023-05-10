@@ -6,16 +6,18 @@ import {
   API_URL,
   CREATE_VOYAGE_ENDPOINT,
   ENDPOINT_DECLARATION_PATH,
+  TOKEN_EXPIRED,
 } from '../../constants/AppAPIConstants';
-import { YOUR_VOYAGES_URL } from '../../constants/AppUrlConstants';
+import { SIGN_IN_URL, YOUR_VOYAGES_URL } from '../../constants/AppUrlConstants';
 import Auth from '../Auth';
 import handleAuthErrors from './handleAuthErrors';
 
-const useGetAllDeclarations = (url) => {
+const useGetAlLDeclarations = (url) => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const [apiData, setApiData] = useState(null);
-  const [serverError, setServerError] = useState(null);
+  const [apiData, setApiData] = useState();
+  const [paginationData, setPaginationData] = useState();
+  const [error, setError] = useState();
 
   const deleteInvalidDeclarations = async (id) => {
     try {
@@ -29,7 +31,7 @@ const useGetAllDeclarations = (url) => {
       return response.data;
     } catch (error) {
       handleAuthErrors({ error, navigate, redirectUrl: YOUR_VOYAGES_URL });
-      // when deleting we don't ever return an error message to the user, auth errors are handled others are ignored
+      // when deleting we don't
     }
     return null;
   };
@@ -64,7 +66,7 @@ const useGetAllDeclarations = (url) => {
       } catch (error) {
         if (error?.code === 'ERR_CANCELED') { return; }
         const errorResponse = handleAuthErrors({ error, navigate, redirectUrl: YOUR_VOYAGES_URL });
-        setServerError({ status: errorResponse?.response?.status, message: errorResponse?.message }); // returned to user
+        setError({ status: errorResponse?.response?.status, message: errorResponse?.message });
         setIsLoading(false);
       }
     };
@@ -73,7 +75,7 @@ const useGetAllDeclarations = (url) => {
     return () => { controller.abort(); };
   }, [url]);
 
-  return { isLoading, apiData, serverError };
+  return { apiData, error, isLoading, paginationData };
 };
 
-export default useGetAllDeclarations;
+export default useGetAlLDeclarations;
