@@ -2,6 +2,7 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { PAGINATION_PAGE_LABEL } from '../../constants/AppConstants';
 import {
   API_URL,
   CREATE_VOYAGE_ENDPOINT,
@@ -11,8 +12,9 @@ import { YOUR_VOYAGES_URL } from '../../constants/AppUrlConstants';
 import Auth from '../Auth';
 import handleAuthErrors from './handleAuthErrors';
 
-const useGetAlLDeclarations = (pageNumber) => {
+const useGetAlLDeclarations = ({ pageNumber }) => {
   const navigate = useNavigate();
+  const pageOnLoad = parseInt(sessionStorage.getItem(PAGINATION_PAGE_LABEL), 10) || 1;
   const [isLoading, setIsLoading] = useState(false);
   const [apiData, setApiData] = useState();
   const [paginationData, setPaginationData] = useState();
@@ -38,11 +40,12 @@ const useGetAlLDeclarations = (pageNumber) => {
   useEffect(() => {
     const controller = new AbortController();
     const { signal } = controller;
+    const pageToUse = pageNumber || pageOnLoad;
 
     setIsLoading(true);
     const fetchData = async () => {
       try {
-        const resp = await axios.get(CREATE_VOYAGE_ENDPOINT, {
+        const resp = await axios.get(`${CREATE_VOYAGE_ENDPOINT}?page=${pageToUse}`, {
           signal,
           headers: { Authorization: `Bearer ${Auth.retrieveToken()}` },
         });

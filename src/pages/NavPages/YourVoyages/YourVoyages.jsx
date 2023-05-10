@@ -32,7 +32,7 @@ const YourVoyages = () => {
   const [updatePagination, setUpdatePagination] = useState();
   const [totalNumberVoyages, setTotalNumberVoyages] = useState();
   const [voyageData, setVoyageData] = useState();
-  const apiResponse = useGetAllDeclarations();
+  const apiResponse = useGetAllDeclarations({ pageNumber: 1 });
 
   document.title = SERVICE_NAME;
 
