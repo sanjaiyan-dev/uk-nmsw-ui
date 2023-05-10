@@ -7,14 +7,14 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import {
   API_URL, CREATE_VOYAGE_ENDPOINT, ENDPOINT_DECLARATION_PATH, TOKEN_EXPIRED,
-} from '../../../constants/AppAPIConstants';
+} from '../../../../constants/AppAPIConstants';
 import {
   SIGN_IN_URL,
   URL_DECLARATIONID_IDENTIFIER,
   VOYAGE_GENERAL_DECLARATION_UPLOAD_URL,
   YOUR_VOYAGES_PAGE_NAME,
   YOUR_VOYAGES_URL,
-} from '../../../constants/AppUrlConstants';
+} from '../../../../constants/AppUrlConstants';
 import YourVoyages from '../YourVoyages';
 
 let mockUseLocationState = { state: {} };
@@ -287,7 +287,7 @@ describe('Your voyages page tests', () => {
     expect(await screen.findByText('All report types')).toBeInTheDocument();
     expect(screen.getByText('Ship 6')).toBeInTheDocument();
     expect(screen.getByText('Failed').outerHTML).toEqual('<strong class="govuk-tag govuk-tag--red">Failed</strong>');
-    expect(screen.getByText('Review and re-submit').outerHTML).toEqual('<a class="govuk-link small-link-text" href="/report-voyage/check-your-answers?report=6">Review and re-submit</a>');
+    expect(screen.getByText('Review').outerHTML).toEqual('<a class="govuk-link small-link-text" href="/report-voyage/check-your-answers?report=6">Review</a>');
 
     expect(screen.queryByText('Submitted')).not.toBeInTheDocument();
     expect(screen.queryByText('Cancelled')).not.toBeInTheDocument();

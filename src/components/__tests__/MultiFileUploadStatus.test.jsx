@@ -261,8 +261,8 @@ describe('Multi file upload status tests', () => {
       })
       .reply(200, mockedFAL1Response)
       .onPost(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH}`)
-      .reply(400, {
-        message: FILE_TYPE_INVALID_PREFIX,
+      .reply(413, {
+        message: 'Network error',
       });
 
     renderPage();

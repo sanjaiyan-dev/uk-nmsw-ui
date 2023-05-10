@@ -8,7 +8,7 @@ import {
 import userEvent from '@testing-library/user-event';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { DECLARATION_STATUS_PRECANCELLED, DECLARATION_STATUS_PRESUBMITTED } from '../../../constants/AppConstants';
+import { DECLARATION_STATUS_PRECANCELLED, DECLARATION_STATUS_PRESUBMITTED } from '../../../../constants/AppConstants';
 import {
   MESSAGE_URL,
   SIGN_IN_URL,
@@ -19,10 +19,10 @@ import {
   // VOYAGE_PASSENGERS_URL,
   // VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
   YOUR_VOYAGES_URL,
-} from '../../../constants/AppUrlConstants';
+} from '../../../../constants/AppUrlConstants';
 import {
   API_URL, ENDPOINT_DECLARATION_ATTACHMENTS_PATH, ENDPOINT_DECLARATION_PATH, TOKEN_EXPIRED,
-} from '../../../constants/AppAPIConstants';
+} from '../../../../constants/AppAPIConstants';
 import VoyageCheckYourAnswers from '../VoyageCheckYourAnswers';
 
 const mockUseLocationState = { state: {} };
