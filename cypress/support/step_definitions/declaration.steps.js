@@ -45,6 +45,7 @@ When('I click cancel, to cancel the submitted voyage report', () => {
 
 Then('I can see the status of reported voyage as CANCELLED', () => {
   cy.injectAxe();
+  cy.wait(10000);
   DeclarationPage.checkVoyageDetailsStatus('cancelled');
   cy.checkAxe();
 });

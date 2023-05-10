@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 class declarationPage {
 
   bannerDeleteDraft() {
@@ -19,11 +21,14 @@ class declarationPage {
   }
 
   checkCyaSubmittedStatus() {
-    cy.get(':nth-child(1) > :nth-child(2) > .govuk-summary-list__key').should('have.text', 'Status').next().should('have.text', 'Submitted ');
+    const currentDate = dayjs();
+    const formattedDate = currentDate.format('DD MMMM YYYY');
+    cy.get(':nth-child(1) > :nth-child(2) > .govuk-summary-list__key').should('have.text', 'Status').next().should('have.text', `Submitted ${formattedDate}`);
   }
 
   checkCyaCancelledStatus() {
-    cy.get(':nth-child(1) > :nth-child(2) > .govuk-summary-list__key').should('have.text', 'Status').next().should('have.text', 'Cancelled ');
+    cy.wait(10000);
+    cy.get(':nth-child(1) > :nth-child(2) > .govuk-summary-list__key').should('have.text', 'Status').next().should('have.text', `Cancelled ${formattedDate}`);
   }
 
   checkVoyageDetailsStatus(status) {
@@ -67,7 +72,7 @@ class declarationPage {
 
   bannerCancelReport() {
     cy.get('#govuk-notification-banner-title').contains('Success');
-    cy.get('h3.govuk-notification-banner__heading').should('contain.text', 'Report for NMSW Test Ship cancelled.');
+    cy.get('h3.govuk-notification-banner__heading').should('contain.text', 'Report for New NMSW Test Ship cancelled.');
   }
 
   verifyChangeLinkNotExist() {
