@@ -25,7 +25,6 @@ const RegisterConfirmation = () => {
               </div>
             )}
         </div>
-        {state?.email && <p className="govuk-body">We have sent a confirmation email to <strong>{state?.email}</strong>.</p>}
 
         <p className="govuk-body">
           <Link className="govuk-link" to={SIGN_IN_URL}>Sign in</Link> to start using this service.
