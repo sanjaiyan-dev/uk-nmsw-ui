@@ -1,5 +1,8 @@
 import dayjs from "dayjs";
 
+const currentDate = dayjs();
+const formattedDate = currentDate.format('DD MMMM YYYY');
+
 class declarationPage {
 
   bannerDeleteDraft() {
@@ -21,8 +24,6 @@ class declarationPage {
   }
 
   checkCyaSubmittedStatus() {
-    const currentDate = dayjs();
-    const formattedDate = currentDate.format('DD MMMM YYYY');
     cy.get(':nth-child(1) > :nth-child(2) > .govuk-summary-list__key').should('have.text', 'Status').next().should('have.text', `Submitted ${formattedDate}`);
   }
 
