@@ -28,6 +28,9 @@ const YourVoyages = () => {
   const [notification, setNotification] = useState({});
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [maxPageNumber, setMaxPageNumber] = useState();
+  const [updatePagination, setUpdatePagination] = useState();
+  const [totalNumberVoyages, setTotalNumberVoyages] = useState();
   const [voyageData, setVoyageData] = useState();
   const apiResponse = useGetAllDeclarations();
 
@@ -71,6 +74,9 @@ const YourVoyages = () => {
     setIsLoading(true);
     if (apiResponse?.apiData) {
       setVoyageData(apiResponse.apiData);
+      setMaxPageNumber(apiResponse.paginationData?.pages);
+      setTotalNumberVoyages(apiResponse.paginationData?.count);
+      setUpdatePagination('update');
       setIsLoading(apiResponse.isLoading);
     } else if (apiResponse?.error) {
       setIsError(true);
@@ -85,7 +91,7 @@ const YourVoyages = () => {
   }
 
   if (isLoading) { return (<LoadingSpinner />); }
-
+  console.log('p', maxPageNumber, updatePagination, totalNumberVoyages);
   return (
     <>
       <div className="govuk-grid-row">

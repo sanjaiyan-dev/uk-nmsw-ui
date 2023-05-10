@@ -6,13 +6,12 @@ import {
   API_URL,
   CREATE_VOYAGE_ENDPOINT,
   ENDPOINT_DECLARATION_PATH,
-  TOKEN_EXPIRED,
 } from '../../constants/AppAPIConstants';
-import { SIGN_IN_URL, YOUR_VOYAGES_URL } from '../../constants/AppUrlConstants';
+import { YOUR_VOYAGES_URL } from '../../constants/AppUrlConstants';
 import Auth from '../Auth';
 import handleAuthErrors from './handleAuthErrors';
 
-const useGetAlLDeclarations = (url) => {
+const useGetAlLDeclarations = (pageNumber) => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [apiData, setApiData] = useState();
@@ -29,8 +28,8 @@ const useGetAlLDeclarations = (url) => {
         },
       });
       return response.data;
-    } catch (error) {
-      handleAuthErrors({ error, navigate, redirectUrl: YOUR_VOYAGES_URL });
+    } catch (err) {
+      handleAuthErrors({ error: err, navigate, redirectUrl: YOUR_VOYAGES_URL });
       // when deleting we don't
     }
     return null;
@@ -61,11 +60,12 @@ const useGetAlLDeclarations = (url) => {
 
         const sortByLatestFirst = results.sort((a, b) => dayjs(b.creationDate) - dayjs(a.creationDate));
         setApiData(sortByLatestFirst);
+        setPaginationData(resp.data.pagination);
 
         setIsLoading(false);
-      } catch (error) {
-        if (error?.code === 'ERR_CANCELED') { return; }
-        const errorResponse = handleAuthErrors({ error, navigate, redirectUrl: YOUR_VOYAGES_URL });
+      } catch (err) {
+        if (err?.code === 'ERR_CANCELED') { return; }
+        const errorResponse = handleAuthErrors({ error: err, navigate, redirectUrl: YOUR_VOYAGES_URL });
         setError({ status: errorResponse?.response?.status, message: errorResponse?.message });
         setIsLoading(false);
       }
@@ -73,9 +73,11 @@ const useGetAlLDeclarations = (url) => {
 
     fetchData();
     return () => { controller.abort(); };
-  }, [url]);
+  }, [pageNumber]);
 
-  return { apiData, error, isLoading, paginationData };
+  return {
+    apiData, error, isLoading, paginationData,
+  };
 };
 
 export default useGetAlLDeclarations;
