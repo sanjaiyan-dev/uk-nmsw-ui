@@ -14,7 +14,6 @@ import {
   COOKIE_URL,
   ERROR_ACCOUNT_ALREADY_ACTIVE_URL,
   FILE_UPLOAD_FIELD_ERRORS_URL,
-  FORM_CONFIRMATION_URL,
   GENERIC_CONFIRMATION_URL,
   LANDING_URL,
   MESSAGE_URL,
@@ -56,7 +55,6 @@ import LoadingSpinner from './components/LoadingSpinner';
 // Lazy loaded routes (js loads on demand)
 // Error/Message pages
 const FileUploadConfirmation = lazy(() => import('./pages/Voyage/FileUploadConfirmation'));
-const FormConfirmationPage = lazy(() => import('./pages/Message/FormConfirmationPage'));
 const GenericConfirmationPage = lazy(() => import('./pages/Message/GenericConfirmation'));
 const GenericMessage = lazy(() => import('./pages/Message/GenericMessage'));
 // Register/Sign in pages
@@ -135,7 +133,6 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
             <Route path={CHANGE_YOUR_DETAILS_PAGE_URL} element={<ChangeYourDetails />} />
             <Route path={CHANGE_YOUR_PASSWORD_PAGE_URL} element={<ChangeYourPassword />} />
             <Route path={FILE_UPLOAD_FIELD_ERRORS_URL} element={<FileUploadFieldErrors />} />
-            <Route path={FORM_CONFIRMATION_URL} element={<FormConfirmationPage />} />
             <Route path={GENERIC_CONFIRMATION_URL} element={<GenericConfirmationPage />} />
             <Route path={LOGGED_IN_HELP} element={<Help />} />
             <Route path={TEMPLATE_PAGE_URL} element={<Templates />} />

@@ -200,6 +200,7 @@ If you use a confirmation page
 
     try {
       const response = await axios.post('/to-my-endpoint', dataToSubmit);
+      // TODO: FORM_CONFIRMATION_URL is not used anymmore - remove when we update docs 
       navigate(FORM_CONFIRMATION_URL, { state: { 
         formName: 'Email form', 
         nextPageLink: HOME_PAGE_URL,

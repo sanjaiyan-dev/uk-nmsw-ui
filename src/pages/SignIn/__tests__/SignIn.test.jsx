@@ -3,17 +3,17 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import SignIn from './SignIn';
+import SignIn from '../SignIn';
 import {
   SIGN_IN_ENDPOINT,
   USER_NOT_VERIFIED,
   USER_SIGN_IN_DETAILS_INVALID,
-} from '../../constants/AppAPIConstants';
+} from '../../../constants/AppAPIConstants';
 import {
   MESSAGE_URL,
   SIGN_IN_URL,
   LOGGED_IN_LANDING,
-} from '../../constants/AppUrlConstants';
+} from '../../../constants/AppUrlConstants';
 
 const mockUseLocationState = { state: {} };
 const mockedUseNavigate = jest.fn();

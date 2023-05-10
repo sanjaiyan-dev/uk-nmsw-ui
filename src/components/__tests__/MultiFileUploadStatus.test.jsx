@@ -10,6 +10,7 @@ import {
   ENDPOINT_DECLARATION_ATTACHMENTS_PATH,
   ENDPOINT_DECLARATION_PATH,
   ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH,
+  FILE_TYPE_INVALID_PREFIX,
 } from '../../constants/AppAPIConstants';
 import {
   SIGN_IN_URL,
@@ -261,7 +262,7 @@ describe('Multi file upload status tests', () => {
       .reply(200, mockedFAL1Response)
       .onPost(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH}`)
       .reply(400, {
-        message: MAX_SUPPORTING_FILE_SIZE,
+        message: FILE_TYPE_INVALID_PREFIX,
       });
 
     renderPage();

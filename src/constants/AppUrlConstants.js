@@ -30,7 +30,6 @@ export const CONTACT_US_URL = '/contact-us';
 
 // Voyage pages
 export const URL_DECLARATIONID_IDENTIFIER = 'report';
-export const FORM_CONFIRMATION_URL = '/report-voyage/confirmation';
 export const VOYAGE_CHECK_YOUR_ANSWERS = '/report-voyage/check-your-answers';
 export const VOYAGE_CREW_UPLOAD_URL = '/report-voyage/upload-crew-details';
 export const VOYAGE_CREW_CONFIRMATION_URL = '/report-voyage/crew-details-uploaded';
@@ -80,7 +79,6 @@ export const TOP_LEVEL_PAGES = [
 // Pages without back links
 export const NO_BACK_LINKS = [
   ...TOP_LEVEL_PAGES,
-  FORM_CONFIRMATION_URL,
   GENERIC_CONFIRMATION_URL,
   MESSAGE_URL,
   REGISTER_CONFIRMATION_URL,
