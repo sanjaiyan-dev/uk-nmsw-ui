@@ -10,7 +10,7 @@ import Fal1 from '../../__tests__/fixtures/getVoyage-Fal1';
 import PreCancelled from '../../__tests__/fixtures/getVoyage-PreCancelled';
 import PreSubmitted from '../../__tests__/fixtures/getVoyage-PreSubmitted';
 import Submitted from '../../__tests__/fixtures/getVoyage-Submitted';
-import VoyageCheckYourAnswers from '../../VoyageCheckYourAnswers';
+import VoyageCheckYourAnswers from '../VoyageCheckYourAnswers';
 
 const mockUseLocationState = { state: {} };
 const mockedUseNavigate = jest.fn();

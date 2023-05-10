@@ -21,7 +21,7 @@ import {
   TOKEN_EXPIRED,
 } from '../../../../constants/AppAPIConstants';
 import Fal1 from '../../__tests__/fixtures/getVoyage-Fal1';
-import VoyageCheckYourAnswers from '../../VoyageCheckYourAnswers';
+import VoyageCheckYourAnswers from '../VoyageCheckYourAnswers';
 
 const mockUseLocationState = { state: {} };
 const mockedUseNavigate = jest.fn();
@@ -185,5 +185,18 @@ describe('Voyage CYA - initial render', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     expect(screen.getByText('HON').outerHTML).toEqual('<dd class="govuk-summary-list__value">HON</dd>');
+  });
+
+  it('should render the submit button on the page', async () => {
+    mockAxios
+      .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
+        headers: {
+          Authorization: 'Bearer 123',
+        },
+      })
+      .reply(200, Fal1);
+    renderPage();
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
+    expect(screen.getByRole('button', { name: 'Save and submit' }).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button">Save and submit</button>');
   });
 });

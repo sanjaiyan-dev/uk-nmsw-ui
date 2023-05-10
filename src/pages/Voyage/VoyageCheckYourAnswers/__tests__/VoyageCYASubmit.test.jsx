@@ -19,7 +19,7 @@ import {
 import Fal1 from '../../__tests__/fixtures/getVoyage-Fal1';
 import Fal1PassengersTrue from '../../__tests__/fixtures/getVoyage-Fal1PassengersTrue';
 import Fal1Fal5Fal6Supporting from '../../__tests__/fixtures/getVoyage-Fal1Fal5Fal6Supporting';
-import VoyageCheckYourAnswers from '../../VoyageCheckYourAnswers';
+import VoyageCheckYourAnswers from '../VoyageCheckYourAnswers';
 
 const mockUseLocationState = { state: {} };
 const mockedUseNavigate = jest.fn();

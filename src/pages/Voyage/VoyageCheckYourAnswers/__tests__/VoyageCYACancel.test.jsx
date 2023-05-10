@@ -18,7 +18,7 @@ import {
   TOKEN_EXPIRED,
 } from '../../../../constants/AppAPIConstants';
 import Submitted from '../../__tests__/fixtures/getVoyage-Submitted';
-import VoyageCheckYourAnswers from '../../VoyageCheckYourAnswers';
+import VoyageCheckYourAnswers from '../VoyageCheckYourAnswers';
 
 const mockUseLocationState = { state: {} };
 const mockedUseNavigate = jest.fn();
