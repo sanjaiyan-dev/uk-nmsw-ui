@@ -7,14 +7,14 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import {
   API_URL, CREATE_VOYAGE_ENDPOINT, ENDPOINT_DECLARATION_PATH, TOKEN_EXPIRED,
-} from '../../../constants/AppAPIConstants';
+} from '../../../../constants/AppAPIConstants';
 import {
   SIGN_IN_URL,
   URL_DECLARATIONID_IDENTIFIER,
   VOYAGE_GENERAL_DECLARATION_UPLOAD_URL,
   YOUR_VOYAGES_PAGE_NAME,
   YOUR_VOYAGES_URL,
-} from '../../../constants/AppUrlConstants';
+} from '../../../../constants/AppUrlConstants';
 import YourVoyages from '../YourVoyages';
 
 let mockUseLocationState = { state: {} };
@@ -287,7 +287,7 @@ describe('Your voyages page tests', () => {
     expect(await screen.findByText('All report types')).toBeInTheDocument();
     expect(screen.getByText('Ship 6')).toBeInTheDocument();
     expect(screen.getByText('Failed').outerHTML).toEqual('<strong class="govuk-tag govuk-tag--red">Failed</strong>');
-    expect(screen.getByText('Review and re-submit').outerHTML).toEqual('<a class="govuk-link small-link-text" href="/report-voyage/check-your-answers?report=6">Review and re-submit</a>');
+    expect(screen.getByText('Review').outerHTML).toEqual('<a class="govuk-link small-link-text" href="/report-voyage/check-your-answers?report=6">Review</a>');
 
     expect(screen.queryByText('Submitted')).not.toBeInTheDocument();
     expect(screen.queryByText('Cancelled')).not.toBeInTheDocument();
@@ -332,7 +332,7 @@ describe('Your voyages page tests', () => {
     expect(screen.queryByText('Draft')).not.toBeInTheDocument();
   });
 
-  it('should render all reports recieved', async () => {
+  it('should render all reports recieved ordered by latest first', async () => {
     mockAxios
       .onGet(CREATE_VOYAGE_ENDPOINT)
       .reply(200, {
@@ -340,7 +340,7 @@ describe('Your voyages page tests', () => {
           {
             id: '1',
             status: 'Draft',
-            submissionDate: '2023-02-11',
+            submissionDate: '2023-01-01',
             nameOfShip: 'Ship 1',
             imoNumber: '123',
             callSign: 'NA',
@@ -360,7 +360,7 @@ describe('Your voyages page tests', () => {
           {
             id: '2',
             status: 'Draft',
-            submissionDate: '2023-02-11',
+            submissionDate: '2023-02-02',
             nameOfShip: 'Ship 2',
             imoNumber: '123',
             callSign: 'NA',
@@ -400,7 +400,7 @@ describe('Your voyages page tests', () => {
           {
             id: '4',
             status: 'PreCancelled',
-            submissionDate: '2023-02-11',
+            submissionDate: '2023-03-03',
             nameOfShip: 'Ship 4',
             imoNumber: '123',
             callSign: 'NA',
@@ -420,7 +420,7 @@ describe('Your voyages page tests', () => {
           {
             id: '5',
             status: 'PreSubmitted',
-            submissionDate: '2023-02-11',
+            submissionDate: '2023-03-03',
             nameOfShip: 'Ship 5',
             imoNumber: '123',
             callSign: 'NA',
@@ -449,6 +449,7 @@ describe('Your voyages page tests', () => {
     expect(screen.getAllByText('Draft')).toHaveLength(2);
     expect(screen.getAllByText('Cancelled')).toHaveLength(1);
     expect(screen.getAllByText('Submitted')).toHaveLength(2);
+    /* testing the order of declarations being displayed will be done with Cypress */
   });
 
   it('should redirect to sign in if getting the declarations returns a 422', async () => {

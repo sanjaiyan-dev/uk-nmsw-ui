@@ -34,6 +34,7 @@ When('I have entered a correct email address and password and sign in', () => {
 
 Then('I am taken to your-voyages page', () => {
   cy.get('h1').should('have.text', 'Your voyages');
+  cy.get('main').find('h2').invoke('text').as('totalReport');
 });
 
 When('I have entered an email address for an unverified email address', () => {

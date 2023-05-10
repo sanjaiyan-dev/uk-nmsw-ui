@@ -8,6 +8,7 @@ import {
   ENDPOINT_DECLARATION_ATTACHMENTS_PATH,
   ENDPOINT_DECLARATION_PATH,
   ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH,
+  FILE_TYPE_INVALID_PREFIX,
 } from '../../constants/AppAPIConstants';
 import { URL_DECLARATIONID_IDENTIFIER, VOYAGE_SUPPORTING_DOCS_UPLOAD_URL } from '../../constants/AppUrlConstants';
 import MultiFileUploadForm from '../MultiFileUploadForm';
@@ -418,7 +419,7 @@ describe('Multi file upload error tests', () => {
       .reply(200, mockedFAL1Response)
       .onPost(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH}`)
       .reply(400, {
-        message: 'Invalid file type',
+        message: FILE_TYPE_INVALID_PREFIX,
       });
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));

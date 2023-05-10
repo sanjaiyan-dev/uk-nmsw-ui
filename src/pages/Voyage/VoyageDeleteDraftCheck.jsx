@@ -105,8 +105,6 @@ const VoyageDeleteDraftCheck = () => {
     );
   }
 
-  console.log('Delete draft page, declaration id', declarationId);
-
   return (
     <DisplayForm
       formId="voyagePassengers"

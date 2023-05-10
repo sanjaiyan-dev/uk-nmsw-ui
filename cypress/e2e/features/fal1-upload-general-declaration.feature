@@ -9,6 +9,10 @@ Feature: Upload General declaration (FAL1) page
     Then I am taken to upload-general-declaration page
 
   Scenario: General declaration page validation
+    When I navigate back to your-voyage page without adding General Declaration
+    Then the voyage without general declaration is not added to the reported voyage
+    Then I click report a voyage
+    Then I am taken to upload-general-declaration page
     When I click check for errors without uploading any file
     Then I am shown corresponding error message
       | Field | fileUploadInput-error |
