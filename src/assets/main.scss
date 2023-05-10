@@ -113,6 +113,14 @@ body {
   text-decoration: none;
 }
 
+.govuk-pagination__next .govuk-button--text,
+.govuk-pagination__prev .govuk-button--text {
+  font-weight: 700;
+}
+.govuk-pagination__item--current .govuk-pagination__link {
+  color: govuk-colour("white");
+}
+
 .govuk-error-summary__list .govuk-button--text {
   color: $govuk-error-colour;
   font-weight: 700;
