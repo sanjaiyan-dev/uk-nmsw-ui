@@ -91,7 +91,7 @@ const YourVoyages = () => {
   }
 
   if (isLoading) { return (<LoadingSpinner />); }
-  console.log('p', maxPageNumber, updatePagination, totalNumberVoyages);
+
   return (
     <>
       <div className="govuk-grid-row">
@@ -116,7 +116,7 @@ const YourVoyages = () => {
             </div>
           )}
           <h1 className="govuk-heading-xl govuk-!-margin-bottom-4">Your voyages</h1>
-          {voyageData?.length === 0 && (
+          {!totalNumberVoyages && (
             <div className="govuk-inset-text">
               <p className="govuk-body">You have not reported any voyages yet</p>
             </div>
@@ -136,6 +136,7 @@ const YourVoyages = () => {
       {voyageData?.length > 0 && (
         <YourVoyagesDisplay
           voyageData={voyageData}
+          totalVoyages={totalNumberVoyages}
         />
       )}
     </>
