@@ -1,8 +1,13 @@
+import dayjs from "dayjs";
+
+const currentDate = dayjs();
+const formattedDate = currentDate.format('DD MMMM YYYY');
+
 class declarationPage {
 
   bannerDeleteDraft() {
     cy.get('#govuk-notification-banner-title').contains('Success');
-    cy.get('h3.govuk-notification-banner__heading').should('contain.text', 'Report for NMSW Test Ship deleted.');
+    cy.get('h3.govuk-notification-banner__heading').should('contain.text', 'Report for New NMSW Test Ship deleted.');
   }
 
   clickCancelButton() {
@@ -19,11 +24,12 @@ class declarationPage {
   }
 
   checkCyaSubmittedStatus() {
-    cy.get(':nth-child(1) > :nth-child(2) > .govuk-summary-list__key').should('have.text', 'Status').next().should('have.text', 'Submitted ');
+    cy.get(':nth-child(1) > :nth-child(2) > .govuk-summary-list__key').should('have.text', 'Status').next().should('have.text', `Submitted ${formattedDate}`);
   }
 
   checkCyaCancelledStatus() {
-    cy.get(':nth-child(1) > :nth-child(2) > .govuk-summary-list__key').should('have.text', 'Status').next().should('have.text', 'Cancelled ');
+    cy.wait(10000);
+    cy.get(':nth-child(1) > :nth-child(2) > .govuk-summary-list__key').should('have.text', 'Status').next().should('have.text', `Cancelled ${formattedDate}`);
   }
 
   checkVoyageDetailsStatus(status) {
@@ -41,25 +47,25 @@ class declarationPage {
       case 'draft':
         cy.get('@currentDeclaration').parent().parent().find('.govuk-tag').should('contain.text', 'Draft');
         cy.get(':nth-child(1) > :nth-child(2) > .govuk-grid-row').each(($row) => {
-          cy.wrap($row).should('have.text', 'NMSW Test ShipVoyage type:Departure from the UKDate:03 May 2023Status DraftActions Continue');
+          cy.wrap($row).should('have.text', 'New NMSW Test ShipVoyage type:Arrival to the UKDate:15 October 2023Status DraftActions Continue');
         })
         break;
       case 'submitted':
         cy.get('@currentDeclaration').parent().parent().find('.govuk-tag').should('contain.text', 'Submitted');
         cy.get(':nth-child(1) > :nth-child(2) > .govuk-grid-row').each(($row) => {
-          cy.wrap($row).should('have.text', 'NMSW Test ShipVoyage type:Departure from the UKDate:03 May 2023Status SubmittedActions Review or cancel');
+          cy.wrap($row).should('have.text', 'New NMSW Test ShipVoyage type:Arrival to the UKDate:15 October 2023Status SubmittedActions Review or cancel');
         })
         break;
       case 'cancelled':
         cy.get('@currentDeclaration').parent().parent().find('.govuk-tag').should('contain.text', 'Cancelled');
         cy.get(':nth-child(1) > :nth-child(2) > .govuk-grid-row').each(($row) => {
-          cy.wrap($row).should('have.text', 'NMSW Test ShipVoyage type:Departure from the UKDate:03 May 2023Status CancelledActions Review');
+          cy.wrap($row).should('have.text', 'New NMSW Test ShipVoyage type:Arrival to the UKDate:15 October 2023Status CancelledActions Review');
         })
         break;
       case 'failed':
         cy.get('@currentDeclaration').parent().parent().find('.govuk-tag').should('contain.text', 'Failed');
         cy.get(':nth-child(1) > :nth-child(2) > .govuk-grid-row').each(($row) => {
-          cy.wrap($row).should('have.text', 'NMSW Test ShipVoyage type:Departure from the UKDate:03 May 2023Status FailedActions Review and re-submit');
+          cy.wrap($row).should('have.text', 'New NMSW Test ShipVoyage type:Arrival to the UKDate:15 October 2023Status FailedActions Review and re-submit');
         })
         break;
     }
@@ -67,7 +73,7 @@ class declarationPage {
 
   bannerCancelReport() {
     cy.get('#govuk-notification-banner-title').contains('Success');
-    cy.get('h3.govuk-notification-banner__heading').should('contain.text', 'Report for NMSW Test Ship cancelled.');
+    cy.get('h3.govuk-notification-banner__heading').should('contain.text', 'Report for New NMSW Test Ship cancelled.');
   }
 
   verifyChangeLinkNotExist() {

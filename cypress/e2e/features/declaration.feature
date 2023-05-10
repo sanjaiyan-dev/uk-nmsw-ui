@@ -38,7 +38,9 @@ Feature: Submit or cancel the declaration request
     And I can see Check answers and submit enabled
     When I click Check answers and submit
     Then I am taken to Check Your Answers page
+    And the details from my FAL 1 form are displayed on CYA page
 
+  @regression
   Scenario: User can able to cancel a declaration that has not yet been submitted
     When I click Your voyage tab
     Then I am taken to your-voyages page
@@ -50,6 +52,7 @@ Feature: Submit or cancel the declaration request
     When I click Yes to delete the draft and confirm
     Then I can see the confirmation banner -Voyage details deleted
 
+  @regression
   Scenario: User can able to submit the declaration request
     When I click Save and Submit to confirm submission
     Then I can see the confirmation banner -Voyage details submitted
@@ -58,6 +61,7 @@ Feature: Submit or cancel the declaration request
     When I click review or cancel action link next to Submitted status
     Then I am taken to review your report with submitted status
 
+  @regression
   Scenario: User can able to cancel the submitted declaration
     When I click Save and Submit to confirm submission
     Then I can see the confirmation banner -Voyage details submitted

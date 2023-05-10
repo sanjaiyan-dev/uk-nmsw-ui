@@ -7,8 +7,8 @@ Then('I am taken to task details page', () => {
 });
 
 Then('I can verify voyage details on the task details page', () => {
-  TaskPage.checkShipName('NMSW Test Ship');
-  TaskPage.checkVoyageType('Departure from the UK');
+  TaskPage.checkShipName('New NMSW Test Ship');
+  TaskPage.checkVoyageType('Arrival to the UK');
   TaskPage.checkFal1UploadDocStatus();
 });
 

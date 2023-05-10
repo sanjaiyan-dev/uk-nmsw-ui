@@ -65,6 +65,8 @@ const missingValues = [
   {
     cellNumber: 'H5', error: 'Gender: field required'
   },
+  {cellNumber: 'I5',error: 'Date of birth: field required'},
+  {cellNumber: 'I6',error: 'Date of birth: field required'},
 ]
 
 const maxCharacters = [
@@ -159,6 +161,7 @@ const dobError = [
   {cellNumber: 'I7', error: 'Date of birth: date of birth must be in the dd/mm/yyyy format, for example, 22/02/2002'},
   {cellNumber: 'I8', error: 'Date of birth: date of birth must be in the dd/mm/yyyy format, for example, 22/02/2002'},
   {cellNumber: 'I9', error: 'Date of birth: date of birth must be in the dd/mm/yyyy format, for example, 22/02/2002'},
+  {cellNumber: 'I10',error: 'Date of birth: field required'}
 ]
 
 const genderError = [
