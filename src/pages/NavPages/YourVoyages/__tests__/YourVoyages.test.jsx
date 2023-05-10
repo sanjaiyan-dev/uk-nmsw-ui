@@ -463,6 +463,30 @@ describe('Your voyages page tests', () => {
     });
   });
 
+  it('should display a message if getting the declarations returns a 500 error', async () => {
+    mockAxios
+      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .reply(500);
+    render(<MemoryRouter><YourVoyages /></MemoryRouter>);
+
+    await screen.findByRole('heading', { name: 'Something has gone wrong' });
+    expect(screen.getByRole('heading', { name: 'Something has gone wrong' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Click here to continue' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Click here to continue' })).toHaveAttribute('href', YOUR_VOYAGES_URL);
+  });
+
+  it('should display a message if getting the declarations returns a 404 error', async () => {
+    mockAxios
+      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .reply(404);
+    render(<MemoryRouter><YourVoyages /></MemoryRouter>);
+
+    await screen.findByRole('heading', { name: 'Something has gone wrong' });
+    expect(screen.getByRole('heading', { name: 'Something has gone wrong' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Click here to continue' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Click here to continue' })).toHaveAttribute('href', YOUR_VOYAGES_URL);
+  });
+
   it('should delete invalid draft declarations (no FAL 1)', async () => {
     mockAxios
       .onGet(CREATE_VOYAGE_ENDPOINT)
