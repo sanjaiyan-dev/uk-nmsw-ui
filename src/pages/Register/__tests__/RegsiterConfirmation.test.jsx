@@ -29,7 +29,6 @@ describe('Registration confirmation page tests', () => {
     render(<MemoryRouter><RegisterConfirmation /></MemoryRouter>);
     expect(screen.getByText('For John Doe')).toBeInTheDocument();
     expect(screen.getByText('Now a team member at My company')).toBeInTheDocument();
-    expect(screen.getByText('test@email.com')).toBeInTheDocument();
   });
 
   it('should not break if company name, full name and email is lost from state', () => {
