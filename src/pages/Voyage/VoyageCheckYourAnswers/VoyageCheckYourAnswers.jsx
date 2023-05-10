@@ -7,26 +7,26 @@ import {
   DECLARATION_STATUS_DRAFT,
   DECLARATION_STATUS_PRECANCELLED,
   DECLARATION_STATUS_PRESUBMITTED,
-} from '../../constants/AppConstants';
-import { API_URL, ENDPOINT_DECLARATION_PATH, TOKEN_EXPIRED } from '../../constants/AppAPIConstants';
+} from '../../../constants/AppConstants';
+import { API_URL, ENDPOINT_DECLARATION_PATH, TOKEN_EXPIRED } from '../../../constants/AppAPIConstants';
 import {
   MESSAGE_URL,
   SIGN_IN_URL,
   URL_DECLARATIONID_IDENTIFIER,
   VOYAGE_CHECK_YOUR_ANSWERS,
   YOUR_VOYAGES_URL,
-} from '../../constants/AppUrlConstants';
-import ConfirmationMessage from '../../components/ConfirmationMessage';
-import LoadingSpinner from '../../components/LoadingSpinner';
-import Message from '../../components/Message';
-import GetDeclaration from '../../utils/GetDeclaration';
-import Auth from '../../utils/Auth';
-import { scrollToTop } from '../../utils/ScrollToElement';
-import VoyageCancelConfirmation from './VoyageCheckYourAnswers/VoyageCancelConfirmation';
-import CYAGeneralDeclaration from './VoyageCheckYourAnswers/CYAGeneralDeclaration';
-import CYAUploadedDocs from './VoyageCheckYourAnswers/CYAUploadedDocs';
-import CYACallToActions from './VoyageCheckYourAnswers/CYACallToActions';
-import CYAErrorSummary from './VoyageCheckYourAnswers/CYAErrorSummary';
+} from '../../../constants/AppUrlConstants';
+import Auth from '../../../utils/Auth';
+import GetDeclaration from '../../../utils/GetDeclaration';
+import { scrollToTop } from '../../../utils/ScrollToElement';
+import ConfirmationMessage from '../../../components/ConfirmationMessage';
+import LoadingSpinner from '../../../components/LoadingSpinner';
+import Message from '../../../components/Message';
+import CYACallToActions from './CYACallToActions';
+import CYAErrorSummary from './CYAErrorSummary';
+import CYAGeneralDeclaration from './CYAGeneralDeclaration';
+import CYAUploadedDocs from './CYAUploadedDocs';
+import VoyageCancelConfirmation from './VoyageCancelConfirmation';
 
 const SubmitConfirmation = () => (
   <>
