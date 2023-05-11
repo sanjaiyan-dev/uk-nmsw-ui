@@ -31,7 +31,6 @@ const YourVoyages = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [maxPageNumber, setMaxPageNumber] = useState();
   const [pageNumber, setPageNumber] = useState();
-  const [updatePagination, setUpdatePagination] = useState();
   const [totalNumberVoyages, setTotalNumberVoyages] = useState();
   const [voyageData, setVoyageData] = useState();
   const apiResponse = useGetAllDeclarations({ pageNumber });
@@ -78,7 +77,6 @@ const YourVoyages = () => {
       setVoyageData(apiResponse.apiData);
       setMaxPageNumber(apiResponse.paginationData?.pages);
       setTotalNumberVoyages(apiResponse.paginationData?.count);
-      setUpdatePagination('update');
       setIsLoading(apiResponse.isLoading);
     } else if (apiResponse?.error) {
       setIsError(true);
@@ -144,8 +142,7 @@ const YourVoyages = () => {
 
           <Pagination
             maxPageNumber={maxPageNumber}
-            updatePagination={updatePagination}
-            // getContent={useGetAllDeclarations}
+            updatePaginationPageNumber={pageNumber || 1}
             setPageNumber={setPageNumber}
           />
         </>

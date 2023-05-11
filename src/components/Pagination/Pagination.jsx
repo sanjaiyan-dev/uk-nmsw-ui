@@ -12,7 +12,7 @@ import createPaginationArray from './createPaginationArray';
 
 const Pagination = ({
   maxPageNumber,
-  updatePagination,
+  updatePaginationPageNumber,
   setPageNumber,
 }) => {
   const pageOnLoad = parseInt(sessionStorage.getItem(PAGINATION_PAGE_LABEL), 10) || 1;
@@ -20,8 +20,10 @@ const Pagination = ({
   const [pages, setPages] = useState();
 
   const createPagination = async () => {
-    const pageArray = await createPaginationArray({ selectedPage: pageOnLoad, totalPages: maxPageNumber });
-    setCurrentPage(pageOnLoad);
+    const nextPageNumber = currentPage || pageOnLoad;
+    const pageArray = await createPaginationArray({ selectedPage: nextPageNumber, totalPages: maxPageNumber });
+
+    setCurrentPage(nextPageNumber);
     setPages(pageArray);
   };
 
@@ -37,13 +39,12 @@ const Pagination = ({
   };
 
   useEffect(() => {
-    if (updatePagination) {
+    if (updatePaginationPageNumber) {
       createPagination();
     }
-  }, [updatePagination]);
+  }, [updatePaginationPageNumber]);
 
   if (!pages) { return null; }
-
   return (
     <nav className="govuk-pagination" role="navigation" aria-label="results">
       {currentPage !== 1
@@ -106,6 +107,6 @@ export default Pagination;
 
 Pagination.propTypes = {
   maxPageNumber: PropTypes.number.isRequired,
-  updatePagination: PropTypes.string.isRequired,
+  updatePaginationPageNumber: PropTypes.number.isRequired,
   setPageNumber: PropTypes.func.isRequired,
 };
