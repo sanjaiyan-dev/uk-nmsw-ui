@@ -39,7 +39,7 @@ describe('Pagination setup', () => {
     expect(screen.getByRole('button', { name: '1' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: '2' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: '3' })).toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: PAGINATION_NEXT_LABEL })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: PAGINATION_NEXT_LABEL })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: PAGINATION_PREVIOUS_LABEL })).not.toBeInTheDocument();
   });
 
@@ -63,7 +63,7 @@ describe('Pagination setup', () => {
     expect(screen.getByRole('button', { name: '2' })).toBeInTheDocument();
     expect(screen.getByText(ELLIPSIS)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: '10' })).toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: PAGINATION_NEXT_LABEL })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: PAGINATION_NEXT_LABEL })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: PAGINATION_PREVIOUS_LABEL })).not.toBeInTheDocument();
   });
 
@@ -87,7 +87,7 @@ describe('Pagination setup', () => {
     expect(screen.getAllByRole('listitem')[4]).toHaveTextContent('6');
     expect(screen.getAllByRole('listitem')[5]).toHaveTextContent(ELLIPSIS);
     expect(screen.getAllByRole('listitem')[6]).toHaveTextContent('10');
-    expect(screen.queryByRole('button', { name: PAGINATION_NEXT_LABEL })).toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: PAGINATION_PREVIOUS_LABEL })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: PAGINATION_NEXT_LABEL })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: PAGINATION_PREVIOUS_LABEL })).toBeInTheDocument();
   });
 });
