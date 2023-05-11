@@ -10,7 +10,7 @@ describe('Pagination setup', () => {
     render(
       <Pagination
         maxPageNumber={maxPageNumber}
-        updatePagination="update"
+        updatePaginationPageNumber="update"
         setPageNumber={setPageNumber}
       />,
     );
@@ -26,7 +26,7 @@ describe('Pagination setup', () => {
     render(
       <Pagination
         maxPageNumber={maxPageNumber}
-        updatePagination="update"
+        updatePaginationPageNumber="update"
         setPageNumber={setPageNumber}
       />,
     );
@@ -48,7 +48,7 @@ describe('Pagination setup', () => {
     render(
       <Pagination
         maxPageNumber={maxPageNumber}
-        updatePagination="update"
+        updatePaginationPageNumber="update"
         setPageNumber={setPageNumber}
       />,
     );
@@ -73,7 +73,7 @@ describe('Pagination setup', () => {
     render(
       <Pagination
         maxPageNumber={maxPageNumber}
-        updatePagination="update"
+        updatePaginationPageNumber="update"
         setPageNumber={setPageNumber}
       />,
     );
