@@ -50,10 +50,11 @@ describe('Pagination setup', () => {
     );
 
     await screen.findByRole('button', { name: '1' });
-    expect(screen.getByRole('button', { name: '1' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: '2' })).toBeInTheDocument(); // current page is 1, + 1 is 2
-    expect(screen.getByText(ELLIPSIS)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: '10' })).toBeInTheDocument();
+    expect(screen.getAllByRole('listitem').length).toBe(4);
+    expect(screen.getAllByRole('listitem')[0]).toHaveTextContent('1');
+    expect(screen.getAllByRole('listitem')[1]).toHaveTextContent('2'); // current page is 1, we always show + & - 1 of current
+    expect(screen.getAllByRole('listitem')[2]).toHaveTextContent(ELLIPSIS);
+    expect(screen.getAllByRole('listitem')[3]).toHaveTextContent('10');
     expect(screen.queryByRole('button', { name: PAGINATION_NEXT_LABEL })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: PAGINATION_PREVIOUS_LABEL })).not.toBeInTheDocument();
   });
