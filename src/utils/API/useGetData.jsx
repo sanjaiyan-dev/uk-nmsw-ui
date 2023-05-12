@@ -14,7 +14,7 @@ const useGetData = ({ redirectUrl, url }) => {
     const controller = new AbortController();
     const { signal } = controller;
 
-    // setIsLoading(true);
+    setIsLoading(true);
     const fetchData = async () => {
       try {
         const resp = await axios.get(url, {
@@ -24,13 +24,10 @@ const useGetData = ({ redirectUrl, url }) => {
         const data = await resp?.data;
 
         setApiData(data);
-
-        // setIsLoading(false);
       } catch (err) {
         if (err?.code === 'ERR_CANCELED') { return; }
         const errorResponse = handleAuthErrors({ error: err, navigate, redirectUrl });
         setError({ status: errorResponse?.response?.status, message: errorResponse?.message });
-        // setIsLoading(false);
       }
     };
 
