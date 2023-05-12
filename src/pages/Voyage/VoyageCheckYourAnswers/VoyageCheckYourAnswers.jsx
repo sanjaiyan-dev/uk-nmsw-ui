@@ -19,6 +19,7 @@ import {
 import Auth from '../../../utils/Auth';
 import GetDeclaration from '../../../utils/GetDeclaration';
 import { scrollToTop } from '../../../utils/ScrollToElement';
+import handleAuthErrors from '../../../utils/API/handleAuthErrors';
 import ConfirmationMessage from '../../../components/ConfirmationMessage';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import Message from '../../../components/Message';
@@ -136,8 +137,7 @@ const VoyageCheckYourAnswers = () => {
         scrollToTop();
       } catch (err) {
         if (err?.response?.status === 422 || err?.response?.data?.msg === TOKEN_EXPIRED) {
-          Auth.removeToken();
-          navigate(SIGN_IN_URL, { state: { redirectURL: `${VOYAGE_CHECK_YOUR_ANSWERS}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}` } });
+          handleAuthErrors({ error: err, navigate, redirectUrl: `${VOYAGE_CHECK_YOUR_ANSWERS}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}` });
         } else {
           // 500 errors will fall into this bucket
           navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: `${VOYAGE_CHECK_YOUR_ANSWERS}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}` } });
@@ -164,8 +164,7 @@ const VoyageCheckYourAnswers = () => {
         navigate(YOUR_VOYAGES_URL, { state: { confirmationBanner: { message: `Report for ${declarationData.FAL1.nameOfShip} cancelled.` } } });
       } catch (err) {
         if (err?.response?.status === 422 || err?.response?.data?.msg === TOKEN_EXPIRED) {
-          Auth.removeToken();
-          navigate(SIGN_IN_URL, { state: { redirectURL: `${VOYAGE_CHECK_YOUR_ANSWERS}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}` } });
+          handleAuthErrors({ error: err, navigate, redirectUrl: `${VOYAGE_CHECK_YOUR_ANSWERS}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}` });
         } else {
           // 500 errors will fall into this bucket
           navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: `${VOYAGE_CHECK_YOUR_ANSWERS}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}` } });

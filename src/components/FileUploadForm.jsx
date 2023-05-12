@@ -15,9 +15,9 @@ import {
   FILE_UPLOAD_FIELD_ERRORS_URL,
   LOGGED_IN_LANDING,
   MESSAGE_URL,
-  SIGN_IN_URL,
 } from '../constants/AppUrlConstants';
 import Auth from '../utils/Auth';
+import handleAuthErrors from '../utils/API/handleAuthErrors';
 import MapErrorMessages from '../utils/MapErrorMessages';
 import { scrollToTop } from '../utils/ScrollToElement';
 
@@ -151,8 +151,7 @@ const FileUploadForm = ({
             break;
           case 401:
           case 422:
-            Auth.removeToken();
-            navigate(SIGN_IN_URL, { state: { redirectURL: urlThisPage } });
+            handleAuthErrors({ error: err, navigate, redirectUrl: urlThisPage });
             break;
           case 404:
             navigate(MESSAGE_URL, {

@@ -5,15 +5,12 @@ import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { SERVICE_NAME } from '../../../constants/AppConstants';
 import { CREATE_VOYAGE_ENDPOINT, TOKEN_EXPIRED } from '../../../constants/AppAPIConstants';
-import {
-  SIGN_IN_URL,
-  VOYAGE_GENERAL_DECLARATION_UPLOAD_URL,
-  YOUR_VOYAGES_URL,
-} from '../../../constants/AppUrlConstants';
+import { VOYAGE_GENERAL_DECLARATION_UPLOAD_URL, YOUR_VOYAGES_URL } from '../../../constants/AppUrlConstants';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import Message from '../../../components/Message';
 import Auth from '../../../utils/Auth';
 import useGetAllDeclarations from '../../../utils/API/useGetAllDeclarations';
+import handleAuthErrors from '../../../utils/API/handleAuthErrors';
 import YourVoyagesDisplay from './YourVoyagesDisplay';
 import Pagination from '../../../components/Pagination/Pagination';
 
@@ -49,11 +46,9 @@ const YourVoyages = () => {
     } catch (err) {
       // 422 missing segments = missing bearer token for this endpoint
       if (err?.response?.status === 422) {
-        Auth.removeToken();
-        navigate(SIGN_IN_URL, { state: { redirectURL: YOUR_VOYAGES_URL } });
+        handleAuthErrors({ error: err, navigate, redirectUrl: YOUR_VOYAGES_URL });
       } else if (err?.response?.data?.msg === TOKEN_EXPIRED) {
-        Auth.removeToken();
-        navigate(SIGN_IN_URL, { state: { redirectURL: YOUR_VOYAGES_URL } });
+        handleAuthErrors({ error: err, navigate, redirectUrl: YOUR_VOYAGES_URL });
       } else {
         setIsError(true);
       }
