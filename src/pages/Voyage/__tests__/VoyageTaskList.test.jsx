@@ -125,7 +125,7 @@ describe('Voyage task list page', () => {
     expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, {
       state: {
         title: 'Something has gone wrong',
-        message: undefined,
+        message: 'Request failed with status code 500',
         redirectURL: YOUR_VOYAGES_URL,
       },
     });
@@ -143,6 +143,7 @@ describe('Voyage task list page', () => {
     renderPage();
 
     await screen.findByRole('heading', { name: 'Report a voyage' });
+    await screen.findByText('Test ship name');
     expect(screen.getByRole('heading', { name: '1. Upload documents' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: '2. Submit the report' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Report a voyage' })).toBeInTheDocument();
@@ -173,8 +174,8 @@ describe('Voyage task list page', () => {
       .reply(200, mockedResponseFal1Only);
 
     renderPage();
-    await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     await screen.findByRole('heading', { name: 'Report a voyage' });
+    await screen.findByText('Test ship name');
     expect(screen.getByText('Test ship name')).toBeInTheDocument();
     expect(screen.getByText('Arrival to the UK')).toBeInTheDocument();
     await screen.findByTestId('completedSections');
@@ -216,6 +217,7 @@ describe('Voyage task list page', () => {
 
     renderPage();
     await screen.findByRole('heading', { name: 'Report a voyage' });
+    await screen.findByText('Test ship name');
     expect(screen.getByText('Test ship name')).toBeInTheDocument();
     expect(screen.getByText('Departure from the UK')).toBeInTheDocument();
     expect(screen.getByTestId('completedSections')).toHaveTextContent('0');
@@ -263,6 +265,7 @@ describe('Voyage task list page', () => {
 
     renderPage();
     await screen.findByRole('heading', { name: 'Report a voyage' });
+    await screen.findByText('Test ship name');
     expect(screen.getByRole('link', { name: 'Crew details including supernumeraries (FAL 5) Completed' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Crew details including supernumeraries (FAL 5) Completed' }).outerHTML).toBe('<a class="govuk-link" href="/report-voyage/upload-crew-details?report=123"><span>Crew details including supernumeraries (FAL 5)</span><strong class="govuk-tag app-task-list__tag">Completed</strong></a>');
     expect(screen.getByRole('link', { name: 'Any passenger details (FAL 6) Required' })).toBeInTheDocument();
@@ -312,6 +315,7 @@ describe('Voyage task list page', () => {
 
     renderPage();
     await screen.findByRole('heading', { name: 'Report a voyage' });
+    await screen.findByText('Test ship name');
     expect(screen.getByRole('link', { name: 'Crew details including supernumeraries (FAL 5) Required' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Crew details including supernumeraries (FAL 5) Required' }).outerHTML).toBe('<a class="govuk-link" href="/report-voyage/upload-crew-details?report=123"><span>Crew details including supernumeraries (FAL 5)</span><strong class="govuk-tag govuk-tag--pink app-task-list__tag">Required</strong></a>');
     expect(screen.getByRole('link', { name: 'Any passenger details (FAL 6) Completed' })).toBeInTheDocument();
@@ -354,6 +358,7 @@ describe('Voyage task list page', () => {
 
     renderPage();
     await screen.findByRole('heading', { name: 'Report a voyage' });
+    await screen.findByText('Test ship name');
     expect(screen.getByRole('link', { name: 'Any passenger details (FAL 6) Required' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Any passenger details (FAL 6) Required' }).outerHTML).toBe('<a class="govuk-link" href="/report-voyage/passenger-details?report=123"><span>Any passenger details (FAL 6)</span><strong class="govuk-tag govuk-tag--pink app-task-list__tag">Required</strong></a>');
     expect(screen.getByTestId('completedSections')).toHaveTextContent('0');
@@ -394,6 +399,7 @@ describe('Voyage task list page', () => {
 
     renderPage();
     await screen.findByRole('heading', { name: 'Report a voyage' });
+    await screen.findByText('Test ship name');
     expect(screen.getByRole('link', { name: 'Any passenger details (FAL 6) Completed' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Any passenger details (FAL 6) Completed' }).outerHTML).toBe('<a class="govuk-link" href="/report-voyage/passenger-details?report=123"><span>Any passenger details (FAL 6)</span><strong class="govuk-tag app-task-list__tag">Completed</strong></a>');
     expect(screen.getByTestId('completedSections')).toHaveTextContent('0');
@@ -448,6 +454,7 @@ describe('Voyage task list page', () => {
 
     renderPage();
     await screen.findByRole('heading', { name: 'Report a voyage' });
+    await screen.findByText('Test ship name');
     expect(screen.getByRole('link', { name: 'Crew details including supernumeraries (FAL 5) Completed' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Crew details including supernumeraries (FAL 5) Completed' }).outerHTML).toBe('<a class="govuk-link" href="/report-voyage/upload-crew-details?report=123"><span>Crew details including supernumeraries (FAL 5)</span><strong class="govuk-tag app-task-list__tag">Completed</strong></a>');
     expect(screen.getByRole('link', { name: 'Any passenger details (FAL 6) Completed' })).toBeInTheDocument();
@@ -475,6 +482,7 @@ describe('Voyage task list page', () => {
       </MemoryRouter>,
     );
     await screen.findByRole('heading', { name: 'Report a voyage' });
+    await screen.findByText('Test ship name');
     expect(screen.getByRole('link', { name: 'General Declaration (FAL 1) Completed' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'General Declaration (FAL 1) Completed' }).outerHTML).toEqual('<a class="govuk-link" href="/report-voyage/upload-general-declaration?report=123"><span>General Declaration (FAL 1)</span><strong class="govuk-tag app-task-list__tag">Completed</strong></a>');
   });
@@ -490,6 +498,7 @@ describe('Voyage task list page', () => {
 
     renderPage();
     await screen.findByRole('heading', { name: 'Report a voyage' });
+    await screen.findByText('Test ship name');
     expect(screen.getByRole('link', { name: 'Crew details including supernumeraries (FAL 5) Required' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Crew details including supernumeraries (FAL 5) Required' }).outerHTML).toEqual('<a class="govuk-link" href="/report-voyage/upload-crew-details?report=123"><span>Crew details including supernumeraries (FAL 5)</span><strong class="govuk-tag govuk-tag--pink app-task-list__tag">Required</strong></a>');
   });
@@ -506,6 +515,7 @@ describe('Voyage task list page', () => {
 
     renderPage();
     await screen.findByRole('heading', { name: 'Report a voyage' });
+    await screen.findByText('Test ship name');
     expect(screen.getByRole('link', { name: 'Any passenger details (FAL 6) Required' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Any passenger details (FAL 6) Required' }).outerHTML).toEqual('<a class="govuk-link" href="/report-voyage/passenger-details?report=123"><span>Any passenger details (FAL 6)</span><strong class="govuk-tag govuk-tag--pink app-task-list__tag">Required</strong></a>');
 
@@ -529,6 +539,7 @@ describe('Voyage task list page', () => {
 
     renderPage();
     await screen.findByRole('heading', { name: 'Report a voyage' });
+    await screen.findByText('Test ship name');
     expect(screen.getByRole('link', { name: 'Supporting documents Optional' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Supporting documents Optional' }).outerHTML).toEqual('<a class="govuk-link" href="/report-voyage/upload-supporting-documents?report=123"><span>Supporting documents</span><strong class="govuk-tag govuk-tag--blue app-task-list__tag">Optional</strong></a>');
 
@@ -589,6 +600,7 @@ describe('Voyage task list page', () => {
 
     renderPage();
     await screen.findByRole('heading', { name: 'Report a voyage' });
+    await screen.findByText('Test ship name');
     expect(screen.getByRole('link', { name: 'Check answers and submit Not started' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Check answers and submit Not started' }).outerHTML).toEqual('<a class="govuk-link" href="/report-voyage/check-your-answers?report=123"><span>Check answers and submit</span><strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong></a>');
   });
@@ -605,6 +617,7 @@ describe('Voyage task list page', () => {
 
     renderPage();
     await screen.findByRole('heading', { name: 'Report a voyage' });
+    await screen.findByText('Test ship name');
     expect(screen.getByRole('button', { name: 'Delete draft' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Delete draft' }).outerHTML).toEqual('<button type="button" class="govuk-button govuk-button--warning" data-module="govuk-button">Delete draft</button>');
     await user.click(screen.getByRole('button', { name: 'Delete draft' }));
