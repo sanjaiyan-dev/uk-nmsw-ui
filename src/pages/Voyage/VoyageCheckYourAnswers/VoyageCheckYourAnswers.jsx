@@ -8,21 +8,25 @@ import {
   DECLARATION_STATUS_PRECANCELLED,
   DECLARATION_STATUS_PRESUBMITTED,
 } from '../../../constants/AppConstants';
-import { API_URL, ENDPOINT_DECLARATION_PATH, TOKEN_EXPIRED } from '../../../constants/AppAPIConstants';
+import {
+  API_URL,
+  ENDPOINT_DECLARATION_ATTACHMENTS_PATH,
+  ENDPOINT_DECLARATION_PATH,
+  TOKEN_EXPIRED,
+} from '../../../constants/AppAPIConstants';
 import {
   MESSAGE_URL,
-  SIGN_IN_URL,
   URL_DECLARATIONID_IDENTIFIER,
   VOYAGE_CHECK_YOUR_ANSWERS,
   YOUR_VOYAGES_URL,
 } from '../../../constants/AppUrlConstants';
-import Auth from '../../../utils/Auth';
-import GetDeclaration from '../../../utils/GetDeclaration';
-import { scrollToTop } from '../../../utils/ScrollToElement';
-import handleAuthErrors from '../../../utils/API/handleAuthErrors';
 import ConfirmationMessage from '../../../components/ConfirmationMessage';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import Message from '../../../components/Message';
+import Auth from '../../../utils/Auth';
+import { scrollToTop } from '../../../utils/ScrollToElement';
+import useGetData from '../../../utils/API/useGetData';
+import handleAuthErrors from '../../../utils/API/handleAuthErrors';
 import CYACallToActions from './CYACallToActions';
 import CYAErrorSummary from './CYAErrorSummary';
 import CYAGeneralDeclaration from './CYAGeneralDeclaration';
@@ -47,50 +51,20 @@ const VoyageCheckYourAnswers = () => {
   const [errors, setErrors] = useState();
   const [fal5Details, setFal5Details] = useState();
   const [fal6Details, setFal6Details] = useState();
-  const [isLoading, setIsLoading] = useState(false);
+  const [generalDeclarationData, setGeneralDeclarationData] = useState();
+  const [isLoading, setIsLoading] = useState(true);
   const [isPendingCancel, setIsPendingCancel] = useState(false);
   const [isPendingSubmit, setIsPendingSubmit] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [supportingDocs, setSupportingDocs] = useState([]);
-  const [generalDeclarationData, setGeneralDeclarationData] = useState();
   const errorsExist = !!errors;
 
+  const apiResponse = useGetData({
+    redirectUrl: `${VOYAGE_CHECK_YOUR_ANSWERS}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
+    url: `${API_URL}${ENDPOINT_DECLARATION_PATH}/${declarationId}${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`,
+  });
+
   document.title = 'Check your answers';
-
-  const updateDeclarationData = async () => {
-    const response = await GetDeclaration({ declarationId });
-    if (response.data) {
-      setDeclarationData(response.data);
-      setGeneralDeclarationData(response.data.FAL1);
-      setFal5Details(response.data?.FAL5[0]);
-      setFal6Details(response.data?.FAL6[0]);
-      setSupportingDocs(response.data?.supporting);
-
-      setDeclarationStatus({
-        status: response.data?.FAL1.status,
-        submissionDate: response.data?.FAL1.submissionDate ? dayjs(response.data?.FAL1.submissionDate).format('D MMMM YYYY') : null,
-      });
-
-      setIsLoading(false);
-    } else {
-      switch (response?.status) {
-        case 401:
-        case 422:
-          navigate(SIGN_IN_URL, { state: { redirectURL: `${VOYAGE_CHECK_YOUR_ANSWERS}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}` } });
-          break;
-        default: {
-          navigate(MESSAGE_URL, {
-            state: {
-              title: 'Something has gone wrong',
-              message: response?.message,
-              redirectURL: YOUR_VOYAGES_URL,
-            },
-          });
-        }
-      }
-    }
-    setIsLoading(false);
-  };
 
   const checkForErrors = () => {
     /* If a user types the url for the CYA page into the address bar with a valid declarationId for their account
@@ -176,11 +150,20 @@ const VoyageCheckYourAnswers = () => {
   };
 
   useEffect(() => {
-    if (declarationId) {
+    if (apiResponse.apiData) {
       setIsLoading(true);
-      updateDeclarationData();
+      setDeclarationData(apiResponse.apiData);
+      setGeneralDeclarationData(apiResponse.apiData.FAL1);
+      setDeclarationStatus(apiResponse.apiData.FAL1);
+      setFal5Details(apiResponse.apiData.FAL5[0]);
+      setFal6Details(apiResponse.apiData.FAL6[0]);
+      setSupportingDocs(apiResponse.apiData.supporting);
+      setIsLoading(false);
+    } else if (apiResponse.error) {
+      navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: apiResponse.error?.message, redirectURL: YOUR_VOYAGES_URL } });
+      setIsLoading(false);
     }
-  }, [declarationId]);
+  }, [apiResponse]);
 
   useEffect(() => {
     if (errorsExist) {
