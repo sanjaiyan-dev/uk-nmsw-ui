@@ -104,7 +104,7 @@ describe('Voyage CYA - initial render', () => {
     expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, {
       state: {
         title: 'Something has gone wrong',
-        message: undefined,
+        message: 'Request failed with status code 500',
         redirectURL: YOUR_VOYAGES_URL,
       },
     });
