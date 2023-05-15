@@ -31,7 +31,7 @@ const Pagination = ({
     e.preventDefault();
     const calculatedNextPage = await calculatePaginationNextPageNumber({ clickType, clickedOnPageNumber, currentPage });
 
-    setPageNumber({ pageNumber: calculatedNextPage });
+    setPageNumber(calculatedNextPage);
     setCurrentPage(calculatedNextPage);
     sessionStorage.setItem(PAGINATION_PAGE_LABEL, calculatedNextPage);
 
