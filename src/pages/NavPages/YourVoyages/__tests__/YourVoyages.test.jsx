@@ -36,7 +36,7 @@ describe('Your voyages page tests', () => {
 
   it('should render the page with the Your Voyages as a H1', async () => {
     mockAxios
-      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=1`)
       .reply(200, {
         results: [],
       });
@@ -46,7 +46,7 @@ describe('Your voyages page tests', () => {
 
   it('should display a "Report a voyage" button', async () => {
     mockAxios
-      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=1`)
       .reply(200, {
         results: [],
       });
@@ -56,7 +56,7 @@ describe('Your voyages page tests', () => {
 
   it('should show a no voyages message if no voyages', async () => {
     mockAxios
-      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=1`)
       .reply(200, {
         results: [],
       });
@@ -67,7 +67,7 @@ describe('Your voyages page tests', () => {
 
   it('should render a draft voyage with correct tag and link', async () => {
     mockAxios
-      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=1`)
       .reply(200, {
         results: [
           {
@@ -106,7 +106,7 @@ describe('Your voyages page tests', () => {
 
   it('should render submitted report with correct tag and link', async () => {
     mockAxios
-      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=1`)
       .reply(200, {
         results: [
           {
@@ -144,7 +144,7 @@ describe('Your voyages page tests', () => {
 
   it('should render presubmitted report with correct tag and link', async () => {
     mockAxios
-      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=1`)
       .reply(200, {
         results: [
           {
@@ -182,7 +182,7 @@ describe('Your voyages page tests', () => {
 
   it('should render cancelled report with correct tag and link', async () => {
     mockAxios
-      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=1`)
       .reply(200, {
         results: [
           {
@@ -220,7 +220,7 @@ describe('Your voyages page tests', () => {
 
   it('should render precancelled report with correct tag and link', async () => {
     mockAxios
-      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=1`)
       .reply(200, {
         results: [
           {
@@ -258,7 +258,7 @@ describe('Your voyages page tests', () => {
 
   it('should render failed reports with correct tag and link', async () => {
     mockAxios
-      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=1`)
       .reply(200, {
         results: [
           {
@@ -296,7 +296,7 @@ describe('Your voyages page tests', () => {
 
   it('should default to a review status if no status/unknown is received (should not happen but it is our catchall incase of changes)', async () => {
     mockAxios
-      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=1`)
       .reply(200, {
         results: [
           {
@@ -334,7 +334,7 @@ describe('Your voyages page tests', () => {
 
   it('should render all reports recieved ordered by latest first', async () => {
     mockAxios
-      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=1`)
       .reply(200, {
         results: [
           {
@@ -454,7 +454,7 @@ describe('Your voyages page tests', () => {
 
   it('should redirect to sign in if getting the declarations returns a 422', async () => {
     mockAxios
-      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=1`)
       .reply(422, { msg: 'Not enough segments' });
     render(<MemoryRouter><YourVoyages /></MemoryRouter>);
 
@@ -465,7 +465,7 @@ describe('Your voyages page tests', () => {
 
   it('should display a message if getting the declarations returns a 500 error', async () => {
     mockAxios
-      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=1`)
       .reply(500);
     render(<MemoryRouter><YourVoyages /></MemoryRouter>);
 
@@ -477,7 +477,7 @@ describe('Your voyages page tests', () => {
 
   it('should display a message if getting the declarations returns a 404 error', async () => {
     mockAxios
-      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=1`)
       .reply(404);
     render(<MemoryRouter><YourVoyages /></MemoryRouter>);
 
@@ -489,7 +489,7 @@ describe('Your voyages page tests', () => {
 
   it('should delete invalid draft declarations (no FAL 1)', async () => {
     mockAxios
-      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=1`)
       .reply(200, {
         results: [
           {
@@ -553,7 +553,7 @@ describe('Your voyages page tests', () => {
 
   it('should still only show valid reports if delete call fails', async () => {
     mockAxios
-      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=1`)
       .reply(200, {
         results: [
           {
@@ -616,7 +616,7 @@ describe('Your voyages page tests', () => {
 
   it('should redirect to sign in if getting the declarations returns a 401 token expired', async () => {
     mockAxios
-      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=1`)
       .reply(401, { msg: TOKEN_EXPIRED });
     render(<MemoryRouter><YourVoyages /></MemoryRouter>);
 
@@ -628,7 +628,7 @@ describe('Your voyages page tests', () => {
   it('should continue to General Declaration page if Report a voyage button click successful', async () => {
     const user = userEvent.setup();
     mockAxios
-      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=1`)
       .reply(200, {
         results: [],
       })
@@ -664,7 +664,7 @@ describe('Your voyages page tests', () => {
   it('should redirect to sign in if Report a voyage button click returns a 422', async () => {
     const user = userEvent.setup();
     mockAxios
-      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=1`)
       .reply(200, {
         results: [],
       })
@@ -680,7 +680,7 @@ describe('Your voyages page tests', () => {
   it('should redirect to sign in if Report a voyage button click returns a 401 token expired', async () => {
     const user = userEvent.setup();
     mockAxios
-      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=1`)
       .reply(200, {
         results: [],
       })
@@ -696,7 +696,7 @@ describe('Your voyages page tests', () => {
 
   it('should sign user out if delete request returns a 422', async () => {
     mockAxios
-      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=1`)
       .reply(200, {
         results: [
           {
@@ -758,7 +758,7 @@ describe('Your voyages page tests', () => {
 
   it('should still only show valid reports if delete call returns token expired', async () => {
     mockAxios
-      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=1`)
       .reply(200, {
         results: [
           {
@@ -821,7 +821,7 @@ describe('Your voyages page tests', () => {
   it('should show error message is 500 response received', async () => {
     const user = userEvent.setup();
     mockAxios
-      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=1`)
       .reply(200, {
         results: [],
       })
@@ -846,7 +846,7 @@ describe('Your voyages page tests', () => {
       },
     };
     mockAxios
-      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=1`)
       .reply(200, {
         results: [],
       });
@@ -860,7 +860,7 @@ describe('Your voyages page tests', () => {
 
   it('should NOT show a notification banner if state does NOT contain confirmationBanner and a message', async () => {
     mockAxios
-      .onGet(CREATE_VOYAGE_ENDPOINT)
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=1`)
       .reply(200, {
         results: [],
       });

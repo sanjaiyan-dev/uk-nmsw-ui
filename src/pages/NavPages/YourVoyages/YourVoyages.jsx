@@ -15,6 +15,7 @@ import Message from '../../../components/Message';
 import Auth from '../../../utils/Auth';
 import useGetAllDeclarations from '../../../utils/API/useGetAllDeclarations';
 import YourVoyagesDisplay from './YourVoyagesDisplay';
+import Pagination from '../../../components/Pagination/Pagination';
 
 // NOTES:
 // - The filter buttons do nothing
@@ -28,8 +29,11 @@ const YourVoyages = () => {
   const [notification, setNotification] = useState({});
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [maxPageNumber, setMaxPageNumber] = useState();
+  const [pageNumber, setPageNumber] = useState();
+  const [totalNumberVoyages, setTotalNumberVoyages] = useState();
   const [voyageData, setVoyageData] = useState();
-  const apiResponse = useGetAllDeclarations();
+  const apiResponse = useGetAllDeclarations({ pageNumber });
 
   document.title = SERVICE_NAME;
 
@@ -71,8 +75,10 @@ const YourVoyages = () => {
     setIsLoading(true);
     if (apiResponse?.apiData) {
       setVoyageData(apiResponse.apiData);
+      setMaxPageNumber(apiResponse.paginationData?.pages);
+      setTotalNumberVoyages(apiResponse.paginationData?.count);
       setIsLoading(apiResponse.isLoading);
-    } else if (apiResponse?.serverError) {
+    } else if (apiResponse?.error) {
       setIsError(true);
       setIsLoading(apiResponse.isLoading);
     }
@@ -110,7 +116,7 @@ const YourVoyages = () => {
             </div>
           )}
           <h1 className="govuk-heading-xl govuk-!-margin-bottom-4">Your voyages</h1>
-          {voyageData?.length === 0 && (
+          {!totalNumberVoyages && (
             <div className="govuk-inset-text">
               <p className="govuk-body">You have not reported any voyages yet</p>
             </div>
@@ -128,9 +134,18 @@ const YourVoyages = () => {
       </div>
 
       {voyageData?.length > 0 && (
-        <YourVoyagesDisplay
-          voyageData={voyageData}
-        />
+        <>
+          <YourVoyagesDisplay
+            voyageData={voyageData}
+            totalVoyages={totalNumberVoyages}
+          />
+
+          <Pagination
+            maxPageNumber={maxPageNumber}
+            updatePaginationPageNumber={pageNumber || 1}
+            setPageNumber={setPageNumber}
+          />
+        </>
       )}
     </>
   );

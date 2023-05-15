@@ -7,7 +7,7 @@ import {
   DECLARATION_STATUS_CANCELLED, DECLARATION_STATUS_DRAFT, DECLARATION_STATUS_FAILED, DECLARATION_STATUS_PRECANCELLED, DECLARATION_STATUS_PRESUBMITTED, DECLARATION_STATUS_SUBMITTED,
 } from '../../../constants/AppConstants';
 
-const YourVoyagesDisplay = ({ voyageData }) => {
+const YourVoyagesDisplay = ({ totalVoyages, voyageData }) => {
   const getActionButtontext = (status) => {
     let actionText;
     switch (status) {
@@ -108,7 +108,7 @@ const YourVoyagesDisplay = ({ voyageData }) => {
         <div className="govuk-grid-column-full">
           <div className="govuk-grid-row">
             <div className="govuk-grid-column-full">
-              <h2 className="govuk-heading-s govuk-!-margin-bottom-1 reported-voyages-margin--top">{`${voyageData.length} reported voyages`}</h2>
+              <h2 className="govuk-heading-s govuk-!-margin-bottom-1 reported-voyages-margin--top">{`${totalVoyages} reported voyages`}</h2>
               <div className="facet-tags__container dark-grey__border">
                 <div className="facet-tags__group">
                   <div className="facet-tags__wrapper">
@@ -203,5 +203,6 @@ const YourVoyagesDisplay = ({ voyageData }) => {
 export default YourVoyagesDisplay;
 
 YourVoyagesDisplay.propTypes = {
+  totalVoyages: PropTypes.number,
   voyageData: PropTypes.array,
 };

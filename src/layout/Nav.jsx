@@ -94,6 +94,8 @@ const Nav = () => {
     } catch (err) {
       Auth.logout();
       navigate(SIGN_IN_URL);
+    } finally {
+      sessionStorage.removeItem('page'); // removes the page stored so when user signs in it reverts to page 1
     }
   };
 

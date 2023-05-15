@@ -2,6 +2,7 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { PAGINATION_PAGE_LABEL } from '../../constants/AppConstants';
 import {
   API_URL,
   CREATE_VOYAGE_ENDPOINT,
@@ -11,11 +12,13 @@ import { YOUR_VOYAGES_URL } from '../../constants/AppUrlConstants';
 import Auth from '../Auth';
 import handleAuthErrors from './handleAuthErrors';
 
-const useGetAllDeclarations = (url) => {
+const useGetAlLDeclarations = ({ pageNumber }) => {
   const navigate = useNavigate();
+  const pageOnLoad = parseInt(sessionStorage.getItem(PAGINATION_PAGE_LABEL), 10) || 1;
   const [isLoading, setIsLoading] = useState(false);
-  const [apiData, setApiData] = useState(null);
-  const [serverError, setServerError] = useState(null);
+  const [apiData, setApiData] = useState();
+  const [paginationData, setPaginationData] = useState();
+  const [error, setError] = useState();
 
   const deleteInvalidDeclarations = async (id) => {
     try {
@@ -27,9 +30,9 @@ const useGetAllDeclarations = (url) => {
         },
       });
       return response.data;
-    } catch (error) {
-      handleAuthErrors({ error, navigate, redirectUrl: YOUR_VOYAGES_URL });
-      // when deleting we don't ever return an error message to the user, auth errors are handled others are ignored
+    } catch (err) {
+      handleAuthErrors({ error: err, navigate, redirectUrl: YOUR_VOYAGES_URL });
+      // when deleting here we don't show the user an error as it's unnecessary
     }
     return null;
   };
@@ -37,11 +40,12 @@ const useGetAllDeclarations = (url) => {
   useEffect(() => {
     const controller = new AbortController();
     const { signal } = controller;
+    const pageToUse = pageNumber || pageOnLoad;
 
     setIsLoading(true);
     const fetchData = async () => {
       try {
-        const resp = await axios.get(CREATE_VOYAGE_ENDPOINT, {
+        const resp = await axios.get(`${CREATE_VOYAGE_ENDPOINT}?page=${pageToUse}`, {
           signal,
           headers: { Authorization: `Bearer ${Auth.retrieveToken()}` },
         });
@@ -59,21 +63,24 @@ const useGetAllDeclarations = (url) => {
 
         const sortByLatestFirst = results.sort((a, b) => dayjs(b.creationDate) - dayjs(a.creationDate));
         setApiData(sortByLatestFirst);
+        setPaginationData(resp.data.pagination);
 
         setIsLoading(false);
-      } catch (error) {
-        if (error?.code === 'ERR_CANCELED') { return; }
-        const errorResponse = handleAuthErrors({ error, navigate, redirectUrl: YOUR_VOYAGES_URL });
-        setServerError({ status: errorResponse?.response?.status, message: errorResponse?.message }); // returned to user
+      } catch (err) {
+        if (err?.code === 'ERR_CANCELED') { return; }
+        const errorResponse = handleAuthErrors({ error: err, navigate, redirectUrl: YOUR_VOYAGES_URL });
+        setError({ status: errorResponse?.response?.status, message: errorResponse?.message });
         setIsLoading(false);
       }
     };
 
     fetchData();
     return () => { controller.abort(); };
-  }, [url]);
+  }, [pageNumber]);
 
-  return { isLoading, apiData, serverError };
+  return {
+    apiData, error, isLoading, paginationData,
+  };
 };
 
-export default useGetAllDeclarations;
+export default useGetAlLDeclarations;

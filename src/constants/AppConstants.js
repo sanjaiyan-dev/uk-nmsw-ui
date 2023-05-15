@@ -49,12 +49,17 @@ export const VALIDATE_MIN_LENGTH = 'minLength';
 export const VALIDATE_PHONE_NUMBER = 'phoneNumber';
 export const VALIDATE_REQUIRED = 'required';
 export const VALIDATE_NO_SPACES = 'noSpaces';
+
+// Pagination
+export const ELLIPSIS = '...';
+export const PAGINATION_PAGE_LABEL = 'Page';
+export const PAGINATION_PREVIOUS_LABEL = 'Previous';
+export const PAGINATION_NEXT_LABEL = 'Next';
+
 // Templates
 export const GENERAL_DECLARATION_TEMPLATE_NAME = 'General Declaration (FAL 1)';
 export const CREW_DETAILS_TEMPLATE_NAME = 'Crew details including supernumeraries (FAL 5)';
 export const PASSENGER_DETAILS_TEMPLATE_NAME = 'Passenger details (FAL 6)';
-
-// Templates
 export const GENERAL_DECLARATION_LABEL = 'General Declaration (FAL 1)';
 export const CREW_DETAILS_LABEL = 'Crew details including supernumeraries (FAL 5)';
 export const PASSENGER_DETAILS_LABEL = 'Any passenger details (FAL 6)';
