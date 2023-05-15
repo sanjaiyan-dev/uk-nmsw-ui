@@ -23,23 +23,31 @@ Then('I can view Check Your Answers page', () => {
 
 Then('the details from my FAL 1 form are displayed on CYA page', () => {
   const fieldKeyValue = [
-    {key: 'Voyage type', value: "Departure from the UK"},
-    {key: 'Ship name', value: "NMSW Test Ship"},
+    {key: 'Voyage type', value: "Arrival to the UK"},
+    {key: 'Ship name', value: "New NMSW Test Ship"},
     {key: 'IMO number', value: "9999990"},
-    {key: 'Call sign', value: "1234"},
+    {key: 'Call sign', value: "C1234"},
     {key: 'Flag state of ship', value: "Canada"},
-    {key: 'Departure details', value: "Departure port LOCODEGB ABCDate of departure03 May 2023Time of departure01:00"},
-    {key: 'Arrival details', value: "Arrival port LOCODELK CMBDate of arrival15 October 2023Time of arrival12:00"},
+    {key: 'Departure details', value: "Departure port LOCODEUS HNLDate of departure03 May 2023Time of departure01:00"},
+    {key: 'Arrival details', value: "Arrival port LOCODEGB DVRDate of arrival15 October 2023Time of arrival12:00"},
     {key: 'Next port of call', value: "LK CMB"},
     {key: 'Brief description of the cargo', value: "Hardware and Textiles"},
   ];
-
   cy.get('dl:nth-child(1) .govuk-summary-list__row').each((row, index) => {
     if (index !== 0) {
-      cy.wrap(row).find('.govuk-summary-list__key').invoke('text').then(key => {
-        let expectedValue = fieldKeyValue.filter(list => list.key === key)[0].value
-        cy.wrap(row).find('.govuk-summary-list__value').should('contain.text', expectedValue)
-      });
+      cy.wrap(row)
+        .find('.govuk-summary-list__key')
+        .invoke('text')
+        .then(key => {
+          const expectedValue = fieldKeyValue.find(list => list.key === key)?.value.replace(/\s+/g, '');
+          cy.wrap(row)
+            .find('.govuk-summary-list__value')
+            .invoke('text').then(value => {
+            const newValue = value.replace(/\s+/g, '');
+            expect(expectedValue).eq(newValue);
+          })
+
+        });
     }
   });
 });
