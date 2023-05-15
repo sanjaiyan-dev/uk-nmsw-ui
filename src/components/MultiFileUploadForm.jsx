@@ -13,6 +13,7 @@ import { FILE_TYPE_INVALID_PREFIX } from '../constants/AppAPIConstants';
 import { MAX_SUPPORTING_FILE_SIZE, MAX_SUPPORTING_FILE_SIZE_DISPLAY } from '../constants/AppConstants';
 import Auth from '../utils/Auth';
 import GetDeclaration from '../utils/GetDeclaration';
+import handleAuthErrors from '../utils/API/handleAuthErrors';
 import LoadingSpinner from './LoadingSpinner';
 import { scrollToTop } from '../utils/ScrollToElement';
 
@@ -245,8 +246,7 @@ const MultiFileUploadForm = ({
             errorMessage: 'The file must be a csv, doc, docm, docx, rtf, txt, xls, xlsm, xlsx, xltm, xltx, xlw or xml',
           });
         } else if (err?.response?.status === 401 || err?.response?.status === 422) {
-          Auth.removeToken();
-          navigate(SIGN_IN_URL, { state: { redirectURL: urlThisPage } });
+          handleAuthErrors({ error: err, navigate, redirectUrl: urlThisPage });
         } else {
           updateFileStatus({
             file: selectedFile,
@@ -309,8 +309,7 @@ const MultiFileUploadForm = ({
         switch (err?.response?.status) {
           case 401:
           case 422:
-            Auth.removeToken();
-            navigate(SIGN_IN_URL, { state: { redirectURL: urlThisPage } });
+            handleAuthErrors({ error: err, navigate, redirectUrl: urlThisPage });
             break;
           default: navigate(MESSAGE_URL, {
             state: {
