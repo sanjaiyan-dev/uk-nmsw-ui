@@ -5,7 +5,7 @@ import Auth from '../Auth';
 const handleAuthErrors = ({ error, navigate, redirectUrl }) => {
   let errorResponse;
 
-  if (error?.response?.status === 422) {
+  if (error?.response?.status === 422 || error?.response?.status === 401) {
     Auth.removeToken();
     navigate(SIGN_IN_URL, { state: { redirectURL: redirectUrl } });
   } else if (error?.response?.data?.msg === TOKEN_EXPIRED) {
