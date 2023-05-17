@@ -1,6 +1,7 @@
 import { SERVICE_CONTACT_EMAIL, SERVICE_NAME } from '../../constants/AppConstants';
 import regionMap from '../../assets/images/region-map.png';
 import DownloadTemplates from '../../components/DownloadTemplates';
+import '../../assets/css/regionMap.scss';
 
 const Help = () => {
   const centralEmail = 'BFCentralRCCGMteam@homeoffice.gov.uk';
