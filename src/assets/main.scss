@@ -23,23 +23,6 @@ body {
   margin-top: 0px;
 }
 
-.autocomplete-input .autocomplete__wrapper input {
-  border-color: $govuk-input-border-colour;
-}
-
-.autocomplete-input--error .autocomplete__wrapper input {
-  border-color: $govuk-error-colour;
-}
-
-.phoneNumber-input {
-  display: flex;
-  flex-direction: row;
-}
-
-.phoneNumber-input_country-code {
-  margin-right: 0.5rem;
-}
-
 .errorText {
   color: $govuk-error-colour;
 }

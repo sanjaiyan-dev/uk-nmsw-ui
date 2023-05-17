@@ -16,6 +16,7 @@ import {
 } from '../../../constants/AppUrlConstants';
 import { countries } from '../../../constants/CountryData';
 import { MergePhoneNumberFields } from '../../../utils/FormatPhoneNumber';
+import '../../../assets/css/autocomplete.scss';
 
 const ChangeYourDetails = () => {
   const navigate = useNavigate();
