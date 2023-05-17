@@ -15,6 +15,7 @@ import { countries } from '../../constants/CountryData';
 import { MergePhoneNumberFields } from '../../utils/FormatPhoneNumber';
 import DisplayForm from '../../components/DisplayForm';
 import Message from '../../components/Message';
+import '../../assets/css/autocomplete.scss';
 
 const RegisterYourDetails = () => {
   const navigate = useNavigate();
