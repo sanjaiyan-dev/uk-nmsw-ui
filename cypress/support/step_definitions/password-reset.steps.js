@@ -28,7 +28,9 @@ Then('I click send the link', () => {
 When('I click the password reset link received', () => {
     cy.waitForLatestEmail('7ee68e7d-c48e-438c-8422-c09bfe264e13').then((mail) => {
         assert.isDefined(mail);
-        const token = /token=([A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*)/.exec(mail.body)[1];
+        //const token = /token=([A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*)/.exec(mail.body)[1];
+        let token = mail.body.match(/token=([A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*)/g);
+        token = token[1].split("=")[1]
         cy.wrap(token).as('token');
         cy.intercept('PATCH', '**/reset-password').as('passwordReset');
         cy.visitUrl(`/new-password?token=${token}`);
