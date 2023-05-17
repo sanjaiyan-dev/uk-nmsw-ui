@@ -13,6 +13,7 @@ import useGetAllDeclarations from '../../../utils/API/useGetAllDeclarations';
 import handleAuthErrors from '../../../utils/API/handleAuthErrors';
 import YourVoyagesDisplay from './YourVoyagesDisplay';
 import Pagination from '../../../components/Pagination/Pagination';
+import '../../../assets/css/yourVoyages.scss';
 
 // NOTES:
 // - The filter buttons do nothing
