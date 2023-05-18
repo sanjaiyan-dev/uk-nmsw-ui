@@ -55,7 +55,9 @@ Cypress.Commands.add('registerUser', () => {
 Cypress.Commands.add('activateAccount', () => {
   cy.waitForLatestEmail(inboxId).then((mail) => {
     assert.isDefined(mail);
-    const token = /token=([A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*)/.exec(mail.body)[1];
+    //const token = /token=([A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*)/.exec(mail.body)[2];
+    let token = mail.body.match(/token=([A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*)/g);
+    token = token[1].split("=")[1]
     const email = /email=([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})/i.exec(mail.body)[1];
     const activateUrl = `${Cypress.env('baseUrl')}/activate-account?email=${email}&token=${token}`
     cy.intercept('POST', '**/v1/check*').as('verifyRegistration');
