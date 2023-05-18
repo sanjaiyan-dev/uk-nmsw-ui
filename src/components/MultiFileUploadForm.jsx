@@ -3,67 +3,35 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import '../assets/css/multiFileUploadForm.scss';
+import { FILE_TYPE_INVALID_PREFIX } from '../constants/AppAPIConstants';
+import {
+  FILE_STATUS_ERROR,
+  FILE_STATUS_IN_PROGRESS,
+  FILE_STATUS_PENDING,
+  FILE_STATUS_SUCCESS,
+  MAX_SUPPORTING_FILE_SIZE,
+  MAX_SUPPORTING_FILE_SIZE_DISPLAY,
+} from '../constants/AppConstants';
 import {
   MESSAGE_URL,
   SIGN_IN_URL,
   URL_DECLARATIONID_IDENTIFIER,
   YOUR_VOYAGES_URL,
 } from '../constants/AppUrlConstants';
-import { FILE_TYPE_INVALID_PREFIX } from '../constants/AppAPIConstants';
-import { MAX_SUPPORTING_FILE_SIZE, MAX_SUPPORTING_FILE_SIZE_DISPLAY } from '../constants/AppConstants';
 import Auth from '../utils/Auth';
 import GetDeclaration from '../utils/GetDeclaration';
 import handleAuthErrors from '../utils/API/handleAuthErrors';
 import LoadingSpinner from './LoadingSpinner';
 import { scrollToTop } from '../utils/ScrollToElement';
 import DragDropZone from './MultiFileUpload/DragDropZone';
+import {
+  FileStatusError,
+  FileStatusInProgress,
+  FileStatusPending,
+  FileStatusSuccess,
+} from './MultiFileUpload/FileStatus';
 
-const FILE_STATUS_PENDING = 'Pending';
-const FILE_STATUS_IN_PROGRESS = 'in progress';
-const FILE_STATUS_ERROR = 'Error';
-const FILE_STATUS_SUCCESS = 'Success';
 const MAX_FILES = 8;
-
-const FileStatusInProgress = ({ fileName }) => (
-  <div className="govuk-!-margin-bottom-5 multi-file-upload--filelist-filename">
-    <div className="multi-file-upload--loading-spinner">
-      <LoadingSpinner />
-    </div>
-    <span>{fileName}</span>
-  </div>
-);
-
-const FileStatusPending = ({ fileName }) => (
-  <div className="govuk-!-margin-bottom-5 multi-file-upload--filelist-filename">
-    <span>{fileName}</span> <span className="govuk-tag govuk-tag--grey">{FILE_STATUS_PENDING}</span>
-  </div>
-);
-
-const FileStatusSuccess = ({ fileName }) => (
-  <div className="success">
-    <div className="multi-file-upload--filelist-icon">
-      <svg fill="currentColor" role="presentation" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" height="25" width="25">
-        <path d="M25,6.2L8.7,23.2L0,14.1l4-4.2l4.7,4.9L21,2L25,6.2z" />
-      </svg>
-    </div>
-    <div className="govuk-!-margin-bottom-5 multi-file-upload--filelist-filename">
-      <span>{fileName}</span> <span>has been uploaded</span>
-    </div>
-  </div>
-);
-
-const FileStatusError = ({ fileName, errorMessage }) => (
-  <div className="error">
-    <div className="multi-file-upload--filelist-icon">
-      <svg fill="currentColor" role="presentation" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" height="25" width="25">
-        <path d="M13.6,15.4h-2.3v-4.5h2.3V15.4z M13.6,19.8h-2.3v-2.2h2.3V19.8z M0,23.2h25L12.5,2L0,23.2z" />
-      </svg>
-    </div>
-    <div className="govuk-!-margin-bottom-5 multi-file-upload--filelist-filename">
-      <span>{fileName}</span> <span>{errorMessage}</span>
-    </div>
-  </div>
-);
 
 const MultiFileUploadForm = ({
   endpoint,
@@ -73,13 +41,10 @@ const MultiFileUploadForm = ({
   urlThisPage,
 }) => {
   const errorSummaryRef = useRef(null);
-  // const inputRef = useRef(null);
-  // const multiple = true;
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const declarationId = searchParams.get(URL_DECLARATIONID_IDENTIFIER);
   const [disableButtons, setDisableButtons] = useState(false);
-  // const [dragActive, setDragActive] = useState(false);
   const [errors, setErrors] = useState([]);
   const [filesAddedForUpload, setFilesAddedForUpload] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -425,23 +390,6 @@ const MultiFileUploadForm = ({
 };
 
 export default MultiFileUploadForm;
-
-FileStatusInProgress.propTypes = {
-  fileName: PropTypes.string.isRequired,
-};
-
-FileStatusPending.propTypes = {
-  fileName: PropTypes.string.isRequired,
-};
-
-FileStatusSuccess.propTypes = {
-  fileName: PropTypes.string.isRequired,
-};
-
-FileStatusError.propTypes = {
-  fileName: PropTypes.string.isRequired,
-  errorMessage: PropTypes.string.isRequired,
-};
 
 MultiFileUploadForm.propTypes = {
   endpoint: PropTypes.string.isRequired,

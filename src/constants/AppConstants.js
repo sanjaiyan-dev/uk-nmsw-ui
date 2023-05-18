@@ -39,6 +39,10 @@ export const AUTOCOMPLETE_DIALCODE = 'dialCode';
 // Forms: states
 export const CHECKED_TRUE = true;
 export const CHECKED_FALSE = false;
+export const FILE_STATUS_PENDING = 'Pending';
+export const FILE_STATUS_IN_PROGRESS = 'in progress';
+export const FILE_STATUS_ERROR = 'Error';
+export const FILE_STATUS_SUCCESS = 'Success';
 // Forms: validation types
 export const VALIDATE_CONDITIONAL = 'conditional';
 export const VALIDATE_EMAIL_ADDRESS = 'emailAddress';
