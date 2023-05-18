@@ -325,12 +325,12 @@ const MultiFileUploadForm = ({
         <div className="govuk-grid-column-three-quarters">
           {(filesAddedForUpload.length > 0 || supportingDocumentsList.length > 0) && <h2 className="govuk-heading-m">Files added</h2>}
           <FileList
-            filesAddedForUpload={supportingDocumentsList}
+            files={supportingDocumentsList}
             disableButtons={disableButtons}
             handleDelete={handleDelete}
           />
           <FileList
-            filesAddedForUpload={filesAddedForUpload}
+            files={filesAddedForUpload}
             disableButtons={disableButtons}
             handleDelete={handleDelete}
           />
