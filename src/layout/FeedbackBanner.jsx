@@ -1,4 +1,5 @@
 import { FEEDBACK_URL } from '../constants/AppUrlConstants';
+import '../assets/css/feedbackBanner.scss';
 
 const FeedbackBanner = () => (
   <div role="region" aria-label="Feedback banner" className="feedback-banner--container">

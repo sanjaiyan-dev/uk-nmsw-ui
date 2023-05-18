@@ -1,0 +1,11 @@
+@import "node_modules/govuk-frontend/govuk/base";
+@import '~govuk-frontend/govuk/helpers/all';
+@import "accessible-autocomplete";
+
+.autocomplete-input .autocomplete__wrapper input {
+  border-color: $govuk-input-border-colour;
+}
+
+.autocomplete-input--error .autocomplete__wrapper input {
+  border-color: $govuk-error-colour;
+}

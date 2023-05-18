@@ -20,6 +20,7 @@ import {
 import { SIGN_OUT_ENDPOINT } from '../constants/AppAPIConstants';
 import useUserIsPermitted from '../hooks/useUserIsPermitted';
 import Auth from '../utils/Auth';
+import '../assets/css/nav.scss';
 
 const Nav = () => {
   const { pathname } = useLocation();

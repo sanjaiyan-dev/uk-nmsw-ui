@@ -28,6 +28,7 @@ import {
   YOUR_VOYAGES_URL,
 } from '../../constants/AppUrlConstants';
 import useGetData from '../../utils/API/useGetData';
+import '../../assets/css/taskList.scss';
 
 const VoyageTaskList = () => {
   const navigate = useNavigate();
