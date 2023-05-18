@@ -8,14 +8,14 @@ import {
   ENDPOINT_DECLARATION_ATTACHMENTS_PATH,
   ENDPOINT_DECLARATION_PATH,
   ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH,
-} from '../../constants/AppAPIConstants';
+} from '../../../constants/AppAPIConstants';
 import {
   MESSAGE_URL,
   SIGN_IN_URL,
   URL_DECLARATIONID_IDENTIFIER,
   VOYAGE_SUPPORTING_DOCS_UPLOAD_URL,
   YOUR_VOYAGES_URL,
-} from '../../constants/AppUrlConstants';
+} from '../../../constants/AppUrlConstants';
 import MultiFileUploadForm from '../MultiFileUploadForm';
 
 const mockedUseNavigate = jest.fn();

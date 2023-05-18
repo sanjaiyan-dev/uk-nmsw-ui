@@ -9,10 +9,10 @@ import {
   ENDPOINT_DECLARATION_PATH,
   ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH,
   FILE_TYPE_INVALID_PREFIX,
-} from '../../constants/AppAPIConstants';
-import { URL_DECLARATIONID_IDENTIFIER, VOYAGE_SUPPORTING_DOCS_UPLOAD_URL } from '../../constants/AppUrlConstants';
+} from '../../../constants/AppAPIConstants';
+import { URL_DECLARATIONID_IDENTIFIER, VOYAGE_SUPPORTING_DOCS_UPLOAD_URL } from '../../../constants/AppUrlConstants';
 import MultiFileUploadForm from '../MultiFileUploadForm';
-import { MAX_SUPPORTING_FILE_SIZE, MAX_SUPPORTING_FILE_SIZE_DISPLAY } from '../../constants/AppConstants';
+import { MAX_SUPPORTING_FILE_SIZE, MAX_SUPPORTING_FILE_SIZE_DISPLAY } from '../../../constants/AppConstants';
 
 const mockedUseNavigate = jest.fn();
 jest.mock('react-router', () => ({

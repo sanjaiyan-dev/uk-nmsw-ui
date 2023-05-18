@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import '../assets/css/multiFileUploadForm.scss';
-import { FILE_TYPE_INVALID_PREFIX } from '../constants/AppAPIConstants';
+import '../../assets/css/multiFileUploadForm.scss';
+import { FILE_TYPE_INVALID_PREFIX } from '../../constants/AppAPIConstants';
 import {
   FILE_STATUS_ERROR,
   FILE_STATUS_IN_PROGRESS,
@@ -11,20 +11,20 @@ import {
   FILE_STATUS_SUCCESS,
   MAX_SUPPORTING_FILE_SIZE,
   MAX_SUPPORTING_FILE_SIZE_DISPLAY,
-} from '../constants/AppConstants';
+} from '../../constants/AppConstants';
 import {
   MESSAGE_URL,
   SIGN_IN_URL,
   URL_DECLARATIONID_IDENTIFIER,
   YOUR_VOYAGES_URL,
-} from '../constants/AppUrlConstants';
-import Auth from '../utils/Auth';
-import GetDeclaration from '../utils/GetDeclaration';
-import handleAuthErrors from '../utils/API/handleAuthErrors';
-import LoadingSpinner from './LoadingSpinner';
-import { scrollToTop } from '../utils/ScrollToElement';
-import DragDropZone from './MultiFileUpload/DragDropZone';
-import FileList from './MultiFileUpload/FileList';
+} from '../../constants/AppUrlConstants';
+import Auth from '../../utils/Auth';
+import GetDeclaration from '../../utils/GetDeclaration';
+import handleAuthErrors from '../../utils/API/handleAuthErrors';
+import { scrollToTop } from '../../utils/ScrollToElement';
+import LoadingSpinner from '../LoadingSpinner';
+import DragDropZone from './DragDropZone';
+import FileList from './FileList';
 
 const MAX_FILES = 8;
 
