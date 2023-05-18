@@ -24,12 +24,7 @@ import handleAuthErrors from '../utils/API/handleAuthErrors';
 import LoadingSpinner from './LoadingSpinner';
 import { scrollToTop } from '../utils/ScrollToElement';
 import DragDropZone from './MultiFileUpload/DragDropZone';
-import {
-  FileStatusError,
-  FileStatusInProgress,
-  FileStatusPending,
-  FileStatusSuccess,
-} from './MultiFileUpload/FileStatus';
+import FileList from './MultiFileUpload/FileList';
 
 const MAX_FILES = 8;
 
@@ -126,12 +121,13 @@ const MultiFileUploadForm = ({
         } else if (fileCurrentlyInState.length > 0 && fileCurrentlyInState.findIndex((existingFile) => existingFile.file.name === fileToCheck.name) !== -1) {
           errorList.push(`A file called ${fileToCheck.name} already exists in your list`);
         } else {
-          results.push({ file: fileToCheck, status: FILE_STATUS_PENDING });
+          results.push({ file: fileToCheck, filename: fileToCheck.name, status: FILE_STATUS_PENDING });
         }
         setErrors(errorList);
         if (errorList.length > 0) {
           scrollToFocusErrors();
         }
+
         return results;
       }, []);
 
@@ -327,54 +323,17 @@ const MultiFileUploadForm = ({
 
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-three-quarters">
-          {supportingDocumentsList.length > 0 && (
-            <>
-              <h2 className="govuk-heading-m">Files added</h2>
-              {supportingDocumentsList.map((file) => (
-                <div key={file.filename} className="govuk-grid-row  govuk-!-margin-bottom-5 multi-file-upload--filelist">
-                  <div className="nmsw-grid-column-ten-twelfths">
-                    {file.status === FILE_STATUS_SUCCESS && <FileStatusSuccess fileName={file.filename} />}
-                    {file.status === FILE_STATUS_IN_PROGRESS && <FileStatusInProgress fileName={file.filename} />}
-                  </div>
-                  <div className="nmsw-grid-column-two-twelfths govuk-!-text-align-right">
-                    <button
-                      className="govuk-button govuk-button--warning govuk-!-margin-bottom-5"
-                      type="button"
-                      onClick={(e) => handleDelete({ e, fileName: file.filename, id: file.id })}
-                      disabled={disableButtons}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </>
-          )}
-          {filesAddedForUpload.length > 0 && (
-            <>
-              {supportingDocumentsList.length === 0 && <h2 className="govuk-heading-m">Files added</h2>}
-              {filesAddedForUpload.map((file) => (
-                <div key={file.file.name} className="govuk-grid-row  govuk-!-margin-bottom-5 multi-file-upload--filelist">
-                  <div className="nmsw-grid-column-ten-twelfths">
-                    {file.status === FILE_STATUS_IN_PROGRESS && <FileStatusInProgress fileName={file.file.name} />}
-                    {file.status === FILE_STATUS_PENDING && <FileStatusPending fileName={file.file.name} />}
-                    {file.status === FILE_STATUS_SUCCESS && <FileStatusSuccess fileName={file.file.name} />}
-                    {file.status === FILE_STATUS_ERROR && <FileStatusError fileName={file.file.name} errorMessage={file.errorMessage} />}
-                  </div>
-                  <div className="nmsw-grid-column-two-twelfths govuk-!-text-align-right">
-                    <button
-                      className="govuk-button govuk-button--warning govuk-!-margin-bottom-5"
-                      type="button"
-                      onClick={(e) => handleDelete({ e, fileName: file.file.name, id: file.id })}
-                      disabled={disableButtons}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </>
-          )}
+          {(filesAddedForUpload.length > 0 || supportingDocumentsList.length > 0) && <h2 className="govuk-heading-m">Files added</h2>}
+          <FileList
+            filesAddedForUpload={supportingDocumentsList}
+            disableButtons={disableButtons}
+            handleDelete={handleDelete}
+          />
+          <FileList
+            filesAddedForUpload={filesAddedForUpload}
+            disableButtons={disableButtons}
+            handleDelete={handleDelete}
+          />
           <button
             className="govuk-button govuk-button--primary"
             type="button"
