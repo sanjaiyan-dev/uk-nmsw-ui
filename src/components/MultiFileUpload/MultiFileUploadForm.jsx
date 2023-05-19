@@ -2,67 +2,31 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import '../assets/css/multiFileUploadForm.scss';
+import '../../assets/css/multiFileUploadForm.scss';
+import { FILE_TYPE_INVALID_PREFIX } from '../../constants/AppAPIConstants';
+import {
+  FILE_STATUS_ERROR,
+  FILE_STATUS_IN_PROGRESS,
+  FILE_STATUS_PENDING,
+  FILE_STATUS_SUCCESS,
+  MAX_SUPPORTING_FILE_SIZE,
+  MAX_SUPPORTING_FILE_SIZE_DISPLAY,
+} from '../../constants/AppConstants';
 import {
   MESSAGE_URL,
   SIGN_IN_URL,
   URL_DECLARATIONID_IDENTIFIER,
   YOUR_VOYAGES_URL,
-} from '../constants/AppUrlConstants';
-import { FILE_TYPE_INVALID_PREFIX } from '../constants/AppAPIConstants';
-import { MAX_SUPPORTING_FILE_SIZE, MAX_SUPPORTING_FILE_SIZE_DISPLAY } from '../constants/AppConstants';
-import Auth from '../utils/Auth';
-import GetDeclaration from '../utils/GetDeclaration';
-import handleAuthErrors from '../utils/API/handleAuthErrors';
-import LoadingSpinner from './LoadingSpinner';
-import { scrollToTop } from '../utils/ScrollToElement';
+} from '../../constants/AppUrlConstants';
+import Auth from '../../utils/Auth';
+import GetDeclaration from '../../utils/GetDeclaration';
+import handleAuthErrors from '../../utils/API/handleAuthErrors';
+import { scrollToTop } from '../../utils/ScrollToElement';
+import LoadingSpinner from '../LoadingSpinner';
+import DragDropZone from './DragDropZone';
+import FileList from './FileList';
 
-const FILE_STATUS_PENDING = 'Pending';
-const FILE_STATUS_IN_PROGRESS = 'in progress';
-const FILE_STATUS_ERROR = 'Error';
-const FILE_STATUS_SUCCESS = 'Success';
 const MAX_FILES = 8;
-
-const FileStatusInProgress = ({ fileName }) => (
-  <div className="govuk-!-margin-bottom-5 multi-file-upload--filelist-filename">
-    <div className="multi-file-upload--loading-spinner">
-      <LoadingSpinner />
-    </div>
-    <span>{fileName}</span>
-  </div>
-);
-
-const FileStatusPending = ({ fileName }) => (
-  <div className="govuk-!-margin-bottom-5 multi-file-upload--filelist-filename">
-    <span>{fileName}</span> <span className="govuk-tag govuk-tag--grey">{FILE_STATUS_PENDING}</span>
-  </div>
-);
-
-const FileStatusSuccess = ({ fileName }) => (
-  <div className="success">
-    <div className="multi-file-upload--filelist-icon">
-      <svg fill="currentColor" role="presentation" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" height="25" width="25">
-        <path d="M25,6.2L8.7,23.2L0,14.1l4-4.2l4.7,4.9L21,2L25,6.2z" />
-      </svg>
-    </div>
-    <div className="govuk-!-margin-bottom-5 multi-file-upload--filelist-filename">
-      <span>{fileName}</span> <span>has been uploaded</span>
-    </div>
-  </div>
-);
-
-const FileStatusError = ({ fileName, errorMessage }) => (
-  <div className="error">
-    <div className="multi-file-upload--filelist-icon">
-      <svg fill="currentColor" role="presentation" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" height="25" width="25">
-        <path d="M13.6,15.4h-2.3v-4.5h2.3V15.4z M13.6,19.8h-2.3v-2.2h2.3V19.8z M0,23.2h25L12.5,2L0,23.2z" />
-      </svg>
-    </div>
-    <div className="govuk-!-margin-bottom-5 multi-file-upload--filelist-filename">
-      <span>{fileName}</span> <span>{errorMessage}</span>
-    </div>
-  </div>
-);
 
 const MultiFileUploadForm = ({
   endpoint,
@@ -72,13 +36,10 @@ const MultiFileUploadForm = ({
   urlThisPage,
 }) => {
   const errorSummaryRef = useRef(null);
-  const inputRef = useRef(null);
-  const multiple = true;
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const declarationId = searchParams.get(URL_DECLARATIONID_IDENTIFIER);
   const [disableButtons, setDisableButtons] = useState(false);
-  const [dragActive, setDragActive] = useState(false);
   const [errors, setErrors] = useState([]);
   const [filesAddedForUpload, setFilesAddedForUpload] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -128,16 +89,6 @@ const MultiFileUploadForm = ({
     setIsLoadingFilelist(false);
   };
 
-  const handleDrag = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (e.type === 'dragenter' || e.type === 'dragover') {
-      setDragActive(true);
-    } else if (e.type === 'dragleave') {
-      setDragActive(false);
-    }
-  };
-
   const scrollToFocusErrors = () => {
     scrollToTop();
     errorSummaryRef?.current?.focus();
@@ -170,40 +121,18 @@ const MultiFileUploadForm = ({
         } else if (fileCurrentlyInState.length > 0 && fileCurrentlyInState.findIndex((existingFile) => existingFile.file.name === fileToCheck.name) !== -1) {
           errorList.push(`A file called ${fileToCheck.name} already exists in your list`);
         } else {
-          results.push({ file: fileToCheck, status: FILE_STATUS_PENDING });
+          results.push({ file: fileToCheck, filename: fileToCheck.name, status: FILE_STATUS_PENDING });
         }
         setErrors(errorList);
         if (errorList.length > 0) {
           scrollToFocusErrors();
         }
+
         return results;
       }, []);
 
       setFilesAddedForUpload([...filesAddedForUpload, ...newFilesForUpload]);
     }
-  };
-
-  // triggers when file(s) are dropped into the input zone
-  const handleDrop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      storeFilesForUpload(e.dataTransfer.files);
-    }
-  };
-
-  // triggers when file(s) are selected with click
-  const handleChange = (e) => {
-    e.preventDefault();
-    if (e.target.files && e.target.files[0]) {
-      storeFilesForUpload(e.target.files);
-    }
-  };
-
-  const onChooseFilesButtonClick = () => {
-    // triggers the input and opens the file browser for selecting files
-    inputRef.current.click();
   };
 
   const updateFileStatus = ({
@@ -384,115 +313,27 @@ const MultiFileUploadForm = ({
           {pageHeading ? <h1 className="govuk-heading-xl">{pageHeading}</h1> : <h1 className="govuk-heading-xl">Upload files</h1>}
         </div>
       </div>
+
+      <DragDropZone
+        maxFilesError={maxFilesError}
+        onUploadFiles={onUploadFiles}
+        disableButtons={disableButtons}
+        storeFilesForUpload={storeFilesForUpload}
+      />
+
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-three-quarters">
-          <form
-            id="multiFileUpload"
-            onDragEnter={handleDrag}
-            onSubmit={(e) => e.preventDefault()}
-          >
-            <fieldset className="govuk-fieldset">
-              <div className={maxFilesError ? 'govuk-form-group govuk-form-group--error' : 'govuk-form-group'}>
-                <p id="multiFileUploadForm-error" className="govuk-error-message">
-                  <span className="govuk-visually-hidden">Error:</span> {maxFilesError}
-                </p>
-                <input
-                  ref={inputRef}
-                  type="file"
-                  id="multiFileUploadInput"
-                  data-testid="multiFileUploadInput"
-                  multiple={multiple}
-                  onChange={handleChange}
-                />
-                <label
-                  className={dragActive ? 'file-upload-dropzone drag-active' : 'file-upload-dropzone'}
-                  htmlFor="multiFileUploadInput"
-                >
-                  <div>
-                    <p className="govuk-body">Drag and drop files here or</p>
-                    <button
-                      className="govuk-button--text"
-                      type="button"
-                      onClick={onChooseFilesButtonClick}
-                      disabled={disableButtons}
-                    >
-                      Choose files
-                    </button>
-                  </div>
-                </label>
-                {dragActive
-                  && (
-                    <div
-                      id="dragFileElement"
-                      onDragEnter={handleDrag}
-                      onDragLeave={handleDrag}
-                      onDragOver={handleDrag}
-                      onDrop={handleDrop}
-                    />
-                  )}
-              </div>
-            </fieldset>
-            <button
-              className="govuk-button govuk-button--secondary"
-              type="button"
-              onClick={onUploadFiles}
-              disabled={disableButtons}
-            >
-              Upload files
-            </button>
-          </form>
-        </div>
-      </div>
-      <div className="govuk-grid-row">
-        <div className="govuk-grid-column-three-quarters">
-          {supportingDocumentsList.length > 0 && (
-            <>
-              <h2 className="govuk-heading-m">Files added</h2>
-              {supportingDocumentsList.map((file) => (
-                <div key={file.filename} className="govuk-grid-row  govuk-!-margin-bottom-5 multi-file-upload--filelist">
-                  <div className="nmsw-grid-column-ten-twelfths">
-                    {file.status === FILE_STATUS_SUCCESS && <FileStatusSuccess fileName={file.filename} />}
-                    {file.status === FILE_STATUS_IN_PROGRESS && <FileStatusInProgress fileName={file.filename} />}
-                  </div>
-                  <div className="nmsw-grid-column-two-twelfths govuk-!-text-align-right">
-                    <button
-                      className="govuk-button govuk-button--warning govuk-!-margin-bottom-5"
-                      type="button"
-                      onClick={(e) => handleDelete({ e, fileName: file.filename, id: file.id })}
-                      disabled={disableButtons}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </>
-          )}
-          {filesAddedForUpload.length > 0 && (
-            <>
-              {supportingDocumentsList.length === 0 && <h2 className="govuk-heading-m">Files added</h2>}
-              {filesAddedForUpload.map((file) => (
-                <div key={file.file.name} className="govuk-grid-row  govuk-!-margin-bottom-5 multi-file-upload--filelist">
-                  <div className="nmsw-grid-column-ten-twelfths">
-                    {file.status === FILE_STATUS_IN_PROGRESS && <FileStatusInProgress fileName={file.file.name} />}
-                    {file.status === FILE_STATUS_PENDING && <FileStatusPending fileName={file.file.name} />}
-                    {file.status === FILE_STATUS_SUCCESS && <FileStatusSuccess fileName={file.file.name} />}
-                    {file.status === FILE_STATUS_ERROR && <FileStatusError fileName={file.file.name} errorMessage={file.errorMessage} />}
-                  </div>
-                  <div className="nmsw-grid-column-two-twelfths govuk-!-text-align-right">
-                    <button
-                      className="govuk-button govuk-button--warning govuk-!-margin-bottom-5"
-                      type="button"
-                      onClick={(e) => handleDelete({ e, fileName: file.file.name, id: file.id })}
-                      disabled={disableButtons}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </>
-          )}
+          {(filesAddedForUpload.length > 0 || supportingDocumentsList.length > 0) && <h2 className="govuk-heading-m">Files added</h2>}
+          <FileList
+            files={supportingDocumentsList}
+            disableButtons={disableButtons}
+            handleDelete={handleDelete}
+          />
+          <FileList
+            files={filesAddedForUpload}
+            disableButtons={disableButtons}
+            handleDelete={handleDelete}
+          />
           <button
             className="govuk-button govuk-button--primary"
             type="button"
@@ -508,23 +349,6 @@ const MultiFileUploadForm = ({
 };
 
 export default MultiFileUploadForm;
-
-FileStatusInProgress.propTypes = {
-  fileName: PropTypes.string.isRequired,
-};
-
-FileStatusPending.propTypes = {
-  fileName: PropTypes.string.isRequired,
-};
-
-FileStatusSuccess.propTypes = {
-  fileName: PropTypes.string.isRequired,
-};
-
-FileStatusError.propTypes = {
-  fileName: PropTypes.string.isRequired,
-  errorMessage: PropTypes.string.isRequired,
-};
 
 MultiFileUploadForm.propTypes = {
   endpoint: PropTypes.string.isRequired,
