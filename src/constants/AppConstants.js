@@ -1,7 +1,7 @@
 // Site
 export const SERVICE_NAME = 'National Maritime Single Window';
 export const SERVICE_URL = 'https://nmsw.homeoffice.gov.uk';
-export const SERVICE_CONTACT_EMAIL = 'spcr@homeoffice.gov.uk';
+export const SERVICE_CONTACT_EMAIL = 'nmswsupport@digital.homeoffice.gov.uk'; // update on public/index.html as well
 
 // Declarations
 export const DECLARATION_STATUS_CANCELLED = 'Cancelled';
