@@ -102,7 +102,7 @@ class declarationPage {
       case 'draft':
         cy.get('@currentDeclaration').parent().parent().find('.govuk-tag').should('contain.text', 'Draft');
         cy.get(':nth-child(1) > :nth-child(2) > .govuk-grid-row').each(($row) => {
-          cy.wrap($row).should('have.text', 'New NMSW Test ShipVoyage type:Arrival to the UKDate:15 October 2023Status DraftActions Continue');
+          cy.wrap($row).should('have.text', 'CD NMSW Test ShipVoyage type:Arrival to the UKDate:15 October 2023Status DraftActions Continue');
         })
         break;
       case 'submitted':
