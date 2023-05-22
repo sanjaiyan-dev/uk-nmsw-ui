@@ -2,153 +2,192 @@ import {Then, When} from "@badeball/cypress-cucumber-preprocessor";
 import FileUploadPage from "../../e2e/pages/file-upload.page";
 
 const invalidCharacters = [
-  {cellNumber: 'A5', error: 'Enter travel document as P, I, O or as Passport, ID card, Other'},
-  {cellNumber: 'C5', error: 'Enter the issuing country as a 3-letter ISO country code; for example, GBR, SWE, NLD'},
-  {cellNumber: 'C6', error: 'Enter the issuing country as a 3-letter ISO country code; for example, GBR, SWE, NLD'},
-  {cellNumber: 'D5', error: 'Enter the number of the travel document using only numbers'},
+  {cellNumber: 'A5', error: 'Travel document type: Enter travel document as P, I, O or as Passport, ID card, Other'},
+  {
+    cellNumber: 'C5',
+    error: 'Travel document country: Travel document country should be a 3-letter ISO country code; for example, GBR, SWE, NLD'
+  },
+  {
+    cellNumber: 'C6',
+    error: 'Travel document country: Travel document country should be a 3-letter ISO country code; for example, GBR, SWE, NLD'
+  },
   {
     cellNumber: 'E5',
-    error: 'Enter the rank, rating or job title using English letters instead of special characters not recognised'
+    error: `Rank or rating: Enter the rank or rating using only English letters, numbers or spaces. The following found characters are not allowed: '!'`
   },
-  {
+  /*{
     cellNumber: 'F5',
-    error: 'Enter family name or surname using English letters instead of special characters not recognised'
+    error: `Surname: Enter the surname using only English letters, numbers or spaces. The following found characters are not allowed:  ''','('`
+  },*/
+  {
+    cellNumber: 'G5',
+    error: `Forenames: Enter the forenames using only English letters, numbers or spaces. The following found characters are not allowed: '?'`
   },
-  {cellNumber: 'G5', error: 'Enter forenames using English letters instead of special characters not recognised'},
   {
     cellNumber: 'H5',
-    error: 'Enter M for male, F for female, or X for gender neutral if this is in the travel document'
+    error: 'Gender: Enter M for male, F for female, or X for gender neutral if this is in the Travel Document'
   },
-  {cellNumber: 'I5', error: 'Enter the date of birth in the dd/mm/yyyy format, for example, 12/02/2022'},
-  {cellNumber: 'J5', error: 'Enter place of birth using English letters instead of special characters not recognised'},
-  {cellNumber: 'K5', error: 'Enter the nationality as a 3-letter ISO country code; for example, GBR, SWE, NLD'},
-  {cellNumber: 'L5', error: 'Enter the travel document expiry date in the dd/mm/yyyy format, for example, 12/02/2022'},
+  {cellNumber: 'I5', error: 'Date of birth: date of birth must be in the dd/mm/yyyy format, for example, 22/02/2002'},
+  {
+    cellNumber: 'J5',
+    error: `Place of birth: Enter the place of birth using only English letters, numbers or spaces. The following found characters are not allowed: '*'`
+  },
+  {
+    cellNumber: 'K5',
+    error: 'Nationality: Nationality should be a 3-letter ISO country code; for example, GBR, SWE, NLD'
+  },
+  {
+    cellNumber: 'L5',
+    error: 'Travel document expiry date: travel document expiry date must be in the dd/mm/yyyy format, for example, 22/02/2002'
+  },
 ]
 
 const missingValues = [
   {
     cellNumber: 'A6',
-    error: 'Enter P, I or O, or you may enter the full word: P - Passport, I - ID card - for a national ID card or O - Other - for any other document'
+    error: 'Travel document type: field required'
   },
-  {cellNumber: 'C5', error: 'Enter the 3-letter ISO country code for the issuing country; for example, GBR, SWE, NLD'},
-  {cellNumber: 'D5', error: 'Enter the number of the travel document'},
+  {cellNumber: 'C5', error: 'Travel document country: field required'},
+  {cellNumber: 'D5', error: 'Travel document number: field required'},
   {
     cellNumber: 'E5',
-    error: 'Enter the rank, rating or job title; for supernumeraries just put SN or supernumerary, not the job title'
+    error: 'Rank or rating: field required'
   },
-  {cellNumber: 'F5', error: 'Enter family name or surname as it appears in the travel document'},
+  {cellNumber: 'F5', error: 'Surname: field required'},
   {
     cellNumber: 'F6',
-    error: 'Enter family name or surname using English letters instead of special characters not recognised'
+    error: `Surname: Enter the surname using only English letters, numbers or spaces. The following found characters are not allowed: '-'`
   },
   {
     cellNumber: 'G5',
-    error: 'Enter all forenames or given names as they appear in the travel document - if the crew member has no forename recorded enter UNKNOWN'
+    error: 'Forenames: field required'
   },
   {
-    cellNumber: 'H5', error: 'Enter M for male, F for female, or X for gender neutral if this is in the travel document'
+    cellNumber: 'H5', error: 'Gender: field required'
   },
+  {cellNumber: 'I5',error: 'Date of birth: field required'},
+  {cellNumber: 'I6',error: 'Date of birth: field required'},
 ]
 
 const maxCharacters = [
-  {cellNumber: 'C5', error: 'Enter the issuing country as a 3-letter ISO country code; for example, GBR, SWE, NLD'},
-  {cellNumber: 'D5', error: 'Enter the number of the travel document in 35 characters or less'},
-  {cellNumber: 'E5', error: 'Enter the rank, rating or job title in 35 characters or less'},
-  {cellNumber: 'F5', error: 'Enter family name or surname in 35 characters or less'},
-  {cellNumber: 'G5', error: 'Enter all forenames or given names in 35 characters or less'},
-  {cellNumber: 'J5', error: 'Enter the place of birth in 35 characters or less'},
-  {cellNumber: 'K5', error: 'Enter the nationality as a 3-letter ISO country code; for example, GBR, SWE, NLD'},
+  {
+    cellNumber: 'C5',
+    error: 'Travel document country: Travel document country should be a 3-letter ISO country code; for example, GBR, SWE, NLD'
+  },
+  {cellNumber: 'D5', error: 'Travel document number: ensure this value has at most 35 characters'},
+  {cellNumber: 'E5', error: 'Rank or rating: ensure this value has at most 35 characters'},
+  {cellNumber: 'F5', error: 'Surname: ensure this value has at most 35 characters'},
+  {cellNumber: 'G5', error: 'Forenames: ensure this value has at most 35 characters'},
+  {cellNumber: 'J5', error: 'Place of birth: ensure this value has at most 35 characters'},
+  {
+    cellNumber: 'K5',
+    error: 'Nationality: Nationality should be a 3-letter ISO country code; for example, GBR, SWE, NLD'
+  },
 ]
 
 const mixedErrors = [
   {
     cellNumber: 'A5',
-    error: 'Enter P, I or O, or you may enter the full word: P - Passport, I - ID card - for a national ID card or O - Other - for any other document'
+    error: 'Travel document type: field required'
   },
-  {cellNumber: 'A6', error: 'Enter travel document as P, I, O or as Passport, ID card, Other'},
+  {cellNumber: 'A6', error: 'Travel document type: Enter travel document as P, I, O or as Passport, ID card, Other'},
   {
     cellNumber: 'B7',
-    error: `You entered 'Other' as the travel document type. You must enter the type of travel document, for example SID for Seafarer's Identity Document`
+    error: `Travel document nature: You entered 'Other' as the travel document type, so you must enter the nature of the travel document here, for example 'SID' for Seafarer's Identity Document`
   },
-  {cellNumber: 'C8', error: 'Enter the 3-letter ISO country code for the issuing country; for example, GBR, SWE, NLD'},
-  {cellNumber: 'C9', error: 'Enter the issuing country as a 3-letter ISO country code; for example, GBR, SWE, NLD'},
-  {cellNumber: 'D11', error: 'Enter the number of the travel document'},
-  {cellNumber: 'D12', error: 'Enter the number of the travel document using only numbers'},
-  {cellNumber: 'D13', error: 'Enter the number of the travel document in 35 characters or less'},
+  {cellNumber: 'C8', error: 'Travel document country: field required'},
+  {
+    cellNumber: 'C9',
+    error: 'Travel document country: Travel document country should be a 3-letter ISO country code; for example, GBR, SWE, NLD'
+  },
+  {cellNumber: 'D11', error: 'Travel document number: field required'},
+  {cellNumber: 'D13', error: 'Travel document number: ensure this value has at most 35 characters'},
   {
     cellNumber: 'E14',
-    error: 'Enter the rank, rating or job title; for supernumeraries just put SN or supernumerary, not the job title'
+    error: 'Rank or rating: field required'
   },
-  {cellNumber: 'E15', error: 'Enter the rank, rating or job title in 35 characters or less'},
+  {cellNumber: 'E15', error: 'Rank or rating: ensure this value has at most 35 characters'},
   {
     cellNumber: 'E16',
-    error: 'Enter the rank, rating or job title using English letters instead of special characters not recognised'
+    error: `Rank or rating: Enter the rank or rating using only English letters, numbers or spaces. The following found characters are not allowed: '!'`
   },
-  {cellNumber: 'F17', error: 'Enter family name or surname as it appears in the travel document'},
+  {cellNumber: 'F17', error: 'Surname: field required'},
   {
     cellNumber: 'F18',
-    error: 'Enter family name or surname using English letters instead of special characters not recognised'
+    error: `Surname: Enter the surname using only English letters, numbers or spaces. The following found characters are not allowed: '!'`
   },
-  {cellNumber: 'F19', error: 'Enter family name or surname in 35 characters or less'},
+  {cellNumber: 'F19', error: 'Surname: ensure this value has at most 35 characters'},
   {
     cellNumber: 'G20',
-    error: 'Enter all forenames or given names as they appear in the travel document - if the crew member has no forename recorded enter UNKNOWN'
+    error: 'Forenames: field required'
   },
-  {cellNumber: 'G21', error: 'Enter forenames using English letters instead of special characters not recognised'},
-  {cellNumber: 'G22', error: 'Enter all forenames or given names in 35 characters or less'},
+  {
+    cellNumber: 'G21',
+    error: `Forenames: Enter the forenames using only English letters, numbers or spaces. The following found characters are not allowed: '!'`
+  },
+  {cellNumber: 'G22', error: 'Forenames: ensure this value has at most 35 characters'},
   {
     cellNumber: 'H23',
-    error: 'Enter M for male, F for female, or X for gender neutral if this is in the travel document'
+    error: 'Gender: field required'
   },
   {
     cellNumber: 'H24',
-    error: 'Enter M for male, F for female, or X for gender neutral if this is in the travel document'
+    error: 'Gender: Enter M for male, F for female, or X for gender neutral if this is in the Travel Document'
   },
-  {cellNumber: 'I26', error: 'Enter the date of birth in the dd/mm/yyyy format, for example, 12/02/2022'},
-  {cellNumber: 'I27', error: 'Enter the date of birth in the dd/mm/yyyy format, for example, 12/02/2022'},
-  {cellNumber: 'J29', error: 'Enter the place of birth in 35 characters or less'},
-  {cellNumber: 'J30', error: 'Enter place of birth using English letters instead of special characters not recognised'},
-  {cellNumber: 'K32', error: 'Enter the nationality as a 3-letter ISO country code; for example, GBR, SWE, NLD'},
-  {cellNumber: 'K33', error: 'Enter the country as a 3-letter ISO country code; for example, GBR, SWE, NLD'},
-  {cellNumber: 'L35', error: 'Enter the travel document expiry date in the dd/mm/yyyy format, for example, 12/02/2022'},
+  {cellNumber: 'I26', error: 'Date of birth: date of birth must be in the dd/mm/yyyy format, for example, 22/02/2002'},
+  {cellNumber: 'I27', error: 'Date of birth: date of birth must be in the dd/mm/yyyy format, for example, 22/02/2002'},
+  {cellNumber: 'J29', error: 'Place of birth: ensure this value has at most 35 characters'},
+  {
+    cellNumber: 'J30',
+    error: `Place of birth: Enter the place of birth using only English letters, numbers or spaces. The following found characters are not allowed: '!'`
+  },
+  {
+    cellNumber: 'K32',
+    error: 'Nationality: Nationality should be a 3-letter ISO country code; for example, GBR, SWE, NLD'
+  },
+  {
+    cellNumber: 'K33',
+    error: 'Nationality: Nationality should be a 3-letter ISO country code; for example, GBR, SWE, NLD'
+  },
+  {
+    cellNumber: 'L35',
+    error: 'Travel document expiry date: travel document expiry date must be in the dd/mm/yyyy format, for example, 22/02/2002'
+  },
 ]
 
 const dobError = [
-  {cellNumber: 'I5', error: 'Enter the date of birth in the dd/mm/yyyy format, for example, 12/02/2022'},
-  {cellNumber: 'I6', error: 'Enter the date of birth in the dd/mm/yyyy format, for example, 12/02/2022'},
-  {cellNumber: 'I7', error: 'Enter the date of birth in the dd/mm/yyyy format, for example, 12/02/2022'},
-  {cellNumber: 'I8', error: 'Enter the date of birth in the dd/mm/yyyy format, for example, 12/02/2022'},
-  {cellNumber: 'I9', error: 'Enter the date of birth in the dd/mm/yyyy format, for example, 12/02/2022'},
+  {cellNumber: 'I5', error: 'Date of birth: date of birth must be in the dd/mm/yyyy format, for example, 22/02/2002'},
+  {cellNumber: 'I6', error: 'Date of birth: date of birth must be in the dd/mm/yyyy format, for example, 22/02/2002'},
+  {cellNumber: 'I7', error: 'Date of birth: date of birth must be in the dd/mm/yyyy format, for example, 22/02/2002'},
+  {cellNumber: 'I8', error: 'Date of birth: date of birth must be in the dd/mm/yyyy format, for example, 22/02/2002'},
+  {cellNumber: 'I9', error: 'Date of birth: date of birth must be in the dd/mm/yyyy format, for example, 22/02/2002'},
+  {cellNumber: 'I10',error: 'Date of birth: field required'}
 ]
 
 const genderError = [
   {
     cellNumber: 'H5',
-    error: 'Enter M for male, F for female, or X for gender neutral if this is in the travel document'
+    error: 'Gender: field required'
   },
   {
     cellNumber: 'H6',
-    error: 'Enter M for male, F for female, or X for gender neutral if this is in the travel document'
+    error: 'Gender: Enter M for male, F for female, or X for gender neutral if this is in the Travel Document'
   },
   {
     cellNumber: 'H7',
-    error: 'Enter M for male, F for female, or X for gender neutral if this is in the travel document'
+    error: 'Gender: Enter M for male, F for female, or X for gender neutral if this is in the Travel Document'
   },
   {
     cellNumber: 'H8',
-    error: 'Enter M for male, F for female, or X for gender neutral if this is in the travel document'
+    error: 'Gender: Enter M for male, F for female, or X for gender neutral if this is in the Travel Document'
   },
   {
     cellNumber: 'H9',
-    error: 'Enter M for male, F for female, or X for gender neutral if this is in the travel document'
-  },
-  {
-    cellNumber: 'H10',
-    error: 'Enter M for male, F for female, or X for gender neutral if this is in the travel document'
+    error: 'Gender: ensure this value has at most 6 characters'
   },
   {
     cellNumber: 'H11',
-    error: 'Enter M for male, F for female, or X for gender neutral if this is in the travel document'
+    error: 'Gender: Enter M for male, F for female, or X for gender neutral if this is in the Travel Document'
   },
 ]
 

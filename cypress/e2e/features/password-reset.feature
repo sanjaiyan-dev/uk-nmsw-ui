@@ -4,6 +4,7 @@ Feature: User able to reset password
   Background:
     Given I am on the sign-in page
 
+    @regression
   Scenario: User should be able to reset password successfully and signed-in with new password
     When I click Forgotten your password? link
     Then I am taken to forgotten-password page

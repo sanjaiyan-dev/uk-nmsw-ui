@@ -8,6 +8,7 @@ Feature: User able to view the details registered
     When I click your details tab
     Then I am taken to your details page
 
+    @regression
   Scenario: User able to see their details they entered when creating their account
     Then I am able to see all my details
 

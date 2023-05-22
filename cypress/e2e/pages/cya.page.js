@@ -5,10 +5,6 @@ class CyaPage {
     cy.get('h1').should('have.text', 'Check your answers');
   }
 
-  verifyCheckAnswersAndSubmitLink() {
-    cy.contains('Check answers and submit');
-  }
-
   clickCheckAnswersAndSubmit() {
     cy.contains('Check answers and submit').click();
   }

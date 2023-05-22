@@ -1,4 +1,5 @@
 import SignInPage from "../e2e/pages/sign-in.page";
+
 const {terminalLog} = require('../utils/axeTableLog.js');
 import EmailPage from '../e2e/pages/registration/email.page.js';
 import BasePage from '../e2e/pages/base.page';
@@ -54,7 +55,9 @@ Cypress.Commands.add('registerUser', () => {
 Cypress.Commands.add('activateAccount', () => {
   cy.waitForLatestEmail(inboxId).then((mail) => {
     assert.isDefined(mail);
-    const token = /token=([A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*)/.exec(mail.body)[1];
+    //const token = /token=([A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*)/.exec(mail.body)[2];
+    let token = mail.body.match(/token=([A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*)/g);
+    token = token[1].split("=")[1]
     const email = /email=([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})/i.exec(mail.body)[1];
     const activateUrl = `${Cypress.env('baseUrl')}/activate-account?email=${email}&token=${token}`
     cy.intercept('POST', '**/v1/check*').as('verifyRegistration');
@@ -78,23 +81,23 @@ Cypress.Commands.add('removeTestUser', () => {
       method: 'POST',
       url: `${apiServer}/sign-in`,
       body:
-          {
-            email: regEmail,
-            password: pwd
-          }
+        {
+          email: regEmail,
+          password: pwd
+        }
     }).then((response) => {
       // response.body is automatically serialized into JSON
       token = response.body.token;
       cy.request({
-            method: 'DELETE',
-            url: `${apiServer}/user`,
-            auth: {
-              'bearer': token
-            },
-            body: {
-              email: regEmail,
-            }
+          method: 'DELETE',
+          url: `${apiServer}/user`,
+          auth: {
+            'bearer': token
+          },
+          body: {
+            email: regEmail,
           }
+        }
       )
     })
   })
@@ -106,6 +109,7 @@ Cypress.Commands.add('signIn', () => {
     let password = registration.password;
     SignInPage.enterEmailAddress(signInEmail);
     SignInPage.enterPassword(password);
+    cy.checkAxe();
     cy.intercept('POST', '**/sign-in*').as('signIn');
     SignInPage.clickSignIn();
     cy.wait('@signIn').then(({response}) => {
@@ -113,3 +117,29 @@ Cypress.Commands.add('signIn', () => {
     });
   })
 });
+
+Cypress.Commands.add('deleteDeclaration', () => {
+  let token = sessionStorage.getItem('token');
+  cy.request({
+      method: 'GET',
+      url: `${apiServer}/declaration?status=Draft`,
+      auth: {
+        'bearer': token
+      }
+    })
+    .then((response) => {
+      let declarations = response.body.results;
+      for (declaration of declarations) {
+        cy.request({
+          url: `${apiServer}/declaration/${declaration.id}`,
+          method: 'DELETE',
+          auth: {
+            'bearer': token
+          }
+        }).then((response) => {
+          expect(response.status).to.eq(204);
+        })
+      }
+    })
+})
+

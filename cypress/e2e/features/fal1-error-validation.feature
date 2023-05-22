@@ -66,8 +66,8 @@ Feature: Display FAL 1 field level errors
   Scenario: Error messages shown when user uploads file with invalid date time formats
     When I have uploaded 'Fal1-Files''GDF1-bad-datetime.xlsx'
     When I click check for errors
-    Then I am shown error messages to  fix them for 'invalid-date-time format'
-    Then I can see re-upload file to upload the valid file
+    Then I am taken to Errors found page for 'GDF1-bad-datetime.xlsx'
+    Then I am shown error messages to help me fix them for 'bad-dateTime'
 
   Scenario: No error messages should be shown for uploading files with IMO numbers only
     When I have uploaded 'Fal1-Files''GDF1-imo-goodwithIMONumberOnly.xlsx'

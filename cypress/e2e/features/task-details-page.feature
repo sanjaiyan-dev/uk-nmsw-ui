@@ -53,7 +53,7 @@ Feature: Task details page after file uploads
     And I can see Check answers and submit enabled
     When I click Your voyage tab
     Then I am taken to your-voyages page
-    Then I can see the details of the voyage, I have uploaded
+    Then I can see the draft details of the voyage, I have uploaded
     When I click continue under actions
     Then I am taken to task details page
     When I click delete draft
@@ -62,7 +62,7 @@ Feature: Task details page after file uploads
     Then I am taken to task details page
     When I click delete draft
     Then I am taken to confirm delete draft page
-    When I click Yes to delete the draft
+    When I click Yes to delete the draft and confirm
     Then I am taken to your-voyages page
 
   Scenario: Verify application navigates user to sign-in page with missing auth token
@@ -108,4 +108,3 @@ Feature: Task details page after file uploads
     When I click check for errors
     When I click save and continue
     Then I am taken to task details page
-

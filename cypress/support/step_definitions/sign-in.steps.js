@@ -18,6 +18,7 @@ Given('I am on the sign-in page', () => {
   cy.visitUrl("/");
   LandingPage.clickStartNow();
   SignInPage.checkSignInPage();
+  cy.injectAxe();
 });
 
 When('I click on the create one now link', () => {
@@ -33,12 +34,13 @@ When('I have entered a correct email address and password and sign in', () => {
 });
 
 Then('I am taken to your-voyages page', () => {
+  cy.injectAxe();
   cy.get('h1').should('have.text', 'Your voyages');
-  cy.get('main').find('h2').invoke('text').as('totalReport');
+  cy.checkAxe();
 });
 
 When('I have entered an email address for an unverified email address', () => {
-  SignInPage.enterEmailAddress('fd2ecbe2-1ec3-4e5e-972d-ef91699fed92@mailslurp.com');
+  SignInPage.enterEmailAddress('e5fc776c-a811-4cc5-9392-019f3872938b@mailslurp.com');
   SignInPage.enterPassword(this.user.password);
   SignInPage.clickSignIn();
 });
@@ -60,6 +62,7 @@ When('the user enters invalid email address and sign-in', () => {
 When('I provide incorrect {string} and {string} and sign-in', (email, password) => {
   SignInPage.enterEmailAddress(email);
   SignInPage.enterPassword(password);
+  cy.checkAxe();
   SignInPage.clickSignIn();
 });
 

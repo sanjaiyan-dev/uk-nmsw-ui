@@ -2,7 +2,6 @@ import {Then, When} from "@badeball/cypress-cucumber-preprocessor";
 import YourVoyagePage from "../../e2e/pages/your-voyage.page";
 import FileUploadPage from "../../e2e/pages/file-upload.page";
 import LandingPage from "../../e2e/pages/landing.page";
-import TaskPage from "../../e2e/pages/task.page";
 import SignInPage from "../../e2e/pages/sign-in.page";
 import BasePage from "../../e2e/pages/base.page";
 
@@ -15,6 +14,7 @@ When('I click report a voyage', () => {
 
 Then('I am taken to upload-general-declaration page', () => {
   FileUploadPage.verifyUploadGeneralDecPage();
+  cy.injectAxe();
 });
 
 When('auth token is no longer available', () => {
@@ -28,6 +28,7 @@ Then('user is redirected to NMSW landing page', () => {
 
 When('I click check for errors without uploading any file', () => {
   FileUploadPage.clickCheckForErrors();
+  cy.checkAxe();
 });
 
 When('I click check for errors for file not of type .csv or .xlsx', () => {
@@ -63,6 +64,7 @@ Then('previous the error message should clear', () => {
 
 When('I click check for errors', () => {
   cy.intercept('POST', '**/declaration/**').as('declaration');
+  cy.checkAxe();
   FileUploadPage.clickCheckForErrors();
   FileUploadPage.getDeclarationId();
 });
@@ -81,12 +83,10 @@ When('there are no errors, I am shown the no errors found page', () => {
 });
 
 When('I click save and continue', () => {
+  cy.checkAxe();
   FileUploadPage.clickSaveAndContinue();
 });
 
-Then('I am taken to task details page', () => {
-  TaskPage.checkTaskPage();
-});
 
 When('I navigate back to task details page', () => {
   BasePage.clickBackButton();
@@ -114,10 +114,6 @@ When('I try to access a protected CYA page with declaration Id', () => {
   });
 });
 
-Then('I can see the details of the voyage, I have uploaded', () => {
-  YourVoyagePage.checkVoyageDetails();
-});
-
 Then('I navigate back to your-voyage page without adding General Declaration', () => {
   cy.intercept('DELETE', '**/declaration/*').as('deleteDec');
   cy.wait('@newDeclaration').then(({response}) => {
@@ -138,9 +134,14 @@ Then('I navigate back to your-voyage page without adding General Declaration', (
 });
 
 Then('the voyage without general declaration is not added to the reported voyage', () => {
-  cy.get('@totalReport').then((totalReport) => {
-    cy.get('main#content h2').invoke('text').then((voyageReport) => {
-      expect(voyageReport).to.eq(totalReport);
+  FileUploadPage.getTotalReportsAfter();
+  cy.get('@totalReportsBefore').then((totalReportsBefore) => {
+    cy.get('@totalReportsAfter').then((totalReportsAfter) => {
+      expect(totalReportsBefore).to.eq(totalReportsAfter);
     })
   })
+});
+
+Then('I am able to see the total number of voyage reports', () => {
+  FileUploadPage.getTotalReportsBefore();
 });

@@ -17,7 +17,7 @@ Feature: Landing page with link to Fal templates
     Then I am taken to your-voyages page
     When I click service name header
     Then user is redirected to NMSW landing page
-    When I click template tab on the navigation bar
+    Then I click template tab on the navigation bar
     When I click Your voyage tab
     Then I am taken to your-voyages page
     When I click your details tab

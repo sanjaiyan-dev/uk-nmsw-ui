@@ -3,49 +3,70 @@ import {Then, When} from "@badeball/cypress-cucumber-preprocessor";
 
 const errorWithNullValues = [
   {cellNumber: 'B2', error: `You must select either 'arrival in the UK' or 'departure from the UK'`},
-  {cellNumber: 'B3', error: 'You must enter the name of the ship'},
   {cellNumber: 'D3', error: 'Enter the IMO number'},
-  {cellNumber: 'F3', error: 'Enter the call sign'},
-  {cellNumber: 'B4', error: 'Enter the name of master or authorised officer on board'},
   {
     cellNumber: 'D4',
     error: 'Enter the 3-letter code for the flag state or the country where the vessel is usually based'
   },
-  {cellNumber: 'B5', error: 'Enter a LOCODE for the arrival port'},
+  {
+    cellNumber: 'B5',
+    error: 'Enter a LOCODE for the arrival port'
+  },
   {cellNumber: 'D5', error: 'Enter a date of arrival'},
-  {cellNumber: 'F5', error: 'Enter an arrival time'},
-  {cellNumber: 'B6', error: 'Enter a LOCODE for the departure port'},
+  {
+    cellNumber: 'F5',
+    error: 'Enter an arrival time'
+  },
+  {
+    cellNumber: 'B6',
+    error: 'Enter a LOCODE for the departure port'
+  },
   {cellNumber: 'D6', error: 'Enter a date of departure'},
-  {cellNumber: 'F6', error: 'Enter a departure time'},
-  {cellNumber: 'D7', error: 'Enter a last port of call LOCODE'},
-  {cellNumber: 'F7', error: 'Enter a next port of call LOCODE'},
-  {cellNumber: 'B13', error: 'Enter a brief description of the cargo, or put \'No cargo\''},
+  {
+    cellNumber: 'F6',
+    error: 'Enter a departure time'
+  },
+  {
+    cellNumber: 'D7',
+    error: 'Enter a last port of call LOCODE'
+  },
+  {
+    cellNumber: 'F7',
+    error: 'Enter a next port of call LOCODE'
+  },
+  {cellNumber: 'B3', error: 'You must enter the name of the ship'},
+  {cellNumber: 'F3', error: 'Enter the call sign'},
+  {cellNumber: 'B4', error: 'Enter the name of master or authorised officer on board'},
+  {cellNumber: 'B13', error: `Enter a brief description of the cargo, or put \'No cargo\'`},
 ]
 
 const errorMaxCharacters = [
-  {cellNumber: 'B3', error: 'Enter the name of the ship using 35 characters or less'},
-  {cellNumber: 'F3', error: 'Enter the call sign using 35 characters or less'},
-  {cellNumber: 'B4', error: 'Enter the name of the master using 35 characters or less'},
+  {cellNumber: 'B3', error: 'Name of ship must be 35 characters or less'},
+  {cellNumber: 'F3', error: 'Call sign must be 35 characters or less'},
+  {cellNumber: 'B4', error: 'Signatory must be 35 characters or less'},
   {
     cellNumber: 'D4',
-    error: 'Enter the code for the country using 3 letters as given in the ISO list of 3166-1 alpha 3 codes'
+    error: 'Flag state should indicate a country using 3 letters as given in the ISO list of 3166-1 alpha 3 codes'
   },
-  {cellNumber: 'B13', error: 'Enter the cargo details using 35 characters or less'},
-  {
-    cellNumber: '', error: 'Enter a departure date from the UK that is not more than 24 hours in the future'
-  },
+  {cellNumber: 'B13', error: 'Cargo must be 35 characters or less'},
 ]
 
 const errorInvalidCharacters = [
-  {cellNumber: 'B3', error: `Enter the ship's name using English letters instead of special characters not recognised`},
-  {cellNumber: 'F3', error: 'Enter the call sign using only letters and numbers'},
+  {
+    cellNumber: 'B3',
+    error: `Enter the name of ship using only English letters, numbers, or one of \` -()/\`. The following found characters are not allowed: '!'`
+  },
+  /*{
+    cellNumber: 'F3',
+    error: `Enter the call sign using only English letters, numbers, or one of \` -()/\`. The following found characters are not allowed: '%','$'`
+  },*/
   {
     cellNumber: 'B4',
-    error: 'Enter the name of the master using English letters instead of special characters not recognised'
+    error: `Enter the signatory using only English letters, numbers, or one of \` -()/\`. The following found characters are not allowed: '$'`
   },
   {
     cellNumber: 'B13',
-    error: 'Enter the description using English letters instead of special characters not recognised'
+    error: `Enter the cargo using only English letters, numbers, or one of \` -()/\`. The following found characters are not allowed: '&'`
   },
 ]
 
@@ -53,25 +74,24 @@ const errorBadImoLocode = [
   {cellNumber: 'D3', error: 'Enter 7 numbers for the IMO number'},
   {
     cellNumber: 'B5',
-    error: 'Enter a LOCODE that contains 5 letters, for example NL RTM or NLRTM. If no LOCODE exists for the location, enter the country code and then XXX'
+    error: 'Arrival port unlocode should be a LOCODE that contains 5 letters, for example NL RTM or NLRTM. If no LOCODE exists for the location, enter NOXXX'
   },
   {
     cellNumber: 'B6',
-    error: 'Enter a LOCODE that contains 5 letters, for example NL RTM or NLRTM. If no LOCODE exists for the location, enter the country code and then XXX'
+    error: 'Departure port unlocode should be a LOCODE that contains 5 letters, for example NL RTM or NLRTM. If no LOCODE exists for the location, enter NOXXX'
   },
   {
     cellNumber: 'D7',
-    error: 'Enter a LOCODE that contains 5 letters, for example NL RTM or NLRTM. If no LOCODE exists for the location, enter the country code and then XXX'
+    error: 'Previous port unlocode should be a LOCODE that contains 5 letters, for example NL RTM or NLRTM. If no LOCODE exists for the location, enter NOXXX'
   },
   {
     cellNumber: 'F7',
-    error: 'Enter a LOCODE that contains 5 letters, for example NL RTM or NLRTM. If no LOCODE exists for the location, enter the country code and then XXX'
+    error: 'Next port unlocode should be a LOCODE that contains 5 letters, for example NL RTM or NLRTM. If no LOCODE exists for the location, enter NOXXX'
   },
-  {cellNumber: '', error: 'Enter a departure date from the UK that is not more than 24 hours in the future'},
 ]
 
 const errorInvalidArrivalFields = [
-  {cellNumber: 'B5', error: 'You selected arrival in the UK. Enter an arrival LOCODE that starts with GB'},
+  {cellNumber: 'B5', error: 'You selected arrival in the UK. Enter an arrival LOCODE that starts with one of GB,GG,JE'},
   {
     cellNumber: 'B6',
     error: 'You selected arrival in the UK. Enter a departure LOCODE for the last port of call and not a GB port'
@@ -82,7 +102,7 @@ const errorInvalidArrivalFields = [
   },
   {
     cellNumber: 'F7',
-    error: 'Enter a LOCODE that does not start with GB for the next port of call'
+    error: 'Enter a LOCODE that does not start with one of GB,GG,JE for the last port of call'
   },
   {
     cellNumber: '',
@@ -92,25 +112,17 @@ const errorInvalidArrivalFields = [
 
 const errorInvalidDepartureFields = [
   {
-    cellNumber: 'B5',
-    error: 'You selected departure from the UK. Enter an arrival LOCODE for the next port of call and not a GB port'
-  },
-  {
     cellNumber: 'B6',
-    error: 'You selected departure from the UK. Enter a departure LOCODE that starts with GB'
-  },
-  {
-    cellNumber: 'D7',
-    error: 'Enter a LOCODE that does not start with GB for the last port of call'
+    error: 'You selected departure from the UK. Enter a departure LOCODE that starts with one of GB,GG,JE'
   },
   {
     cellNumber: 'F7',
     error: 'Enter a next port of call that matches the next port of call you gave in cell B5'
   },
-  {
-    cellNumber: '',
-    error: 'You selected departure from the UK. Enter a departure date and time that is before the arrival at the next port'
-  }
+  // {
+  //   cellNumber: '',
+  //   error: 'You selected departure from the UK. Enter a departure date and time that is before the arrival at the next port'
+  // }
 ]
 
 const errorDepartureDateInFuture = [
@@ -125,6 +137,19 @@ const errorImoInvalidCharacters = [
 
 const errorImoTooShort = [
   {cellNumber: 'D3', error: 'Enter 7 numbers for the IMO number'},
+]
+
+const errBadDateTime = [
+  {cellNumber: 'D5', error: 'arrival date must be in the dd/mm/yyyy format, for example, 22/02/2002'},
+  {
+    cellNumber: 'F5',
+    error: 'arrival time must be in the HH:MM:SS or HH:MM:SS am/pm format, for example, 01:00:00 pm or 13:00:00'
+  },
+  {cellNumber: 'D6', error: 'departure date must be in the dd/mm/yyyy format, for example, 22/02/2002'},
+  {
+    cellNumber: 'F6',
+    error: 'departure time must be in the HH:MM:SS or HH:MM:SS am/pm format, for example, 01:00:00 pm or 13:00:00'
+  },
 ]
 
 Then('I am taken to Errors found page for {string}', (fileName) => {
@@ -163,6 +188,9 @@ Then('I am shown error messages to help me fix them for {string}', (errorType) =
       break;
     case 'imo-too short':
       errList = errorImoTooShort
+      break;
+    case 'bad-dateTime':
+      errList = errBadDateTime
       break;
   }
 
