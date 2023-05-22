@@ -8,7 +8,6 @@ import {
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
 import {
-  SIGN_IN_URL,
   URL_DECLARATIONID_IDENTIFIER,
   VOYAGE_PASSENGERS_URL,
   VOYAGE_PASSENGER_UPLOAD_URL,
@@ -18,11 +17,11 @@ import {
 import {
   API_URL,
   ENDPOINT_DECLARATION_PATH,
-  TOKEN_EXPIRED,
 } from '../../constants/AppAPIConstants';
-import Auth from '../../utils/Auth';
 import DisplayForm from '../../components/DisplayForm';
 import Message from '../../components/Message';
+import Auth from '../../utils/Auth';
+import handleAuthErrors from '../../utils/API/handleAuthErrors';
 
 const VoyagePassengers = () => {
   const navigate = useNavigate();
@@ -87,15 +86,8 @@ const VoyagePassengers = () => {
         navigate(`${VOYAGE_TASK_LIST_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`);
       }
     } catch (err) {
-      if (err?.response?.status === 422) {
-        Auth.removeToken();
-        navigate(SIGN_IN_URL, { state: { redirectURL: `${VOYAGE_PASSENGERS_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}` } });
-      } else if (err?.response?.data?.msg === TOKEN_EXPIRED) {
-        Auth.removeToken();
-        navigate(SIGN_IN_URL, { state: { redirectURL: `${VOYAGE_PASSENGERS_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}` } });
-      } else {
-        setIsError(true);
-      }
+      handleAuthErrors({ error: err, navigate, redirectUrl: `${VOYAGE_PASSENGERS_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}` });
+      setIsError(true);
     }
   };
 

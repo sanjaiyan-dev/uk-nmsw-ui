@@ -8,11 +8,11 @@ import {
   MESSAGE_URL,
   // CHANGE_YOUR_PASSWORD_PAGE_URL,
   REQUEST_PASSWORD_RESET_URL,
-  SIGN_IN_URL,
   YOUR_DETAILS_PAGE_NAME,
   YOUR_DETAILS_PAGE_URL,
 } from '../../../constants/AppUrlConstants';
 import Auth from '../../../utils/Auth';
+import handleAuthErrors from '../../../utils/API/handleAuthErrors';
 
 const YourDetails = () => {
   const navigate = useNavigate();
@@ -40,8 +40,7 @@ const YourDetails = () => {
       setGroupData(groupResponse.data);
     } catch (err) {
       if (err?.response?.status === 401 || err?.response?.status === 422) {
-        Auth.removeToken();
-        navigate(SIGN_IN_URL, { state: { redirectURL: YOUR_DETAILS_PAGE_URL } });
+        handleAuthErrors({ error: err, navigate, redirectUrl: YOUR_DETAILS_PAGE_URL });
       } else {
         navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: YOUR_DETAILS_PAGE_URL } });
       }

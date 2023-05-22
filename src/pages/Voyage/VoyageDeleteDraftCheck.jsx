@@ -10,7 +10,6 @@ import {
 } from '../../constants/AppConstants';
 import {
   MESSAGE_URL,
-  SIGN_IN_URL,
   URL_DECLARATIONID_IDENTIFIER,
   VOYAGE_TASK_LIST_URL,
   YOUR_VOYAGES_URL,
@@ -18,6 +17,7 @@ import {
 import DisplayForm from '../../components/DisplayForm';
 import Message from '../../components/Message';
 import Auth from '../../utils/Auth';
+import handleAuthErrors from '../../utils/API/handleAuthErrors';
 
 const VoyageDeleteDraftCheck = () => {
   const { state } = useLocation();
@@ -80,8 +80,7 @@ const VoyageDeleteDraftCheck = () => {
         switch (err?.response?.status) {
           case 401:
           case 422:
-            Auth.removeToken();
-            navigate(SIGN_IN_URL, { state: { redirectURL: `${VOYAGE_TASK_LIST_URL}?report=${declarationId}` } });
+            handleAuthErrors({ error: err, navigate, redirectUrl: `${VOYAGE_TASK_LIST_URL}?report=${declarationId}` });
             break;
           default: navigate(MESSAGE_URL, {
             state: {
@@ -104,8 +103,6 @@ const VoyageDeleteDraftCheck = () => {
       <Message title="Something has gone wrong" redirectURL={YOUR_VOYAGES_URL} />
     );
   }
-
-  console.log('Delete draft page, declaration id', declarationId);
 
   return (
     <DisplayForm

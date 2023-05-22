@@ -1,0 +1,25 @@
+/* Add small space between crown and text in logo in header */
+.govuk-header__logotype-text {
+  margin-left: 2px;
+}
+
+/* Apply 'hidden' state to elements for nav menu */
+@media screen and (min-width: 770px) {
+  .govuk-header__menu-button {
+    display: none !important;
+  }
+
+  .govuk-header__navigation-list {
+    display: block !important;
+  }
+}
+
+@media screen and (max-width: 770px) {
+  .govuk-header__navigation-list {
+    display: none !important;
+  }
+
+  .govuk-header__navigation-list--open {
+    display: block !important;
+  }
+}
