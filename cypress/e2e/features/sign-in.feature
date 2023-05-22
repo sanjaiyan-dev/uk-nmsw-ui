@@ -38,7 +38,7 @@ Feature: User sign-in
     Examples:
       | emailAddress                                       | password |
       | TestEmail@test.com                                 | 12345    |
-      | 1e3a4687-a22f-41eb-976c-d4c75b391692@mailslurp.com | test-12  |
+      | bdeb6d0e-ae7b-4f7d-a60c-9802576cc648@mailslurp.com | test-12  |
 
   Scenario: User should not be signed-in without providing email and password
     When I try to access a protected page

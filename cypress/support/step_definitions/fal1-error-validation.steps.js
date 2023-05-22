@@ -91,7 +91,7 @@ const errorBadImoLocode = [
 ]
 
 const errorInvalidArrivalFields = [
-  {cellNumber: 'B5', error: 'You selected arrival in the UK. Enter an arrival LOCODE that starts with GB'},
+  {cellNumber: 'B5', error: 'You selected arrival in the UK. Enter an arrival LOCODE that starts with one of GB,GG,JE'},
   {
     cellNumber: 'B6',
     error: 'You selected arrival in the UK. Enter a departure LOCODE for the last port of call and not a GB port'
@@ -102,7 +102,7 @@ const errorInvalidArrivalFields = [
   },
   {
     cellNumber: 'F7',
-    error: 'Enter a LOCODE that does not start with GB for the next port of call'
+    error: 'Enter a LOCODE that does not start with one of GB,GG,JE for the last port of call'
   },
   {
     cellNumber: '',
@@ -112,25 +112,17 @@ const errorInvalidArrivalFields = [
 
 const errorInvalidDepartureFields = [
   {
-    cellNumber: 'B5',
-    error: 'You selected departure from the UK. Enter an arrival LOCODE for the next port of call and not a GB port'
-  },
-  {
     cellNumber: 'B6',
-    error: 'You selected departure from the UK. Enter a departure LOCODE that starts with GB'
-  },
-  {
-    cellNumber: 'D7',
-    error: 'Enter a LOCODE that does not start with GB for the last port of call'
+    error: 'You selected departure from the UK. Enter a departure LOCODE that starts with one of GB,GG,JE'
   },
   {
     cellNumber: 'F7',
     error: 'Enter a next port of call that matches the next port of call you gave in cell B5'
   },
-  {
-    cellNumber: '',
-    error: 'You selected departure from the UK. Enter a departure date and time that is before the arrival at the next port'
-  }
+  // {
+  //   cellNumber: '',
+  //   error: 'You selected departure from the UK. Enter a departure date and time that is before the arrival at the next port'
+  // }
 ]
 
 const errorDepartureDateInFuture = [
