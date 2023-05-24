@@ -2,9 +2,9 @@ import {After, Then, When} from "@badeball/cypress-cucumber-preprocessor";
 import DeclarationPage from "../../e2e/pages/declaration.page";
 import BasePage from "../../e2e/pages/base.page";
 
-After({tags: "@deleteDeclaration"}, () => {
-  cy.deleteDeclaration();
-});
+// After({tags: "@deleteDeclaration"}, () => {
+//   cy.deleteDeclaration();
+// });
 
 Then('I can see the confirmation banner -Voyage details deleted', () => {
   DeclarationPage.bannerDeleteDraft();
