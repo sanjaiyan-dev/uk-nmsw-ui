@@ -78,7 +78,7 @@ describe('Display Form action buttons', () => {
         />
       </MemoryRouter>,
     );
-    expect((screen.getByTestId('submit-button')).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Submit test button</button>');
+    expect((screen.getByTestId('submit-button')).outerHTML).toEqual('<button type="submit" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Submit test button</button>');
     expect((screen.getByTestId('cancel-button')).outerHTML).toEqual('<button type="button" class="govuk-button govuk-button--secondary" data-module="govuk-button" data-testid="cancel-button">Cancel test button</button>');
   });
 
@@ -94,7 +94,7 @@ describe('Display Form action buttons', () => {
         />
       </MemoryRouter>,
     );
-    expect(screen.getByTestId('submit-button').outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Submit test button</button>');
+    expect(screen.getByTestId('submit-button').outerHTML).toEqual('<button type="submit" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Submit test button</button>');
     expect(screen.getAllByRole('button')).toHaveLength(1);
   });
 
@@ -113,7 +113,7 @@ describe('Display Form action buttons', () => {
     );
 
     await user.type(screen.getByLabelText('Text input'), 'Hello');
-    expect(screen.getByTestId('submit-button').outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Submit test button</button>');
+    expect(screen.getByTestId('submit-button').outerHTML).toEqual('<button type="submit" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Submit test button</button>');
     expect(screen.getAllByRole('button')).toHaveLength(1);
     await user.click(screen.getByRole('button', { name: 'Submit test button' }));
     expect(handleSubmit).toHaveBeenCalled();
@@ -134,7 +134,7 @@ describe('Display Form action buttons', () => {
         />
       </MemoryRouter>,
     );
-    expect((screen.getByTestId('submit-button')).outerHTML).toEqual('<button type="button" class="govuk-button disabled" data-module="govuk-button" data-testid="submit-button" disabled="">Submit test button</button>');
+    expect((screen.getByTestId('submit-button')).outerHTML).toEqual('<button type="submit" class="govuk-button disabled" data-module="govuk-button" data-testid="submit-button" disabled="">Submit test button</button>');
     expect((screen.getByTestId('cancel-button')).outerHTML).toEqual('<button type="button" class="govuk-button govuk-button--secondary" data-module="govuk-button" data-testid="cancel-button">Cancel test button</button>');
   });
 
@@ -153,7 +153,7 @@ describe('Display Form action buttons', () => {
         />
       </MemoryRouter>,
     );
-    expect((screen.getByTestId('submit-button')).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Submit test button</button>');
+    expect((screen.getByTestId('submit-button')).outerHTML).toEqual('<button type="submit" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Submit test button</button>');
     expect((screen.getByTestId('cancel-button')).outerHTML).toEqual('<button type="button" class="govuk-button govuk-button--secondary" data-module="govuk-button" data-testid="cancel-button">Cancel test button</button>');
   });
 
@@ -172,7 +172,7 @@ describe('Display Form action buttons', () => {
         />
       </MemoryRouter>,
     );
-    expect((screen.getByTestId('submit-button')).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Submit test button</button>');
+    expect((screen.getByTestId('submit-button')).outerHTML).toEqual('<button type="submit" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Submit test button</button>');
     expect((screen.getByTestId('cancel-button')).outerHTML).toEqual('<button type="button" class="govuk-button govuk-button--secondary" data-module="govuk-button" data-testid="cancel-button">Cancel test button</button>');
   });
 });

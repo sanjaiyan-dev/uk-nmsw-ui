@@ -145,7 +145,7 @@ describe('Display Form, display layout tests', () => {
         />
       </MemoryRouter>,
     );
-    expect((screen.getByTestId('submit-button')).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Submit test button</button>');
+    expect((screen.getByTestId('submit-button')).outerHTML).toEqual('<button type="submit" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Submit test button</button>');
   });
 
   it('should render a details component with an input', () => {

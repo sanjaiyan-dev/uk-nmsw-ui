@@ -123,7 +123,7 @@ describe('Register your details tests', () => {
   it('should render a continue button', async () => {
     mockUseLocationState = { state: { dataToSubmit: { emailAddress: 'testemail@email.com', token: '123' } } };
     render(<MemoryRouter><RegisterYourDetails /></MemoryRouter>);
-    expect(screen.getByRole('button', { name: 'Continue' }).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Continue</button>');
+    expect(screen.getByRole('button', { name: 'Continue' }).outerHTML).toEqual('<button type="submit" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Continue</button>');
   });
 
   it('should NOT call the handleSubmit function on button click if there ARE errors', async () => {

@@ -58,7 +58,7 @@ describe('Change your details tests', () => {
 
   it('should render a continue button', () => {
     render(<MemoryRouter><ChangeYourDetails /></MemoryRouter>);
-    expect(screen.getByRole('button', { name: 'Continue' }).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Continue</button>');
+    expect(screen.getByRole('button', { name: 'Continue' }).outerHTML).toEqual('<button type="submit" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Continue</button>');
   });
 
   it('should display international dialling code question with the format +nn (xxxx)', async () => {
