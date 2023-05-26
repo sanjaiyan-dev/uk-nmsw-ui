@@ -17,6 +17,7 @@ import {
 import determineFieldType from './formFields/DetermineFieldType';
 import { scrollToTop } from '../utils/ScrollToElement';
 import Validator from '../utils/Validator';
+import ErrorSummary from './Forms/ErrorSummary';
 
 const DisplayForm = ({
   fields, formId, formActions, formType, isLoading, pageHeading, handleSubmit, children, removeApiErrors,
@@ -195,34 +196,11 @@ const DisplayForm = ({
   if (!formActions || !fieldsWithValues) { return null; }
   return (
     <>
-      <div className="govuk-grid-row">
-        <div className="govuk-grid-column-two-thirds">
-          {errors?.length > 0 && (
-            <div className="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary" ref={errorSummaryRef} tabIndex={-1}>
-              <h2 className="govuk-error-summary__title" id="error-summary-title">
-                There is a problem
-              </h2>
-              <div className="govuk-error-summary__body">
-                <ul className="govuk-list govuk-error-summary__list">
-                  {errors.map((error) => (
-                    <li key={error.name}>
-                      <button
-                        className="govuk-button--text"
-                        type="button"
-                        onClick={(e) => {
-                          scrollToErrorField(e, error);
-                        }}
-                      >
-                        {error.message}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
+      <ErrorSummary
+        errors={errors || []}
+        errorSummaryRef={errorSummaryRef}
+        scrollToErrorField={scrollToErrorField}
+      />
       <div className="govuk-grid-row">
         {pageHeading && <h1 className="govuk-heading-xl govuk-grid-column-full">{pageHeading}</h1>}
       </div>
