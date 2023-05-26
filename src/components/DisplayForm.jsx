@@ -12,11 +12,8 @@ import {
   FIELD_PASSWORD,
   PASSWORD_FORM,
   SIGN_IN_FORM,
-  SINGLE_PAGE_FORM,
 } from '../constants/AppConstants';
 import determineFieldType from './formFields/DetermineFieldType';
-import { scrollToTop } from '../utils/ScrollToElement';
-import Validator from '../utils/Validator';
 import ErrorSummary from './Forms/ErrorSummary';
 import FormActions from './Forms/FormActions';
 
@@ -67,38 +64,6 @@ const DisplayForm = ({
 
     // we do store all values into form data
     setFormData({ ...formData, ...dataSet });
-  };
-
-  // const handleCancel = (redirectURL) => {
-  //   sessionStorage.removeItem('formData');
-  //   navigate(redirectURL);
-  // };
-
-  const handleValidation = async (e, receivedFormData) => {
-    e.preventDefault();
-    const formErrors = await Validator({ formData: receivedFormData.formData, formFields: fields });
-    setErrors(formErrors);
-
-    if (formErrors.length < 1) {
-      /*
-       * Returning formData
-       * some forms perform special actions on the formData post validation
-       * e.g. CookiePolicy form will set cookie states
-       * so we always pass formData back
-       */
-      handleSubmit(receivedFormData);
-
-      /* If the form is a singlepage form we can clear the session
-       * we do not clear the session for multipage forms or sign in form
-       * as they have different needs
-      */
-      if (formType === SINGLE_PAGE_FORM || formType === PASSWORD_FORM) {
-        sessionStorage.removeItem('formData');
-      }
-    } else {
-      scrollToTop();
-      errorSummaryRef?.current?.focus();
-    }
   };
 
   /*
@@ -246,12 +211,15 @@ const DisplayForm = ({
             })
           }
           <FormActions
+            errorSummaryRef={errorSummaryRef}
+            fields={fields}
             formActions={formActions}
             formData={formData}
-            // handleCancel={handleCancel}
-            handleValidation={handleValidation}
+            formType={formType}
+            handleSubmit={handleSubmit}
             isLoading={isLoading}
             navigate={navigate}
+            setErrors={setErrors}
           />
         </form>
       </div>
