@@ -13,9 +13,9 @@ import {
   PASSWORD_FORM,
   SIGN_IN_FORM,
 } from '../constants/AppConstants';
-import determineFieldType from './formFields/DetermineFieldType';
 import ErrorSummary from './Forms/ErrorSummary';
 import FormActions from './Forms/FormActions';
+import FormFields from './Forms/FormFields';
 
 const DisplayForm = ({
   fields, formId, formActions, formType, isLoading, pageHeading, handleSubmit, children, removeApiErrors,
@@ -181,35 +181,14 @@ const DisplayForm = ({
 
       <div className="govuk-grid-row">
         <form id={formId} className="govuk-grid-column-full" autoComplete="off">
-          {
-            fieldsWithValues.map((field) => {
-              const error = errors?.find((errorField) => errorField.name === field.fieldName);
-              return (
-                <div
-                  key={field.fieldName}
-                  id={field.fieldName}
-                  ref={(node) => {
-                    const map = getFieldMap();
-                    if (node) {
-                      map.set(field.fieldName, node); // on mount adds the refs
-                    } else {
-                      map.delete(field.fieldName); // on unmount removes the refs
-                    }
-                  }}
-                >
-                  {
-                    determineFieldType({
-                      allErrors: errors, // allows us to add the error handling logic for conditional fields
-                      error: error?.message,
-                      fieldDetails: field,
-                      parentHandleChange: handleChange,
-                      children,
-                    })
-                  }
-                </div>
-              );
-            })
-          }
+          <FormFields
+            errors={errors || []}
+            fieldsWithValues={fieldsWithValues}
+            getFieldMap={getFieldMap}
+            handleChange={handleChange}
+          >
+            {children}
+          </FormFields>
           <FormActions
             errorSummaryRef={errorSummaryRef}
             fields={fields}
