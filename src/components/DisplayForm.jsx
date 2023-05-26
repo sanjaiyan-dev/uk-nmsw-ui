@@ -69,10 +69,10 @@ const DisplayForm = ({
     setFormData({ ...formData, ...dataSet });
   };
 
-  const handleCancel = (redirectURL) => {
-    sessionStorage.removeItem('formData');
-    navigate(redirectURL);
-  };
+  // const handleCancel = (redirectURL) => {
+  //   sessionStorage.removeItem('formData');
+  //   navigate(redirectURL);
+  // };
 
   const handleValidation = async (e, receivedFormData) => {
     e.preventDefault();
@@ -248,9 +248,10 @@ const DisplayForm = ({
           <FormActions
             formActions={formActions}
             formData={formData}
-            handleCancel={handleCancel}
+            // handleCancel={handleCancel}
             handleValidation={handleValidation}
             isLoading={isLoading}
+            navigate={navigate}
           />
         </form>
       </div>
