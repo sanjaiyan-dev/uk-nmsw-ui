@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import DisplayForm from '../../../components/DisplayForm';
+import DisplayForm from '../../../components/Forms/DisplayForm';
 import {
   AUTOCOMPLETE_DIALCODE,
   FIELD_AUTOCOMPLETE,

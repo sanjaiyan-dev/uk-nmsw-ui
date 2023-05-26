@@ -21,7 +21,7 @@ import {
   REGISTER_EMAIL_URL,
   REGISTER_EMAIL_CHECK_URL,
 } from '../../constants/AppUrlConstants';
-import DisplayForm from '../../components/DisplayForm';
+import DisplayForm from '../../components/Forms/DisplayForm';
 
 const SupportingText = () => (
   <p className="govuk-body">Emails sometimes take a few minutes to arrive. If you did not receive the link, you can request a new one.</p>

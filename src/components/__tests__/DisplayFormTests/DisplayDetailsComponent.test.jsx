@@ -7,7 +7,7 @@ import {
   SINGLE_PAGE_FORM,
   VALIDATE_REQUIRED,
 } from '../../../constants/AppConstants';
-import DisplayForm from '../../DisplayForm';
+import DisplayForm from '../../Forms/DisplayForm';
 
 describe('Details component tests', () => {
   const handleSubmit = jest.fn();

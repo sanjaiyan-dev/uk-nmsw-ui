@@ -22,7 +22,7 @@ import {
   REGISTER_EMAIL_RESEND_URL,
   REGISTER_PASSWORD_URL,
 } from '../../constants/AppUrlConstants';
-import DisplayForm from '../../components/DisplayForm';
+import DisplayForm from '../../components/Forms/DisplayForm';
 import Auth from '../../utils/Auth';
 
 const SupportingText = () => (

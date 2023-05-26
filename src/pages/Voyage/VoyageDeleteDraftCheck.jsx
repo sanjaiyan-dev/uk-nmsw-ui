@@ -14,7 +14,7 @@ import {
   VOYAGE_TASK_LIST_URL,
   YOUR_VOYAGES_URL,
 } from '../../constants/AppUrlConstants';
-import DisplayForm from '../../components/DisplayForm';
+import DisplayForm from '../../components/Forms/DisplayForm';
 import Message from '../../components/Message';
 import Auth from '../../utils/Auth';
 import handleAuthErrors from '../../utils/API/handleAuthErrors';
