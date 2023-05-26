@@ -18,6 +18,7 @@ import determineFieldType from './formFields/DetermineFieldType';
 import { scrollToTop } from '../utils/ScrollToElement';
 import Validator from '../utils/Validator';
 import ErrorSummary from './Forms/ErrorSummary';
+import FormActions from './Forms/FormActions';
 
 const DisplayForm = ({
   fields, formId, formActions, formType, isLoading, pageHeading, handleSubmit, children, removeApiErrors,
@@ -244,29 +245,13 @@ const DisplayForm = ({
               );
             })
           }
-          <div className="govuk-button-group">
-            <button
-              type="submit"
-              className={isLoading ? 'govuk-button disabled' : 'govuk-button'}
-              data-module="govuk-button"
-              data-testid="submit-button"
-              onClick={(e) => handleValidation(e, { formData })}
-              disabled={isLoading}
-            >
-              {formActions.submit.label}
-            </button>
-            {formActions.cancel && (
-              <button
-                type="button"
-                className="govuk-button govuk-button--secondary"
-                data-module="govuk-button"
-                data-testid="cancel-button"
-                onClick={() => handleCancel(formActions.cancel.redirectURL)}
-              >
-                {formActions.cancel.label}
-              </button>
-            )}
-          </div>
+          <FormActions
+            formActions={formActions}
+            formData={formData}
+            handleCancel={handleCancel}
+            handleValidation={handleValidation}
+            isLoading={isLoading}
+          />
         </form>
       </div>
     </>
