@@ -268,7 +268,7 @@ const DisplayForm = ({
           }
           <div className="govuk-button-group">
             <button
-              type="button"
+              type="submit"
               className={isLoading ? 'govuk-button disabled' : 'govuk-button'}
               data-module="govuk-button"
               data-testid="submit-button"

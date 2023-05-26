@@ -61,7 +61,7 @@ describe('Sign in tests', () => {
 
   it('should display a primary styled sign in button', () => {
     render(<MemoryRouter><SignIn /></MemoryRouter>);
-    expect((screen.getByTestId('submit-button')).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Sign in</button>');
+    expect((screen.getByTestId('submit-button')).outerHTML).toEqual('<button type="submit" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Sign in</button>');
   });
 
   it('should NOT call the login function on sign in button click if there ARE errors', async () => {

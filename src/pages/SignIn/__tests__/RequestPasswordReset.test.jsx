@@ -42,7 +42,7 @@ describe('Request password reset tests', () => {
 
   it('should display a primary styled submit button', () => {
     render(<MemoryRouter><RequestPasswordReset /></MemoryRouter>);
-    expect((screen.getByTestId('submit-button')).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Send the link</button>');
+    expect((screen.getByTestId('submit-button')).outerHTML).toEqual('<button type="submit" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Send the link</button>');
   });
 
   it('should NOT call the handleSubmit function on button click if there ARE errors', async () => {
