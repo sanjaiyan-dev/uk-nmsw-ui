@@ -134,6 +134,7 @@ Then('I navigate back to your-voyage page without adding General Declaration', (
 });
 
 Then('the voyage without general declaration is not added to the reported voyage', () => {
+  cy.reload();
   FileUploadPage.getTotalReportsAfter();
   cy.get('@totalReportsBefore').then((totalReportsBefore) => {
     cy.get('@totalReportsAfter').then((totalReportsAfter) => {
