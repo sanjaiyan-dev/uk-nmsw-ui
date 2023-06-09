@@ -12,10 +12,10 @@ import {
   FIELD_PASSWORD,
   PASSWORD_FORM,
   SIGN_IN_FORM,
-} from '../constants/AppConstants';
-import ErrorSummary from './Forms/ErrorSummary';
-import FormActions from './Forms/FormActions';
-import FormFields from './Forms/FormFields';
+} from '../../constants/AppConstants';
+import ErrorSummary from './ErrorSummary';
+import FormActions from './FormActions';
+import FormFields from './FormFields';
 
 const DisplayForm = ({
   fields, formId, formActions, formType, isLoading, pageHeading, handleSubmit, children, removeApiErrors,

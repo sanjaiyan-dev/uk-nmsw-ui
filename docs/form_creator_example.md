@@ -259,7 +259,7 @@ import {
   MESSAGE_URL,
   YOUR_VOYAGES_URL,
 } from '../../constants/AppUrlConstants';
-import DisplayForm from '../../components/DisplayForm';
+import DisplayForm from '../../components/Forms/DisplayForm';
 
 const MyForm = () => {
   const { state } = useLocation();

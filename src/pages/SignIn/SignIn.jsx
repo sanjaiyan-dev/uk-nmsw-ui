@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import DisplayForm from '../../components/DisplayForm';
+import DisplayForm from '../../components/Forms/DisplayForm';
 import {
   FIELD_EMAIL,
   FIELD_PASSWORD,

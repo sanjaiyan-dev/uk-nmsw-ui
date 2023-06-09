@@ -18,7 +18,7 @@ import {
   API_URL,
   ENDPOINT_DECLARATION_PATH,
 } from '../../constants/AppAPIConstants';
-import DisplayForm from '../../components/DisplayForm';
+import DisplayForm from '../../components/Forms/DisplayForm';
 import Message from '../../components/Message';
 import Auth from '../../utils/Auth';
 import handleAuthErrors from '../../utils/API/handleAuthErrors';

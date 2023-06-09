@@ -14,7 +14,7 @@ import {
   REQUEST_PASSWORD_RESET_CONFIRMATION_URL,
   REQUEST_PASSWORD_RESET_URL,
 } from '../../constants/AppUrlConstants';
-import DisplayForm from '../../components/DisplayForm';
+import DisplayForm from '../../components/Forms/DisplayForm';
 import Message from '../../components/Message';
 
 const SupportingText = () => (

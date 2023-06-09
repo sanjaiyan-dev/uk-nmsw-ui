@@ -8,7 +8,7 @@ import {
   FIELD_TEXT,
   SINGLE_PAGE_FORM,
 } from '../../../constants/AppConstants';
-import DisplayForm from '../../DisplayForm';
+import DisplayForm from '../../Forms/DisplayForm';
 
 describe('Display Form, display layout tests', () => {
   const handleSubmit = jest.fn();

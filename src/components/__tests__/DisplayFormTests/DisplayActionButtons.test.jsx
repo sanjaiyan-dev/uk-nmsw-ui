@@ -1,7 +1,7 @@
 import { MemoryRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import DisplayForm from '../../DisplayForm';
+import DisplayForm from '../../Forms/DisplayForm';
 import {
   FIELD_TEXT,
   SINGLE_PAGE_FORM,
