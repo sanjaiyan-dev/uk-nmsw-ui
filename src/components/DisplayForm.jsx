@@ -12,11 +12,10 @@ import {
   FIELD_PASSWORD,
   PASSWORD_FORM,
   SIGN_IN_FORM,
-  SINGLE_PAGE_FORM,
 } from '../constants/AppConstants';
-import determineFieldType from './formFields/DetermineFieldType';
-import { scrollToTop } from '../utils/ScrollToElement';
-import Validator from '../utils/Validator';
+import ErrorSummary from './Forms/ErrorSummary';
+import FormActions from './Forms/FormActions';
+import FormFields from './Forms/FormFields';
 
 const DisplayForm = ({
   fields, formId, formActions, formType, isLoading, pageHeading, handleSubmit, children, removeApiErrors,
@@ -67,38 +66,6 @@ const DisplayForm = ({
     setFormData({ ...formData, ...dataSet });
   };
 
-  const handleCancel = (redirectURL) => {
-    sessionStorage.removeItem('formData');
-    navigate(redirectURL);
-  };
-
-  const handleValidation = async (e, receivedFormData) => {
-    e.preventDefault();
-    const formErrors = await Validator({ formData: receivedFormData.formData, formFields: fields });
-    setErrors(formErrors);
-
-    if (formErrors.length < 1) {
-      /*
-       * Returning formData
-       * some forms perform special actions on the formData post validation
-       * e.g. CookiePolicy form will set cookie states
-       * so we always pass formData back
-       */
-      handleSubmit(receivedFormData);
-
-      /* If the form is a singlepage form we can clear the session
-       * we do not clear the session for multipage forms or sign in form
-       * as they have different needs
-      */
-      if (formType === SINGLE_PAGE_FORM || formType === PASSWORD_FORM) {
-        sessionStorage.removeItem('formData');
-      }
-    } else {
-      scrollToTop();
-      errorSummaryRef?.current?.focus();
-    }
-  };
-
   /*
    * For field level ref we use a ref callback, which passes a function to the ref attribute
    * React calls the ref callback with the DOM node when it’s time to set the ref, & with null when it’s time to clear it.
@@ -114,17 +81,6 @@ const DisplayForm = ({
       fieldsRef.current = new Map();
     }
     return fieldsRef.current;
-  };
-
-  const scrollToErrorField = (e, error) => {
-    e.preventDefault();
-    const fieldMap = getFieldMap();
-    const fieldLabelNode = fieldMap.get(error.name);
-    fieldLabelNode?.scrollIntoView();
-    // /* TODO: replace with useRef/forwardRef */
-    // radio buttons and checkbox lists add their index key to their id so we can find and focus on them
-    // eslint-disable-next-line no-unused-expressions
-    document.getElementById(`${error.name}-input`) ? document.getElementById(`${error.name}-input`).focus() : document.getElementById(`${error.name}-input[0]`).focus();
   };
 
   /* When we introduce RBAC we expect to have fields that are
@@ -195,34 +151,11 @@ const DisplayForm = ({
   if (!formActions || !fieldsWithValues) { return null; }
   return (
     <>
-      <div className="govuk-grid-row">
-        <div className="govuk-grid-column-two-thirds">
-          {errors?.length > 0 && (
-            <div className="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary" ref={errorSummaryRef} tabIndex={-1}>
-              <h2 className="govuk-error-summary__title" id="error-summary-title">
-                There is a problem
-              </h2>
-              <div className="govuk-error-summary__body">
-                <ul className="govuk-list govuk-error-summary__list">
-                  {errors.map((error) => (
-                    <li key={error.name}>
-                      <button
-                        className="govuk-button--text"
-                        type="button"
-                        onClick={(e) => {
-                          scrollToErrorField(e, error);
-                        }}
-                      >
-                        {error.message}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
+      <ErrorSummary
+        errors={errors || []}
+        errorSummaryRef={errorSummaryRef}
+        getFieldMap={getFieldMap}
+      />
       <div className="govuk-grid-row">
         {pageHeading && <h1 className="govuk-heading-xl govuk-grid-column-full">{pageHeading}</h1>}
       </div>
@@ -237,58 +170,25 @@ const DisplayForm = ({
 
       <div className="govuk-grid-row">
         <form id={formId} className="govuk-grid-column-full" autoComplete="off">
-          {
-            fieldsWithValues.map((field) => {
-              const error = errors?.find((errorField) => errorField.name === field.fieldName);
-              return (
-                <div
-                  key={field.fieldName}
-                  id={field.fieldName}
-                  ref={(node) => {
-                    const map = getFieldMap();
-                    if (node) {
-                      map.set(field.fieldName, node); // on mount adds the refs
-                    } else {
-                      map.delete(field.fieldName); // on unmount removes the refs
-                    }
-                  }}
-                >
-                  {
-                    determineFieldType({
-                      allErrors: errors, // allows us to add the error handling logic for conditional fields
-                      error: error?.message,
-                      fieldDetails: field,
-                      parentHandleChange: handleChange,
-                      children,
-                    })
-                  }
-                </div>
-              );
-            })
-          }
-          <div className="govuk-button-group">
-            <button
-              type="submit"
-              className={isLoading ? 'govuk-button disabled' : 'govuk-button'}
-              data-module="govuk-button"
-              data-testid="submit-button"
-              onClick={(e) => handleValidation(e, { formData })}
-              disabled={isLoading}
-            >
-              {formActions.submit.label}
-            </button>
-            {formActions.cancel && (
-              <button
-                type="button"
-                className="govuk-button govuk-button--secondary"
-                data-module="govuk-button"
-                data-testid="cancel-button"
-                onClick={() => handleCancel(formActions.cancel.redirectURL)}
-              >
-                {formActions.cancel.label}
-              </button>
-            )}
-          </div>
+          <FormFields
+            errors={errors || []}
+            fieldsWithValues={fieldsWithValues}
+            getFieldMap={getFieldMap}
+            handleChange={handleChange}
+          >
+            {children}
+          </FormFields>
+          <FormActions
+            errorSummaryRef={errorSummaryRef}
+            fields={fields}
+            formActions={formActions}
+            formData={formData}
+            formType={formType}
+            handleSubmit={handleSubmit}
+            isLoading={isLoading}
+            navigate={navigate}
+            setErrors={setErrors}
+          />
         </form>
       </div>
     </>
