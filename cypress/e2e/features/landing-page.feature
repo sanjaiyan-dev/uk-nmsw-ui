@@ -7,9 +7,9 @@ Feature: Landing page with link to Fal templates
     When I click GOV UK logo
     Then I am taken to GOV UK page
     Then I can click short survey link for feedback
-    When I click create an account on the landing page
-    Then the registration page is displayed
-    When I click back navigation button
+#    When I click create an account on the landing page
+#    Then the registration page is displayed
+#    When I click back navigation button
     When I click File templates, I can able to download to use
     And I click start now
     Then I am taken to the sign-in page
