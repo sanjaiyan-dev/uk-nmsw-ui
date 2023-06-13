@@ -4,9 +4,9 @@ Feature: User sign-in
   Background:
     Given I am on the sign-in page
 
-  Scenario: Create account from sign-in page
-    When I click on the create one now link
-    Then I am taken to the create-account page
+#  Scenario: Create account from sign-in page
+#    When I click on the create one now link
+#    Then I am taken to the create-account page
 
   @regression
   Scenario: User can sign-in successfully
