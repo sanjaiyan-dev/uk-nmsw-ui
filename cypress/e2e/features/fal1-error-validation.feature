@@ -58,9 +58,9 @@ Feature: Display FAL 1 field level errors
     Then I am shown error messages to help me fix them for 'imo-Invalid characters'
 
   Scenario: Error messages shown when user uploads file with IMO too short
-    When I have uploaded 'Fal1-Files''GDF1-imo-tooShort.xlsx'
+    When I have uploaded 'Fal1-Files''GDF1-imo-tooshort.xlsx'
     When I click check for errors
-    Then I am taken to Errors found page for 'GDF1-imo-tooShort.xlsx'
+    Then I am taken to Errors found page for 'GDF1-imo-tooshort.xlsx'
     Then I am shown error messages to help me fix them for 'imo-too short'
 
   Scenario: Error messages shown when user uploads file with invalid date time formats

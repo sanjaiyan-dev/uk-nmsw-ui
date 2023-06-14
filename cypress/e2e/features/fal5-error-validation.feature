@@ -23,9 +23,9 @@ Feature: Display FAL 5 field level errors
     Then I am shown error messages for 'mixed errors'
 
   Scenario: Error messages shown when user uploads file with mandatory missing values
-    When I have uploaded 'Fal5-Files''Fal5-mandatory-fields-missing.xlsx'
+    When I have uploaded 'Fal5-Files''FAL5-mandatory-fields-missing.xlsx'
     When I click check for errors
-    Then I am taken to Errors found page for 'Fal5-mandatory-fields-missing.xlsx'
+    Then I am taken to Errors found page for 'FAL5-mandatory-fields-missing.xlsx'
     Then I am shown error messages for 'missing values'
 
   Scenario: Error messages shown when user uploads file with more than allowed characters
