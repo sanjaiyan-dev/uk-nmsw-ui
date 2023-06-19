@@ -18,9 +18,9 @@ import {
   LANDING_URL,
   MESSAGE_URL,
   PRIVACY_URL,
-  REGISTER_ACCOUNT_URL,
+  // REGISTER_ACCOUNT_URL,
   REGISTER_CONFIRMATION_URL,
-  REGISTER_EMAIL_URL,
+  // REGISTER_EMAIL_URL,
   REGISTER_EMAIL_CHECK_URL,
   REGISTER_EMAIL_RESEND_URL,
   REGISTER_EMAIL_VERIFIED_URL,
@@ -60,7 +60,7 @@ const GenericMessage = lazy(() => import('./pages/Message/GenericMessage'));
 // Register/Sign in pages
 const AccountAlreadyActive = lazy(() => import('./pages/Message/AccountAlreadyActive'));
 const RegisterConfirmation = lazy(() => import('./pages/Register/RegisterConfirmation'));
-const RegisterEmailAddress = lazy(() => import('./pages/Register/RegisterEmailAddress'));
+// const RegisterEmailAddress = lazy(() => import('./pages/Register/RegisterEmailAddress'));
 const RegisterEmailCheck = lazy(() => import('./pages/Register/RegisterEmailCheck'));
 const RegisterEmailResend = lazy(() => import('./pages/Register/RegisterEmailResend'));
 const RegisterEmailVerified = lazy(() => import('./pages/Register/RegisterEmailVerified'));
@@ -109,8 +109,8 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
 
           <Route path={ERROR_ACCOUNT_ALREADY_ACTIVE_URL} element={<AccountAlreadyActive />} />
           <Route path={REGISTER_CONFIRMATION_URL} element={<RegisterConfirmation />} />
-          <Route path={REGISTER_ACCOUNT_URL} element={<RegisterEmailAddress />} />
-          <Route path={REGISTER_EMAIL_URL} element={<RegisterEmailAddress />} />
+          {/* <Route path={REGISTER_ACCOUNT_URL} element={<RegisterEmailAddress />} /> */}
+          {/* <Route path={REGISTER_EMAIL_URL} element={<RegisterEmailAddress />} /> */}
           <Route path={REGISTER_EMAIL_CHECK_URL} element={<RegisterEmailCheck />} />
           <Route path={REGISTER_EMAIL_RESEND_URL} element={<RegisterEmailResend />} />
           <Route path={REGISTER_EMAIL_VERIFIED_URL} element={<RegisterEmailVerified />} />
