@@ -59,12 +59,12 @@ Then('I am taken to review your report with Cancelled status', () => {
 });
 
 When('I click review or cancel action link next to Submitted status', () => {
-  cy.wait(30000);
+  cy.wait(3000);
   cy.get('@currentDeclaration').should('have.text', 'Review or cancel').click();
 });
 
 When('I click review action link next to Cancelled status', () => {
-  cy.wait(10000);
+  cy.wait(3000);
   cy.get('@currentDeclaration').should('have.text', 'Review').click();
 });
 
