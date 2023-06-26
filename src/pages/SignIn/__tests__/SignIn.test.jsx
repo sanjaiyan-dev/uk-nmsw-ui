@@ -46,11 +46,12 @@ describe('Sign in tests', () => {
     expect(screen.getByRole('textbox', { name: /email/i }).outerHTML).toEqual('<input class="govuk-input" id="email-input" name="email" type="email" autocomplete="email" value="">');
   });
 
-  it('should display a link to create account', () => {
-    render(<MemoryRouter><SignIn /></MemoryRouter>);
-    expect(screen.getByText('create one now')).toBeInTheDocument();
-    expect(screen.getByText('create one now').outerHTML).toEqual('<a class="govuk-link" href="/create-account/email-address">create one now</a>');
-  });
+  // Currently we are not showing any link to create an account
+  // it('should display a link to create account', () => {
+  //   render(<MemoryRouter><SignIn /></MemoryRouter>);
+  //   expect(screen.getByText('create one now')).toBeInTheDocument();
+  //   expect(screen.getByText('create one now').outerHTML).toEqual('<a class="govuk-link" href="/create-account/email-address">create one now</a>');
+  // });
 
   it('should display an input field for password', () => {
     render(<MemoryRouter><SignIn /></MemoryRouter>);
