@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { SERVICE_CONTACT_EMAIL, SERVICE_NAME } from '../../constants/AppConstants';
 import {
   YOUR_VOYAGES_URL,
-  // REGISTER_ACCOUNT_URL,
+  REGISTER_ACCOUNT_URL,
   SIGN_IN_URL,
 } from '../../constants/AppUrlConstants';
 import useUserIsPermitted from '../../hooks/useUserIsPermitted';
@@ -39,7 +39,7 @@ const Landing = () => {
             You do not need to submit any FAL forms that you send to other UK authorities, such as the Consolidated European Reporting System, CERS.
           </p>
         </div>
-        {/* <p className="govuk-body" data-testid="createAccountParagraph">You&apos;ll also need to sign in or <Link to={REGISTER_ACCOUNT_URL}>create an account</Link> to use this service</p> */}
+        <p className="govuk-body" data-testid="createAccountParagraph">You&apos;ll also need to sign in or <Link to={REGISTER_ACCOUNT_URL}>create an account</Link> to use this service</p>
         <Link
           to={isAuthenticated ? YOUR_VOYAGES_URL : SIGN_IN_URL}
           role="button"

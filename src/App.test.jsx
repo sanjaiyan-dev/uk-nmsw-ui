@@ -102,13 +102,13 @@ describe('App tests', () => {
     expect(screen.queryByText('Back')).not.toBeInTheDocument();
   });
 
-  // it('should render a back button on /email-address page', async () => {
-  //   const user = userEvent.setup();
-  //   render(<MemoryRouter><App /></MemoryRouter>);
+  it('should render a back button on /email-address page', async () => {
+    const user = userEvent.setup();
+    render(<MemoryRouter><App /></MemoryRouter>);
 
-  //   await user.click(screen.getByRole('link', { name: 'create an account' }));
-  //   expect(screen.queryByText('Back')).toBeInTheDocument();
-  // });
+    await user.click(screen.getByRole('link', { name: 'create an account' }));
+    expect(screen.queryByText('Back')).toBeInTheDocument();
+  });
 
   it('should clear formData when a footer item is clicked', async () => {
     const user = userEvent.setup();
