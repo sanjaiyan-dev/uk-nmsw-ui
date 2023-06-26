@@ -17,7 +17,7 @@ import {
 import {
   LOGGED_IN_LANDING,
   MESSAGE_URL,
-  REGISTER_ACCOUNT_URL,
+  // REGISTER_ACCOUNT_URL,
   REGISTER_EMAIL_RESEND_URL,
   REQUEST_PASSWORD_RESET_URL,
   SIGN_IN_URL,
@@ -27,13 +27,13 @@ import Auth from '../../utils/Auth';
 import { scrollToTop } from '../../utils/ScrollToElement';
 import Message from '../../components/Message';
 
-const SupportingText = () => (
-  <div className="govuk-inset-text">
-    <p className="govuk-body">
-      If you do not have an account, you can <Link className="govuk-link" to={REGISTER_ACCOUNT_URL}>create one now</Link>.
-    </p>
-  </div>
-);
+// const SupportingText = () => (
+//   <div className="govuk-inset-text">
+//     <p className="govuk-body">
+//       If you do not have an account, you can <Link className="govuk-link" to={REGISTER_ACCOUNT_URL}>create one now</Link>.
+//     </p>
+//   </div>
+// );
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -155,9 +155,9 @@ const SignIn = () => {
         keepSessionOnSubmit={state?.redirectURL}
         handleSubmit={handleSubmit}
         removeApiErrors={removeApiErrors}
-      >
-        <SupportingText />
-      </DisplayForm>
+      />
+      {/* <SupportingText />
+      </DisplayForm> */}
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
           <h2 className="govuk-heading-m">Problems signing in</h2>
