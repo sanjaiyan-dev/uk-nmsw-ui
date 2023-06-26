@@ -1,7 +1,7 @@
 # NMSW UI
 National Maritime Single Window - NMSW
 
-This is the front end, and will connect to the data-api when available
+This is the front end, and connects to the data-api
 
 ## Requirements
 
