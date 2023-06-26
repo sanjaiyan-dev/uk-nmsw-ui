@@ -28,7 +28,7 @@ class declarationPage {
   }
 
   checkCyaCancelledStatus() {
-    cy.wait(10000);
+    cy.wait(3000);
     cy.get(':nth-child(1) > :nth-child(2) > .govuk-summary-list__key').should('have.text', 'Status').next().should('contain.text', `Cancelled`);
   }
 
@@ -69,6 +69,7 @@ class declarationPage {
         })
         break;
     }
+    cy.wait(5000);
   }
 
   bannerCancelReport() {
@@ -124,6 +125,7 @@ class declarationPage {
         })
         break;
     }
+    cy.wait(5000);
   }
 }
 

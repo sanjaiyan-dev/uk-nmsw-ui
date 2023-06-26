@@ -45,7 +45,7 @@ describe('Change your password tests', () => {
 
   it('should render a change password button', () => {
     render(<MemoryRouter><ChangeYourPassword /></MemoryRouter>);
-    expect(screen.getByRole('button', { name: 'Change password' }).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Change password</button>');
+    expect(screen.getByRole('button', { name: 'Change password' }).outerHTML).toEqual('<button type="submit" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Change password</button>');
   });
 
   it('should NOT call the handleSubmit function on button click if there ARE errors', async () => {

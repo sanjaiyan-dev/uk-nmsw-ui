@@ -1,6 +1,6 @@
 import { useSearchParams } from 'react-router-dom';
 import Message from '../../components/Message';
-import MultiFileUploadForm from '../../components/MultiFileUploadForm';
+import MultiFileUploadForm from '../../components/MultiFileUpload/MultiFileUploadForm';
 import { API_URL, ENDPOINT_DECLARATION_PATH, ENDPOINT_FILE_UPLOAD_SUPPORTING_DOCUMENTS_PATH } from '../../constants/AppAPIConstants';
 import {
   URL_DECLARATIONID_IDENTIFIER,

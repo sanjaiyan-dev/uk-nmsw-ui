@@ -13,8 +13,9 @@ import {
 import { REGISTER_EMAIL_RESEND_URL, REGISTER_PASSWORD_URL } from '../../constants/AppUrlConstants';
 import { countries } from '../../constants/CountryData';
 import { MergePhoneNumberFields } from '../../utils/FormatPhoneNumber';
-import DisplayForm from '../../components/DisplayForm';
+import DisplayForm from '../../components/Forms/DisplayForm';
 import Message from '../../components/Message';
+import '../../assets/css/autocomplete.scss';
 
 const RegisterYourDetails = () => {
   const navigate = useNavigate();

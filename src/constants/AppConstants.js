@@ -1,7 +1,7 @@
 // Site
 export const SERVICE_NAME = 'National Maritime Single Window';
 export const SERVICE_URL = 'https://nmsw.homeoffice.gov.uk';
-export const SERVICE_CONTACT_EMAIL = 'nmswsupport@digital.homeoffice.gov.uk';
+export const SERVICE_CONTACT_EMAIL = 'nmswsupport@digital.homeoffice.gov.uk'; // update on public/index.html as well
 
 // Declarations
 export const DECLARATION_STATUS_CANCELLED = 'Cancelled';
@@ -39,6 +39,10 @@ export const AUTOCOMPLETE_DIALCODE = 'dialCode';
 // Forms: states
 export const CHECKED_TRUE = true;
 export const CHECKED_FALSE = false;
+export const FILE_STATUS_PENDING = 'Pending';
+export const FILE_STATUS_IN_PROGRESS = 'in progress';
+export const FILE_STATUS_ERROR = 'Error';
+export const FILE_STATUS_SUCCESS = 'Success';
 // Forms: validation types
 export const VALIDATE_CONDITIONAL = 'conditional';
 export const VALIDATE_EMAIL_ADDRESS = 'emailAddress';
@@ -49,12 +53,17 @@ export const VALIDATE_MIN_LENGTH = 'minLength';
 export const VALIDATE_PHONE_NUMBER = 'phoneNumber';
 export const VALIDATE_REQUIRED = 'required';
 export const VALIDATE_NO_SPACES = 'noSpaces';
+
+// Pagination
+export const ELLIPSIS = '...';
+export const PAGINATION_PAGE_LABEL = 'Page';
+export const PAGINATION_PREVIOUS_LABEL = 'Previous';
+export const PAGINATION_NEXT_LABEL = 'Next';
+
 // Templates
 export const GENERAL_DECLARATION_TEMPLATE_NAME = 'General Declaration (FAL 1)';
 export const CREW_DETAILS_TEMPLATE_NAME = 'Crew details including supernumeraries (FAL 5)';
 export const PASSENGER_DETAILS_TEMPLATE_NAME = 'Passenger details (FAL 6)';
-
-// Templates
 export const GENERAL_DECLARATION_LABEL = 'General Declaration (FAL 1)';
 export const CREW_DETAILS_LABEL = 'Crew details including supernumeraries (FAL 5)';
 export const PASSENGER_DETAILS_LABEL = 'Any passenger details (FAL 6)';

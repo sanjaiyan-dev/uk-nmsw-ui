@@ -45,7 +45,7 @@ describe('Voyage delete draft check are you sure page', () => {
     expect(screen.getByRole('heading', { name: 'Are you sure you want to delete the draft?' })).toBeInTheDocument();
     expect(screen.getByRole('radio', { name: 'Yes' }).outerHTML).toEqual('<input class="govuk-radios__input" id="deleteDraft-input[0]" name="deleteDraft" type="radio" value="deleteDraftYes">');
     expect(screen.getByRole('radio', { name: 'No' }).outerHTML).toEqual('<input class="govuk-radios__input" id="deleteDraft-input[1]" name="deleteDraft" type="radio" value="deleteDraftNo">');
-    expect(screen.getByRole('button', { name: 'Confirm' }).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Confirm</button>');
+    expect(screen.getByRole('button', { name: 'Confirm' }).outerHTML).toEqual('<button type="submit" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Confirm</button>');
   });
 
   it('should render an error if no declarationId in params', async () => {

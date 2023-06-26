@@ -10,7 +10,7 @@ import {
   VALIDATE_CONDITIONAL,
   VALIDATE_REQUIRED,
 } from '../../../constants/AppConstants';
-import DisplayForm from '../../DisplayForm';
+import DisplayForm from '../../Forms/DisplayForm';
 /*
  * These tests check that if validation fails
  * the errory summary and field level errors are displayed

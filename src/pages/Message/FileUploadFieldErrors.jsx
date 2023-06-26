@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { YOUR_VOYAGES_URL } from '../../constants/AppUrlConstants';
+import '../../assets/css/fileUploadFieldErrors.scss';
 
 const FileUploadFieldErrors = () => {
   const { state } = useLocation();

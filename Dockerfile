@@ -1,4 +1,4 @@
-FROM quay.io/ukhomeofficedigital/cop-node:18-alpine as builder
+FROM node:18-alpine as builder
 
 ENV NMSW_DATA_API_BASE_URL=REPLACE_NMSW_DATA_API_BASE_URL
 ENV GA_TOKEN=REPLACE_GA_TOKEN

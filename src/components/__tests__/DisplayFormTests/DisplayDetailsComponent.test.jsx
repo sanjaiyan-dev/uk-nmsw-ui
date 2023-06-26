@@ -7,7 +7,7 @@ import {
   SINGLE_PAGE_FORM,
   VALIDATE_REQUIRED,
 } from '../../../constants/AppConstants';
-import DisplayForm from '../../DisplayForm';
+import DisplayForm from '../../Forms/DisplayForm';
 
 describe('Details component tests', () => {
   const handleSubmit = jest.fn();
@@ -61,7 +61,7 @@ describe('Details component tests', () => {
         />
       </MemoryRouter>,
     );
-    expect((screen.getByTestId('submit-button')).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Submit test button</button>');
+    expect((screen.getByTestId('submit-button')).outerHTML).toEqual('<button type="submit" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Submit test button</button>');
   });
 
   it('should render a details component with an input with a default value', () => {
