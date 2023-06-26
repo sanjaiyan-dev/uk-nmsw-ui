@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import '../assets/css/loadingSpinner.scss';
 
 const loadingSpinnerProps = {
   fill: '#0b0c0c',

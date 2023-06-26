@@ -14,14 +14,13 @@ import {
   COOKIE_URL,
   ERROR_ACCOUNT_ALREADY_ACTIVE_URL,
   FILE_UPLOAD_FIELD_ERRORS_URL,
-  FORM_CONFIRMATION_URL,
   GENERIC_CONFIRMATION_URL,
   LANDING_URL,
   MESSAGE_URL,
   PRIVACY_URL,
-  // REGISTER_ACCOUNT_URL,
+  REGISTER_ACCOUNT_URL,
   REGISTER_CONFIRMATION_URL,
-  // REGISTER_EMAIL_URL,
+  REGISTER_EMAIL_URL,
   REGISTER_EMAIL_CHECK_URL,
   REGISTER_EMAIL_RESEND_URL,
   REGISTER_EMAIL_VERIFIED_URL,
@@ -56,13 +55,12 @@ import LoadingSpinner from './components/LoadingSpinner';
 // Lazy loaded routes (js loads on demand)
 // Error/Message pages
 const FileUploadConfirmation = lazy(() => import('./pages/Voyage/FileUploadConfirmation'));
-const FormConfirmationPage = lazy(() => import('./pages/Message/FormConfirmationPage'));
 const GenericConfirmationPage = lazy(() => import('./pages/Message/GenericConfirmation'));
 const GenericMessage = lazy(() => import('./pages/Message/GenericMessage'));
 // Register/Sign in pages
 const AccountAlreadyActive = lazy(() => import('./pages/Message/AccountAlreadyActive'));
 const RegisterConfirmation = lazy(() => import('./pages/Register/RegisterConfirmation'));
-// const RegisterEmailAddress = lazy(() => import('./pages/Register/RegisterEmailAddress'));
+const RegisterEmailAddress = lazy(() => import('./pages/Register/RegisterEmailAddress'));
 const RegisterEmailCheck = lazy(() => import('./pages/Register/RegisterEmailCheck'));
 const RegisterEmailResend = lazy(() => import('./pages/Register/RegisterEmailResend'));
 const RegisterEmailVerified = lazy(() => import('./pages/Register/RegisterEmailVerified'));
@@ -83,7 +81,7 @@ const ContactUs = lazy(() => import('./pages/Regulatory/ContactUs'));
 // Downloadable templates pages
 const Templates = lazy(() => import('./pages/NavPages/Templates'));
 // Voyage pages
-const VoyageCheckYourAnswers = lazy(() => import('./pages/Voyage/VoyageCheckYourAnswers'));
+const VoyageCheckYourAnswers = lazy(() => import('./pages/Voyage/VoyageCheckYourAnswers/VoyageCheckYourAnswers'));
 const VoyageCrew = lazy(() => import('./pages/Voyage/VoyageCrew'));
 const VoyageDeleteDraftCheck = lazy(() => import('./pages/Voyage/VoyageDeleteDraftCheck'));
 const VoyageGeneralDeclaration = lazy(() => import('./pages/Voyage/VoyageGeneralDeclaration'));
@@ -91,7 +89,7 @@ const VoyagePassengers = lazy(() => import('./pages/Voyage/VoyagePassengers'));
 const VoyagePassengerUpload = lazy(() => import('./pages/Voyage/VoyagePassengerUpload'));
 const VoyageSupportingDocsUpload = lazy(() => import('./pages/Voyage/VoyageSupportingDocsUpload'));
 const VoyageTaskList = lazy(() => import('./pages/Voyage/VoyageTaskList'));
-const YourVoyages = lazy(() => import('./pages/NavPages/YourVoyages'));
+const YourVoyages = lazy(() => import('./pages/NavPages/YourVoyages/YourVoyages'));
 const FileUploadFieldErrors = lazy(() => import('./pages/Message/FileUploadFieldErrors'));
 // Your details pages
 const YourDetails = lazy(() => import('./pages/NavPages/YourDetails/YourDetails'));
@@ -111,8 +109,8 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
 
           <Route path={ERROR_ACCOUNT_ALREADY_ACTIVE_URL} element={<AccountAlreadyActive />} />
           <Route path={REGISTER_CONFIRMATION_URL} element={<RegisterConfirmation />} />
-          {/* <Route path={REGISTER_ACCOUNT_URL} element={<RegisterEmailAddress />} /> */}
-          {/* <Route path={REGISTER_EMAIL_URL} element={<RegisterEmailAddress />} /> */}
+          <Route path={REGISTER_ACCOUNT_URL} element={<RegisterEmailAddress />} />
+          <Route path={REGISTER_EMAIL_URL} element={<RegisterEmailAddress />} />
           <Route path={REGISTER_EMAIL_CHECK_URL} element={<RegisterEmailCheck />} />
           <Route path={REGISTER_EMAIL_RESEND_URL} element={<RegisterEmailResend />} />
           <Route path={REGISTER_EMAIL_VERIFIED_URL} element={<RegisterEmailVerified />} />
@@ -135,7 +133,6 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
             <Route path={CHANGE_YOUR_DETAILS_PAGE_URL} element={<ChangeYourDetails />} />
             <Route path={CHANGE_YOUR_PASSWORD_PAGE_URL} element={<ChangeYourPassword />} />
             <Route path={FILE_UPLOAD_FIELD_ERRORS_URL} element={<FileUploadFieldErrors />} />
-            <Route path={FORM_CONFIRMATION_URL} element={<FormConfirmationPage />} />
             <Route path={GENERIC_CONFIRMATION_URL} element={<GenericConfirmationPage />} />
             <Route path={LOGGED_IN_HELP} element={<Help />} />
             <Route path={TEMPLATE_PAGE_URL} element={<Templates />} />

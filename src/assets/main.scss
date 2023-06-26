@@ -1,8 +1,4 @@
 @import '~govuk-frontend/govuk/all';
-@import "accessible-autocomplete";
-@import './feedbackBanner.scss';
-@import './loadingSpinner.scss';
-@import './table.scss';
 
 // ===================
 // Layout Overrides
@@ -19,30 +15,8 @@ body {
   background: govuk-colour("white"); // set root div to content colour (white) as a default
 }
 
-/* Add small space between crown and text in logo in header */
-.govuk-header__logotype-text {
-  margin-left: 2px;
-}
-
-/* Apply 'hidden' state to elements for nav menu */
-@media screen and (min-width: 770px) {
-  .govuk-header__menu-button {
-    display: none !important;
-  }
-
-  .govuk-header__navigation-list {
-    display: block !important;
-  }
-}
-
-@media screen and (max-width: 770px) {
-  .govuk-header__navigation-list {
-    display: none !important;
-  }
-
-  .govuk-header__navigation-list--open {
-    display: block !important;
-  }
+.text-align--left {
+  text-align: left,
 }
 
 // ===================
@@ -51,23 +25,6 @@ body {
 /* govuk-inset-text has a top margin that creates too much whitespace when combined with the h1 bottom-margin */
 .below-h1 .govuk-inset-text {
   margin-top: 0px;
-}
-
-.autocomplete-input .autocomplete__wrapper input {
-  border-color: $govuk-input-border-colour;
-}
-
-.autocomplete-input--error .autocomplete__wrapper input {
-  border-color: $govuk-error-colour;
-}
-
-.phoneNumber-input {
-  display: flex;
-  flex-direction: row;
-}
-
-.phoneNumber-input_country-code {
-  margin-right: 0.5rem;
 }
 
 .errorText {
@@ -113,6 +70,14 @@ body {
   text-decoration: none;
 }
 
+.govuk-pagination__next .govuk-button--text,
+.govuk-pagination__prev .govuk-button--text {
+  font-weight: 700;
+}
+.govuk-pagination__item--current .govuk-pagination__link {
+  color: govuk-colour("white");
+}
+
 .govuk-error-summary__list .govuk-button--text {
   color: $govuk-error-colour;
   font-weight: 700;
@@ -135,187 +100,3 @@ body {
   }
 }
 
-
-// ================================================
-// File field level error, additional styling
-// ================================================
-.govuk-inline {
-  display: inline
-}
-
-.govuk-border-bottom {
-  border-bottom: 1px solid #b1b4b6;
-  padding: 10px 20px 10px 0;
-  margin-bottom: 20px
-}
-
-.text-align--left {
-  text-align: left,
-}
-
-
-// ================================================
-// Task list patterns from 
-// https://github.com/alphagov/govuk-prototype-kit/blob/main/lib/assets/sass/patterns/_task-list.scss
-// ================================================
-
-.app-task-list {
-  list-style-type: none;
-  padding-left: 0;
-  margin-top: 0;
-  margin-bottom: 0;
-
-  @include govuk-media-query($from: tablet) {
-    min-width: 550px;
-  }
-}
-
-.app-task-list__section {
-  display: table;
-  @include govuk-font($size: 24, $weight: bold);
-}
-
-.app-task-list__section-number {
-  display: table-cell;
-
-  @include govuk-media-query($from: tablet) {
-    min-width: govuk-spacing(6);
-    padding-right: 0;
-  }
-}
-
-.app-task-list__items {
-  @include govuk-font($size: 19);
-  @include govuk-responsive-margin(9, "bottom");
-  list-style: none;
-  padding-left: 0;
-
-  @include govuk-media-query($from: tablet) {
-    padding-left: govuk-spacing(6);
-  }
-}
-
-.app-task-list__item {
-  border-bottom: 1px solid $govuk-border-colour;
-  margin-bottom: 0 !important;
-  padding-top: govuk-spacing(2);
-  padding-bottom: govuk-spacing(2);
-  @include govuk-clearfix;
-}
-
-.app-task-list__item:first-child {
-  border-top: 1px solid $govuk-border-colour;
-}
-
-.app-task-list__task-name {
-  display: block;
-
-  @include govuk-media-query($from: 450px) {
-    float: left;
-  }
-}
-
-// The `app-task-list__task-completed` class was previously used on the task
-// list for the completed tag (changed in 86c90ec) – it's still included here to
-// avoid breaking task lists in existing prototypes.
-.app-task-list__tag,
-.app-task-list__task-completed {
-  margin-top: govuk-spacing(2);
-  margin-bottom: govuk-spacing(1);
-
-  @include govuk-media-query($from: 450px) {
-    float: right;
-    margin-top: 0;
-    margin-bottom: 0;
-  }
-}
-
-// ================================================
-// Styles for displaying declarations on /your-voyages page
-// ================================================
-
-.your-voyages__flex {
-  display: flex;
-  flex-direction: column;
-}
-
-.light-grey__border {
-  border-bottom: 1px solid #b1b4b6;
-  margin: 0
-}
-
-.dark-grey__border {
-  border-bottom: solid 1px #0b0c0c;
-}
-
-.facet-tags__container {
-  display: block;
-  padding-bottom: 5px;
-}
-
-.facet-tags__group {
-  display: none;
-}
-
-.facet-tags__wrapper {
-  vertical-align: middle;
-  margin: 5px 0;
-  display: inline-block;
-}
-
-.facet-tag {
-  display: table-cell;
-  position: relative;
-  padding: 5px;
-  border: 1px solid #505a5f;
-  border-radius: 5px;
-  background-color: #f3f2f1;
-}
-
-.reported-voyages__text {
-  width: 100%;
-  margin-bottom: 10px;
-}
-
-.reported-voyages-margin--top {
-  margin-top: 15px;
-}
-
-.govuk-tag {
-  max-width: 100%;
-  overflow-wrap: break-word;
-}
-
-@media (min-width: 641px) {
-    .your-voyages__flex {
-      display: flex;
-      flex-direction: row;
-    }
-
-  .facet-tags__group {
-    background-color: #f3f2f1;
-    display: block;
-  }
-
-  .reported-voyages-margin--top {
-    margin-top: 0;
-  }
-
-  .reported-voyages__columns {
-    width: 20%;
-  }
-
-  .small-link-text {
-    font-size: 1rem;
-  }
-}
-
-// ================================================
-// Region image map
-// ================================================
-
-.region-map {
-  width: 100%;
-  max-width: 450px;
-  height: auto;
-}

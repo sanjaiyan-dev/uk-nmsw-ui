@@ -6,7 +6,7 @@ import {
   SIGN_IN_URL,
 } from '../../constants/AppUrlConstants';
 import useUserIsPermitted from '../../hooks/useUserIsPermitted';
-import { DownloadFile } from '../../utils/DownloadFile';
+import DownloadTemplates from '../../components/DownloadTemplates';
 
 const Landing = () => {
   const isAuthenticated = useUserIsPermitted();
@@ -21,19 +21,7 @@ const Landing = () => {
         <p className="govuk-body">Use this service to tell Border Force about your crew and passengers, each time your vessel will depart from or arrive in the UK.</p>
         <h2 className="govuk-heading-m">Before you start</h2>
         <p className="govuk-body">You can save a partially completed report. To complete a full report you’ll need:</p>
-        <ul className="govuk-list govuk-list--bullet">
-          <li>
-            <button className="govuk-button--text text-align--left" type="button" onClick={() => DownloadFile('assets/files/General declaration FAL 1.xlsx', 'General declaration FAL 1.xlsx')}>General Declaration (FAL 1) template (xlsx, 31kb)</button>
-          </li>
-          <li>
-            {'passport or other travel document details for all crew entered on a '}
-            <button className="govuk-button--text text-align--left" type="button" onClick={() => DownloadFile('assets/files/Crew details including supernumeraries FAL 5.xlsx', 'Crew details including supernumeraries FAL 5.xlsx')}>Crew details including supernumeraries (FAL 5) template (xlsx, 118kb)</button>
-          </li>
-          <li>
-            {'passport or travel document details for all passengers entered on a '}
-            <button className="govuk-button--text text-align--left" type="button" onClick={() => DownloadFile('assets/files/Passenger details FAL 6.xlsx', 'Passenger details FAL 6.xlsx')}>Passenger details (FAL 6) template (xlsx, 90kb)</button>
-          </li>
-        </ul>
+        <DownloadTemplates isLandingPage />
         <div className="govuk-inset-text">
           <p className="govuk-body">
             You do not need to submit any FAL forms that you send to other UK authorities, such as the Consolidated European Reporting System, CERS.

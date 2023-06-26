@@ -21,7 +21,7 @@ import {
   REGISTER_EMAIL_URL,
   REGISTER_EMAIL_CHECK_URL,
 } from '../../constants/AppUrlConstants';
-import DisplayForm from '../../components/DisplayForm';
+import DisplayForm from '../../components/Forms/DisplayForm';
 import Auth from '../../utils/Auth';
 
 const SupportingText = () => (

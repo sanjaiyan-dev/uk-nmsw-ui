@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import DisplayForm from '../../../components/DisplayForm';
+import DisplayForm from '../../../components/Forms/DisplayForm';
 import {
   AUTOCOMPLETE_DIALCODE,
   FIELD_AUTOCOMPLETE,
@@ -16,6 +16,7 @@ import {
 } from '../../../constants/AppUrlConstants';
 import { countries } from '../../../constants/CountryData';
 import { MergePhoneNumberFields } from '../../../utils/FormatPhoneNumber';
+import '../../../assets/css/autocomplete.scss';
 
 const ChangeYourDetails = () => {
   const navigate = useNavigate();

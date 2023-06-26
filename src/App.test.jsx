@@ -102,6 +102,7 @@ describe('App tests', () => {
     expect(screen.queryByText('Back')).not.toBeInTheDocument();
   });
 
+  // We are not linking to this page from the UI in closed beta
   // it('should render a back button on /email-address page', async () => {
   //   const user = userEvent.setup();
   //   render(<MemoryRouter><App /></MemoryRouter>);

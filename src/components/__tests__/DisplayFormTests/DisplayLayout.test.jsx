@@ -8,7 +8,7 @@ import {
   FIELD_TEXT,
   SINGLE_PAGE_FORM,
 } from '../../../constants/AppConstants';
-import DisplayForm from '../../DisplayForm';
+import DisplayForm from '../../Forms/DisplayForm';
 
 describe('Display Form, display layout tests', () => {
   const handleSubmit = jest.fn();
@@ -145,7 +145,7 @@ describe('Display Form, display layout tests', () => {
         />
       </MemoryRouter>,
     );
-    expect((screen.getByTestId('submit-button')).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Submit test button</button>');
+    expect((screen.getByTestId('submit-button')).outerHTML).toEqual('<button type="submit" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Submit test button</button>');
   });
 
   it('should render a details component with an input', () => {

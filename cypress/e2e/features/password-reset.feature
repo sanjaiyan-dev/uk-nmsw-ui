@@ -52,12 +52,12 @@ Feature: User able to reset password
     Then the user is redirected to request-new-password-link
     And I click `Request New Link` button
     Then I am taken to check your email page
-    When I click back navigation button
+    When I click on not received an email
     Then I click change the email sent link
     And I change to different email previously registered
     And I click `Request New Link` button
     Then I am taken to check your email page
-    When I click back navigation button
+    When I click on not received an email
     Then I click change the email sent link
     And I enter the email in invalid format
     Then I click `Request New Link` button

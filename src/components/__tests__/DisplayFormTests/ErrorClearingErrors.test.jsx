@@ -9,7 +9,7 @@ import {
   VALIDATE_CONDITIONAL,
   VALIDATE_REQUIRED,
 } from '../../../constants/AppConstants';
-import DisplayForm from '../../DisplayForm';
+import DisplayForm from '../../Forms/DisplayForm';
 /*
  * These tests check if an error is triggered that it is cleared
  * when the user interacts with the erroring field.

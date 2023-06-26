@@ -71,7 +71,7 @@ const errorInvalidCharacters = [
 ]
 
 const errorBadImoLocode = [
-  {cellNumber: 'D3', error: 'Enter 7 numbers for the IMO number'},
+  {cellNumber: 'D3', error: 'Imo number must be 15 characters or less'},
   {
     cellNumber: 'B5',
     error: 'Arrival port unlocode should be a LOCODE that contains 5 letters, for example NL RTM or NLRTM. If no LOCODE exists for the location, enter NOXXX'
@@ -88,6 +88,10 @@ const errorBadImoLocode = [
     cellNumber: 'F7',
     error: 'Next port unlocode should be a LOCODE that contains 5 letters, for example NL RTM or NLRTM. If no LOCODE exists for the location, enter NOXXX'
   },
+]
+
+const errorImoWithHyphen =[
+  {cellNumber: 'D3', error: `Enter the imo number using only English letters, numbers or spaces. The following found characters are not allowed: '-'`},
 ]
 
 const errorInvalidArrivalFields = [
@@ -131,13 +135,6 @@ const errorDepartureDateInFuture = [
     error: 'Enter a departure date from the UK that is not more than 24 hours in the future'
   },
 ]
-const errorImoInvalidCharacters = [
-  {cellNumber: 'D3', error: 'Enter 7 numbers for the IMO number'},
-]
-
-const errorImoTooShort = [
-  {cellNumber: 'D3', error: 'Enter 7 numbers for the IMO number'},
-]
 
 const errBadDateTime = [
   {cellNumber: 'D5', error: 'arrival date must be in the dd/mm/yyyy format, for example, 22/02/2002'},
@@ -174,6 +171,9 @@ Then('I am shown error messages to help me fix them for {string}', (errorType) =
     case 'bad Imo-Locode':
       errList = errorBadImoLocode
       break;
+    case 'imo-with-hyphen':
+      errList = errorImoWithHyphen
+      break;
     case 'invalid arrival-fields':
       errList = errorInvalidArrivalFields
       break;
@@ -182,12 +182,6 @@ Then('I am shown error messages to help me fix them for {string}', (errorType) =
       break;
     case 'departure-date in future':
       errList = errorDepartureDateInFuture
-      break;
-    case 'imo-Invalid characters':
-      errList = errorImoInvalidCharacters
-      break;
-    case 'imo-too short':
-      errList = errorImoTooShort
       break;
     case 'bad-dateTime':
       errList = errBadDateTime

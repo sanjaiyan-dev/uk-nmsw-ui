@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import DisplayForm from '../../../components/DisplayForm';
+import DisplayForm from '../../../components/Forms/DisplayForm';
 import {
   DISPLAY_GROUPED,
   FIELD_RADIO,

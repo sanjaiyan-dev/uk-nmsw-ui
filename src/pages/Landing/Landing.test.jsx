@@ -68,6 +68,7 @@ describe('Landing page tests', () => {
     expect(DownloadFile).toHaveBeenCalledWith('assets/files/Passenger details FAL 6.xlsx', 'Passenger details FAL 6.xlsx');
   });
 
+  // We will not show the link during closed beta testing
   // it('should include a link to create an account', async () => {
   //   render(<MemoryRouter><Landing /></MemoryRouter>);
   //   // eslint-disable-next-line max-len

@@ -30,7 +30,6 @@ export const CONTACT_US_URL = '/contact-us';
 
 // Voyage pages
 export const URL_DECLARATIONID_IDENTIFIER = 'report';
-export const FORM_CONFIRMATION_URL = '/report-voyage/confirmation';
 export const VOYAGE_CHECK_YOUR_ANSWERS = '/report-voyage/check-your-answers';
 export const VOYAGE_CREW_UPLOAD_URL = '/report-voyage/upload-crew-details';
 export const VOYAGE_CREW_CONFIRMATION_URL = '/report-voyage/crew-details-uploaded';
@@ -70,22 +69,24 @@ export const ERROR_ACCOUNT_ALREADY_ACTIVE_URL = '/create-account/account-already
 export const TOP_LEVEL_PAGES = [
   ACCESSIBILITY_URL,
   COOKIE_URL,
-  YOUR_VOYAGES_URL,
+  CONTACT_US_URL,
   LANDING_URL,
+  LOGGED_IN_HELP,
   PRIVACY_URL,
   TEMPLATE_PAGE_URL,
   YOUR_DETAILS_PAGE_URL,
+  YOUR_VOYAGES_URL,
 ];
 
 // Pages without back links
 export const NO_BACK_LINKS = [
   ...TOP_LEVEL_PAGES,
-  FORM_CONFIRMATION_URL,
   GENERIC_CONFIRMATION_URL,
   MESSAGE_URL,
   REGISTER_CONFIRMATION_URL,
   REGISTER_DETAILS_URL,
   REGISTER_EMAIL_CHECK_URL,
   REGISTER_EMAIL_VERIFIED_URL,
+  REQUEST_PASSWORD_RESET_CONFIRMATION_URL,
   SIGN_IN_URL,
 ];

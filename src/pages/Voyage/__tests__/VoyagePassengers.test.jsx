@@ -45,7 +45,7 @@ describe('Voyage passengers page', () => {
     expect(screen.getByRole('heading', { name: 'Is the ship carrying any passengers?' })).toBeInTheDocument();
     expect(screen.getByRole('radio', { name: 'Yes' }).outerHTML).toEqual('<input class="govuk-radios__input" id="passengers-input[0]" name="passengers" type="radio" value="passengersYes">');
     expect(screen.getByRole('radio', { name: 'No' }).outerHTML).toEqual('<input class="govuk-radios__input" id="passengers-input[1]" name="passengers" type="radio" value="passengersNo">');
-    expect(screen.getByRole('button', { name: 'Save and continue' }).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Save and continue</button>');
+    expect(screen.getByRole('button', { name: 'Save and continue' }).outerHTML).toEqual('<button type="submit" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Save and continue</button>');
   });
 
   it('should render an error without declarationId', async () => {

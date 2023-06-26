@@ -11,7 +11,7 @@ import {
   VALIDATE_MIN_LENGTH,
   VALIDATE_REQUIRED,
 } from '../../../constants/AppConstants';
-import DisplayForm from '../../DisplayForm';
+import DisplayForm from '../../Forms/DisplayForm';
 /*
  * These tests check that fields with special validation rules
  * error when those rules are not met and don't
