@@ -34,6 +34,7 @@ class declarationPage {
 
   checkVoyageDetailsStatus(status) {
     cy.contains('All report types');
+    cy.wait(3000);
     cy.get('.small-link-text').each(($ele) => {
       cy.wrap($ele).invoke('attr', 'href').then(declarationLink => {
         cy.get('@declarationId').then(decId => {
@@ -69,7 +70,7 @@ class declarationPage {
         })
         break;
     }
-    cy.wait(5000);
+    cy.wait(30000);
   }
 
   bannerCancelReport() {
@@ -90,6 +91,7 @@ class declarationPage {
   }
 
   verifyCrownDependencyVoyage(status) {
+    cy.wait(3000);
     cy.get('.small-link-text').each(($ele) => {
       cy.wrap($ele).invoke('attr', 'href').then(declarationLink => {
         cy.get('@declarationId').then(decId => {
@@ -125,7 +127,7 @@ class declarationPage {
         })
         break;
     }
-    cy.wait(5000);
+    cy.wait(30000);
   }
 }
 
