@@ -38,6 +38,7 @@ cat tmp-val.txt | tr -d '\n' | sed 's/\s\+- name: /\n/g; s/\s\+value: /=/g' > $O
 rm tmp-val.txt
 
 # Remove any blank lines at start of file
+unset IFS
 sed -i '/^$/d' $OUTPUT_FILE
 
 # Append blank line to file
