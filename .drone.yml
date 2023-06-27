@@ -360,7 +360,7 @@ steps:
     CYPRESS_MAIL_API_KEY:
       from_secret: DEV_NMSW_MAILSLURP_API_KEY
   commands:
-  - /bin/bash -c "./extract-env-vars.sh ./helm/dev.yaml cypress-env.sh"
+  - ./extract-env-vars.sh ./helm/dev.yaml cypress-env.sh
   - cat ./cypress-env.sh
   - export $(cat ./cypress-env.sh | xargs)
   - >-
