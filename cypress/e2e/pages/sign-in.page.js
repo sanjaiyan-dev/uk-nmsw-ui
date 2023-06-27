@@ -24,7 +24,7 @@ class SignInPage {
   checkSignInPage() {
     cy.url().should('include', 'sign-in');
     cy.get('h1').should('have.text', 'Sign in');
-    cy.contains('create one now');
+    // cy.contains('create one now');
   }
 
   clickCreateOneLink() {

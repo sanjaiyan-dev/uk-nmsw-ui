@@ -8,7 +8,7 @@ Feature: Task details page after file uploads
     When I click report a voyage
     Then I am taken to upload-general-declaration page
 
-  @regression
+  @regression @deleteDeclaration
   Scenario: I can see task details page after fal1 gets uploaded successfully
     When I have uploaded 'Fal1-Files''General declaration FAL 1-Positive-test.xlsx'
     When I click check for errors
@@ -75,6 +75,7 @@ Feature: Task details page after file uploads
     When I have entered a correct email address and password and sign in
     Then I am taken to task details page
 
+  @deleteDeclaration
   Scenario: Error messages shown when user uploads Fal5 and 6 with same same document number and country
     When I have uploaded 'Fal1-Files''General declaration FAL 1 - goodData.xlsx'
     When I click check for errors

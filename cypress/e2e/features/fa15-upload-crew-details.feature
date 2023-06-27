@@ -15,7 +15,7 @@ Feature: Upload Crew details (FAL5) file
     When I click crew details link
     Then I am taken to upload-crew-details page
 
-  @regression
+  @regression @deleteDeclaration
   Scenario: User should be able to upload fal5-crew details file for voyage report
     When I have uploaded 'Fal5-Files''Crew details including supernumeraries FAL 5-Positive-Test.xlsx'
     When I click check for errors
