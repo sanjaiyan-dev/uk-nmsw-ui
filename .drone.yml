@@ -368,6 +368,10 @@ steps:
     curl -O https://github.com/cucumber/json-formatter/releases/download/v19.0.0/cucumber-json-formatter-linux-amd64;
     mv ./cucumber-json-formatter-linux-amd64 /usr/local/bin/cucumber-json-formatter;
     chmod +x /usr/local/bin/cucumber-json-formatter
+  - >-
+    echo -e "Chrome version:  $(google-chrome --version) \n" \
+    "Firefox version: $(firefox --version) \n" \
+    "Edge version:    $(edge --version) \n" \
   - ./drone-cypress-test-script.sh dev
   when:
     branch:
