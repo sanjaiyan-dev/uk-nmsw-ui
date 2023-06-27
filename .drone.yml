@@ -369,7 +369,7 @@ steps:
     mv ./cucumber-json-formatter-linux-amd64 /usr/local/bin/cucumber-json-formatter;
     chmod +x /usr/local/bin/cucumber-json-formatter
   - >-
-    echo -en "Chrome version:  $(google-chrome --version 2>/dev/null || echo "") \n" \
+    echo "Chrome version:  $(google-chrome --version 2>/dev/null || echo "") \n" \
     "Firefox version: $(firefox --version 2>/dev/null || echo "") \n" \
     "Edge version:    $(edge --version 2>/dev/null || echo "") \n" 
   - ./drone-cypress-test-script.sh dev
