@@ -1,6 +1,5 @@
 #!/bin/sh
 
-IFS=$'\n'
 VAL_FILE=$1
 OUTPUT_FILE=$2
 
@@ -26,6 +25,7 @@ fi
 
 echo "Extracting environment variables from Helm chart variables file."
 
+IFS=$'\n'
 # Copy everything from 'application:' until 'proxy:' (EXCLUSIVE)
 awk '/application:/{flag=1; next} /proxy:/{flag=0} flag' $VAL_FILE > tmp-val.txt
 
