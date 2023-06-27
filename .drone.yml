@@ -364,7 +364,7 @@ steps:
   - cat ./cypress-env.sh
   - export $(cat ./cypress-env.sh | xargs)
   - >-
-    apt-get update && apt-get install -y procps curl;
+    apt-get update && apt-get install -y curl;
     curl -O https://github.com/cucumber/json-formatter/releases/download/v19.0.0/cucumber-json-formatter-linux-amd64;
     mv ./cucumber-json-formatter-linux-amd64 /usr/local/bin/cucumber-json-formatter;
     chmod +x /usr/local/bin/cucumber-json-formatter
