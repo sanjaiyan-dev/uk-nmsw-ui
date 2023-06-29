@@ -15,7 +15,7 @@ Feature: Upload supporting documents
     When I click supporting documents link
     Then I am taken to upload supporting documents page
 
-  @regression
+  @regression @deleteDeclaration
   Scenario: User should be able to upload supporting documents for voyage report
     #upload mare than maximum allowed files
     When I add more files than limited number of supporting documents

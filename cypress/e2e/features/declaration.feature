@@ -42,7 +42,7 @@ Feature: Submit or cancel the declaration request
     Then I am taken to Check Your Answers page
     And the details from my FAL 1 form are displayed on CYA page
 
-  @regression
+  @regression @deleteDeclaration
   Scenario: User can able to cancel a declaration that has not yet been submitted
     When I click Your voyage tab
     Then I am taken to your-voyages page
