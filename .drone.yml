@@ -355,7 +355,7 @@ platform:
 steps:
 - name: dev_cypress_test
   pull: if-not-exists
-  image: quay.io/ukhomeofficedigital/cop-cypress:12.2.0-node18
+  image: cypress/included:latest
   environment:
     CYPRESS_MAIL_API_KEY:
       from_secret: DEV_NMSW_MAILSLURP_API_KEY
@@ -364,10 +364,14 @@ steps:
   - cat ./cypress-env.sh
   - export $(cat ./cypress-env.sh | xargs)
   - >-
-    apt-get update && apt-get install -y procps curl;
+    apt-get update && apt-get install -y curl;
     curl -O https://github.com/cucumber/json-formatter/releases/download/v19.0.0/cucumber-json-formatter-linux-amd64;
     mv ./cucumber-json-formatter-linux-amd64 /usr/local/bin/cucumber-json-formatter;
     chmod +x /usr/local/bin/cucumber-json-formatter
+  - >-
+    echo "Chrome version:  $(google-chrome --version 2>/dev/null || echo "")\n"\
+    "Firefox version: $(firefox --version 2>/dev/null || echo "")\n"\
+    "Edge version:    $(edge --version 2>/dev/null || echo "")\n"
   - ./drone-cypress-test-script.sh dev
   when:
     branch:

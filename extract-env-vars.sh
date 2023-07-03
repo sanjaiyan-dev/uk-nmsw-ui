@@ -1,6 +1,5 @@
 #!/bin/sh
 
-IFS=$'\n'
 VAL_FILE=$1
 OUTPUT_FILE=$2
 
@@ -15,7 +14,7 @@ printHelp()
 
 if [ ! -s $VAL_FILE ]; then
 	echo "Please enter the correct number of arguments."
-	echo "Helm values file \"${VAL_FILE}\" could not be opened."
+	echo "Helm values file \"$VAL_FILE\" could not be opened."
 	printHelp
 	exit 1
 elif [ -z $OUTPUT_FILE ]; then
@@ -26,6 +25,7 @@ fi
 
 echo "Extracting environment variables from Helm chart variables file."
 
+IFS=$'\n'
 # Copy everything from 'application:' until 'proxy:' (EXCLUSIVE)
 awk '/application:/{flag=1; next} /proxy:/{flag=0} flag' $VAL_FILE > tmp-val.txt
 
@@ -34,18 +34,19 @@ awk -v nlines_after=2 '/secretKeyRef:/ {for (i=0; i<nlines_after; i++) {getline}
 awk -v nlines_before=1 '/valueFrom:/{for (i=0; i<nlines_before; i++) {getline}; next} 1' | tac > new-tmp.txt
 
 mv new-tmp.txt tmp-val.txt
-cat tmp-val.txt | tr -d '\n' | sed 's/\s\+- name: /\n/g; s/\s\+value: /=/g' > ${OUTPUT_FILE}
+cat tmp-val.txt | tr -d '\n' | sed 's/\s\+- name: /\n/g; s/\s\+value: /=/g' > $OUTPUT_FILE
 rm tmp-val.txt
 
 # Remove any blank lines at start of file
-sed -i '/^$/d' ${OUTPUT_FILE}
+unset IFS
+sed -i '/^$/d' $OUTPUT_FILE
 
 # Append blank line to file
-echo >> ${OUTPUT_FILE}
+echo >> $OUTPUT_FILE
 
 if [ $? -eq 0 ]; then
-	echo "Successfully created \"./${OUTPUT_FILE}\""
+	echo "Successfully created \"./$OUTPUT_FILE\""
 	exit 0
 fi
-echo "Failed to create \"./${OUTPUT_FILE}\""
+echo "Failed to create \"./$OUTPUT_FILE\""
 exit 1
