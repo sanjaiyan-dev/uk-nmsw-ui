@@ -15,7 +15,7 @@ export const GROUP_ENDPOINT = `${apiUrl}/group`;
 export const USER_ENDPOINT = `${apiUrl}/user`;
 
 // Report a voyage
-export const CREATE_VOYAGE_ENDPOINT = `${apiUrl}/user/declaration`;
+export const CREATE_VOYAGE_ENDPOINT = `${apiUrl}/declaration`;
 export const ENDPOINT_DECLARATION_PATH = '/declaration';
 export const ENDPOINT_FILE_UPLOAD_GENERAL_DECLARATION_PATH = '/upload-fal1';
 export const ENDPOINT_FILE_UPLOAD_CREW_DETAILS_PATH = '/upload-fal5';
