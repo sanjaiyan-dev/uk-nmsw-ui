@@ -2,7 +2,7 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PAGINATION_PAGE_LABEL } from '../../constants/AppConstants';
+import { PAGINATION_DEFAULT_PAGE_START_NUMBER, PAGINATION_PAGE_LABEL } from '../../constants/AppConstants';
 import {
   API_URL,
   CREATE_VOYAGE_ENDPOINT,
@@ -12,9 +12,9 @@ import { YOUR_VOYAGES_URL } from '../../constants/AppUrlConstants';
 import Auth from '../Auth';
 import handleAuthErrors from './handleAuthErrors';
 
-const useGetAlLDeclarations = ({ pageNumber }) => {
+const useGetAlLDeclarations = ({ pageStartNumber }) => {
   const navigate = useNavigate();
-  const pageOnLoad = parseInt(sessionStorage.getItem(PAGINATION_PAGE_LABEL), 10) || 1;
+  const pageOnLoad = parseInt(sessionStorage.getItem(PAGINATION_PAGE_LABEL), 10) || PAGINATION_DEFAULT_PAGE_START_NUMBER;
   const [isLoading, setIsLoading] = useState(false);
   const [apiData, setApiData] = useState();
   const [paginationData, setPaginationData] = useState();
@@ -40,12 +40,12 @@ const useGetAlLDeclarations = ({ pageNumber }) => {
   useEffect(() => {
     const controller = new AbortController();
     const { signal } = controller;
-    const pageToUse = pageNumber || pageOnLoad;
+    const pageToUse = pageStartNumber || pageOnLoad;
 
     setIsLoading(true);
     const fetchData = async () => {
       try {
-        const resp = await axios.get(`${CREATE_VOYAGE_ENDPOINT}?page=${pageToUse}`, {
+        const resp = await axios.get(`${CREATE_VOYAGE_ENDPOINT}?page_start=${pageToUse}`, {
           signal,
           headers: { Authorization: `Bearer ${Auth.retrieveToken()}` },
         });
@@ -76,7 +76,7 @@ const useGetAlLDeclarations = ({ pageNumber }) => {
 
     fetchData();
     return () => { controller.abort(); };
-  }, [pageNumber]);
+  }, [pageStartNumber]);
 
   return {
     apiData, error, isLoading, paginationData,

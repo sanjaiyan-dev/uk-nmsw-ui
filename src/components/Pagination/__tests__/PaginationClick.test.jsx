@@ -57,7 +57,7 @@ describe('Pagination clicks', () => {
 
   it('should render the pagination section of the page', async () => {
     mockAxios
-      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=1`)
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page_start=0`)
       .reply(200, mockedResponse);
     render(<MemoryRouter><YourVoyages /></MemoryRouter>);
     expect(await screen.findByText(YOUR_VOYAGES_PAGE_NAME)).toBeInTheDocument();
@@ -68,7 +68,7 @@ describe('Pagination clicks', () => {
   it('should go to the next page on next click', async () => {
     const user = userEvent.setup();
     mockAxios
-      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=1`)
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page_start=0`)
       .reply(200, mockedResponse);
     render(<MemoryRouter><YourVoyages /></MemoryRouter>);
     expect(await screen.findByText(YOUR_VOYAGES_PAGE_NAME)).toBeInTheDocument();
@@ -86,7 +86,7 @@ describe('Pagination clicks', () => {
     window.sessionStorage.setItem('Page', 5);
     const user = userEvent.setup();
     mockAxios
-      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=5`)
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page_start=5`)
       .reply(200, mockedResponse);
     render(<MemoryRouter><YourVoyages /></MemoryRouter>);
     expect(await screen.findByText(YOUR_VOYAGES_PAGE_NAME)).toBeInTheDocument();
@@ -109,7 +109,7 @@ describe('Pagination clicks', () => {
     window.sessionStorage.setItem('Page', 7);
     const user = userEvent.setup();
     mockAxios
-      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=7`)
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page_start=7`)
       .reply(200, mockedResponse);
     render(<MemoryRouter><YourVoyages /></MemoryRouter>);
     expect(await screen.findByText(YOUR_VOYAGES_PAGE_NAME)).toBeInTheDocument();

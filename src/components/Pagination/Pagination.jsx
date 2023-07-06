@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  ELLIPSIS,
+  ELLIPSIS, PAGINATION_DEFAULT_PAGE_START_NUMBER,
   PAGINATION_NEXT_LABEL,
   PAGINATION_PAGE_LABEL,
   PAGINATION_PREVIOUS_LABEL,
@@ -11,17 +11,18 @@ import calculatePaginationNextPageNumber from './calculatePaginationNextPageNumb
 import createPaginationArray from './createPaginationArray';
 
 const Pagination = ({
-  maxPageNumber,
+  maxPageStartNumber,
   updatePaginationPageNumber,
-  setPageNumber,
+  resultPerPage,
+  setPageStartNumber,
 }) => {
-  const pageOnLoad = parseInt(sessionStorage.getItem(PAGINATION_PAGE_LABEL), 10) || 1;
+  const pageOnLoad = parseInt(sessionStorage.getItem(PAGINATION_PAGE_LABEL), 10) || PAGINATION_DEFAULT_PAGE_START_NUMBER;
   const [currentPage, setCurrentPage] = useState();
   const [pages, setPages] = useState();
 
   const createPagination = async () => {
     const nextPageNumber = currentPage || pageOnLoad;
-    const pageArray = await createPaginationArray({ selectedPage: nextPageNumber, totalPages: maxPageNumber });
+    const pageArray = createPaginationArray({ selectedPage: nextPageNumber, totalPages: maxPageStartNumber, resultPerPage });
 
     setCurrentPage(nextPageNumber);
     setPages(pageArray);
@@ -29,9 +30,11 @@ const Pagination = ({
 
   const handlePaginationClick = async (e, { clickType, clickedOnPageNumber }) => {
     e.preventDefault();
-    const calculatedNextPage = await calculatePaginationNextPageNumber({ clickType, clickedOnPageNumber, currentPage });
+    const calculatedNextPage = await calculatePaginationNextPageNumber({
+      clickType, clickedOnPageNumber, currentPage, resultPerPage,
+    });
 
-    setPageNumber(calculatedNextPage);
+    setPageStartNumber(calculatedNextPage);
     setCurrentPage(calculatedNextPage);
     sessionStorage.setItem(PAGINATION_PAGE_LABEL, calculatedNextPage);
 
@@ -39,15 +42,15 @@ const Pagination = ({
   };
 
   useEffect(() => {
-    if (updatePaginationPageNumber) {
-      createPagination();
-    }
+    createPagination();
   }, [updatePaginationPageNumber]);
 
-  if (!pages) { return null; }
+  console.log('currentPage ==> ', currentPage, 'maxPageStartNumber ==> ', maxPageStartNumber);
+
+  if (!pages || pages.length <= 1) { return null; }
   return (
     <nav className="govuk-pagination" role="navigation" aria-label="results">
-      {currentPage !== 1
+      {currentPage !== PAGINATION_DEFAULT_PAGE_START_NUMBER
         && (
           <div className="govuk-pagination__prev">
             <button
@@ -64,16 +67,16 @@ const Pagination = ({
         )}
       <ul className="govuk-pagination__list">
         {pages.map((page) => (
-          <React.Fragment key={page.pageNumber}>
+          <React.Fragment key={page.displayablePageNumber}>
             {!page.ellipses
               && (
                 <li className={page.isCurrentPage ? 'govuk-pagination__item govuk-pagination__item--current' : 'govuk-pagination__item'}>
                   <button
                     type="button"
                     className="govuk-link govuk-button--text govuk-pagination__link"
-                    onClick={(e) => handlePaginationClick(e, { clickType: PAGINATION_PAGE_LABEL, clickedOnPageNumber: page.pageNumber })}
+                    onClick={(e) => handlePaginationClick(e, { clickType: PAGINATION_PAGE_LABEL, clickedOnPageNumber: page.pageStartNumber })}
                   >
-                    {page.pageNumber}
+                    {page.displayablePageNumber}
                   </button>
                 </li>
               )}
@@ -84,7 +87,7 @@ const Pagination = ({
           </React.Fragment>
         ))}
       </ul>
-      {currentPage !== maxPageNumber
+      {currentPage !== maxPageStartNumber
         && (
           <div className="govuk-pagination__next">
             <button
@@ -106,7 +109,8 @@ const Pagination = ({
 export default Pagination;
 
 Pagination.propTypes = {
-  maxPageNumber: PropTypes.number.isRequired,
+  maxPageStartNumber: PropTypes.number.isRequired,
   updatePaginationPageNumber: PropTypes.number.isRequired,
-  setPageNumber: PropTypes.func.isRequired,
+  resultPerPage: PropTypes.number.isRequired,
+  setPageStartNumber: PropTypes.func.isRequired,
 };
