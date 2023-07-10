@@ -39,7 +39,9 @@ describe('createPaginationArray', () => {
       {
         displayablePageNumber: 3, pageStartNumber: 4, isCurrentPage: false,
       },
-      { displayablePageNumber: 4, ellipses : true, pageStartNumber: 6, isCurrentPage: false },
+      {
+        displayablePageNumber: 4, ellipses: true, pageStartNumber: 6, isCurrentPage: false,
+      },
       {
         displayablePageNumber: 6, pageStartNumber: 10, isCurrentPage: false,
       },

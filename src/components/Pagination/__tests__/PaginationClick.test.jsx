@@ -86,19 +86,25 @@ describe('Pagination clicks', () => {
     window.sessionStorage.setItem('Page', '4');
     const user = userEvent.setup();
     mockAxios
-        .onGet(`${CREATE_VOYAGE_ENDPOINT}?page_start=4`)
-        .reply(200, {...mockedResponse, pagination: {
-            per_page: 1,
-            current_position: 3,
-            total_records: 7,
-          },});
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page_start=4`)
+      .reply(200, {
+        ...mockedResponse,
+        pagination: {
+          per_page: 1,
+          current_position: 3,
+          total_records: 7,
+        },
+      });
     mockAxios
-        .onGet(`${CREATE_VOYAGE_ENDPOINT}?page_start=3`)
-        .reply(200, {...mockedResponse, pagination: {
-            per_page: 1,
-            current_position: 2,
-            total_records: 7,
-          },});
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page_start=3`)
+      .reply(200, {
+        ...mockedResponse,
+        pagination: {
+          per_page: 1,
+          current_position: 2,
+          total_records: 7,
+        },
+      });
 
     render(<MemoryRouter><YourVoyages /></MemoryRouter>);
     expect(await screen.findByText(YOUR_VOYAGES_PAGE_NAME)).toBeInTheDocument();
@@ -121,19 +127,25 @@ describe('Pagination clicks', () => {
     window.sessionStorage.setItem('Page', '6');
     const user = userEvent.setup();
     mockAxios
-        .onGet(`${CREATE_VOYAGE_ENDPOINT}?page_start=6`)
-        .reply(200, {...mockedResponse, pagination: {
-            per_page: 1,
-            current_position: 5,
-            total_records: 7,
-          },});
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page_start=6`)
+      .reply(200, {
+        ...mockedResponse,
+        pagination: {
+          per_page: 1,
+          current_position: 5,
+          total_records: 7,
+        },
+      });
     mockAxios
-        .onGet(`${CREATE_VOYAGE_ENDPOINT}?page_start=5`)
-        .reply(200, {...mockedResponse, pagination: {
-            per_page: 1,
-            current_position: 4,
-            total_records: 7,
-          },});
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page_start=5`)
+      .reply(200, {
+        ...mockedResponse,
+        pagination: {
+          per_page: 1,
+          current_position: 4,
+          total_records: 7,
+        },
+      });
 
     render(<MemoryRouter><YourVoyages /></MemoryRouter>);
     expect(await screen.findByText(YOUR_VOYAGES_PAGE_NAME)).toBeInTheDocument();
