@@ -9,20 +9,27 @@ import {
 import { scrollToTop } from '../../utils/ScrollToElement';
 import calculatePaginationNextPageNumber from './calculatePaginationNextPageNumber';
 import createPaginationArray from './createPaginationArray';
+import calculateMaxPageStartNumber from './calculateMaxPageStartNumber';
 
 const Pagination = ({
-  maxPageStartNumber,
+  paginationData,
   updatePaginationPageNumber,
-  resultPerPage,
   setPageStartNumber,
 }) => {
   const pageOnLoad = parseInt(sessionStorage.getItem(PAGINATION_PAGE_LABEL), 10) || PAGINATION_DEFAULT_PAGE_START_NUMBER;
+  const resultPerPage = paginationData?.per_page;
+  const maxPageStartNumber = calculateMaxPageStartNumber(paginationData);
+
   const [currentPage, setCurrentPage] = useState();
   const [pages, setPages] = useState();
 
   const createPagination = async () => {
     const nextPageNumber = currentPage || pageOnLoad;
-    const pageArray = createPaginationArray({ selectedPage: nextPageNumber, totalPages: maxPageStartNumber, resultPerPage });
+    const pageArray = createPaginationArray({
+      selectedPage: nextPageNumber,
+      totalPages: maxPageStartNumber,
+      resultPerPage,
+    });
 
     setCurrentPage(nextPageNumber);
     setPages(pageArray);
@@ -45,9 +52,7 @@ const Pagination = ({
     createPagination();
   }, [updatePaginationPageNumber]);
 
-  console.log('currentPage ==> ', currentPage, 'maxPageStartNumber ==> ', maxPageStartNumber);
-
-  if (!pages || pages.length <= 1) { return null; }
+  if (!pages || pages.length <= 0) { return null; }
   return (
     <nav className="govuk-pagination" role="navigation" aria-label="results">
       {currentPage !== PAGINATION_DEFAULT_PAGE_START_NUMBER
@@ -87,7 +92,7 @@ const Pagination = ({
           </React.Fragment>
         ))}
       </ul>
-      {currentPage !== maxPageStartNumber
+      {currentPage < maxPageStartNumber
         && (
           <div className="govuk-pagination__next">
             <button
@@ -109,8 +114,10 @@ const Pagination = ({
 export default Pagination;
 
 Pagination.propTypes = {
-  maxPageStartNumber: PropTypes.number.isRequired,
+  paginationData: PropTypes.shape({
+    per_page: PropTypes.number.isRequired,
+    total_records: PropTypes.number.isRequired,
+  }),
   updatePaginationPageNumber: PropTypes.number.isRequired,
-  resultPerPage: PropTypes.number.isRequired,
   setPageStartNumber: PropTypes.func.isRequired,
 };

@@ -27,10 +27,8 @@ const YourVoyages = () => {
   const [notification, setNotification] = useState({});
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [maxPageStartNumber, setMaxPageStartNumber] = useState();
   const [pageStartNumber, setPageStartNumber] = useState();
   const [totalNumberVoyages, setTotalNumberVoyages] = useState();
-  const [resultPerPage, setResultPerPage] = useState();
   const [voyageData, setVoyageData] = useState();
   const apiResponse = useGetAllDeclarations({ pageStartNumber });
 
@@ -57,11 +55,6 @@ const YourVoyages = () => {
     }
   };
 
-  const calculateMaxPageStartNumber = (paginationData) => {
-    const { total_records: totalRecords = 0, per_page: perPage = 0 } = paginationData || {};
-    return Math.max(totalRecords - perPage, 0);
-  };
-
   useEffect(() => {
     if (state?.confirmationBanner?.message) {
       setNotification({
@@ -77,9 +70,7 @@ const YourVoyages = () => {
     setIsLoading(true);
     if (apiResponse?.apiData) {
       setVoyageData(apiResponse.apiData);
-      setMaxPageStartNumber(calculateMaxPageStartNumber(apiResponse.paginationData));
       setTotalNumberVoyages(apiResponse.paginationData?.total_records);
-      setResultPerPage(apiResponse.paginationData?.per_page);
       setIsLoading(apiResponse.isLoading);
     } else if (apiResponse?.error) {
       setIsError(true);
@@ -143,10 +134,9 @@ const YourVoyages = () => {
             totalVoyages={totalNumberVoyages}
           />
           <Pagination
-            maxPageStartNumber={maxPageStartNumber}
             updatePaginationPageNumber={pageStartNumber || PAGINATION_DEFAULT_PAGE_START_NUMBER}
-            resultPerPage={resultPerPage}
             setPageStartNumber={setPageStartNumber}
+            paginationData={apiResponse?.paginationData}
           />
         </>
       )}
