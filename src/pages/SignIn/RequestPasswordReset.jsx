@@ -106,7 +106,7 @@ const RequestPasswordReset = () => {
       formActions={formActions}
       formType={SINGLE_PAGE_FORM}
       isLoading={isLoading}
-      pageHeading={state?.title || 'Forgot password'}
+      pageHeading={state?.resetPasswordTitle || 'Forgot password'}
       handleSubmit={handleSubmit}
     >
       <SupportingText />

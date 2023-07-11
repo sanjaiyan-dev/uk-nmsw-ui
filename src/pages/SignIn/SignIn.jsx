@@ -11,6 +11,7 @@ import {
 } from '../../constants/AppConstants';
 import {
   SIGN_IN_ENDPOINT,
+  USER_MUST_UPDATE_PASSWORD,
   USER_NOT_VERIFIED,
   USER_SIGN_IN_DETAILS_INVALID,
 } from '../../constants/AppAPIConstants';
@@ -100,6 +101,16 @@ const SignIn = () => {
       } else if (err?.response?.data?.message === USER_NOT_VERIFIED) {
         setIsNotActivated(true);
         scrollToTop();
+      } else if (err?.response?.data?.message === USER_MUST_UPDATE_PASSWORD) {
+        navigate(MESSAGE_URL, {
+          state:
+          {
+            title: 'Service update',
+            message: "To continue to use the service, please reset your password. Any voyage reports you've saved will not be affected.",
+            redirectURL: REQUEST_PASSWORD_RESET_URL,
+            resetPasswordTitle: 'Reset password',
+          },
+        });
       } else {
         navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: SIGN_IN_URL } });
       }
