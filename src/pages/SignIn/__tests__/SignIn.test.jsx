@@ -308,6 +308,7 @@ describe('Sign in tests', () => {
       {
         title: 'Service update',
         message: "To continue to use the service, please reset your password. Any voyage reports you've saved will not be affected.",
+        linkText: 'Reset password',
         redirectURL: REQUEST_PASSWORD_RESET_URL,
         resetPasswordTitle: 'Reset password',
       },
