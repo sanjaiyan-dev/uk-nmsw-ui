@@ -181,7 +181,7 @@ describe('Your details tests', () => {
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     await user.click(screen.getByRole('link', { name: 'Change your password' }));
     expect(mockedUseNavigate).toHaveBeenCalledWith('/forgotten-password', {
-      preventScrollReset: undefined, relative: undefined, replace: false, state: { title: 'Change your password' },
+      preventScrollReset: undefined, relative: undefined, replace: false, state: { resetPasswordTitle: 'Change your password' },
     });
   });
 });

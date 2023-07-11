@@ -7,10 +7,13 @@ import RequestPasswordReset from '../RequestPasswordReset';
 import { PASSSWORD_RESET_ENDPOINT } from '../../../constants/AppAPIConstants';
 import { MESSAGE_URL, REQUEST_PASSWORD_RESET_CONFIRMATION_URL, REQUEST_PASSWORD_RESET_URL } from '../../../constants/AppUrlConstants';
 
+let mockUseLocationState = {};
+
 const mockedUseNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useNavigate: () => mockedUseNavigate,
+  useLocation: jest.fn().mockImplementation(() => mockUseLocationState),
 }));
 
 describe('Request password reset tests', () => {
@@ -20,6 +23,7 @@ describe('Request password reset tests', () => {
   window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
 
   beforeEach(() => {
+    mockUseLocationState = {};
     mockAxios.reset();
     window.sessionStorage.clear();
   });
@@ -27,6 +31,12 @@ describe('Request password reset tests', () => {
   it('should render h1', async () => {
     render(<MemoryRouter><RequestPasswordReset /></MemoryRouter>);
     expect(screen.getByText('Forgot password')).toBeInTheDocument();
+  });
+
+  it('should render h1 to state if there is a resetPasswordTitle in state', async () => {
+    mockUseLocationState = { state: { resetPasswordTitle: 'Reset password' } };
+    render(<MemoryRouter><RequestPasswordReset /></MemoryRouter>);
+    expect(screen.getByText('Reset password')).toBeInTheDocument();
   });
 
   it('should render an intro inset', async () => {

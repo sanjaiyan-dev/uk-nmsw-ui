@@ -6,6 +6,7 @@ import MockAdapter from 'axios-mock-adapter';
 import SignIn from '../SignIn';
 import {
   SIGN_IN_ENDPOINT,
+  USER_MUST_UPDATE_PASSWORD,
   USER_NOT_VERIFIED,
   USER_SIGN_IN_DETAILS_INVALID,
 } from '../../../constants/AppAPIConstants';
@@ -13,6 +14,7 @@ import {
   MESSAGE_URL,
   SIGN_IN_URL,
   LOGGED_IN_LANDING,
+  REQUEST_PASSWORD_RESET_URL,
 } from '../../../constants/AppUrlConstants';
 
 const mockUseLocationState = { state: {} };
@@ -287,6 +289,29 @@ describe('Sign in tests', () => {
     expect(screen.getByText('We can send you a verification link so you can continue creating your account.')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Send confirmation email' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Send confirmation email' }).outerHTML).toEqual('<button class="govuk-button" data-module="govuk-button" type="button">Send confirmation email</button>');
+  });
+
+  it('should redirect to message page with password reset instructions if user account needs to be updated', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onPost(SIGN_IN_ENDPOINT)
+      .reply(401, {
+        message: USER_MUST_UPDATE_PASSWORD,
+      });
+
+    render(<MemoryRouter><SignIn /></MemoryRouter>);
+    await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
+    await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, {
+      state:
+      {
+        title: 'Service update',
+        message: "To continue to use the service, please reset your password. Any voyage reports you've saved will not be affected.",
+        redirectURL: REQUEST_PASSWORD_RESET_URL,
+        resetPasswordTitle: 'Reset password',
+      },
+    });
   });
 
   it('should redirect to message page if 500 from sign in and 500/unknown error received', async () => {
