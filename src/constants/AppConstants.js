@@ -59,6 +59,8 @@ export const ELLIPSIS = '...';
 export const PAGINATION_PAGE_LABEL = 'Page';
 export const PAGINATION_PREVIOUS_LABEL = 'Previous';
 export const PAGINATION_NEXT_LABEL = 'Next';
+export const PAGINATION_DEFAULT_PAGE_START_NUMBER = 0;
+export const PAGINATION_DISPLAYABLE_PAGE_NUMBER_INCREMENTOR = 1;
 
 // Templates
 export const GENERAL_DECLARATION_TEMPLATE_NAME = 'General Declaration (FAL 1)';

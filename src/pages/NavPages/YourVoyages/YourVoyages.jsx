@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { SERVICE_NAME } from '../../../constants/AppConstants';
+import { PAGINATION_DEFAULT_PAGE_START_NUMBER, SERVICE_NAME } from '../../../constants/AppConstants';
 import { CREATE_VOYAGE_ENDPOINT, TOKEN_EXPIRED } from '../../../constants/AppAPIConstants';
 import { VOYAGE_GENERAL_DECLARATION_UPLOAD_URL, YOUR_VOYAGES_URL } from '../../../constants/AppUrlConstants';
 import LoadingSpinner from '../../../components/LoadingSpinner';
@@ -27,11 +27,10 @@ const YourVoyages = () => {
   const [notification, setNotification] = useState({});
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [maxPageNumber, setMaxPageNumber] = useState();
-  const [pageNumber, setPageNumber] = useState();
+  const [pageStartNumber, setPageStartNumber] = useState();
   const [totalNumberVoyages, setTotalNumberVoyages] = useState();
   const [voyageData, setVoyageData] = useState();
-  const apiResponse = useGetAllDeclarations({ pageNumber });
+  const apiResponse = useGetAllDeclarations({ pageStartNumber });
 
   document.title = SERVICE_NAME;
 
@@ -71,8 +70,7 @@ const YourVoyages = () => {
     setIsLoading(true);
     if (apiResponse?.apiData) {
       setVoyageData(apiResponse.apiData);
-      setMaxPageNumber(apiResponse.paginationData?.pages);
-      setTotalNumberVoyages(apiResponse.paginationData?.count);
+      setTotalNumberVoyages(apiResponse.paginationData?.total_records);
       setIsLoading(apiResponse.isLoading);
     } else if (apiResponse?.error) {
       setIsError(true);
@@ -135,11 +133,10 @@ const YourVoyages = () => {
             voyageData={voyageData}
             totalVoyages={totalNumberVoyages}
           />
-
           <Pagination
-            maxPageNumber={maxPageNumber}
-            updatePaginationPageNumber={pageNumber || 1}
-            setPageNumber={setPageNumber}
+            updatePaginationPageNumber={pageStartNumber || PAGINATION_DEFAULT_PAGE_START_NUMBER}
+            setPageStartNumber={setPageStartNumber}
+            paginationData={apiResponse?.paginationData}
           />
         </>
       )}
