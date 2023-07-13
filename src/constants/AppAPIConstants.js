@@ -40,3 +40,4 @@ export const USER_AWAITING_VERIFICATION = 'User is awaiting verification';
 export const USER_NOT_REGISTERED = 'User is not registered';
 export const USER_NOT_VERIFIED = 'User not verified, please verify registration';
 export const USER_SIGN_IN_DETAILS_INVALID = 'Email or password invalid';
+export const USER_MUST_UPDATE_PASSWORD = 'To use this service you will need to create a new password';
