@@ -3,8 +3,16 @@ class Auth {
     sessionStorage.setItem('token', token);
   }
 
+  static storeRefreshToken(refreshToken) {
+    sessionStorage.setItem('refreshToken', refreshToken);
+  }
+
   static retrieveToken() {
     return sessionStorage.getItem('token');
+  }
+
+  static retrieveRefreshToken() {
+    return sessionStorage.getItem('refreshToken');
   }
 
   static logout() {
