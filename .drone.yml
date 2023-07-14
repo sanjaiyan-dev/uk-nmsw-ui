@@ -121,17 +121,19 @@ steps:
     - build_container_image
 
 - name: dev_image_to_quay
-  image: plugins/docker
-  settings:
-    registry: quay.io
-    repo: quay.io/ukhomeofficedigital/nmsw-ui
-    tags:
-    - ${DRONE_COMMIT_SHA}
-    - dev
+  pull: always
+  image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
   environment:
     DOCKER_PASSWORD:
       from_secret: NMSW_QUAY_PASSWORD
     DOCKER_USERNAME: ukhomeofficedigital+nmsw_ui
+    REGISTRY: quay.io
+    REPO: quay.io/ukhomeofficedigital/nmsw-ui
+  commands:
+  - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $${REGISTRY}
+  - docker tag nmsw-ui:$${DRONE_COMMIT_SHA} $${REPO}:dev && docker tag nmsw-ui:$${DRONE_COMMIT_SHA} $${REPO}:$${DRONE_COMMIT_SHA}
+  - docker push $${REPO}:dev
+  - docker push $${REPO}:$${DRONE_COMMIT_SHA}
   when:
     branch:
     - version-*
@@ -144,18 +146,20 @@ steps:
   - build_container_image
   - vulnerability_scan
 
-- name: image_to_quay
-  image: plugins/docker
-  settings:
-    registry: quay.io
-    repo: quay.io/ukhomeofficedigital/nmsw-ui
-    tags:
-    - ${DRONE_COMMIT_SHA}
-    - ${DRONE_TAG}
+- name: release_tag_image_to_quay
+  pull: always
+  image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
   environment:
     DOCKER_PASSWORD:
       from_secret: NMSW_QUAY_PASSWORD
     DOCKER_USERNAME: ukhomeofficedigital+nmsw_ui
+    REGISTRY: quay.io
+    REPO: quay.io/ukhomeofficedigital/nmsw-ui
+  commands:
+  - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $${REGISTRY}
+  - docker tag nmsw-ui:$${DRONE_COMMIT_SHA} $${REPO}:$${DRONE_COMMIT_SHA} && docker tag nmsw-ui:$${DRONE_COMMIT_SHA} $${REPO}:$${DRONE_TAG}
+  - docker push $${REPO}:$${DRONE_COMMIT_SHA}
+  - docker push $${REPO}:$${DRONE_TAG}
   when:
     event:
     - tag
@@ -227,16 +231,18 @@ steps:
   - build_container_image_staging
 
 - name: image_to_quay_staging
-  image: plugins/docker
-  settings:
-    registry: quay.io
-    repo: quay.io/ukhomeofficedigital/nmsw-ui
-    tags:
-    - staging-${DRONE_COMMIT_SHA}
+  pull: always
+  image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
   environment:
     DOCKER_PASSWORD:
       from_secret: NMSW_QUAY_PASSWORD
     DOCKER_USERNAME: ukhomeofficedigital+nmsw_ui
+    REGISTRY: quay.io
+    REPO: quay.io/ukhomeofficedigital/nmsw-ui
+  commands:
+  - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $${REGISTRY}
+  - docker tag nmsw-ui:staging-$${DRONE_COMMIT_SHA} $${REPO}:staging-$${DRONE_COMMIT_SHA}
+  - docker push $${REPO}:staging-$${DRONE_COMMIT_SHA}
   when:
     event:
     - promote
@@ -306,16 +312,18 @@ steps:
   - build_container_image_production
 
 - name: image_to_quay_production
-  image: plugins/docker
-  settings:
-    registry: quay.io
-    repo: quay.io/ukhomeofficedigital/nmsw-ui
-    tags:
-    - production-${DRONE_COMMIT_SHA}
+  pull: always
+  image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
   environment:
     DOCKER_PASSWORD:
       from_secret: NMSW_QUAY_PASSWORD
     DOCKER_USERNAME: ukhomeofficedigital+nmsw_ui
+    REGISTRY: quay.io
+    REPO: quay.io/ukhomeofficedigital/nmsw-ui
+  commands:
+  - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $${REGISTRY}
+  - docker tag nmsw-ui:production-$${DRONE_COMMIT_SHA} $${REPO}:production-$${DRONE_COMMIT_SHA}
+  - docker push $${REPO}:production-$${DRONE_COMMIT_SHA}
   when:
     event:
     - promote
