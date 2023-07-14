@@ -88,7 +88,10 @@ const SignIn = () => {
     setIsLoading(true);
     try {
       const response = await axios.post(SIGN_IN_ENDPOINT, formData);
-      if (response.data.token) { Auth.storeToken(response.data.token); }
+      if (response.data.token) {
+        Auth.storeToken(response.data.token);
+        Auth.storeRefreshToken(response.data.refresh_token);
+      }
       if (state?.redirectURL) {
         navigate(state.redirectURL, { state });
       } else {
