@@ -102,7 +102,7 @@ steps:
     - push
     - tag
 
-- name: vulnerability-scan
+- name: vulnerability_scan
   pull: always
   image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/anchore-submission:latest
   environment:
