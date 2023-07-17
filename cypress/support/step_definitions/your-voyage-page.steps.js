@@ -33,17 +33,17 @@ Then('I am able to see the pagination based on number of reports', () => {
   cy.get('@totalReportsBefore').then((text) => {
     const totalReports = text.split(" ")[0];
     switch (true) {
-      case totalReports < 100:
+      case totalReports < 50:
         cy.get('li.govuk-pagination__item--current').should('have.text', '1');
         break;
-      case totalReports > 100:
+      case totalReports > 50:
         cy.get('li.govuk-pagination__item--current').should('have.text', '1');
-        cy.get('p[class="govuk-body-s govuk-!-font-weight-bold"]').parent().parent().should('have.length', 100);
+        cy.get('p[class="govuk-body-s govuk-!-font-weight-bold"]').parent().parent().should('have.length', 50);
         YourVoyagePage.clickNextPaginationLink();
         cy.get('.govuk-pagination__next').should('not.exist');
         YourVoyagePage.clickPreviousPageLink();
         cy.get('li.govuk-pagination__item--current').should('have.css', 'background-color').and('eq', 'rgb(29, 112, 184)');
-        cy.get('p[class="govuk-body-s govuk-!-font-weight-bold"]').parent().parent().should('have.length', 100);
+        cy.get('p[class="govuk-body-s govuk-!-font-weight-bold"]').parent().parent().should('have.length', 50);
         break;
       default:
         break;
