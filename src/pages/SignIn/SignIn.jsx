@@ -25,7 +25,6 @@ import {
   REQUEST_PASSWORD_RESET_URL,
   SIGN_IN_URL,
   HELP_URL,
-  LANDING_URL,
 } from '../../constants/AppUrlConstants';
 import Auth from '../../utils/Auth';
 import { scrollToTop } from '../../utils/ScrollToElement';
@@ -98,9 +97,8 @@ const SignIn = () => {
       });
       const data = await response.data;
       const isInternal = INTERNAL_TEAMS.includes(data.group.groupType.name); // internal users should not be on this app
-console.log('i', isInternal)
+
       if (!isInternal) {
-        console.log('store')
         Auth.storeUserType(data);
         Auth.storeToken(authData.access_token);
         Auth.storeRefreshToken(authData.refresh_token);
@@ -108,7 +106,7 @@ console.log('i', isInternal)
         if (state?.redirectURL) {
           navigate(state.redirectURL, { state });
         } else {
-          navigate(LANDING_URL);
+          navigate(LOGGED_IN_LANDING);
         }
       } else {
         // if it's an internal user we error the standard invalid user error
