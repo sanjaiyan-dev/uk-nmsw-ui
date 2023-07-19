@@ -9,8 +9,6 @@ class Auth {
     sessionStorage.setItem('refreshToken', refreshToken);
   }
 
-<<<<<<< HEAD
-=======
   static storeUserType(user) {
     sessionStorage.setItem('user', JSON.stringify({
       admin: user.userType.name === USER_TYPE_ADMIN,
@@ -18,7 +16,6 @@ class Auth {
     }));
   }
 
->>>>>>> d3a2c1d (Add sign in handler for user type)
   static retrieveToken() {
     return sessionStorage.getItem('token');
   }
