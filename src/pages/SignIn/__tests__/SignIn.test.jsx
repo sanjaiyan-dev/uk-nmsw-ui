@@ -175,13 +175,14 @@ describe('Sign in tests', () => {
     expect(mockedUseNavigate).toHaveBeenCalledWith(LOGGED_IN_LANDING);
   });
 
-  it('should store token in session storage if sign in is successful', async () => {
+  it('should store token and refresh token in session storage if sign in is successful', async () => {
     const user = userEvent.setup();
 
     mockAxios
       .onPost(SIGN_IN_ENDPOINT)
       .reply(200, {
         token: '123',
+        refresh_token: '321',
       });
 
     render(<MemoryRouter><SignIn /></MemoryRouter>);
@@ -190,6 +191,7 @@ describe('Sign in tests', () => {
     await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
     await user.click(screen.getByTestId('submit-button'));
     expect(window.sessionStorage.getItem('token')).toEqual('123');
+    expect(window.sessionStorage.getItem('refreshToken')).toEqual('321');
   });
 
   it('should not clear session storage if user is being redirected to sign in before completing their action AND the newly signed in user is the same as the previously signed in one', async () => {

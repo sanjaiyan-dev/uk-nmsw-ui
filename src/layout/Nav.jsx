@@ -86,7 +86,7 @@ const Nav = () => {
   const handleSignOut = async () => {
     try {
       const response = await axios.post(SIGN_OUT_ENDPOINT, {}, {
-        headers: { Authorization: `Bearer ${Auth.retrieveToken()}` },
+        headers: { Authorization: `Bearer ${Auth.retrieveRefreshToken()}` },
       });
       if (response.status === 200) {
         Auth.logout();
