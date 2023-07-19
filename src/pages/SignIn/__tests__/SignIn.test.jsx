@@ -3,9 +3,9 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import SignIn from '../SignIn';
 import {
   SIGN_IN_ENDPOINT,
+  USER_ENDPOINT,
   USER_MUST_UPDATE_PASSWORD,
   USER_NOT_VERIFIED,
   USER_SIGN_IN_DETAILS_INVALID,
@@ -16,6 +16,9 @@ import {
   LOGGED_IN_LANDING,
   REQUEST_PASSWORD_RESET_URL,
 } from '../../../constants/AppUrlConstants';
+import ExternalUser from './__fixtures__/ExternalUser.fixture';
+import SignInUser from './__fixtures__/SignIn.fixture';
+import SignIn from '../SignIn';
 
 const mockUseLocationState = { state: {} };
 const mockedUseNavigate = jest.fn();
@@ -33,6 +36,14 @@ describe('Sign in tests', () => {
   const mockAxios = new MockAdapter(axios);
 
   beforeEach(() => {
+    mockAxios.reset();
+    window.sessionStorage.clear();
+  });
+  afterEach(() => {
+    mockAxios.reset();
+    window.sessionStorage.clear();
+  });
+  afterAll(() => {
     mockAxios.reset();
     window.sessionStorage.clear();
   });
@@ -160,12 +171,11 @@ describe('Sign in tests', () => {
 
   it('should call the login function on sign in button click if there are no errors', async () => {
     const user = userEvent.setup();
-
     mockAxios
       .onPost(SIGN_IN_ENDPOINT)
-      .reply(200, {
-        token: '123',
-      });
+      .reply(200, SignInUser)
+      .onGet(USER_ENDPOINT)
+      .reply(200, ExternalUser);
 
     render(<MemoryRouter><SignIn /></MemoryRouter>);
 
@@ -177,13 +187,11 @@ describe('Sign in tests', () => {
 
   it('should store token and refresh token in session storage if sign in is successful', async () => {
     const user = userEvent.setup();
-
     mockAxios
       .onPost(SIGN_IN_ENDPOINT)
-      .reply(200, {
-        token: '123',
-        refresh_token: '321',
-      });
+      .reply(200, SignInUser)
+      .onGet(USER_ENDPOINT)
+      .reply(200, ExternalUser);
 
     render(<MemoryRouter><SignIn /></MemoryRouter>);
 
@@ -204,9 +212,9 @@ describe('Sign in tests', () => {
     const expectedStoredData = '{"testField":"Hello Test Field","radioButtonSet":"radioOne"}';
     mockAxios
       .onPost(SIGN_IN_ENDPOINT)
-      .reply(200, {
-        token: '123',
-      });
+      .reply(200, SignInUser)
+      .onGet(USER_ENDPOINT)
+      .reply(200, ExternalUser);
 
     render(<MemoryRouter><SignIn /></MemoryRouter>);
 
@@ -262,9 +270,9 @@ describe('Sign in tests', () => {
     };
     mockAxios
       .onPost(SIGN_IN_ENDPOINT)
-      .reply(200, {
-        token: '123',
-      });
+      .reply(200, SignInUser)
+      .onGet(USER_ENDPOINT)
+      .reply(200, ExternalUser);
 
     render(<MemoryRouter><SignIn /></MemoryRouter>);
 
