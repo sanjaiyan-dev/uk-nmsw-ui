@@ -41,10 +41,9 @@ describe('Pagination clicks', () => {
       },
     ],
     pagination: {
-      count: 639,
-      page: 1,
-      per_page: 100,
-      pages: 7,
+      per_page: 1,
+      current_position: 0,
+      total_records: 7,
     },
   };
 
@@ -53,11 +52,12 @@ describe('Pagination clicks', () => {
   beforeEach(() => {
     mockAxios.reset();
     window.sessionStorage.clear();
+    jest.resetAllMocks();
   });
 
   it('should render the pagination section of the page', async () => {
     mockAxios
-      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=1`)
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page_start=0`)
       .reply(200, mockedResponse);
     render(<MemoryRouter><YourVoyages /></MemoryRouter>);
     expect(await screen.findByText(YOUR_VOYAGES_PAGE_NAME)).toBeInTheDocument();
@@ -68,7 +68,7 @@ describe('Pagination clicks', () => {
   it('should go to the next page on next click', async () => {
     const user = userEvent.setup();
     mockAxios
-      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=1`)
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page_start=0`)
       .reply(200, mockedResponse);
     render(<MemoryRouter><YourVoyages /></MemoryRouter>);
     expect(await screen.findByText(YOUR_VOYAGES_PAGE_NAME)).toBeInTheDocument();
@@ -83,11 +83,29 @@ describe('Pagination clicks', () => {
   });
 
   it('should go to the page clicked', async () => {
-    window.sessionStorage.setItem('Page', 5);
+    window.sessionStorage.setItem('Page', '4');
     const user = userEvent.setup();
     mockAxios
-      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=5`)
-      .reply(200, mockedResponse);
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page_start=4`)
+      .reply(200, {
+        ...mockedResponse,
+        pagination: {
+          per_page: 1,
+          current_position: 3,
+          total_records: 7,
+        },
+      });
+    mockAxios
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page_start=3`)
+      .reply(200, {
+        ...mockedResponse,
+        pagination: {
+          per_page: 1,
+          current_position: 2,
+          total_records: 7,
+        },
+      });
+
     render(<MemoryRouter><YourVoyages /></MemoryRouter>);
     expect(await screen.findByText(YOUR_VOYAGES_PAGE_NAME)).toBeInTheDocument();
     await screen.findByRole('button', { name: '1' });
@@ -106,11 +124,29 @@ describe('Pagination clicks', () => {
   });
 
   it('should go to previous page when previous clicked', async () => {
-    window.sessionStorage.setItem('Page', 7);
+    window.sessionStorage.setItem('Page', '6');
     const user = userEvent.setup();
     mockAxios
-      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page=7`)
-      .reply(200, mockedResponse);
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page_start=6`)
+      .reply(200, {
+        ...mockedResponse,
+        pagination: {
+          per_page: 1,
+          current_position: 5,
+          total_records: 7,
+        },
+      });
+    mockAxios
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page_start=5`)
+      .reply(200, {
+        ...mockedResponse,
+        pagination: {
+          per_page: 1,
+          current_position: 4,
+          total_records: 7,
+        },
+      });
+
     render(<MemoryRouter><YourVoyages /></MemoryRouter>);
     expect(await screen.findByText(YOUR_VOYAGES_PAGE_NAME)).toBeInTheDocument();
     await screen.findByRole('button', { name: '1' });

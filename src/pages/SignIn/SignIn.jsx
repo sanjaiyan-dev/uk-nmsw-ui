@@ -5,12 +5,15 @@ import DisplayForm from '../../components/Forms/DisplayForm';
 import {
   FIELD_EMAIL,
   FIELD_PASSWORD,
+  INTERNAL_TEAMS,
   SIGN_IN_FORM,
   VALIDATE_EMAIL_ADDRESS,
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
 import {
   SIGN_IN_ENDPOINT,
+  USER_ENDPOINT,
+  USER_MUST_UPDATE_PASSWORD,
   USER_NOT_VERIFIED,
   USER_SIGN_IN_DETAILS_INVALID,
 } from '../../constants/AppAPIConstants';
@@ -83,16 +86,55 @@ const SignIn = () => {
     setIsLoading(false);
   };
 
+  const getUserData = async (authData) => {
+    const controller = new AbortController();
+    const { signal } = controller;
+
+    try {
+      const response = await axios.get(USER_ENDPOINT, {
+        signal,
+        headers: { Authorization: `Bearer ${authData.access_token}` },
+      });
+      const data = await response.data;
+      const isInternal = INTERNAL_TEAMS.includes(data.group.groupType.name); // internal users should not be on this app
+
+      if (!isInternal) {
+        Auth.storeUserType(data);
+        Auth.storeToken(authData.access_token);
+        Auth.storeRefreshToken(authData.refresh_token);
+
+        if (state?.redirectURL) {
+          navigate(state.redirectURL, { state });
+        } else {
+          navigate(LOGGED_IN_LANDING);
+        }
+      } else {
+        // if it's an internal user we error the standard invalid user error
+        setErrors('Email and password combination is invalid');
+      }
+    } catch (err) {
+      if (err?.code === 'ERR_CANCELED') {
+        return;
+      }
+      setErrors(err?.response?.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleSubmit = async ({ formData }) => {
     setIsLoading(true);
     try {
       const response = await axios.post(SIGN_IN_ENDPOINT, formData);
-      if (response.data.token) { Auth.storeToken(response.data.token); }
-      if (state?.redirectURL) {
-        navigate(state.redirectURL, { state });
-      } else {
-        navigate(LOGGED_IN_LANDING);
+      if (response.data.access_token) {
+        getUserData(response.data);
       }
+      // if (response.data.token) { Auth.storeToken(response.data.token); }
+      // if (state?.redirectURL) {
+      //   navigate(state.redirectURL, { state });
+      // } else {
+      //   navigate(LOGGED_IN_LANDING);
+      // }
     } catch (err) {
       if (err?.response?.data?.message === USER_SIGN_IN_DETAILS_INVALID) {
         setErrors('Email and password combination is invalid');
@@ -100,6 +142,17 @@ const SignIn = () => {
       } else if (err?.response?.data?.message === USER_NOT_VERIFIED) {
         setIsNotActivated(true);
         scrollToTop();
+      } else if (err?.response?.data?.message === USER_MUST_UPDATE_PASSWORD) {
+        navigate(MESSAGE_URL, {
+          state:
+          {
+            title: 'Service update',
+            message: "To continue to use the service, please reset your password. Any voyage reports you've saved will not be affected.",
+            linkText: 'Reset password',
+            redirectURL: REQUEST_PASSWORD_RESET_URL,
+            resetPasswordTitle: 'Reset password',
+          },
+        });
       } else {
         navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: SIGN_IN_URL } });
       }

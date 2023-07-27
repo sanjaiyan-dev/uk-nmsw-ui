@@ -12,16 +12,16 @@ class FileUploadPage {
     let folder;
     switch (folderName) {
       case 'Fal1-Files':
-        folder = 'Fal1-Files/'
+        folder = 'Fal1-Files/';
         break;
       case 'Fal5-Files':
-        folder = 'Fal5-Files/'
+        folder = 'Fal5-Files/';
         break;
       case 'Fal6-Files':
-        folder = 'Fal6-Files/'
+        folder = 'Fal6-Files/';
         break;
       case 'supporting-Files':
-        folder = 'supporting-File/'
+        folder = 'supporting-File/';
         break;
     }
     cy.get('#fileUploadInput').click().selectFile('cypress/fixtures/' + folder + fileName);
@@ -72,7 +72,7 @@ class FileUploadPage {
   checkPendingStatus() {
     cy.get('.govuk-tag--grey').each(($el) => {
       cy.wrap($el).should('have.text', 'Pending');
-    })
+    });
   }
 
   clickDelete() {
@@ -81,12 +81,12 @@ class FileUploadPage {
 
   deleteMoreFiles() {
     cy.get('.nmsw-grid-column-two-twelfths button').then($ele => {
-      let count = $ele.length
+      let count = $ele.length;
       for (let i = 0; i < count; i++) {
-        cy.get('.nmsw-grid-column-two-twelfths button').first().click().should('not.exist')
+        cy.get('.nmsw-grid-column-two-twelfths button').first().click().should('not.exist');
       }
       cy.get('.multi-file-upload--filelist').should('have.length', 0);
-    })
+    });
   }
 
   verifyPassengerDetailsPage() {
@@ -113,24 +113,24 @@ class FileUploadPage {
     const files = table.hashes();
     const fileNames = files.map(item => item.fileName);
     cy.get('.multi-file-upload--filelist-filename').each(($ele, index) => {
-      cy.contains(`${fileNames[index]} The file must be a csv, doc, docm, docx, rtf, txt, xls, xlsm, xlsx, xltm, xltx, xlw or xml`)
-    })
-  }
-
-  getDeclarationId() {
-    cy.wait('@declaration').then((result) => {
-      let url = result.request.url;
-      let declarationId = url.split("/")[5];
-      cy.wrap(declarationId).as('declarationId');
+      cy.contains(`${fileNames[index]} The file must be a csv, doc, docm, docx, rtf, txt, xls, xlsm, xlsx, xltm, xltx, xlw or xml`);
     });
   }
+
+  // getDeclarationId() {
+  //   cy.wait('@declaration').then((result) => {
+  //     let url = result.request.url;
+  //     let declarationId = url.split("/")[5];
+  //     cy.wrap(declarationId).as('declarationId');
+  //   });
+  // }
 
   checkErrorForFileMaxSize(table) {
     const files = table.hashes();
     const fileNames = files.map(item => item.fileName);
     cy.get('.multi-file-upload--filelist-filename').each(($ele, index) => {
-      cy.contains(`${fileNames[index]} The file must be smaller than 1MB`)
-    })
+      cy.contains(`${fileNames[index]} The file must be smaller than 1MB`);
+    });
   }
 
   getTotalReportsBefore() {
@@ -138,8 +138,8 @@ class FileUploadPage {
       cy.get('#content .govuk-grid-row.your-voyages__flex').then(() => {
         cy.get('h2[class="govuk-heading-s govuk-!-margin-bottom-1 reported-voyages-margin--top"]').then($el => {
           cy.wrap($el).invoke('text').as('totalReportsBefore');
-        })
-      })
+        });
+      });
     } catch (e) {
       cy.wrap(0).as('totalReportsBefore');
     }
@@ -150,8 +150,8 @@ class FileUploadPage {
       cy.get('#content .govuk-grid-row.your-voyages__flex').then(() => {
         cy.get('h2[class="govuk-heading-s govuk-!-margin-bottom-1 reported-voyages-margin--top"]').then($el => {
           cy.wrap($el).invoke('text').as('totalReportsAfter');
-        })
-      })
+        });
+      });
     } catch (e) {
       cy.wrap(0).as('totalReportsAfter');
     }

@@ -3,9 +3,10 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import SignIn from '../SignIn';
 import {
   SIGN_IN_ENDPOINT,
+  USER_ENDPOINT,
+  USER_MUST_UPDATE_PASSWORD,
   USER_NOT_VERIFIED,
   USER_SIGN_IN_DETAILS_INVALID,
 } from '../../../constants/AppAPIConstants';
@@ -13,7 +14,11 @@ import {
   MESSAGE_URL,
   SIGN_IN_URL,
   LOGGED_IN_LANDING,
+  REQUEST_PASSWORD_RESET_URL,
 } from '../../../constants/AppUrlConstants';
+import ExternalUser from './__fixtures__/ExternalUser.fixture';
+import SignInUser from './__fixtures__/SignIn.fixture';
+import SignIn from '../SignIn';
 
 const mockUseLocationState = { state: {} };
 const mockedUseNavigate = jest.fn();
@@ -31,6 +36,14 @@ describe('Sign in tests', () => {
   const mockAxios = new MockAdapter(axios);
 
   beforeEach(() => {
+    mockAxios.reset();
+    window.sessionStorage.clear();
+  });
+  afterEach(() => {
+    mockAxios.reset();
+    window.sessionStorage.clear();
+  });
+  afterAll(() => {
     mockAxios.reset();
     window.sessionStorage.clear();
   });
@@ -158,12 +171,11 @@ describe('Sign in tests', () => {
 
   it('should call the login function on sign in button click if there are no errors', async () => {
     const user = userEvent.setup();
-
     mockAxios
       .onPost(SIGN_IN_ENDPOINT)
-      .reply(200, {
-        token: '123',
-      });
+      .reply(200, SignInUser)
+      .onGet(USER_ENDPOINT)
+      .reply(200, ExternalUser);
 
     render(<MemoryRouter><SignIn /></MemoryRouter>);
 
@@ -173,14 +185,13 @@ describe('Sign in tests', () => {
     expect(mockedUseNavigate).toHaveBeenCalledWith(LOGGED_IN_LANDING);
   });
 
-  it('should store token in session storage if sign in is successful', async () => {
+  it('should store token and refresh token in session storage if sign in is successful', async () => {
     const user = userEvent.setup();
-
     mockAxios
       .onPost(SIGN_IN_ENDPOINT)
-      .reply(200, {
-        token: '123',
-      });
+      .reply(200, SignInUser)
+      .onGet(USER_ENDPOINT)
+      .reply(200, ExternalUser);
 
     render(<MemoryRouter><SignIn /></MemoryRouter>);
 
@@ -188,6 +199,7 @@ describe('Sign in tests', () => {
     await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
     await user.click(screen.getByTestId('submit-button'));
     expect(window.sessionStorage.getItem('token')).toEqual('123');
+    expect(window.sessionStorage.getItem('refreshToken')).toEqual('321');
   });
 
   it('should not clear session storage if user is being redirected to sign in before completing their action AND the newly signed in user is the same as the previously signed in one', async () => {
@@ -200,9 +212,9 @@ describe('Sign in tests', () => {
     const expectedStoredData = '{"testField":"Hello Test Field","radioButtonSet":"radioOne"}';
     mockAxios
       .onPost(SIGN_IN_ENDPOINT)
-      .reply(200, {
-        token: '123',
-      });
+      .reply(200, SignInUser)
+      .onGet(USER_ENDPOINT)
+      .reply(200, ExternalUser);
 
     render(<MemoryRouter><SignIn /></MemoryRouter>);
 
@@ -258,9 +270,9 @@ describe('Sign in tests', () => {
     };
     mockAxios
       .onPost(SIGN_IN_ENDPOINT)
-      .reply(200, {
-        token: '123',
-      });
+      .reply(200, SignInUser)
+      .onGet(USER_ENDPOINT)
+      .reply(200, ExternalUser);
 
     render(<MemoryRouter><SignIn /></MemoryRouter>);
 
@@ -287,6 +299,30 @@ describe('Sign in tests', () => {
     expect(screen.getByText('We can send you a verification link so you can continue creating your account.')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Send confirmation email' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Send confirmation email' }).outerHTML).toEqual('<button class="govuk-button" data-module="govuk-button" type="button">Send confirmation email</button>');
+  });
+
+  it('should redirect to message page with password reset instructions if user account needs to be updated', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onPost(SIGN_IN_ENDPOINT)
+      .reply(401, {
+        message: USER_MUST_UPDATE_PASSWORD,
+      });
+
+    render(<MemoryRouter><SignIn /></MemoryRouter>);
+    await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
+    await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, {
+      state:
+      {
+        title: 'Service update',
+        message: "To continue to use the service, please reset your password. Any voyage reports you've saved will not be affected.",
+        linkText: 'Reset password',
+        redirectURL: REQUEST_PASSWORD_RESET_URL,
+        resetPasswordTitle: 'Reset password',
+      },
+    });
   });
 
   it('should redirect to message page if 500 from sign in and 500/unknown error received', async () => {

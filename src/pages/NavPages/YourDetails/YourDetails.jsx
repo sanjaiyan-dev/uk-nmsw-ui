@@ -136,7 +136,7 @@ const YourDetails = () => {
               <br />
               <p className="govuk-body">
                 {/* This version not used for MVP: <Link className="govuk-link" to={CHANGE_YOUR_PASSWORD_PAGE_URL}>Change your password</Link> */}
-                <Link to={REQUEST_PASSWORD_RESET_URL} state={{ title: 'Change your password' }}>Change your password</Link>
+                <Link to={REQUEST_PASSWORD_RESET_URL} state={{ resetPasswordTitle: 'Change your password' }}>Change your password</Link>
               </p>
             </dt>
             {/* Not available for MVP */}

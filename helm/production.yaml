@@ -99,7 +99,7 @@ env:
     - name: GOV_NOTIFY_SUPPORT_EMAIL
       value: "nmswsupport@digital.homeoffice.gov.uk"
     - name: GA_TOKEN
-      value: "G-Q7BFYJZZBG"
+      value: "G-YQS1CY3DEC"
   proxy:
     - name: PROXY_SERVICE_HOST
       value: 'http://127.0.0.1'

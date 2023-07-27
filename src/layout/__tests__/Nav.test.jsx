@@ -134,11 +134,14 @@ describe('Navigation within header tests', () => {
 
   it('should clear token from session and redirect to sign in page on successful sign out', async () => {
     window.sessionStorage.setItem('token', '123');
+    window.sessionStorage.setItem('refreshToken', '321');
     mockedUserIsPermitted = true;
     const user = userEvent.setup();
     mockAxios
-      .onPost(SIGN_OUT_ENDPOINT)
-      .reply(200);
+      .onPost(SIGN_OUT_ENDPOINT, {})
+      .reply(200, {
+        message: 'Sign out successful',
+      });
 
     render(<MemoryRouter><App /></MemoryRouter>);
     await user.click(screen.getByText('Sign out'));
@@ -149,11 +152,14 @@ describe('Navigation within header tests', () => {
   // Error case will usually be when a user clicks sign out but token is already expired
   it('should clear token from session and redirect to sign in page on sign out', async () => {
     window.sessionStorage.setItem('token', '123');
+    window.sessionStorage.setItem('refreshToken', '321');
     mockedUserIsPermitted = true;
     const user = userEvent.setup();
     mockAxios
-      .onPost(SIGN_OUT_ENDPOINT)
-      .reply(401);
+      .onPost(SIGN_OUT_ENDPOINT, {})
+      .reply(401, {
+        message: 'Sign out unsuccessful',
+      });
 
     render(<MemoryRouter><App /></MemoryRouter>);
     await user.click(screen.getByText('Sign out'));

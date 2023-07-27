@@ -15,7 +15,7 @@ export const GROUP_ENDPOINT = `${apiUrl}/group`;
 export const USER_ENDPOINT = `${apiUrl}/user`;
 
 // Report a voyage
-export const CREATE_VOYAGE_ENDPOINT = `${apiUrl}/user/declaration`;
+export const CREATE_VOYAGE_ENDPOINT = `${apiUrl}/declaration`;
 export const ENDPOINT_DECLARATION_PATH = '/declaration';
 export const ENDPOINT_FILE_UPLOAD_GENERAL_DECLARATION_PATH = '/upload-fal1';
 export const ENDPOINT_FILE_UPLOAD_CREW_DETAILS_PATH = '/upload-fal5';
@@ -40,3 +40,4 @@ export const USER_AWAITING_VERIFICATION = 'User is awaiting verification';
 export const USER_NOT_REGISTERED = 'User is not registered';
 export const USER_NOT_VERIFIED = 'User not verified, please verify registration';
 export const USER_SIGN_IN_DETAILS_INVALID = 'Email or password invalid';
+export const USER_MUST_UPDATE_PASSWORD = 'To use this service you will need to create a new password';

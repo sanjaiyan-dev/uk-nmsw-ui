@@ -23,3 +23,7 @@ axe.csv
 # Decrypted YAML files
 helm/secrets/*.yaml
 /cypress/config/cypress/
+
+# IntelliJ
+/.idea/
+/*.iml

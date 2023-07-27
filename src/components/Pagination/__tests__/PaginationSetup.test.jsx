@@ -3,15 +3,19 @@ import { ELLIPSIS, PAGINATION_NEXT_LABEL, PAGINATION_PREVIOUS_LABEL } from '../.
 import Pagination from '../Pagination';
 
 describe('Pagination setup', () => {
-  const setPageNumber = jest.fn();
+  const setPageStartNumberMock = jest.fn();
 
   it('should render single page if only 1 returned', async () => {
-    const maxPageNumber = 1;
+    const paginationData = {
+      per_page: 1,
+      total_records: 1,
+    };
+
     render(
       <Pagination
-        maxPageNumber={maxPageNumber}
+        paginationData={paginationData}
         updatePaginationPageNumber="update"
-        setPageNumber={setPageNumber}
+        setPageStartNumber={setPageStartNumberMock}
       />,
     );
 
@@ -22,12 +26,16 @@ describe('Pagination setup', () => {
   });
 
   it('should render multiple pages, 1, 2, max page number, and a next link if multiple returned', async () => {
-    const maxPageNumber = 3;
+    const paginationData = {
+      per_page: 1,
+      total_records: 3,
+    };
+
     render(
       <Pagination
-        maxPageNumber={maxPageNumber}
+        paginationData={paginationData}
         updatePaginationPageNumber="update"
-        setPageNumber={setPageNumber}
+        setPageStartNumber={setPageStartNumberMock}
       />,
     );
 
@@ -44,12 +52,16 @@ describe('Pagination setup', () => {
   });
 
   it('should render ellipses for skipped pages', async () => {
-    const maxPageNumber = 10;
+    const paginationData = {
+      per_page: 1,
+      total_records: 10,
+    };
+
     render(
       <Pagination
-        maxPageNumber={maxPageNumber}
+        paginationData={paginationData}
         updatePaginationPageNumber="update"
-        setPageNumber={setPageNumber}
+        setPageStartNumber={setPageStartNumberMock}
       />,
     );
 
@@ -68,13 +80,17 @@ describe('Pagination setup', () => {
   });
 
   it('should render current page from session if exists on initial render', async () => {
-    window.sessionStorage.setItem('Page', 5);
-    const maxPageNumber = 10;
+    window.sessionStorage.setItem('Page', 4);
+    const paginationData = {
+      per_page: 1,
+      total_records: 10,
+    };
+
     render(
       <Pagination
-        maxPageNumber={maxPageNumber}
+        paginationData={paginationData}
         updatePaginationPageNumber="update"
-        setPageNumber={setPageNumber}
+        setPageStartNumber={setPageStartNumberMock}
       />,
     );
 

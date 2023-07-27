@@ -59,6 +59,8 @@ export const ELLIPSIS = '...';
 export const PAGINATION_PAGE_LABEL = 'Page';
 export const PAGINATION_PREVIOUS_LABEL = 'Previous';
 export const PAGINATION_NEXT_LABEL = 'Next';
+export const PAGINATION_DEFAULT_PAGE_START_NUMBER = 0;
+export const PAGINATION_DISPLAYABLE_PAGE_NUMBER_INCREMENTOR = 1;
 
 // Templates
 export const GENERAL_DECLARATION_TEMPLATE_NAME = 'General Declaration (FAL 1)';
@@ -75,3 +77,12 @@ export const MAX_FILE_SIZE = 4194304;
 export const MAX_FILE_SIZE_DISPLAY = (MAX_FILE_SIZE / (1024 * 1024)).toFixed(0);
 export const MAX_SUPPORTING_FILE_SIZE = 1048576;
 export const MAX_SUPPORTING_FILE_SIZE_DISPLAY = (MAX_SUPPORTING_FILE_SIZE / (1024 * 1024)).toFixed(0);
+
+// User types
+export const USER_TYPE_ADMIN = 'Admin';
+export const USER_TYPE_ADMIN_LABEL = 'Administrator';
+export const USER_TYPE_STANDARD = 'User';
+export const USER_TYPE_STANDARD_LABEL = 'Standard user';
+export const USER_GROUP_INTERNAL_LABEL = 'Internal';
+export const USER_GROUP_EXTERNAL_LABEL = 'External';
+export const INTERNAL_TEAMS = ['Border Force Team'];
