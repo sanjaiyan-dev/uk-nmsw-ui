@@ -1,9 +1,9 @@
-import {Then, When} from "@badeball/cypress-cucumber-preprocessor";
-import YourVoyagePage from "../../e2e/pages/your-voyage.page";
-import FileUploadPage from "../../e2e/pages/file-upload.page";
-import LandingPage from "../../e2e/pages/landing.page";
-import SignInPage from "../../e2e/pages/sign-in.page";
-import BasePage from "../../e2e/pages/base.page";
+import { Then, When } from '@badeball/cypress-cucumber-preprocessor';
+import YourVoyagePage from '../../e2e/pages/your-voyage.page';
+import FileUploadPage from '../../e2e/pages/file-upload.page';
+import LandingPage from '../../e2e/pages/landing.page';
+import SignInPage from '../../e2e/pages/sign-in.page';
+import BasePage from '../../e2e/pages/base.page';
 
 let fileName;
 
@@ -18,7 +18,7 @@ Then('I am taken to upload-general-declaration page', () => {
 });
 
 When('auth token is no longer available', () => {
-  cy.clearAllSessionStorage()
+  cy.clearAllSessionStorage();
 });
 
 Then('user is redirected to NMSW landing page', () => {
@@ -66,13 +66,18 @@ When('I click check for errors', () => {
   cy.intercept('POST', '**/declaration/**').as('declaration');
   cy.checkAxe();
   FileUploadPage.clickCheckForErrors();
-  FileUploadPage.getDeclarationId();
+  cy.wait(2000);
+  cy.url().then(url => {
+    const declarationId = url.split('=')[1];
+    cy.wrap(declarationId).as('declarationId');
+    cy.log(declarationId);
+  });
 });
 
 Then('the FE sends a POST to the declarationId endpoint', () => {
   cy.wait('@declaration').then((result) => {
     let url = result.request.url;
-    let declarationId = url.split("/")[5];
+    let declarationId = url.split('/')[5];
     cy.wrap(declarationId).as('declarationId');
   });
 });
@@ -86,7 +91,6 @@ When('I click save and continue', () => {
   cy.checkAxe();
   FileUploadPage.clickSaveAndContinue();
 });
-
 
 When('I navigate back to task details page', () => {
   BasePage.clickBackButton();
