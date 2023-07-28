@@ -16,9 +16,15 @@ import {
   LOGGED_IN_LANDING,
   REQUEST_PASSWORD_RESET_URL,
 } from '../../../constants/AppUrlConstants';
-import SignIn from '../SignIn';
-import mockSignInExternalUserResponse from './__fixtures__/SignInExternal.fixture';
 import mockExternalUser from './__fixtures__/ExternalUser.fixture copy';
+import mockInternalAdminUser from './__fixtures__/InternalAdminUser.fixture';
+import mockInternalStandardUser from './__fixtures__/InternalStandardUser.fixture';
+import mockExternalInvalidUser from './__fixtures__/InvalidExternalUser.fixtures';
+import mockSignInExternalUserResponse from './__fixtures__/SignInExternal.fixture';
+import mockSignInInternalAdminResponse from './__fixtures__/SignInInternalAdmin.fixture';
+import mockSignInInvalidUserTypeResponse from './__fixtures__/SignInInvalidUserType.fixture';
+import mockSignInInvalidGroupTypeResponse from './__fixtures__/SignInInvalidGroup.fixture';
+import SignIn from '../SignIn';
 
 const mockUseLocationState = { state: {} };
 const mockedUseNavigate = jest.fn();
@@ -82,6 +88,143 @@ describe('Sign in tests', () => {
     render(<MemoryRouter><SignIn /></MemoryRouter>);
     expect((screen.getByTestId('submit-button')).outerHTML).toEqual('<button type="submit" class="govuk-button" data-module="govuk-button" data-testid="submit-button">Sign in</button>');
   });
+
+  // =============
+  // USER TYPES
+  // =============
+
+  it('should store access and session token and user in session storage if external user sign in is successful', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onPost(SIGN_IN_ENDPOINT)
+      .reply(200, mockSignInExternalUserResponse)
+      .onGet(USER_ENDPOINT)
+      .reply(200, mockExternalUser);
+
+    render(<MemoryRouter><SignIn /></MemoryRouter>);
+
+    await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
+    await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(window.sessionStorage.getItem('token')).toEqual('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZV9hY2Nlc3MiOnsibm1zdy1iYWNrZW5kIjp7InJvbGVzIjpbIlVzZXIiLCJBZG1pbiIsIkV4dGVybmFsIl19fX0.cfBFaWG2vCw1iOTd7TvovSVVRYmfEPmx-SIBoDU_3k8');
+    expect(window.sessionStorage.getItem('refreshToken')).toEqual('321');
+    expect(window.sessionStorage.getItem('user')).toEqual('{"admin":true,"internal":false}');
+  });
+
+  it('should reject sign in if token does not include external', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onPost(SIGN_IN_ENDPOINT)
+      .reply(200, mockSignInInternalAdminResponse)
+      .onGet(USER_ENDPOINT)
+      .reply(200, mockExternalUser);
+
+    render(<MemoryRouter><SignIn /></MemoryRouter>);
+
+    await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
+    await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(screen.getByText('Email and password combination is invalid')).toBeInTheDocument();
+    expect(window.sessionStorage.getItem('token')).toEqual(null);
+    expect(window.sessionStorage.getItem('refreshToken')).toEqual(null);
+    expect(window.sessionStorage.getItem('user')).toEqual(null);
+  });
+
+  it('should reject sign in if userendpoint user type is internal admin', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onPost(SIGN_IN_ENDPOINT)
+      .reply(200, mockSignInExternalUserResponse)
+      .onGet(USER_ENDPOINT)
+      .reply(200, mockInternalAdminUser);
+
+    render(<MemoryRouter><SignIn /></MemoryRouter>);
+
+    await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
+    await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(screen.getByText('Email and password combination is invalid')).toBeInTheDocument();
+    expect(window.sessionStorage.getItem('token')).toEqual(null);
+    expect(window.sessionStorage.getItem('refreshToken')).toEqual(null);
+    expect(window.sessionStorage.getItem('user')).toEqual(null);
+  });
+
+  it('should reject sign in if userendpoint user type is internal standard', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onPost(SIGN_IN_ENDPOINT)
+      .reply(200, mockSignInExternalUserResponse)
+      .onGet(USER_ENDPOINT)
+      .reply(200, mockInternalStandardUser);
+
+    render(<MemoryRouter><SignIn /></MemoryRouter>);
+
+    await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
+    await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(screen.getByText('Email and password combination is invalid')).toBeInTheDocument();
+    expect(window.sessionStorage.getItem('token')).toEqual(null);
+    expect(window.sessionStorage.getItem('refreshToken')).toEqual(null);
+    expect(window.sessionStorage.getItem('user')).toEqual(null);
+  });
+
+  it('should reject sign in if token does not contain a valid user type', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onPost(SIGN_IN_ENDPOINT)
+      .reply(200, mockSignInInvalidUserTypeResponse)
+      .onGet(USER_ENDPOINT)
+      .reply(200, mockExternalUser);
+
+    render(<MemoryRouter><SignIn /></MemoryRouter>);
+
+    await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
+    await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(screen.getByText('Email and password combination is invalid')).toBeInTheDocument();
+    expect(window.sessionStorage.getItem('token')).toEqual(null);
+    expect(window.sessionStorage.getItem('refreshToken')).toEqual(null);
+    expect(window.sessionStorage.getItem('user')).toEqual(null);
+  });
+
+  it('should reject sign in if token does not contain a valid group type', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onPost(SIGN_IN_ENDPOINT)
+      .reply(200, mockSignInInvalidGroupTypeResponse)
+      .onGet(USER_ENDPOINT)
+      .reply(200, mockExternalUser);
+
+    render(<MemoryRouter><SignIn /></MemoryRouter>);
+
+    await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
+    await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(screen.getByText('Email and password combination is invalid')).toBeInTheDocument();
+    expect(window.sessionStorage.getItem('token')).toEqual(null);
+    expect(window.sessionStorage.getItem('refreshToken')).toEqual(null);
+    expect(window.sessionStorage.getItem('user')).toEqual(null);
+  });
+
+  it('should reject sign in if userendpoint response does not contain a valid user type', async () => {
+    const user = userEvent.setup();
+    mockAxios
+      .onPost(SIGN_IN_ENDPOINT)
+      .reply(200, mockSignInExternalUserResponse)
+      .onGet(USER_ENDPOINT)
+      .reply(200, mockExternalInvalidUser);
+
+    render(<MemoryRouter><SignIn /></MemoryRouter>);
+
+    await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
+    await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(screen.getByText('Email and password combination is invalid')).toBeInTheDocument();
+    expect(window.sessionStorage.getItem('token')).toEqual(null);
+    expect(window.sessionStorage.getItem('refreshToken')).toEqual(null);
+    expect(window.sessionStorage.getItem('user')).toEqual(null);
+  });
+  // NOTE: there is no 'userendpoint does not contain a valid group type test as any group name that is not in our 'internal' list is considered an external group and we test for external groups above
 
   // =============
   // SUCCESS
