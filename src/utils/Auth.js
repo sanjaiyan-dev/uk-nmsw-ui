@@ -9,10 +9,11 @@ class Auth {
     sessionStorage.setItem('refreshToken', refreshToken);
   }
 
-  static storeUserType(user) {
+  static storeUserType({ userData, tokenData }) {
+    // for added security we check both user and token before setting true
     sessionStorage.setItem('user', JSON.stringify({
-      admin: user.userType.name === USER_TYPE_ADMIN,
-      internal: INTERNAL_TEAMS.includes(user.group.groupType.name),
+      admin: userData.userType.name === USER_TYPE_ADMIN && tokenData.admin,
+      internal: INTERNAL_TEAMS.includes(userData.group.groupType.name) && tokenData.internal
     }));
   }
 
