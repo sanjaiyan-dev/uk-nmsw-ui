@@ -6,9 +6,24 @@ import {
 } from '../constants/AppConstants';
 
 function ParseJwtForUserType(token) {
+  /**
+   * Get the JSON payload & convert to base64
+   * For each character in that
+   * - get its code -> charCodeAt(0)
+   * - make it a string -> char.charCodeAt(0).toString(16)
+   * - add % to put it into url encoded format -> `%${(`00${char.charCodeAt(0).toString(16)}`)}`
+   * - return it
+   * Join the results of the map
+   * Decode the result of the join
+   */
+
   const base64Url = token.split('.')[1];
   const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-  const jsonPayload = decodeURIComponent(window.atob(base64).split('').map((c) => `%${(`00${c.charCodeAt(0).toString(16)}`).slice(-2)}`).join(''));
+  const jsonPayload = decodeURIComponent(atob(base64).split('').map((c) => `%${(`${c.charCodeAt(0).toString(16)}`)}`).join(''));
+
+  /**
+   * Extract the roles into an object we can use elsewhere
+   */
   const payloadRoles = JSON.parse(jsonPayload).resource_access['nmsw-backend'].roles;
 
   const userRoles = {
