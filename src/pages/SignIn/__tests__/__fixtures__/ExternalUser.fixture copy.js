@@ -1,19 +1,19 @@
-const ExternalUser = {
-  userId: '123user',
-  email: 'externalUser@emailcom',
-  fullName: 'Bob Externalson',
-  phoneNumber: '(44)123123123',
-  countryCode: 'GBR',
+const mockExternalUser = {
+  userId: 'user123',
+  email: 'externaltest@email.com',
+  fullName: 'Joe Externalson',
+  phoneNumber: '',
+  countryCode: '',
   verified: true,
-  dateCreated: '2023-02-06T16:21:09.958032',
-  lastUpdated: '2023-07-07T13:28:41.394007',
+  dateCreated: '2023-07-13T12:08:05.559354',
+  lastUpdated: '2023-07-13T13:11:50.841652',
   userType: {
-    userTypeId: '0b1e75b6-b3d0-4248-9558-cc91af07317c',
+    userTypeId: '064bac20-ae9c-4900-ba1e-50d2b11e33a2',
     name: 'Admin',
   },
   group: {
     groupId: 'de5426f1-c301-4afb-9075-fbdefff1df4b',
-    groupName: 'Bobs Company',
+    groupName: 'Joes Company',
     website: null,
     dateCreated: '2023-02-06T16:21:09.633696',
     typeOfCompany: null,
@@ -24,4 +24,5 @@ const ExternalUser = {
     },
   },
 };
-export default ExternalUser;
+
+export default mockExternalUser;
