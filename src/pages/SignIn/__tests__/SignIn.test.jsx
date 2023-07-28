@@ -108,7 +108,7 @@ describe('Sign in tests', () => {
     await user.click(screen.getByTestId('submit-button'));
     expect(window.sessionStorage.getItem('token')).toEqual('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZV9hY2Nlc3MiOnsibm1zdy1iYWNrZW5kIjp7InJvbGVzIjpbIlVzZXIiLCJBZG1pbiIsIkV4dGVybmFsIl19fX0.cfBFaWG2vCw1iOTd7TvovSVVRYmfEPmx-SIBoDU_3k8');
     expect(window.sessionStorage.getItem('refreshToken')).toEqual('321');
-    expect(window.sessionStorage.getItem('user')).toEqual('{"admin":true,"internal":false}');
+    expect(window.sessionStorage.getItem('user')).toEqual('{"admin":true,"external":true}');
   });
 
   it('should reject sign in if token does not include external', async () => {

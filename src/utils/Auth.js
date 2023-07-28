@@ -13,7 +13,7 @@ class Auth {
     // for added security we check both user and token before setting true
     sessionStorage.setItem('user', JSON.stringify({
       admin: userData.userType.name === USER_TYPE_ADMIN && tokenData.admin,
-      internal: INTERNAL_TEAMS.includes(userData.group.groupType.name) && tokenData.internal,
+      external: !INTERNAL_TEAMS.includes(userData.group.groupType.name) && tokenData.external,
     }));
   }
 
