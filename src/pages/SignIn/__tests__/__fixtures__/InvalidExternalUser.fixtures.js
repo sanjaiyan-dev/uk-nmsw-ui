@@ -1,7 +1,7 @@
-const mockAdminUser = {
+const mockExternalInvalidUser = {
   userId: 'user123',
-  email: 'admintest@email.com',
-  fullName: 'Joe Adminson',
+  email: 'usertest@email.com',
+  fullName: 'Joe Invaliduserson',
   phoneNumber: '',
   countryCode: '',
   verified: true,
@@ -9,7 +9,7 @@ const mockAdminUser = {
   lastUpdated: '2023-07-13T13:11:50.841652',
   userType: {
     userTypeId: '064bac20-ae9c-4900-ba1e-50d2b11e33a2',
-    name: 'Admin',
+    name: 'Super',
   },
   group: {
     groupId: 'a7e0df13-cd56-48f7-a3c2-6871c0eee0b4',
@@ -19,10 +19,10 @@ const mockAdminUser = {
     typeOfCompany: null,
     lastUpdated: '2023-07-05T16:48:03.329221',
     groupType: {
-      groupTypeId: 'dcb7d434-5431-4633-984b-4a461fa384b2',
-      name: 'Border Force Team',
+      groupTypeId: '640b4ff5-35fa-4606-a7d4-0ea44f1f3f21',
+      name: 'Operator',
     },
   },
 };
 
-export default mockAdminUser;
+export default mockExternalInvalidUser;

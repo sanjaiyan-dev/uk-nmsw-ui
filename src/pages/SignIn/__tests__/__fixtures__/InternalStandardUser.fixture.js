@@ -1,7 +1,7 @@
-const mockInvalidUser = {
+const mockInternalStandardUser = {
   userId: 'user123',
   email: 'usertest@email.com',
-  fullName: 'Joe Invaliduserson',
+  fullName: 'Joe Userson',
   phoneNumber: '',
   countryCode: '',
   verified: true,
@@ -9,7 +9,7 @@ const mockInvalidUser = {
   lastUpdated: '2023-07-13T13:11:50.841652',
   userType: {
     userTypeId: '064bac20-ae9c-4900-ba1e-50d2b11e33a2',
-    name: 'Super',
+    name: 'User',
   },
   group: {
     groupId: 'a7e0df13-cd56-48f7-a3c2-6871c0eee0b4',
@@ -25,4 +25,4 @@ const mockInvalidUser = {
   },
 };
 
-export default mockInvalidUser;
+export default mockInternalStandardUser;
