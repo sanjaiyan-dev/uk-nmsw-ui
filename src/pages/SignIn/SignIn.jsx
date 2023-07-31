@@ -7,6 +7,8 @@ import {
   FIELD_PASSWORD,
   INTERNAL_TEAMS,
   SIGN_IN_FORM,
+  USER_TYPE_ADMIN,
+  USER_TYPE_STANDARD,
   VALIDATE_EMAIL_ADDRESS,
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
@@ -26,9 +28,10 @@ import {
   SIGN_IN_URL,
   HELP_URL,
 } from '../../constants/AppUrlConstants';
-import Auth from '../../utils/Auth';
-import { scrollToTop } from '../../utils/ScrollToElement';
 import Message from '../../components/Message';
+import Auth from '../../utils/Auth';
+import ParseJwtForUserType from '../../utils/ParseJwtForUserType';
+import { scrollToTop } from '../../utils/ScrollToElement';
 
 // const SupportingText = () => (
 //   <div className="govuk-inset-text">
@@ -86,7 +89,7 @@ const SignIn = () => {
     setIsLoading(false);
   };
 
-  const getUserData = async (authData) => {
+  const getUserData = async ({ authData, tokenData }) => {
     const controller = new AbortController();
     const { signal } = controller;
 
@@ -95,11 +98,25 @@ const SignIn = () => {
         signal,
         headers: { Authorization: `Bearer ${authData.access_token}` },
       });
-      const data = await response.data;
-      const isInternal = INTERNAL_TEAMS.includes(data.group.groupType.name); // internal users should not be on this app
+      const userData = await response.data;
+      // for added security we check both the team is NOT in the internal user list and the token has an external group
+      const isExternal = !INTERNAL_TEAMS.includes(userData.group.groupType.name) && tokenData.external;
 
-      if (!isInternal) {
-        Auth.storeUserType(data);
+      /**
+       * and that the user has an approved type:
+       * All admins are also users
+       * If there's a conflict between token showing Admin & User
+       * and database showing only User
+       * we default back to User only access as a precaution
+       * HOWEVER: currently all external users are admins, keeping this check here for future use (it mimics what we do on nmsw-internal-ui)
+      */
+      const isUserTypeValid = (
+        (tokenData.admin && userData.userType.name === USER_TYPE_ADMIN)
+        || (tokenData.user && (userData.userType.name === USER_TYPE_ADMIN || userData.userType.name === USER_TYPE_STANDARD))
+      );
+
+      if (isExternal && isUserTypeValid) {
+        Auth.storeUserType({ userData, tokenData });
         Auth.storeToken(authData.access_token);
         Auth.storeRefreshToken(authData.refresh_token);
 
@@ -127,14 +144,9 @@ const SignIn = () => {
     try {
       const response = await axios.post(SIGN_IN_ENDPOINT, formData);
       if (response.data.access_token) {
-        getUserData(response.data);
+        const userRoles = await ParseJwtForUserType(response.data.access_token);
+        getUserData({ authData: response.data, tokenData: userRoles });
       }
-      // if (response.data.token) { Auth.storeToken(response.data.token); }
-      // if (state?.redirectURL) {
-      //   navigate(state.redirectURL, { state });
-      // } else {
-      //   navigate(LOGGED_IN_LANDING);
-      // }
     } catch (err) {
       if (err?.response?.data?.message === USER_SIGN_IN_DETAILS_INVALID) {
         setErrors('Email and password combination is invalid');
