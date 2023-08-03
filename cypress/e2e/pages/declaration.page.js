@@ -100,7 +100,7 @@ class declarationPage {
         });
         break;
     }
-    cy.wait(10000);
+    cy.wait(30000);
   }
 
   bannerCancelReport() {

@@ -39,8 +39,10 @@ Then('I am taken to review your report with submitted status', () => {
 
 When('I click cancel, to cancel the submitted voyage report', () => {
   cy.injectAxe();
+  cy.wait(5000);
   DeclarationPage.clickCancelButton();
   cy.checkAxe();
+  cy.wait(2000);
 });
 
 Then('I can see the status of reported voyage as CANCELLED', () => {
@@ -64,8 +66,9 @@ When('I click review or cancel action link next to Submitted status', () => {
 });
 
 When('I click review action link next to Cancelled status', () => {
-  cy.wait(3000);
+  cy.wait(5000);
   cy.get('@currentDeclaration').should('have.text', 'Review').click();
+  cy.wait(1000);
 });
 
 When('I click review action link next to Failed status', () => {
@@ -83,4 +86,5 @@ Then('I can see the confirmation banner for cancellation for crown dependency re
 
 Then('I can see the status of crown dependency voyage reported as CANCELLED', () => {
   DeclarationPage.verifyCrownDependencyVoyage('cancelled');
+  cy.wait(1000);
 });
