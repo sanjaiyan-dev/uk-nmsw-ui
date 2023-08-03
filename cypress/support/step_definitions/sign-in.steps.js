@@ -3,6 +3,7 @@ import EmailPage from '../../e2e/pages/registration/email.page.js';
 import SignInPage from '../../e2e/pages/sign-in.page.js';
 import LandingPage from '../../e2e/pages/landing.page';
 import BasePage from "../../e2e/pages/base.page";
+import internalUser from "../../fixtures/internalUsers.json";
 
 Before(() => {
   cy.fixture('registration.json').then((user) => {
@@ -68,8 +69,18 @@ When('I provide incorrect {string} and {string} and sign-in', (email, password) 
 
 Then('I can able to sign-out', () => {
   SignInPage.clickSignOut();
+  cy.window().then((win) => {
+    cy.wrap(win.sessionStorage).should('be.empty');
+  });
 });
 
 When('I try to access a protected page', () => {
   cy.visitUrl('/your-voyages');
+});
+
+When('I attempt to sign in with internal valid {string} credentials', (user)=> {
+  let email = user ==='admin' ? internalUser.adminSignIn : internalUser.standardSignIn
+  SignInPage.enterEmailAddress(email);
+  SignInPage.enterPassword(internalUser.password);
+  SignInPage.clickSignIn();
 });
