@@ -76,5 +76,5 @@ Feature: User able to reset password
     Then I am taken to forgotten-password page
     Then I enter the email that is registered but not verified
     And I click send the link
-#    Then I am taken to check your email page
+    Then I am taken to check your email page
 
