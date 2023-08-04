@@ -68,3 +68,7 @@ Then('I can see Check answers and submit enabled', () => {
 When('I click continue under actions', () => {
   cy.get('main#content a').first().contains('Continue').click();
 });
+
+Then('I can see the see the status of Fal-6 as required', () => {
+TaskPage.checkFal6StatusBeforeFal6Upload();
+});
