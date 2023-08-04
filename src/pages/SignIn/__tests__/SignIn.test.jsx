@@ -15,6 +15,7 @@ import {
   SIGN_IN_URL,
   LOGGED_IN_LANDING,
   REQUEST_PASSWORD_RESET_URL,
+  RESEND_EMAIL_USER_NOT_VERIFIED,
 } from '../../../constants/AppUrlConstants';
 import mockExternalUser from './__fixtures__/ExternalUser.fixture copy';
 import mockInternalAdminUser from './__fixtures__/InternalAdminUser.fixture';
@@ -450,11 +451,12 @@ describe('Sign in tests', () => {
     await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
     await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
     await user.click(screen.getByTestId('submit-button'));
-    screen.findByRole('heading', { name: 'Email address not verified' });
-    expect(screen.getByRole('heading', { name: 'Email address not verified' })).toBeInTheDocument();
-    expect(screen.getByText('We can send you a verification link so you can continue creating your account.')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Send confirmation email' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Send confirmation email' }).outerHTML).toEqual('<button class="govuk-button" data-module="govuk-button" type="button">Send confirmation email</button>');
+    expect(mockedUseNavigate).toHaveBeenCalledWith(RESEND_EMAIL_USER_NOT_VERIFIED, {
+      state: {
+        emailAddress: 'testemail@email.com',
+        redirectURL: SIGN_IN_URL,
+      },
+    });
   });
 
   it('should redirect to message page with password reset instructions if user account needs to be updated', async () => {
