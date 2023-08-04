@@ -150,6 +150,7 @@ const errBadDateTime = [
 ]
 
 Then('I am taken to Errors found page for {string}', (fileName) => {
+  cy.wait(1000);
   cy.url().should('include', 'field-errors');
   cy.contains('Errors found');
   cy.contains('Your file has errors. Check the file to fix any errors and re-upload your file.');
