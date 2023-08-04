@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import RequestPasswordReset from '../RequestPasswordReset';
-import { PASSSWORD_RESET_ENDPOINT } from '../../../constants/AppAPIConstants';
+import { PASSSWORD_RESET_ENDPOINT, USER_HAS_NOT_BEEN_VERIFIED } from '../../../constants/AppAPIConstants';
 import { MESSAGE_URL, REQUEST_PASSWORD_RESET_CONFIRMATION_URL, REQUEST_PASSWORD_RESET_URL } from '../../../constants/AppUrlConstants';
 
 let mockUseLocationState = {};
@@ -142,13 +142,8 @@ describe('Request password reset tests', () => {
     const user = userEvent.setup();
     mockAxios
       .onPost(PASSSWORD_RESET_ENDPOINT, { email: 'test@test.com' })
-      .reply(400, {
-        message: [
-          {
-            error: 'BadRequestError',
-            message: 'Missing personalisation: user',
-          },
-        ],
+      .reply(401, {
+        message: USER_HAS_NOT_BEEN_VERIFIED,
       });
 
     render(<MemoryRouter><RequestPasswordReset /></MemoryRouter>);
