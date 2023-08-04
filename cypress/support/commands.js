@@ -37,6 +37,7 @@ const apiServer = Cypress.env('api_server');
 require('cypress-downloadfile/lib/downloadFileCommand')
 Cypress.Commands.add('checkAxe', () => {
   cy.checkA11y(null, null, terminalLog, true);
+  cy.wait(1000);
 });
 
 Cypress.Commands.add('visitUrl', (path) => {

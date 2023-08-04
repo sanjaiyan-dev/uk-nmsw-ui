@@ -84,4 +84,4 @@ Feature: Check your answer page
     And I sign-out
     Examples:
       | emailAddress                                       | password      |
-      | abf4b167-04bc-4ff1-b4b0-7f9ceb0b6ffd@mailslurp.com | Test-NMSW-Dev |
+      | a31178b5-1e16-4ac9-8fcd-528ae2758b92@mailslurp.com | Test-NMSW-Dev |
