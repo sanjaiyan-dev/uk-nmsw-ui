@@ -41,7 +41,7 @@ const ResendEmailUserNotVerified = () => {
 
   useEffect(() => {
     if (!emailAddress) {
-      navigate(REGISTER_EMAIL_RESEND_URL);
+      navigate(REGISTER_EMAIL_RESEND_URL, { replace: true });
     }
   }, [emailAddress, navigate]);
 

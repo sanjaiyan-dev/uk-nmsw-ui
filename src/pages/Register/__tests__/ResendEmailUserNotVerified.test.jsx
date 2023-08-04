@@ -40,10 +40,10 @@ describe('Resend email when user not verified tests', () => {
     window.sessionStorage.clear();
   });
 
-  it('should redirect to resend verifiecation link page if email is missing from state', async () => {
+  it('should redirect to resend verification link page if email is missing from state', async () => {
     mockUseLocationState = { state: {} };
     render(<MemoryRouter><ResendEmailUserNotVerified /></MemoryRouter>);
-    expect(mockedUseNavigate).toHaveBeenCalledWith(REGISTER_EMAIL_RESEND_URL);
+    expect(mockedUseNavigate).toHaveBeenCalledWith(REGISTER_EMAIL_RESEND_URL, { replace: true });
   });
 
   it('should NOT redirect to error page if email is in state', async () => {
