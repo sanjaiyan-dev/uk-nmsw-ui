@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { PASSSWORD_RESET_ENDPOINT } from '../../constants/AppAPIConstants';
+import { PASSSWORD_RESET_ENDPOINT, USER_HAS_NOT_BEEN_VERIFIED } from '../../constants/AppAPIConstants';
 import {
   FIELD_EMAIL,
   SINGLE_PAGE_FORM,
@@ -66,8 +66,7 @@ const RequestPasswordReset = () => {
       }
     } catch (err) {
       // This error indicates user registered email address but didn't activate account yet
-      // Ticket in backlog to improve response from API but for now we will use this
-      if (err.response?.data?.message[0]?.message === 'Missing personalisation: user') {
+      if (err.response?.data?.message === USER_HAS_NOT_BEEN_VERIFIED) {
         setIsNotActivated(true);
       } else if (err.response.status === 401) {
         // 401 is invalid email address but we don't message that to the user so we show them the same confirmation page
