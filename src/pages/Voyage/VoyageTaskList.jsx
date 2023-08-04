@@ -129,7 +129,7 @@ const VoyageTaskList = () => {
                     <StatusTag status={passengerStatus} />
                   </Link>
                 </li>
-                <li id="fal1" className="app-task-list__item">
+                <li id="supportingDocs" className="app-task-list__item">
                   <Link className="govuk-link" to={`${VOYAGE_SUPPORTING_DOCS_UPLOAD_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`}>
                     <span>{SUPPORTING_DOCUMENTS_LABEL}</span>
                     <StatusTag status={DECLARATION_STEP_STATUS_OPTIONAL} />
