@@ -79,7 +79,7 @@ describe('Details component tests', () => {
     expect(screen.getByLabelText('Field with a default value label')).toBeInTheDocument();
     expect(screen.getByText('This is a hint for the details input').outerHTML).toEqual('<div id="fieldWithValue-hint" class="govuk-hint">This is a hint for the details input</div>');
     expect(screen.getByRole('textbox', { name: 'Field with a default value label' })).toBeInTheDocument();
-    expect(screen.getByTestId('details-component').outerHTML).toEqual('<details class="govuk-details" data-module="govuk-details" data-testid="details-component"><summary class="govuk-details__summary"><span class="govuk-details__summary-text">The details link text</span></summary><div class="govuk-details__text"><label class="govuk-label" for="fieldWithValue-input">Field with a default value label</label><div id="fieldWithValue-hint" class="govuk-hint">This is a hint for the details input</div><p id="fieldWithValue-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> </p><input class="govuk-input" id="fieldWithValue-input" name="fieldWithValue" type="text" aria-describedby="fieldWithValue-hint" value="test value"></div></details>');
+    expect(screen.getByTestId('details-component').outerHTML).toEqual('<details class="govuk-details" data-module="govuk-details" data-testid="details-component"><summary class="govuk-details__summary"><span class="govuk-details__summary-text">The details link text</span></summary><div class="govuk-details__text"><label class="govuk-label" for="fieldWithValue-input">Field with a default value label</label><div id="fieldWithValue-hint" class="govuk-hint">This is a hint for the details input</div><input class="govuk-input" id="fieldWithValue-input" name="fieldWithValue" type="text" aria-describedby="fieldWithValue-hint" value="test value"></div></details>');
   });
 
   it('should render a closed details component with an input without a default value', () => {
@@ -101,7 +101,7 @@ describe('Details component tests', () => {
     );
     expect(screen.getByLabelText('Field that has no default value')).toBeInTheDocument();
     expect(screen.getByRole('textbox', { name: 'Field that has no default value' })).toBeInTheDocument();
-    expect(screen.getByTestId('details-component').outerHTML).toEqual('<details class="govuk-details" data-module="govuk-details" data-testid="details-component"><summary class="govuk-details__summary"><span class="govuk-details__summary-text">Open details</span></summary><div class="govuk-details__text"><label class="govuk-label" for="fieldWithNoValue-input">Field that has no default value</label><div id="fieldWithNoValue-hint" class="govuk-hint"></div><p id="fieldWithNoValue-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> </p><input class="govuk-input" id="fieldWithNoValue-input" name="fieldWithNoValue" type="text" value=""></div></details>');
+    expect(screen.getByTestId('details-component').outerHTML).toEqual('<details class="govuk-details" data-module="govuk-details" data-testid="details-component"><summary class="govuk-details__summary"><span class="govuk-details__summary-text">Open details</span></summary><div class="govuk-details__text"><label class="govuk-label" for="fieldWithNoValue-input">Field that has no default value</label><div id="fieldWithNoValue-hint" class="govuk-hint"></div><input class="govuk-input" id="fieldWithNoValue-input" name="fieldWithNoValue" type="text" value=""></div></details>');
   });
 
   it('should open details if there are errors', async () => {
@@ -143,7 +143,7 @@ describe('Details component tests', () => {
     await user.type(screen.getByRole('textbox', { name: 'Field that has no default value' }), 'a');
     // the key piece of the html is it has ` open="">` at the end of `<details `
     await waitFor(() => {
-      expect(screen.getByTestId('details-component').outerHTML).toEqual('<details class="govuk-details" data-module="govuk-details" data-testid="details-component" open=""><summary class="govuk-details__summary"><span class="govuk-details__summary-text">Open details</span></summary><div class="govuk-details__text"><label class="govuk-label" for="fieldWithNoValue-input">Field that has no default value</label><div id="fieldWithNoValue-hint" class="govuk-hint"></div><p id="fieldWithNoValue-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> </p><input class="govuk-input" id="fieldWithNoValue-input" name="fieldWithNoValue" type="text" value=""></div></details>');
+      expect(screen.getByTestId('details-component').outerHTML).toEqual('<details class="govuk-details" data-module="govuk-details" data-testid="details-component" open=""><summary class="govuk-details__summary"><span class="govuk-details__summary-text">Open details</span></summary><div class="govuk-details__text"><label class="govuk-label" for="fieldWithNoValue-input">Field that has no default value</label><div id="fieldWithNoValue-hint" class="govuk-hint"></div><input class="govuk-input" id="fieldWithNoValue-input" name="fieldWithNoValue" type="text" value=""></div></details>');
     });
   });
 });
