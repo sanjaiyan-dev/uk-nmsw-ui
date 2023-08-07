@@ -26,6 +26,7 @@ import {
   REGISTER_EMAIL_VERIFIED_URL,
   REGISTER_DETAILS_URL,
   REGISTER_PASSWORD_URL,
+  RESEND_EMAIL_USER_NOT_VERIFIED,
   REQUEST_PASSWORD_RESET_URL,
   REQUEST_PASSWORD_RESET_CONFIRMATION_URL,
   REQUEST_PASSWORD_RESET_RESEND_URL,
@@ -66,6 +67,7 @@ const RegisterEmailResend = lazy(() => import('./pages/Register/RegisterEmailRes
 const RegisterEmailVerified = lazy(() => import('./pages/Register/RegisterEmailVerified'));
 const RegisterYourDetails = lazy(() => import('./pages/Register/RegisterYourDetails'));
 const RegisterYourPassword = lazy(() => import('./pages/Register/RegisterYourPassword'));
+const ResendEmailUserNotVerified = lazy(() => import('./pages/Register/ResendEmailUserNotVerified'));
 const RequestPasswordReset = lazy(() => import('./pages/SignIn/RequestPasswordReset'));
 const RequestPasswordResetConfirmation = lazy(() => import('./pages/SignIn/RequestPasswordResetConfirmation'));
 const ResendRequestPasswordReset = lazy(() => import('./pages/SignIn/ResendRequestPasswordReset'));
@@ -116,6 +118,7 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
           <Route path={REGISTER_EMAIL_VERIFIED_URL} element={<RegisterEmailVerified />} />
           <Route path={REGISTER_DETAILS_URL} element={<RegisterYourDetails />} />
           <Route path={REGISTER_PASSWORD_URL} element={<RegisterYourPassword />} />
+          <Route path={RESEND_EMAIL_USER_NOT_VERIFIED} element={<ResendEmailUserNotVerified />} />
           <Route path={REQUEST_PASSWORD_RESET_URL} element={<RequestPasswordReset />} />
           <Route path={REQUEST_PASSWORD_RESET_CONFIRMATION_URL} element={<RequestPasswordResetConfirmation />} />
           <Route path={REQUEST_PASSWORD_RESET_RESEND_URL} element={<ResendRequestPasswordReset />} />

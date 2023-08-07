@@ -10,12 +10,11 @@ import {
 } from '../../constants/AppConstants';
 import {
   MESSAGE_URL,
-  REGISTER_EMAIL_RESEND_URL,
   REQUEST_PASSWORD_RESET_CONFIRMATION_URL,
   REQUEST_PASSWORD_RESET_URL,
+  RESEND_EMAIL_USER_NOT_VERIFIED,
 } from '../../constants/AppUrlConstants';
 import DisplayForm from '../../components/Forms/DisplayForm';
-import Message from '../../components/Message';
 
 const SupportingText = () => (
   <div>
@@ -27,7 +26,6 @@ const RequestPasswordReset = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const [isLoading, setIsLoading] = useState(false);
-  const [isNotActivated, setIsNotActivated] = useState(false);
   document.title = 'Forgot password';
 
   const formActions = {
@@ -67,7 +65,12 @@ const RequestPasswordReset = () => {
     } catch (err) {
       // This error indicates user registered email address but didn't activate account yet
       if (err.response?.data?.message === USER_HAS_NOT_BEEN_VERIFIED) {
-        setIsNotActivated(true);
+        navigate(RESEND_EMAIL_USER_NOT_VERIFIED, {
+          state: {
+            emailAddress: emailToSendTo,
+            redirectURL: REQUEST_PASSWORD_RESET_URL,
+          },
+        });
       } else if (err.response.status === 401) {
         // 401 is invalid email address but we don't message that to the user so we show them the same confirmation page
         navigate(REQUEST_PASSWORD_RESET_CONFIRMATION_URL, { state: { dataToSubmit: { emailAddress: emailToSendTo } } });
@@ -83,20 +86,6 @@ const RequestPasswordReset = () => {
     setIsLoading(true);
     requestPasswordResetEmail({ emailToSendTo: formData.formData.emailAddress });
   };
-
-  if (isNotActivated) {
-    const buttonProps = {
-      buttonLabel: 'Send confirmation email',
-      buttonNavigateTo: REGISTER_EMAIL_RESEND_URL,
-    };
-    return (
-      <Message
-        button={buttonProps}
-        title="Email address not verified"
-        message="We can send you a verification link so you can continue creating your account."
-      />
-    );
-  }
 
   return (
     <DisplayForm

@@ -13,6 +13,7 @@ export const REGISTER_EMAIL_RESEND_URL = '/create-account/request-new-verificati
 export const REGISTER_EMAIL_VERIFIED_URL = '/activate-account';
 export const REGISTER_DETAILS_URL = '/create-account/your-details';
 export const REGISTER_PASSWORD_URL = '/create-account/your-password';
+export const RESEND_EMAIL_USER_NOT_VERIFIED = '/resend-verfication-email';
 export const REQUEST_PASSWORD_RESET_URL = '/forgotten-password';
 export const REQUEST_PASSWORD_RESET_CONFIRMATION_URL = '/forgotten-password/check-your-email';
 export const REQUEST_PASSWORD_RESET_RESEND_URL = '/forgotten-password/request-new-link';

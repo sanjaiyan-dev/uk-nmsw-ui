@@ -23,12 +23,11 @@ import {
   LOGGED_IN_LANDING,
   MESSAGE_URL,
   // REGISTER_ACCOUNT_URL,
-  REGISTER_EMAIL_RESEND_URL,
   REQUEST_PASSWORD_RESET_URL,
   SIGN_IN_URL,
   HELP_URL,
+  RESEND_EMAIL_USER_NOT_VERIFIED,
 } from '../../constants/AppUrlConstants';
-import Message from '../../components/Message';
 import Auth from '../../utils/Auth';
 import ParseJwtForUserType from '../../utils/ParseJwtForUserType';
 import { scrollToTop } from '../../utils/ScrollToElement';
@@ -46,7 +45,6 @@ const SignIn = () => {
   const { state } = useLocation();
   const [errors, setErrors] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  const [isNotActivated, setIsNotActivated] = useState(false);
   document.title = 'Sign in';
 
   // Form fields
@@ -152,7 +150,12 @@ const SignIn = () => {
         setErrors('Email and password combination is invalid');
         scrollToTop();
       } else if (err?.response?.data?.message === USER_NOT_VERIFIED) {
-        setIsNotActivated(true);
+        navigate(RESEND_EMAIL_USER_NOT_VERIFIED, {
+          state: {
+            emailAddress: formData.email,
+            redirectURL: SIGN_IN_URL,
+          },
+        });
         scrollToTop();
       } else if (err?.response?.data?.message === USER_MUST_UPDATE_PASSWORD) {
         navigate(MESSAGE_URL, {
@@ -172,20 +175,6 @@ const SignIn = () => {
       setIsLoading(false);
     }
   };
-
-  if (isNotActivated) {
-    const buttonProps = {
-      buttonLabel: 'Send confirmation email',
-      buttonNavigateTo: REGISTER_EMAIL_RESEND_URL,
-    };
-    return (
-      <Message
-        button={buttonProps}
-        title="Email address not verified"
-        message="We can send you a verification link so you can continue creating your account."
-      />
-    );
-  }
 
   return (
     <>
