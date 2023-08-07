@@ -37,6 +37,7 @@ const SubmitConfirmation = () => (
   <>
     <h2 className="govuk-heading-m">What happens next</h2>
     <p className="govuk-body">We will send you an email that you can show to Border Force officers as proof that you have sent these reports.</p>
+    <p>You&apos;ll be able to show the email to Border Force officers as proof that you have sent us your report.</p>
   </>
 );
 
