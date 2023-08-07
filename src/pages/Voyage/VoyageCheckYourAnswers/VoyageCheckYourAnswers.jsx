@@ -36,7 +36,8 @@ import VoyageCancelConfirmation from './VoyageCancelConfirmation';
 const SubmitConfirmation = () => (
   <>
     <h2 className="govuk-heading-m">What happens next</h2>
-    <p className="govuk-body">We will send you an email that you can show to Border Force officers as proof that you have sent these reports.</p>
+    <p className="govuk-body">We will send you an email to confirm when your voyage report has been received.</p>
+    <p>You&apos;ll be able to show the email to Border Force officers as proof that you have sent us your report.</p>
   </>
 );
 
@@ -191,8 +192,8 @@ const VoyageCheckYourAnswers = () => {
   if (showConfirmation) {
     return (
       <ConfirmationMessage
-        pageTitle="Voyage details submitted"
-        confirmationMessage="Voyage details submitted"
+        pageTitle="Voyage details sent"
+        confirmationMessage="Voyage details sent"
         nextPageLink={YOUR_VOYAGES_URL}
         nextPageLinkText="Return to your voyages"
       >

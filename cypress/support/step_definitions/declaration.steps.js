@@ -10,7 +10,7 @@ Then('I can see the confirmation banner -Voyage details deleted', () => {
   DeclarationPage.bannerDeleteDraft();
 });
 
-Then('I can see the confirmation banner -Voyage details submitted', () => {
+Then('I can see the confirmation banner -Voyage details sent', () => {
   cy.injectAxe();
   DeclarationPage.bannerSubmitReport();
   cy.checkAxe();
