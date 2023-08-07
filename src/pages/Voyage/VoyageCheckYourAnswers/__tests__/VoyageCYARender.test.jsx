@@ -124,7 +124,7 @@ describe('Voyage CYA - initial render', () => {
     expect(screen.getByRole('heading', { name: 'Voyage details' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Uploaded documents' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Now send your application' })).toBeInTheDocument();
-    expect(screen.getByText('By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.')).toBeInTheDocument();
+    expect(screen.getByText('By sending this voyage report, you are confirming that to the best of your knowledge, the details you are sending are correct.')).toBeInTheDocument();
   });
 
   it('should render the list titles on the page', async () => {
@@ -197,6 +197,6 @@ describe('Voyage CYA - initial render', () => {
       .reply(200, Fal1);
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
-    expect(screen.getByRole('button', { name: 'Save and submit' }).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button">Save and submit</button>');
+    expect(screen.getByRole('button', { name: 'Confirm and send' }).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button">Confirm and send</button>');
   });
 });

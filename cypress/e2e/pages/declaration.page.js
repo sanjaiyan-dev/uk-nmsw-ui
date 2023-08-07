@@ -113,7 +113,7 @@ class declarationPage {
   }
 
   verifySaveAndSubmitNotExist() {
-    cy.get('button[class="govuk-button"]').contains('Save and submit').should('not.exist');
+    cy.get('button[class="govuk-button"]').contains('Confirm and send').should('not.exist');
   }
 
   verifyCancelButtonNotExist() {

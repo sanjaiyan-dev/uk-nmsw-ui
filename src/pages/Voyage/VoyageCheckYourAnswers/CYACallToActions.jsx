@@ -14,7 +14,7 @@ const CYACallToActions = ({
         && (
           <>
             <h2 className="govuk-heading-m">Now send your application</h2>
-            <p className="govuk-body">By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.</p>
+            <p className="govuk-body">By sending this voyage report, you are confirming that to the best of your knowledge, the details you are sending are correct.</p>
 
             <button
               type="button"
@@ -23,7 +23,7 @@ const CYACallToActions = ({
               disabled={isPendingSubmit}
               onClick={() => handleSubmit()}
             >
-              Save and submit
+              Confirm and send
             </button>
           </>
         )
