@@ -12,7 +12,7 @@ Then('I can see the confirmation banner -Voyage details deleted', () => {
 
 Then('I can see the confirmation banner -Voyage details sent', () => {
   cy.injectAxe();
-  DeclarationPage.bannerSubmitReport();
+  DeclarationPage.bannerReportSent();
   cy.checkAxe();
 });
 
@@ -28,7 +28,13 @@ Then('I can see the status of reported voyage as SUBMITTED', () => {
   cy.checkAxe();
 });
 
-Then('I am taken to review your report with submitted status', () => {
+Then('I can see the status of reported voyage as PENDING', () => {
+  cy.injectAxe();
+  DeclarationPage.checkVoyageDetailsStatus('pending');
+  cy.checkAxe();
+});
+
+Then('I can review the report with submitted status', () => {
   cy.injectAxe();
   BasePage.checkH1('Review your report');
   DeclarationPage.checkCyaSubmittedStatus();
@@ -60,7 +66,7 @@ Then('I am taken to review your report with Cancelled status', () => {
   cy.checkAxe();
 });
 
-When('I click review or cancel action link next to Submitted status', () => {
+When('I click review or cancel action link next to Pending status', () => {
   cy.wait(3000);
   cy.get('@currentDeclaration').should('have.text', 'Review or cancel').click();
 });
@@ -75,8 +81,8 @@ When('I click review action link next to Failed status', () => {
   cy.get('@currentDeclaration').should('have.text', 'Review and re-submit').click();
 });
 
-Then('I can see the status of  crown dependency voyage reported as SUBMITTED', () => {
-  DeclarationPage.verifyCrownDependencyVoyage('submitted');
+Then('I can see the status of crown dependency voyage reported as PENDING', () => {
+  DeclarationPage.verifyCrownDependencyVoyage('pending');
 });
 
 Then('I can see the confirmation banner for cancellation for crown dependency report', () => {
@@ -87,4 +93,13 @@ Then('I can see the confirmation banner for cancellation for crown dependency re
 Then('I can see the status of crown dependency voyage reported as CANCELLED', () => {
   DeclarationPage.verifyCrownDependencyVoyage('cancelled');
   cy.wait(1000);
+});
+
+Then('I can see the report status changes to Submitted', () => {
+  cy.waitForStatusChange();
+  cy.contains('Status').next().then((statusDetail) => {
+    const statusAndDate = statusDetail.text()
+    cy.wrap(statusAndDate).as('externalStatus');
+  })
+  cy.wait(3000);
 });

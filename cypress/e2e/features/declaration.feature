@@ -56,21 +56,23 @@ Feature: Submit or cancel the declaration request
 
   @regression
   Scenario: User can able to submit the declaration request
-    When I click Save and Submit to confirm submission
+    When I confirm submission
     Then I can see the confirmation banner -Voyage details sent
     When I click return to your voyages link
-    Then I can see the status of reported voyage as SUBMITTED
-    When I click review or cancel action link next to Submitted status
-    Then I am taken to review your report with submitted status
+    Then I can see the status of reported voyage as PENDING
+    When I click review or cancel action link next to Pending status
+    Then I can see the report status changes to Submitted
+    And I can review the report with submitted status
 
   @regression
   Scenario: User can able to cancel the submitted declaration
-    When I click Save and Submit to confirm submission
+    When I confirm submission
     Then I can see the confirmation banner -Voyage details sent
     When I click return to your voyages link
-    Then I can see the status of reported voyage as SUBMITTED
-    When I click review or cancel action link next to Submitted status
-    Then I am taken to review your report with submitted status
+    Then I can see the status of reported voyage as PENDING
+    When I click review or cancel action link next to Pending status
+    Then I can see the report status changes to Submitted
+    And I can review the report with submitted status
     When I click cancel, to cancel the submitted voyage report
     Then I click Yes to confirm the voyage report cancel
     And I can see the confirmation banner for cancellation
@@ -88,12 +90,13 @@ Feature: Submit or cancel the declaration request
     Then I am taken to task details page
     When I click Check answers and submit
     Then I can view Check Your Answers page
-    When I click Save and Submit to confirm submission
+    When I confirm submission
     Then I can see the confirmation banner -Voyage details sent
     When I click return to your voyages link
-    Then I can see the status of  crown dependency voyage reported as SUBMITTED
-    When I click review or cancel action link next to Submitted status
-    Then I am taken to review your report with submitted status
+    Then I can see the status of crown dependency voyage reported as PENDING
+    When I click review or cancel action link next to Pending status
+    Then I can see the report status changes to Submitted
+    And I can review the report with submitted status
     When I click cancel, to cancel the submitted voyage report
     Then I click Yes to confirm the voyage report cancel
     And I can see the confirmation banner for cancellation for crown dependency report
