@@ -54,9 +54,11 @@ const DragDropZone = ({
         >
           <fieldset className="govuk-fieldset">
             <div className={maxFilesError ? 'govuk-form-group govuk-form-group--error' : 'govuk-form-group'}>
-              <p id="multiFileUploadForm-error" className="govuk-error-message">
-                <span className="govuk-visually-hidden">Error:</span> {maxFilesError}
-              </p>
+              {maxFilesError && (
+                <p id="multiFileUploadForm-error" className="govuk-error-message">
+                  <span className="govuk-visually-hidden">Error:</span> {maxFilesError}
+                </p>
+              )}
               <input
                 ref={inputRef}
                 type="file"
