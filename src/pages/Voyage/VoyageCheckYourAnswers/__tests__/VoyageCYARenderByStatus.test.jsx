@@ -80,7 +80,7 @@ describe('Voyage CYA - render by status', () => {
     expect(screen.queryByText('By sending this voyage report, you are confirming that to the best of your knowledge, the details you are sending are correct.')).not.toBeInTheDocument();
   });
 
-  it('should render the status as submitted, submission date, h1 of review your report, and a cancel CTA if status is presubmitted', async () => {
+  it('should render the status as pending, submission date, h1 of review your report, and a cancel CTA if status is presubmitted', async () => {
     mockAxios
       .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
         headers: {
@@ -92,7 +92,7 @@ describe('Voyage CYA - render by status', () => {
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     expect(screen.getByText('Review your report')).toBeInTheDocument();
     expect(screen.getByText('Status')).toBeInTheDocument();
-    expect(screen.getByText('Submitted').outerHTML).toEqual('<strong class="govuk-tag govuk-tag--green">Submitted</strong>');
+    expect(screen.getByText('Pending').outerHTML).toEqual('<strong class="govuk-tag govuk-tag--yellow">Pending</strong>');
     expect(screen.getByText('10 February 2023')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Cancel' }).outerHTML).toEqual('<button type="button" class="govuk-button govuk-button--warning" data-module="govuk-button">Cancel</button>');

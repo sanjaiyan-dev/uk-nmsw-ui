@@ -94,7 +94,7 @@ export default CYAUploadedDocs;
 CYAUploadedDocs.propTypes = {
   declarationId: PropTypes.string.isRequired,
   declarationStatus: PropTypes.shape({
-    status: PropTypes.string.isRequired,
+    status: PropTypes.string,
     submissionDate: PropTypes.string,
   }).isRequired,
   fal5Details: PropTypes.shape({
