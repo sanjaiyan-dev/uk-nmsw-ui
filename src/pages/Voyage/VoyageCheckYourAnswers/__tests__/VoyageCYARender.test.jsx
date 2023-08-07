@@ -159,6 +159,7 @@ describe('Voyage CYA - initial render', () => {
       })
       .reply(200, {
         FAL1: {
+          status: 'Submitted',
           nameOfShip: 'Test ship name',
           imoNumber: '1234567',
           callSign: 'NA',

@@ -50,7 +50,7 @@ export default CYACallToActions;
 CYACallToActions.propTypes = {
   checkCancelRequest: PropTypes.func.isRequired,
   declarationStatus: PropTypes.shape({
-    status: PropTypes.string.isRequired,
+    status: PropTypes.string,
     submissionDate: PropTypes.string,
   }).isRequired,
   handleSubmit: PropTypes.func.isRequired,
