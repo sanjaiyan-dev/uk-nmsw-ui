@@ -10,11 +10,11 @@ class CyaPage {
   }
 
   verifySaveAndSubmitButton() {
-    cy.contains('Save and submit');
+    cy.contains('Confirm and send');
   }
 
   clickSaveAndSubmitButton() {
-    cy.contains('Save and submit').click();
+    cy.contains('Confirm and send').click();
   }
 
   verifyH2Headings() {

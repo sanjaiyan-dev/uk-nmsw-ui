@@ -69,7 +69,7 @@ describe('Voyage CYA - submit', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     await screen.findByRole('heading', { name: 'Check your answers' });
-    await user.click(screen.getByRole('button', { name: 'Save and submit' }));
+    await user.click(screen.getByRole('button', { name: 'Confirm and send' }));
     expect(screen.getByRole('heading', { name: 'There is a problem' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Crew details (FAL 5) upload is required' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'You need to provide passenger details, even if the ship is carrying no passengers' })).toBeInTheDocument();
@@ -95,7 +95,7 @@ describe('Voyage CYA - submit', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     await screen.findByRole('heading', { name: 'Check your answers' });
-    await user.click(screen.getByRole('button', { name: 'Save and submit' }));
+    await user.click(screen.getByRole('button', { name: 'Confirm and send' }));
     expect(screen.getByRole('heading', { name: 'There is a problem' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Passenger details (FAL 6) upload is required for ships carrying passengers' })).toBeInTheDocument();
   });
@@ -111,7 +111,7 @@ describe('Voyage CYA - submit', () => {
       .reply(200, Fal1PassengersTrue);
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
-    await user.click(screen.getByRole('button', { name: 'Save and submit' }));
+    await user.click(screen.getByRole('button', { name: 'Confirm and send' }));
 
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Passenger details (FAL 6) upload is required for ships carrying passengers' })).toBeInTheDocument();
@@ -138,7 +138,7 @@ describe('Voyage CYA - submit', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     await screen.findByRole('heading', { name: 'Check your answers' });
-    await user.click(screen.getByRole('button', { name: 'Save and submit' }));
+    await user.click(screen.getByRole('button', { name: 'Confirm and send' }));
 
     expect(mockedUseNavigate).toHaveBeenCalledWith(MESSAGE_URL, {
       state: {
@@ -164,7 +164,7 @@ describe('Voyage CYA - submit', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     await screen.findByRole('heading', { name: 'Check your answers' });
-    await user.click(screen.getByRole('button', { name: 'Save and submit' }));
+    await user.click(screen.getByRole('button', { name: 'Confirm and send' }));
 
     expect(mockedUseNavigate).toHaveBeenCalledWith(SIGN_IN_URL, {
       state: { redirectURL: `${VOYAGE_CHECK_YOUR_ANSWERS}?${URL_DECLARATIONID_IDENTIFIER}=123` },
@@ -186,7 +186,7 @@ describe('Voyage CYA - submit', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     await screen.findByRole('heading', { name: 'Check your answers' });
-    await user.click(screen.getByRole('button', { name: 'Save and submit' }));
+    await user.click(screen.getByRole('button', { name: 'Confirm and send' }));
 
     expect(mockedUseNavigate).toHaveBeenCalledWith(SIGN_IN_URL, {
       state: { redirectURL: `${VOYAGE_CHECK_YOUR_ANSWERS}?${URL_DECLARATIONID_IDENTIFIER}=123` },
@@ -230,7 +230,7 @@ describe('Voyage CYA - submit', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     await screen.findByRole('heading', { name: 'Check your answers' });
-    await user.click(screen.getByRole('button', { name: 'Save and submit' }));
+    await user.click(screen.getByRole('button', { name: 'Confirm and send' }));
 
     await screen.findByRole('heading', { name: 'Voyage details submitted' });
     expect(screen.getByRole('heading', { name: 'Voyage details submitted' }).outerHTML).toEqual('<h1 class="govuk-panel__title govuk-!-margin-bottom-6">Voyage details submitted</h1>');
