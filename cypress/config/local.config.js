@@ -6,7 +6,7 @@ module.exports = defineConfig({
 
       env: {
         'baseUrl': 'http://localhost:3000',
-        'envName': 'development',
+        'envName': 'local',
         'api_server': 'http://localhost:5000/v1',
         'inboxId': 'b6f7c995-d7b0-48e7-a1b6-9264b9598b37'
       }

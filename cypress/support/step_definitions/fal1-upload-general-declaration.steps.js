@@ -72,6 +72,7 @@ When('I click check for errors', () => {
     const declarationId = url.split('=')[1];
     cy.wrap(declarationId).as('declarationId');
   });
+  cy.wait(1000);
 });
 
 Then('the FE sends a POST to the declarationId endpoint', () => {
