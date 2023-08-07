@@ -123,7 +123,7 @@ describe('Voyage CYA - initial render', () => {
     expect(screen.getByRole('heading', { name: 'Check your answers' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Voyage details' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Uploaded documents' })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: 'Now send your application' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Send the report' })).toBeInTheDocument();
     expect(screen.getByText('By sending this voyage report, you are confirming that to the best of your knowledge, the details you are sending are correct.')).toBeInTheDocument();
   });
 

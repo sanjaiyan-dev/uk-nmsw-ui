@@ -13,7 +13,7 @@ const CYACallToActions = ({
         declarationStatus?.status === DECLARATION_STATUS_DRAFT
         && (
           <>
-            <h2 className="govuk-heading-m">Now send your application</h2>
+            <h2 className="govuk-heading-m">Send the report</h2>
             <p className="govuk-body">By sending this voyage report, you are confirming that to the best of your knowledge, the details you are sending are correct.</p>
 
             <button

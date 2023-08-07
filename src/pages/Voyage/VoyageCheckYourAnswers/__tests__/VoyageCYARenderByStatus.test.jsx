@@ -51,7 +51,7 @@ describe('Voyage CYA - render by status', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     expect(screen.getByText('Check your answers')).toBeInTheDocument();
-    expect(screen.getByText('Now send your application')).toBeInTheDocument();
+    expect(screen.getByText('Send the report')).toBeInTheDocument();
     expect(screen.getByText('By sending this voyage report, you are confirming that to the best of your knowledge, the details you are sending are correct.')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Confirm and send' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Confirm and send' }).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button">Confirm and send</button>');
@@ -76,7 +76,7 @@ describe('Voyage CYA - render by status', () => {
     expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Cancel' }).outerHTML).toEqual('<button type="button" class="govuk-button govuk-button--warning" data-module="govuk-button">Cancel</button>');
     expect(screen.queryByRole('button', { name: 'Confirm and send' })).not.toBeInTheDocument();
-    expect(screen.queryByText('Now send your application')).not.toBeInTheDocument();
+    expect(screen.queryByText('Send the report')).not.toBeInTheDocument();
     expect(screen.queryByText('By sending this voyage report, you are confirming that to the best of your knowledge, the details you are sending are correct.')).not.toBeInTheDocument();
   });
 
@@ -97,7 +97,7 @@ describe('Voyage CYA - render by status', () => {
     expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Cancel' }).outerHTML).toEqual('<button type="button" class="govuk-button govuk-button--warning" data-module="govuk-button">Cancel</button>');
     expect(screen.queryByRole('button', { name: 'Confirm and send' })).not.toBeInTheDocument();
-    expect(screen.queryByText('Now send your application')).not.toBeInTheDocument();
+    expect(screen.queryByText('Send the report')).not.toBeInTheDocument();
     expect(screen.queryByText('By sending this voyage report, you are confirming that to the best of your knowledge, the details you are sending are correct.')).not.toBeInTheDocument();
   });
 
@@ -117,7 +117,7 @@ describe('Voyage CYA - render by status', () => {
     expect(screen.getByText('10 February 2023')).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Confirm and send' })).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument();
-    expect(screen.queryByText('Now send your application')).not.toBeInTheDocument();
+    expect(screen.queryByText('Send the report')).not.toBeInTheDocument();
     expect(screen.queryByText('By sending this voyage report, you are confirming that to the best of your knowledge, the details you are sending are correct.')).not.toBeInTheDocument();
   });
 
@@ -138,7 +138,7 @@ describe('Voyage CYA - render by status', () => {
     expect(screen.getByText('10 February 2023')).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Confirm and send' })).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument();
-    expect(screen.queryByText('Now send your application')).not.toBeInTheDocument();
+    expect(screen.queryByText('Send the report')).not.toBeInTheDocument();
     expect(screen.queryByText('By sending this voyage report, you are confirming that to the best of your knowledge, the details you are sending are correct.')).not.toBeInTheDocument();
   });
 
@@ -159,7 +159,7 @@ describe('Voyage CYA - render by status', () => {
     expect(screen.getByText('10 February 2023')).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Confirm and send' })).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument();
-    expect(screen.queryByText('Now send your application')).not.toBeInTheDocument();
+    expect(screen.queryByText('Send the report')).not.toBeInTheDocument();
     expect(screen.queryByText('By sending this voyage report, you are confirming that to the best of your knowledge, the details you are sending are correct.')).not.toBeInTheDocument();
   });
 
@@ -201,7 +201,7 @@ describe('Voyage CYA - render by status', () => {
     expect(screen.getByText('Status')).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Confirm and send' })).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument();
-    expect(screen.queryByText('Now send your application')).not.toBeInTheDocument();
+    expect(screen.queryByText('Send the report')).not.toBeInTheDocument();
     expect(screen.queryByText('By sending this voyage report, you are confirming that to the best of your knowledge, the details you are sending are correct.')).not.toBeInTheDocument();
   });
 });
