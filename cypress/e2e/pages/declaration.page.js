@@ -20,7 +20,7 @@ class declarationPage {
   }
 
   bannerSubmitReport() {
-    cy.get('.govuk-panel__title').should('have.text', 'Voyage details submitted');
+    cy.get('.govuk-panel__title').should('have.text', 'Voyage details sent');
   }
 
   checkCyaSubmittedStatus() {

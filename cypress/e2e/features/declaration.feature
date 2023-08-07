@@ -57,7 +57,7 @@ Feature: Submit or cancel the declaration request
   @regression
   Scenario: User can able to submit the declaration request
     When I click Save and Submit to confirm submission
-    Then I can see the confirmation banner -Voyage details submitted
+    Then I can see the confirmation banner -Voyage details sent
     When I click return to your voyages link
     Then I can see the status of reported voyage as SUBMITTED
     When I click review or cancel action link next to Submitted status
@@ -66,7 +66,7 @@ Feature: Submit or cancel the declaration request
   @regression
   Scenario: User can able to cancel the submitted declaration
     When I click Save and Submit to confirm submission
-    Then I can see the confirmation banner -Voyage details submitted
+    Then I can see the confirmation banner -Voyage details sent
     When I click return to your voyages link
     Then I can see the status of reported voyage as SUBMITTED
     When I click review or cancel action link next to Submitted status
@@ -89,7 +89,7 @@ Feature: Submit or cancel the declaration request
     When I click Check answers and submit
     Then I can view Check Your Answers page
     When I click Save and Submit to confirm submission
-    Then I can see the confirmation banner -Voyage details submitted
+    Then I can see the confirmation banner -Voyage details sent
     When I click return to your voyages link
     Then I can see the status of  crown dependency voyage reported as SUBMITTED
     When I click review or cancel action link next to Submitted status

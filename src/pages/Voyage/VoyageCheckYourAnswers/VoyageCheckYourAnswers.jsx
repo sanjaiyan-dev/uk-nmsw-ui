@@ -191,8 +191,8 @@ const VoyageCheckYourAnswers = () => {
   if (showConfirmation) {
     return (
       <ConfirmationMessage
-        pageTitle="Voyage details submitted"
-        confirmationMessage="Voyage details submitted"
+        pageTitle="Voyage details sent"
+        confirmationMessage="Voyage details sent"
         nextPageLink={YOUR_VOYAGES_URL}
         nextPageLinkText="Return to your voyages"
       >
