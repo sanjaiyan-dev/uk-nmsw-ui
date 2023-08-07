@@ -1,5 +1,5 @@
 import { Then, When } from '@badeball/cypress-cucumber-preprocessor';
-import YourVoyagePage from '../../e2e/pages/your-voyage.page';
+import YourVoyagePage from '../../e2e/pages/your-voyage-page';
 import FileUploadPage from '../../e2e/pages/file-upload.page';
 import LandingPage from '../../e2e/pages/landing.page';
 import SignInPage from '../../e2e/pages/sign-in.page';
@@ -10,6 +10,7 @@ let fileName;
 When('I click report a voyage', () => {
   cy.intercept('POST', '**/declaration').as('newDeclaration');
   YourVoyagePage.clickReportVoyage();
+  cy.wait(1000);
 });
 
 Then('I am taken to upload-general-declaration page', () => {
@@ -66,11 +67,10 @@ When('I click check for errors', () => {
   cy.intercept('POST', '**/declaration/**').as('declaration');
   cy.checkAxe();
   FileUploadPage.clickCheckForErrors();
-  cy.wait(2000);
+  cy.wait(3000);
   cy.url().then(url => {
     const declarationId = url.split('=')[1];
     cy.wrap(declarationId).as('declarationId');
-    cy.log(declarationId);
   });
 });
 
@@ -84,6 +84,7 @@ Then('the FE sends a POST to the declarationId endpoint', () => {
 
 When('there are no errors, I am shown the no errors found page', () => {
   cy.intercept('POST', '**/declaration/**').as('declaration');
+  cy.wait(2000);
   FileUploadPage.checkNoErrors();
 });
 

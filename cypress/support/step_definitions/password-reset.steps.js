@@ -1,4 +1,4 @@
-import {Then, When} from "@badeball/cypress-cucumber-preprocessor";
+import { Given, Then, When } from '@badeball/cypress-cucumber-preprocessor';
 import PasswordPage from "../../e2e/pages/registration/password.page";
 import EmailPage from "../../e2e/pages/registration/email.page";
 import BasePage from "../../e2e/pages/base.page";
@@ -123,7 +123,7 @@ When('I enter the email that is registered but not verified', () => {
     EmailPage.enterEmailAddress('e5fc776c-a811-4cc5-9392-019f3872938b@mailslurp.com')
 });
 
-Then('I shown email address has not been verified', () => {
+Then('I am shown email address has not been verified', () => {
     BasePage.checkH1('Email address not verified');
 });
 
@@ -131,6 +131,11 @@ When('I click send verification email', () => {
     cy.checkAxe();
     BasePage.clickSendConfirmationEmail();
 });
+
+Then('I am taken to request-new-verification-link page', () => {
+    cy.url().should('include', 'I am taken to request-new-verification-link page');
+    BasePage.checkH1('Request a new verification link');
+})
 
 When('I enter an email address that is not registered', () => {
     EmailPage.enterEmailAddress('test@test.com')
@@ -142,4 +147,18 @@ Then('I am shown check your email page but email should not be sent', () => {
     cy.wait('@verifyReg').then(({response}) => {
         expect(response.statusCode).to.be.oneOf([401, 400]);
     });
+});
+
+Given('a user attempts to sign in with email that requires to reset', () => {
+    SignInPage.enterEmailAddress('');
+    SignInPage.enterPassword(this.user.password);
+    SignInPage.clickSignIn();
+});
+
+Then('we redirect the user to a message page for service update', () => {
+    cy.injectAxe({timedOut: 1000});
+    BasePage.checkH1('Service update')
+    cy.get('.govuk-grid-column-two-thirds  p.govuk-body').should('contain.text', `To continue to use the service, please reset your password. Any voyage reports you\'ve saved will not be affected.`);
+    cy.contains('Reset password');
+    cy.checkAxe();
 });
