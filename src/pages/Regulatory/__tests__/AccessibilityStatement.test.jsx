@@ -15,8 +15,8 @@ describe('Accessibility statement tests', () => {
 
   it('should render link to service email', async () => {
     render(<AccessibilityStatement />);
-    expect(screen.getByRole('link', { name: 'nmswsupport@digital.homeoffice.gov.uk' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'nmswsupport@digital.homeoffice.gov.uk' }).outerHTML).toBe('<a class="govuk-link" href="mailto: nmswsupport@digital.homeoffice.gov.uk">nmswsupport@digital.homeoffice.gov.uk</a>');
+    expect(screen.getByRole('link', { name: 'nmsw@homeoffice.gov.uk' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'nmsw@homeoffice.gov.uk' }).outerHTML).toBe('<a class="govuk-link" href="mailto: nmsw@homeoffice.gov.uk">nmsw@homeoffice.gov.uk</a>');
   });
 
   it('should render link to email to request alternative format as stated in page constants', async () => {
