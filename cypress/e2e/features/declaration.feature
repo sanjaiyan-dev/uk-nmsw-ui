@@ -59,7 +59,7 @@ Feature: Submit or cancel the declaration request
     When I confirm submission
     Then I can see the confirmation banner -Voyage details sent
     When I click return to your voyages link
-    Then I can see the status of reported voyage as PENDING
+    Then I can see the status of reported voyage as 'PENDING'
     When I click review or cancel action link next to Pending status
     Then I can see the report status changes to Submitted
     And I can review the report with submitted status
@@ -69,14 +69,14 @@ Feature: Submit or cancel the declaration request
     When I confirm submission
     Then I can see the confirmation banner -Voyage details sent
     When I click return to your voyages link
-    Then I can see the status of reported voyage as PENDING
+    Then I can see the status of reported voyage as 'PENDING'
     When I click review or cancel action link next to Pending status
     Then I can see the report status changes to Submitted
     And I can review the report with submitted status
     When I click cancel, to cancel the submitted voyage report
     Then I click Yes to confirm the voyage report cancel
     And I can see the confirmation banner for cancellation
-    Then I can see the status of reported voyage as CANCELLED
+    Then I can see the status of reported voyage as 'CANCELLED'
     When I click review action link next to Cancelled status
     Then I am taken to review your report with Cancelled status
 
@@ -93,13 +93,13 @@ Feature: Submit or cancel the declaration request
     When I confirm submission
     Then I can see the confirmation banner -Voyage details sent
     When I click return to your voyages link
-    Then I can see the status of crown dependency voyage reported as PENDING
+    Then I can see the status of crown dependency voyage reported as 'PENDING'
     When I click review or cancel action link next to Pending status
     Then I can see the report status changes to Submitted
     And I can review the report with submitted status
     When I click cancel, to cancel the submitted voyage report
     Then I click Yes to confirm the voyage report cancel
     And I can see the confirmation banner for cancellation for crown dependency report
-    Then I can see the status of crown dependency voyage reported as CANCELLED
+    Then I can see the status of crown dependency voyage reported as 'CANCELLED'
     When I click review action link next to Cancelled status
     Then I am taken to review your report with Cancelled status
