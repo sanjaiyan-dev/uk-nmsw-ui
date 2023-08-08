@@ -7,13 +7,14 @@ class CyaPage {
 
   clickCheckAnswersAndSubmit() {
     cy.contains('Check answers and submit').click();
+    cy.wait(3000);
   }
 
-  verifySaveAndSubmitButton() {
+  verifyConfirmAndSendButton() {
     cy.contains('Confirm and send');
   }
 
-  clickSaveAndSubmitButton() {
+  clickConfirmAndSendButton() {
     cy.contains('Confirm and send').click();
   }
 

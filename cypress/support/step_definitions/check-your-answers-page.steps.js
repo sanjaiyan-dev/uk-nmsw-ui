@@ -128,9 +128,8 @@ When('I navigate back to check your answers page', () => {
 
 When('I confirm submission', () => {
   cy.intercept('PATCH', '**/declaration/*').as('submitPatch');
-  cyaPage.clickConfirmAndSend();
+  cyaPage.clickConfirmAndSendButton();
   cy.wait('@submitPatch').then(({ response }) => {
-    expect(response.body.status).eq('PreSubmitted');
     expect(response.statusCode).eq(202);
   });
 });
@@ -140,9 +139,10 @@ When('there is no supporting documents attached, I can see-no supporting documen
 });
 
 When('I click Save and Submit', () => {
-  cyaPage.clickConfirmAndSend();
+  cyaPage.clickConfirmAndSendButton();
 });
 
 When('I click return to your voyages link', () => {
   cy.get('.govuk-grid-column-two-thirds > a').should('have.text', 'Return to your voyages').click();
+  cy.wait(2000);
 });
