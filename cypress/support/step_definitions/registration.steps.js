@@ -267,6 +267,11 @@ Then('I am taken to check your email page', () => {
   cy.checkAxe();
 });
 
+Then('I can see email received to verify the email', () => {
+  cy.waitForLatestEmail('e5fc776c-a811-4cc5-9392-019f3872938b');
+  cy.wait(1000);
+});
+
 When('I am on request-new-verification-link', () => {
   cy.visitUrl('/create-account/request-new-verification-link');
   cy.injectAxe();

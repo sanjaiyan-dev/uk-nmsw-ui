@@ -17,13 +17,13 @@ Feature: User sign-in
   Scenario: User is shown - info page asking them to verify their email that is registered not verified
     When I have entered an email address for an unverified email address
     Then I am shown email address has not been verified
-    When I click send verification email
-#    Then I am taken to check your email page
-#    When I click on not received an email
-#    Then I am taken to request-new-verification-link page
-#    Then the user is redirected to request-new-password-link
-#    And I click `Request New Link` button
-#    Then I am taken to check your email page
+    When I click Resend verification email
+    Then I am taken to check your email page
+    When I click on not received an email
+    Then I am taken to request-new-verification-link page
+    And I click `Request New Link` button
+    Then I am taken to check your email page
+    And I can see email received to verify the email
 
   Scenario:  User should not be signed-in when email is in invalid format
     When the user enters invalid email address and sign-in
