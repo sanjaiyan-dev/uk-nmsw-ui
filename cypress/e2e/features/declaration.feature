@@ -90,6 +90,7 @@ Feature: Submit or cancel the declaration request
     Then I am taken to task details page
     When I click Check answers and submit
     Then I can view Check Your Answers page
+    And the details from my FAL1-crown dependency are displayed on CYA page
     When I confirm submission
     Then I can see the confirmation banner -Voyage details sent
     When I click return to your voyages link

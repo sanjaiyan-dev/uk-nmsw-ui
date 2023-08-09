@@ -76,6 +76,7 @@ When('I click review action link next to Failed status', () => {
 });
 
 Then('I can see the status of crown dependency voyage reported as {string}', (status) => {
+  DeclarationPage.checkCurrentDeclaration();
   DeclarationPage.verifyCrownDependencyVoyage(status.toLowerCase());
 });
 
