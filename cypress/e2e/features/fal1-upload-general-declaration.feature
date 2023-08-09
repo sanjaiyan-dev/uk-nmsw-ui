@@ -38,6 +38,6 @@ Feature: Upload General declaration (FAL1) page
     When I click save and continue
     Then I am taken to task details page
     When I try to access a protected CYA page with declaration Id
-    When I click Save and Submit
+    When I click Confirm and send
     Then I am shown form error message
       | Error | Crew details (FAL 5) upload is requiredYou need to provide passenger details, even if the ship is carrying no passengers |

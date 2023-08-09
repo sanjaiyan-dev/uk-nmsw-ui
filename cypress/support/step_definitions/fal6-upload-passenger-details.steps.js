@@ -3,6 +3,7 @@ import FileUploadPage from "../../e2e/pages/file-upload.page";
 
 When('I click Passenger details link', () => {
   cy.contains('Any passenger details (FAL 6)').click();
+  cy.wait(1000);
 });
 
 Then('I am taken to Passenger-details page', () => {
