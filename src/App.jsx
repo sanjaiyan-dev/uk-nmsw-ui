@@ -44,7 +44,7 @@ const App = () => {
       <>
         <Header />
         <div className="govuk-width-container">
-          <main className="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="content" role="main">
+          <main id="content" tabIndex="-1" className="govuk-main-wrapper govuk-main-wrapper--auto-spacing" role="main" aria-live="polite">
             <SiteMaintenance />
           </main>
         </div>

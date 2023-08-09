@@ -27,6 +27,6 @@ describe('Header tests', () => {
 
     const checkSkipLink = screen.getByText('Skip to main content');
     expect(checkSkipLink).toBeInTheDocument();
-    expect(checkSkipLink.outerHTML).toEqual('<a href="#content" class="govuk-skip-link">Skip to main content</a>');
+    expect(checkSkipLink.outerHTML).toEqual('<button type="button" class="govuk-skip-link" id="skip-link">Skip to main content</button>');
   });
 });
