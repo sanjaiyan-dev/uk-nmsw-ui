@@ -32,7 +32,7 @@ jest.mock('react-router-dom', () => ({
 describe('Voyage task list page', () => {
   const mockAxios = new MockAdapter(axios);
   const mockedResponseFal1Only = {
-    FAL1: {
+    declaration: {
       nameOfShip: 'Test ship name',
       imoNumber: '1234567',
       callSign: 'NA',
@@ -190,7 +190,7 @@ describe('Voyage task list page', () => {
         },
       })
       .reply(200, {
-        FAL1: {
+        declaration: {
           nameOfShip: 'Test ship name',
           imoNumber: '1234567',
           callSign: 'NA',
@@ -231,7 +231,7 @@ describe('Voyage task list page', () => {
         },
       })
       .reply(200, {
-        FAL1: {
+        declaration: {
           nameOfShip: 'Test ship name',
           imoNumber: '1234567',
           callSign: 'NA',
@@ -281,7 +281,7 @@ describe('Voyage task list page', () => {
         },
       })
       .reply(200, {
-        FAL1: {
+        declaration: {
           nameOfShip: 'Test ship name',
           imoNumber: '1234567',
           callSign: 'NA',
@@ -331,7 +331,7 @@ describe('Voyage task list page', () => {
         },
       })
       .reply(200, {
-        FAL1: {
+        declaration: {
           nameOfShip: 'Test ship name',
           imoNumber: '1234567',
           callSign: 'NA',
@@ -372,7 +372,7 @@ describe('Voyage task list page', () => {
         },
       })
       .reply(200, {
-        FAL1: {
+        declaration: {
           nameOfShip: 'Test ship name',
           imoNumber: '1234567',
           callSign: 'NA',
@@ -413,7 +413,7 @@ describe('Voyage task list page', () => {
         },
       })
       .reply(200, {
-        FAL1: {
+        declaration: {
           nameOfShip: 'Test ship name',
           imoNumber: '1234567',
           callSign: 'NA',
@@ -559,7 +559,7 @@ describe('Voyage task list page', () => {
         },
       })
       .reply(200, {
-        FAL1: {
+        declaration: {
           nameOfShip: 'Test ship name',
           imoNumber: '1234567',
           callSign: 'NA',
