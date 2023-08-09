@@ -127,13 +127,21 @@ Then('I am shown email address has not been verified', () => {
     BasePage.checkH1('Email address not verified');
 });
 
+When('I click Resend verification email', () =>{
+    cy.intercept('POST','**/resend-verification-email').as('verifyEmail');
+    cy.contains('Resend verification email').click();
+    cy.wait('@verifyEmail').then(({response}) => {
+        expect(response.statusCode).to.eq(204);
+    });
+});
+
 When('I click send verification email', () => {
     cy.checkAxe();
     BasePage.clickSendConfirmationEmail();
 });
 
 Then('I am taken to request-new-verification-link page', () => {
-    cy.url().should('include', 'I am taken to request-new-verification-link page');
+    cy.url().should('include', 'request-new-verification-link');
     BasePage.checkH1('Request a new verification link');
 })
 
