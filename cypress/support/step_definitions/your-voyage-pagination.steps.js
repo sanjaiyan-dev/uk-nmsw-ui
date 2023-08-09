@@ -5,6 +5,7 @@ import SignInPage from "../../e2e/pages/sign-in.page";
 import YourVoyagePage from "../../e2e/pages/your-voyage-page";
 
 Then('I can see the draft details of the voyage, I have uploaded', () => {
+  DeclarationPage.checkCurrentDeclaration();
   DeclarationPage.checkVoyageDetailsStatus('draft');
   cy.checkAxe();
 });

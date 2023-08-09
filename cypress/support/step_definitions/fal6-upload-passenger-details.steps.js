@@ -9,6 +9,7 @@ Then('I am taken to Passenger-details page', () => {
   cy.injectAxe();
   FileUploadPage.verifyPassengerDetailsPage();
   cy.checkAxe();
+  cy.wait(1000);
 });
 
 Then('I am taken to upload-Passenger-details page', () => {
