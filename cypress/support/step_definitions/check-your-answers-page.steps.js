@@ -191,7 +191,7 @@ When('there is no supporting documents attached, I can see-no supporting documen
   cy.get('#supportingDocuments').parent().find('span').contains('No supporting documents provided');
 });
 
-When('I click Save and Submit', () => {
+When('I click Confirm and send', () => {
   cyaPage.clickConfirmAndSendButton();
 });
 

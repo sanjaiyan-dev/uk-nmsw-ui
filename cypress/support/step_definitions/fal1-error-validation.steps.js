@@ -95,7 +95,7 @@ const errorImoWithHyphen =[
 ]
 
 const errorInvalidArrivalFields = [
-  {cellNumber: 'B5', error: 'You selected arrival in the UK. Enter an arrival LOCODE that starts with one of GB,GG,JE'},
+  {cellNumber: 'B5', error: 'You selected arrival in the UK. Enter an arrival LOCODE that starts with one of GB,GG,JE,IM'},
   {
     cellNumber: 'B6',
     error: 'You selected arrival in the UK. Enter a departure LOCODE for the last port of call and not a GB port'
@@ -117,7 +117,7 @@ const errorInvalidArrivalFields = [
 const errorInvalidDepartureFields = [
   {
     cellNumber: 'B6',
-    error: 'You selected departure from the UK. Enter a departure LOCODE that starts with one of GB,GG,JE'
+    error: 'You selected departure from the UK. Enter a departure LOCODE that starts with one of GB,GG,JE,IM'
   },
   {
     cellNumber: 'F7',

@@ -60,7 +60,7 @@ When('I upload a template file {string} with null values', (fileName) => {
 });
 
 Then('previous the error message should clear', () => {
-  cy.get('#fileUploadInput-error').should('not.be.visible');
+  cy.get('#fileUploadInput-error').should('not.exist');
 });
 
 When('I click check for errors', () => {
