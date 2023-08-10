@@ -91,6 +91,7 @@ steps:
     - ./extract-env-vars.sh ./helm/dev.yaml ./.env
     - cat ./.env
     - export $(cat ./.env | xargs)
+    - unset NMSW_MAINTENANCE
     - /usr/local/bin/wait
     - docker build -t nmsw-ui:$${DRONE_COMMIT_SHA} .
   when:
@@ -204,6 +205,7 @@ steps:
     - ./extract-env-vars.sh ./helm/staging.yaml ./.env
     - cat ./.env
     - export $(cat ./.env | xargs)
+    - unset NMSW_MAINTENANCE
     - /usr/local/bin/wait
     - docker build -t nmsw-ui:staging-$${DRONE_COMMIT_SHA} .
   when:
@@ -284,6 +286,7 @@ steps:
     - ./extract-env-vars.sh ./helm/production.yaml ./.env
     - cat ./.env
     - export $(cat ./.env | xargs)
+    - unset NMSW_MAINTENANCE
     - /usr/local/bin/wait
     - docker build -t nmsw-ui:production-$${DRONE_COMMIT_SHA} .
   when:
