@@ -5,6 +5,7 @@ import {
   REGISTER_ACCOUNT_ENDPOINT,
   TOKEN_INVALID,
   TOKEN_USED_TO_REGISTER,
+  USER_ALREADY_VERIFIED,
 } from '../../constants/AppAPIConstants';
 import {
   FIELD_PASSWORD,
@@ -116,7 +117,7 @@ const RegisterYourPassword = () => {
             },
           },
         });
-      } else if (err.response?.data?.message === TOKEN_USED_TO_REGISTER) {
+      } else if (err.response?.data?.message === TOKEN_USED_TO_REGISTER || err.response?.data?.message === USER_ALREADY_VERIFIED) {
         navigate(ERROR_ACCOUNT_ALREADY_ACTIVE_URL, { state: { dataToSubmit: { emailAddress: dataToSubmit.email } } });
       } else {
         navigate(MESSAGE_URL, { state: { title: 'Something has gone wrong', message: err.response?.data?.message, redirectURL: REGISTER_PASSWORD_URL } });

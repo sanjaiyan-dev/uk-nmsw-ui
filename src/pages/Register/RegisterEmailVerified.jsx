@@ -2,7 +2,12 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import LoadingSpinner from '../../components/LoadingSpinner';
-import { REGISTER_CHECK_TOKEN_ENDPOINT, TOKEN_INVALID, TOKEN_USED_TO_REGISTER } from '../../constants/AppAPIConstants';
+import {
+  REGISTER_CHECK_TOKEN_ENDPOINT,
+  TOKEN_INVALID,
+  TOKEN_USED_TO_REGISTER,
+  USER_ALREADY_VERIFIED,
+} from '../../constants/AppAPIConstants';
 import {
   ERROR_ACCOUNT_ALREADY_ACTIVE_URL,
   MESSAGE_URL,
@@ -37,7 +42,7 @@ const RegisterEmailVerified = () => {
         });
       }
     } catch (err) {
-      if (err.response?.data?.message === TOKEN_USED_TO_REGISTER) {
+      if (err.response?.data?.message === TOKEN_USED_TO_REGISTER || err.response?.data?.message === USER_ALREADY_VERIFIED) {
         navigate(ERROR_ACCOUNT_ALREADY_ACTIVE_URL, { state: { dataToSubmit: { emailAddress } } });
       } else if (err.response?.data?.message === TOKEN_INVALID) {
         // TODO: once /registration endpoint updated to return user status

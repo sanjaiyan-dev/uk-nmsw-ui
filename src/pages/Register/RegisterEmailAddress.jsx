@@ -5,7 +5,7 @@ import {
   REGISTER_ACCOUNT_ENDPOINT,
   REGISTER_RESEND_VERIFICATION_EMAIL_ENDPOINT,
   USER_ALREADY_REGISTERED,
-  USER_ALREADY_VERIFIED,
+  USER_ALREADY_VERIFIED_LOGIN,
   USER_AWAITING_VERIFICATION,
 } from '../../constants/AppAPIConstants';
 import {
@@ -87,7 +87,7 @@ const RegisterEmailAddress = () => {
         navigate(REGISTER_EMAIL_CHECK_URL, { state: { dataToSubmit: { emailAddress: emailToSendTo } } });
       }
     } catch (err) {
-      if (err?.response?.data?.message === USER_ALREADY_VERIFIED) {
+      if (err?.response?.data?.message === USER_ALREADY_VERIFIED_LOGIN) {
         // Edgecase where somehow user activates their account while we're processing a resend verification email
         navigate(ERROR_ACCOUNT_ALREADY_ACTIVE_URL, { state: { dataToSubmit: { emailAddress: emailToSendTo } } });
       } else {
