@@ -1,5 +1,5 @@
 const PreSubmitted = {
-  FAL1: {
+  declaration: {
     nameOfShip: 'Test ship name',
     status: 'PreSubmitted',
     imoNumber: '1234567',
@@ -20,6 +20,14 @@ const PreSubmitted = {
     creationDate: '2023-02-09',
     submissionDate: '2023-02-10',
   },
+  FAL1: [
+    {
+      filename: 'General Declaration (FAL 1)',
+      id: 'FAL1',
+      size: '118385',
+      url: 'https://fal1-report-link.com',
+    },
+  ],
   FAL5: [
     {
       filename: 'Crew details including supernumeraries FAL 5.xlsx',

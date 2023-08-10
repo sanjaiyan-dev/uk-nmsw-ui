@@ -1,5 +1,5 @@
 const Fal1Fal5 = {
-  FAL1: {
+  declaration: {
     nameOfShip: 'Test ship name',
     status: 'Draft',
     imoNumber: '1234567',
@@ -20,6 +20,14 @@ const Fal1Fal5 = {
     creationDate: '2023-02-10',
     submissionDate: null,
   },
+  FAL1: [
+    {
+      filename: 'General Declaration (FAL 1)',
+      id: 'FAL1',
+      size: '118385',
+      url: 'https://fal1-report-link.com',
+    },
+  ],
   FAL5: [
     {
       filename: 'Crew details including supernumeraries FAL 5.xlsx',

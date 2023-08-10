@@ -51,9 +51,9 @@ const VoyageTaskList = () => {
 
   const setStatuses = (data) => {
     let isPassengers;
-    if (data.FAL1.passengers && data.FAL6.length > 0) {
+    if (data.declaration.passengers && data.FAL6.length > 0) {
       isPassengers = DECLARATION_STEP_STATUS_COMPLETED;
-    } else if (data.FAL1.passengers === false) {
+    } else if (data.declaration.passengers === false) {
       isPassengers = DECLARATION_STEP_STATUS_COMPLETED;
     } else {
       isPassengers = DECLARATION_STEP_STATUS_REQUIRED;
@@ -62,7 +62,7 @@ const VoyageTaskList = () => {
     setCrewStatus(data.FAL5.length > 0 ? DECLARATION_STEP_STATUS_COMPLETED : DECLARATION_STEP_STATUS_REQUIRED);
     setPassengersStatus(isPassengers);
 
-    if (apiResponse?.apiData?.FAL1 && apiResponse?.apiData?.FAL5.length > 0 && isPassengers === DECLARATION_STEP_STATUS_COMPLETED) {
+    if (apiResponse?.apiData?.declaration && apiResponse?.apiData?.FAL5.length > 0 && isPassengers === DECLARATION_STEP_STATUS_COMPLETED) {
       setCompletedSections(1);
       setCheckYourAnswersStatus(DECLARATION_STEP_STATUS_NOT_STARTED);
     } else {
@@ -74,8 +74,8 @@ const VoyageTaskList = () => {
   useEffect(() => {
     if (apiResponse.apiData) {
       setIsLoading(true);
-      setShipName(apiResponse?.apiData?.FAL1.nameOfShip);
-      setVoyageTypeText(apiResponse?.apiData?.FAL1.departureFromUk ? 'Departure from the UK' : 'Arrival to the UK');
+      setShipName(apiResponse?.apiData?.declaration.nameOfShip);
+      setVoyageTypeText(apiResponse?.apiData?.declaration.departureFromUk ? 'Departure from the UK' : 'Arrival to the UK');
       setStatuses(apiResponse?.apiData);
       setIsLoading(false);
     } else if (apiResponse.error) {

@@ -158,7 +158,7 @@ describe('Voyage CYA - initial render', () => {
         },
       })
       .reply(200, {
-        FAL1: {
+        declaration: {
           status: 'Submitted',
           nameOfShip: 'Test ship name',
           imoNumber: '1234567',
@@ -179,6 +179,14 @@ describe('Voyage CYA - initial render', () => {
           creationDate: '2023-02-10',
           submissionDate: '2023-02-11',
         },
+        FAL1: [
+          {
+            filename: 'General Declaration (FAL 1)',
+            id: 'FAL1',
+            size: '118385',
+            url: 'https://fal1-report-link.com',
+          },
+        ],
         FAL5: [],
         FAL6: [],
         supporting: [],
