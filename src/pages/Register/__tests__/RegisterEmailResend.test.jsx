@@ -7,7 +7,7 @@ import {
   REGISTER_ACCOUNT_ENDPOINT,
   REGISTER_RESEND_VERIFICATION_EMAIL_ENDPOINT,
   USER_ALREADY_REGISTERED,
-  USER_ALREADY_VERIFIED,
+  USER_ALREADY_VERIFIED_LOGIN,
   USER_NOT_REGISTERED,
 } from '../../../constants/AppAPIConstants';
 import {
@@ -138,7 +138,7 @@ describe('Resend registration email verification email', () => {
     mockAxios
       .onPost(REGISTER_RESEND_VERIFICATION_EMAIL_ENDPOINT)
       .reply(409, {
-        message: USER_ALREADY_VERIFIED,
+        message: USER_ALREADY_VERIFIED_LOGIN,
       });
 
     render(<MemoryRouter><RegisterEmailResend /></MemoryRouter>);

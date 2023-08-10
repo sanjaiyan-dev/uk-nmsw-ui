@@ -3,7 +3,12 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { REGISTER_CHECK_TOKEN_ENDPOINT, TOKEN_INVALID, TOKEN_USED_TO_REGISTER } from '../../../constants/AppAPIConstants';
+import {
+  REGISTER_CHECK_TOKEN_ENDPOINT,
+  TOKEN_INVALID,
+  TOKEN_USED_TO_REGISTER,
+  USER_ALREADY_VERIFIED,
+} from '../../../constants/AppAPIConstants';
 import {
   ERROR_ACCOUNT_ALREADY_ACTIVE_URL,
   MESSAGE_URL,
@@ -63,6 +68,19 @@ describe('Verify email address tests', () => {
       .onPost(REGISTER_CHECK_TOKEN_ENDPOINT, { token: '123' })
       .reply(401, {
         message: TOKEN_USED_TO_REGISTER,
+      });
+
+    render(<MemoryRouter><RegisterEmailVerified /></MemoryRouter>);
+    await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_ACCOUNT_ALREADY_ACTIVE_URL, { state: { dataToSubmit: { emailAddress: 'testemail@email.com' } } });
+    });
+  });
+
+  it('should link user to sign in page account already exists', async () => {
+    mockAxios
+      .onPost(REGISTER_CHECK_TOKEN_ENDPOINT, { token: '123' })
+      .reply(409, {
+        message: USER_ALREADY_VERIFIED,
       });
 
     render(<MemoryRouter><RegisterEmailVerified /></MemoryRouter>);

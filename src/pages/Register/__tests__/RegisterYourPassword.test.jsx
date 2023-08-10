@@ -7,6 +7,7 @@ import {
   REGISTER_ACCOUNT_ENDPOINT,
   TOKEN_INVALID,
   TOKEN_USED_TO_REGISTER,
+  USER_ALREADY_VERIFIED,
 } from '../../../constants/AppAPIConstants';
 import {
   ERROR_ACCOUNT_ALREADY_ACTIVE_URL,
@@ -362,6 +363,32 @@ describe('Register password tests', () => {
       });
 
     render(<MemoryRouter><RegisterYourPassword /></MemoryRouter>);
+    await user.type(screen.getByLabelText('Password'), 'mypasswordis');
+    await user.type(screen.getByLabelText('Confirm your password'), 'mypasswordis');
+    await user.click(screen.getByTestId('submit-button'));
+    await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith(ERROR_ACCOUNT_ALREADY_ACTIVE_URL, { state: { dataToSubmit: { emailAddress: dataToSubmit.email } } });
+    });
+  });
+
+  it('should link user to sign in page account already exists', async () => {
+    const user = userEvent.setup();
+    const dataToSubmit = {
+      companyName: 'My company',
+      country: 'AUS',
+      emailAddress: 'testemail@email.com',
+      fullName: 'Joe Bloggs',
+      phoneNumber: '(123)12345',
+      shippingAgent: 'yes',
+    };
+    mockAxios
+      .onPatch(REGISTER_ACCOUNT_ENDPOINT)
+      .reply(409, {
+        message: USER_ALREADY_VERIFIED,
+      });
+
+    render(<MemoryRouter><RegisterYourPassword /></MemoryRouter>);
+
     await user.type(screen.getByLabelText('Password'), 'mypasswordis');
     await user.type(screen.getByLabelText('Confirm your password'), 'mypasswordis');
     await user.click(screen.getByTestId('submit-button'));

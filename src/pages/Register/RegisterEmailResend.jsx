@@ -5,7 +5,7 @@ import {
   REGISTER_ACCOUNT_ENDPOINT,
   REGISTER_RESEND_VERIFICATION_EMAIL_ENDPOINT,
   USER_ALREADY_REGISTERED,
-  USER_ALREADY_VERIFIED,
+  USER_ALREADY_VERIFIED_LOGIN,
   USER_NOT_REGISTERED,
 } from '../../constants/AppAPIConstants';
 import {
@@ -92,7 +92,7 @@ const RegisterEmailResend = () => {
         setIsLoading(false);
       }
     } catch (err) {
-      if (err?.response?.data?.message === USER_ALREADY_VERIFIED) {
+      if (err?.response?.data?.message === USER_ALREADY_VERIFIED_LOGIN) {
         navigate(ERROR_ACCOUNT_ALREADY_ACTIVE_URL, { state: { dataToSubmit: { emailAddress: formData.formData.emailAddress } } });
         setIsLoading(false);
       } else if (err?.response?.data?.message === USER_NOT_REGISTERED) {
