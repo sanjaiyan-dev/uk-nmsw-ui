@@ -286,7 +286,7 @@ steps:
     - ./extract-env-vars.sh ./helm/production.yaml ./.env
     - cat ./.env
     - export $(cat ./.env | xargs)
-    - unset NMSW_MAINTENANCE
+    - export NMSW_MAINTENANCE=REPLACE_NMSW_MAINTENANCE
     - /usr/local/bin/wait
     - docker build -t nmsw-ui:production-$${DRONE_COMMIT_SHA} .
   when:
