@@ -15,7 +15,7 @@ When('I click report a voyage', () => {
 
 Then('I am taken to upload-general-declaration page', () => {
   FileUploadPage.verifyUploadGeneralDecPage();
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
 });
 
 When('auth token is no longer available', () => {

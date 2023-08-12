@@ -10,7 +10,7 @@ When('I click Forgotten your password? link', () => {
 
 Then('I am taken to forgotten-password page', () => {
     PasswordPage.checkForgottenPasswordPage();
-    cy.injectAxe();
+    cy.injectAxe({timedOut:1000});
 });
 
 When('I enter my email to request a forgotten password link', () => {
@@ -39,7 +39,7 @@ When('I click the password reset link received', () => {
 
 Then('I am taken to new password page', () => {
     PasswordPage.checkNewPasswordPage();
-    cy.injectAxe();
+    cy.injectAxe({timedOut:1000});
 });
 
 When('I click Reset password button without providing password details', () => {
@@ -57,7 +57,7 @@ Then('I enter a confirmation password that is different to the new password', ()
 });
 
 When('I enter a new password and confirmation password that matches the new password', () => {
-    cy.injectAxe();
+    cy.injectAxe({timedOut:1000});
     PasswordPage.typePassword('NewPassword');
     PasswordPage.typeRepeatPassword('NewPassword');
     cy.intercept('POST', '/new-password?token=').as('verifyPasswordReset');
@@ -95,7 +95,7 @@ When('I click the same password reset link again', () => {
     cy.get('@token').then((token) => {
         cy.visitUrl(`/new-password?token=${token}`);
     })
-    cy.injectAxe();
+    cy.injectAxe({timedOut:1000});
 });
 
 When('user tries to reset password with invalid token', () => {
@@ -108,7 +108,7 @@ Then('the user is redirected to request-new-password-link', () => {
 
 Then('I click change the email sent link', () => {
     cy.contains('Change where the email was sent').click();
-    cy.injectAxe();
+    cy.injectAxe({timedOut:1000});
 });
 
 Then('I change to different email previously registered', () => {

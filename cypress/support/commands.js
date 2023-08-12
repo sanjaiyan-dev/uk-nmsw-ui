@@ -36,7 +36,6 @@ const apiServer = Cypress.env('api_server');
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 require('cypress-downloadfile/lib/downloadFileCommand')
 Cypress.Commands.add('checkAxe', () => {
-  ['wcag2a', 'wcag2.1aa'];
   cy.checkA11y(null, {
     runOnly: {
       type: 'tag',

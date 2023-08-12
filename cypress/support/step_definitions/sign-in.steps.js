@@ -19,7 +19,7 @@ Given('I am on the sign-in page', () => {
   cy.visitUrl("/");
   LandingPage.clickStartNow();
   SignInPage.checkSignInPage();
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
 });
 
 When('I click on the create one now link', () => {
@@ -35,7 +35,7 @@ When('I have entered a correct email address and password and sign in', () => {
 });
 
 Then('I am taken to your-voyages page', () => {
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
   cy.get('h1').should('have.text', 'Your voyages');
   cy.checkAxe();
 });

@@ -9,7 +9,7 @@ When('I click Check answers and submit', () => {
 });
 
 Then('I am taken to Check Your Answers page', () => {
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
   cyaPage.verifyCYAPage();
   cyaPage.verifyConfirmAndSendButton();
   cyaPage.verifyH2Headings();

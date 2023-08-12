@@ -5,7 +5,7 @@ import BasePage from "../../e2e/pages/base.page";
 
 When('I click start now', () => {
   LandingPage.clickStartNow();
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
 });
 
 When('I click service name header', () => {
@@ -25,12 +25,12 @@ When('I click Your voyage tab', () => {
 
 When('I click your details tab', () => {
   cy.get('[data-testid="listitem-YourDetails"] > .govuk-header__link').click();
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
 });
 
 When('I click help tab', () => {
   cy.get('[data-testid="listitem-Help"] > .govuk-header__link').click();
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
 });
 
 Then('I am taken to your details page', () => {
@@ -67,7 +67,7 @@ When('I click submit required forms using email', () => {
 
 When('I click footer Contact us Link', () => {
   cy.get('li:nth-of-type(4) > .govuk-footer__link').should('have.text', 'Contact us').click();
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
 });
 
 Then('I am taken to contact us page', () => {
@@ -77,12 +77,12 @@ Then('I am taken to contact us page', () => {
 
 When('I click footer Accessibility link', () => {
   cy.get('li:nth-of-type(3) > .govuk-footer__link').should('have.text', 'Accessibility').click();
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
 });
 
 When('I click footer Cookies link', () => {
   cy.get('li:nth-of-type(2) > .govuk-footer__link').should('have.text', 'Cookies').click();
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
 });
 
 Then('I am taken to cookie page', () => {
@@ -97,7 +97,7 @@ Then('I am taken to accessibility page', () => {
 
 When('I click Privacy link', () => {
   cy.get('li:nth-of-type(1) > .govuk-footer__link').should('have.text', 'Privacy').click();
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
 });
 
 Then('I am taken to Privacy notice page', () => {
@@ -107,7 +107,7 @@ Then('I am taken to Privacy notice page', () => {
 
 When('I click help section in contact us page', () => {
   cy.get('.govuk-body > .govuk-link').should('have.text', 'help section').click();
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
 });
 
 Then('I am taken to help and support page with help menu highlighted', () => {

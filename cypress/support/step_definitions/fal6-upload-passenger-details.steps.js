@@ -7,7 +7,7 @@ When('I click Passenger details link', () => {
 });
 
 Then('I am taken to Passenger-details page', () => {
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
   FileUploadPage.verifyPassengerDetailsPage();
   cy.checkAxe();
   cy.wait(1000);
@@ -15,7 +15,7 @@ Then('I am taken to Passenger-details page', () => {
 
 Then('I am taken to upload-Passenger-details page', () => {
   FileUploadPage.verifyUploadPassengerDetailsPage();
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
 });
 
 When('I select Yes to uploading passenger details', () => {
