@@ -68,8 +68,8 @@ describe('Voyage CYA - change links', () => {
     expect(screen.getByRole('link', { name: 'Change change voyage details' }).outerHTML).toEqual('<a class="govuk-link" aria-describedby="voyageDetails" href="/report-voyage/upload-general-declaration?report=123">Change<span class="govuk-visually-hidden"> change voyage details</span></a>');
     expect(screen.getByRole('link', { name: 'Change change Crew details' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Change change Crew details' }).outerHTML).toEqual('<a class="govuk-link" aria-describedby="crewDetails" href="/report-voyage/upload-crew-details?report=123">Change<span class="govuk-visually-hidden"> change Crew details</span></a>');
-    expect(screen.getByRole('link', { name: 'Change change Passenger details' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Change change Passenger details' }).outerHTML).toEqual('<a class="govuk-link" aria-describedby="passengerDetails" href="/report-voyage/passenger-details?report=123">Change<span class="govuk-visually-hidden"> change Passenger details</span></a>');
+    expect(screen.getByRole('link', { name: 'Change change Passenger details including supernumeraries' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Change change Passenger details including supernumeraries' }).outerHTML).toEqual('<a class="govuk-link" aria-describedby="passengerDetails" href="/report-voyage/passenger-details?report=123">Change<span class="govuk-visually-hidden"> change Passenger details including supernumeraries</span></a>');
     expect(screen.getByRole('link', { name: 'Change change Supporting documents' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Change change Supporting documents' }).outerHTML).toEqual('<a class="govuk-link" aria-describedby="supportingDocuments" href="/report-voyage/upload-supporting-documents?report=123">Change<span class="govuk-visually-hidden"> change Supporting documents</span></a>');
   });
@@ -87,7 +87,7 @@ describe('Voyage CYA - change links', () => {
     expect(screen.queryByRole('link', { name: 'Change change Supporting documents' })).not.toBeInTheDocument();
     expect(screen.queryByRole('link', { name: 'Change change voyage details' })).not.toBeInTheDocument();
     expect(screen.queryByRole('link', { name: 'Change change Crew details' })).not.toBeInTheDocument();
-    expect(screen.queryByRole('link', { name: 'Change change Passenger details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Passenger details including supernumeraries' })).not.toBeInTheDocument();
     expect(screen.queryByRole('link', { name: 'Change change Supporting documents' })).not.toBeInTheDocument();
   });
 
@@ -104,7 +104,7 @@ describe('Voyage CYA - change links', () => {
     expect(screen.queryByRole('link', { name: 'Change change Supporting documents' })).not.toBeInTheDocument();
     expect(screen.queryByRole('link', { name: 'Change change voyage details' })).not.toBeInTheDocument();
     expect(screen.queryByRole('link', { name: 'Change change Crew details' })).not.toBeInTheDocument();
-    expect(screen.queryByRole('link', { name: 'Change change Passenger details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Passenger details including supernumeraries' })).not.toBeInTheDocument();
     expect(screen.queryByRole('link', { name: 'Change change Supporting documents' })).not.toBeInTheDocument();
   });
 
@@ -121,7 +121,7 @@ describe('Voyage CYA - change links', () => {
     expect(screen.queryByRole('link', { name: 'Change change Supporting documents' })).not.toBeInTheDocument();
     expect(screen.queryByRole('link', { name: 'Change change voyage details' })).not.toBeInTheDocument();
     expect(screen.queryByRole('link', { name: 'Change change Crew details' })).not.toBeInTheDocument();
-    expect(screen.queryByRole('link', { name: 'Change change Passenger details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Passenger details including supernumeraries' })).not.toBeInTheDocument();
     expect(screen.queryByRole('link', { name: 'Change change Supporting documents' })).not.toBeInTheDocument();
   });
 
@@ -138,7 +138,7 @@ describe('Voyage CYA - change links', () => {
     expect(screen.queryByRole('link', { name: 'Change change Supporting documents' })).not.toBeInTheDocument();
     expect(screen.queryByRole('link', { name: 'Change change voyage details' })).not.toBeInTheDocument();
     expect(screen.queryByRole('link', { name: 'Change change Crew details' })).not.toBeInTheDocument();
-    expect(screen.queryByRole('link', { name: 'Change change Passenger details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Passenger details including supernumeraries' })).not.toBeInTheDocument();
     expect(screen.queryByRole('link', { name: 'Change change Supporting documents' })).not.toBeInTheDocument();
   });
 
@@ -155,7 +155,7 @@ describe('Voyage CYA - change links', () => {
     expect(screen.queryByRole('link', { name: 'Change change Supporting documents' })).not.toBeInTheDocument();
     expect(screen.queryByRole('link', { name: 'Change change voyage details' })).not.toBeInTheDocument();
     expect(screen.queryByRole('link', { name: 'Change change Crew details' })).not.toBeInTheDocument();
-    expect(screen.queryByRole('link', { name: 'Change change Passenger details' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Change change Passenger details including supernumeraries' })).not.toBeInTheDocument();
     expect(screen.queryByRole('link', { name: 'Change change Supporting documents' })).not.toBeInTheDocument();
   });
 
@@ -195,7 +195,7 @@ describe('Voyage CYA - change links', () => {
       .reply(200, Fal1Fal5);
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
-    expect(screen.getByRole('link', { name: 'Change change Passenger details' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Change change Passenger details including supernumeraries' })).toBeInTheDocument();
   });
 
   it('should should link to the Supporting docs page from the supporting docs section', async () => {

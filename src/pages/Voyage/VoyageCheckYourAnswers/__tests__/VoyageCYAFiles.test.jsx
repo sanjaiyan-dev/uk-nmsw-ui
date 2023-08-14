@@ -69,7 +69,7 @@ describe('Voyage CYA - uploaded files', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     // test for files uploaded block
-    expect(screen.getByText('No passenger details provided')).toBeInTheDocument();
+    expect(screen.getByText('No passenger details including supernumeraries provided')).toBeInTheDocument();
     expect(screen.getByText('No supporting documents provided')).toBeInTheDocument();
 
     // test for FAL 1 blocks
@@ -107,7 +107,7 @@ describe('Voyage CYA - uploaded files', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     // test for files uploaded block
-    expect(screen.getByText('No passenger details provided')).toBeInTheDocument();
+    expect(screen.getByText('No passenger details including supernumeraries provided')).toBeInTheDocument();
     expect(screen.getByText('No supporting documents provided')).toBeInTheDocument();
     // test for FAL 1 blocks
     expect(screen.getByText('Arrival to the UK').outerHTML).toEqual('<dd class="govuk-summary-list__value">Arrival to the UK</dd>');
@@ -144,7 +144,7 @@ describe('Voyage CYA - uploaded files', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     // test for files uploaded block
-    expect(screen.getByText('No passenger details provided')).toBeInTheDocument();
+    expect(screen.getByText('No passenger details including supernumeraries provided')).toBeInTheDocument();
     expect(screen.getByText('No supporting documents provided')).toBeInTheDocument();
 
     // test for FAL 1 blocks
@@ -183,8 +183,8 @@ describe('Voyage CYA - uploaded files', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     // test for files uploaded block
-    expect(screen.getByRole('link', { name: 'Crew details including supernumeraries FAL 5.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal5-report-link.com" download="">Crew details including supernumeraries FAL 5.xlsx</a>');
-    expect(screen.getByText('No passenger details provided')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Crew details FAL 5.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal5-report-link.com" download="">Crew details FAL 5.xlsx</a>');
+    expect(screen.getByText('No passenger details including supernumeraries provided')).toBeInTheDocument();
     expect(screen.getByText('No supporting documents provided')).toBeInTheDocument();
 
     // test for FAL 1 blocks
@@ -222,8 +222,8 @@ describe('Voyage CYA - uploaded files', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     // test for files uploaded block
-    expect(screen.getByRole('link', { name: 'Crew details including supernumeraries FAL 5.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal5-report-link.com" download="">Crew details including supernumeraries FAL 5.xlsx</a>');
-    expect(screen.getByText('No passenger details provided')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Crew details FAL 5.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal5-report-link.com" download="">Crew details FAL 5.xlsx</a>');
+    expect(screen.getByText('No passenger details including supernumeraries provided')).toBeInTheDocument();
     expect(screen.getByText('No supporting documents provided')).toBeInTheDocument();
 
     // test for FAL 1 blocks
@@ -261,8 +261,8 @@ describe('Voyage CYA - uploaded files', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     // test for files uploaded block
-    expect(screen.getByRole('link', { name: 'Crew details including supernumeraries FAL 5.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal5-report-link.com" download="">Crew details including supernumeraries FAL 5.xlsx</a>');
-    expect(screen.getByText('No passenger details provided')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Crew details FAL 5.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal5-report-link.com" download="">Crew details FAL 5.xlsx</a>');
+    expect(screen.getByText('No passenger details including supernumeraries provided')).toBeInTheDocument();
     expect(screen.getByText('No supporting documents provided')).toBeInTheDocument();
 
     // test for FAL 1 blocks
@@ -301,7 +301,7 @@ describe('Voyage CYA - uploaded files', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     // test for files uploaded block
-    expect(screen.getByRole('link', { name: 'Passenger details FAL 6.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal6-report-link.com" download="">Passenger details FAL 6.xlsx</a>');
+    expect(screen.getByRole('link', { name: 'Passenger details including supernumeraries (FAL 6).xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal6-report-link.com" download="">Passenger details including supernumeraries (FAL 6).xlsx</a>');
     expect(screen.getByText('No supporting documents provided')).toBeInTheDocument();
 
     // test for FAL 1 blocks
@@ -340,7 +340,7 @@ describe('Voyage CYA - uploaded files', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     // test for files uploaded block
-    expect(screen.getByText('No passenger details provided')).toBeInTheDocument();
+    expect(screen.getByText('No passenger details including supernumeraries provided')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'MyFirstDocument.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://first-doc-link.com" download="">MyFirstDocument.xlsx</a>');
     expect(screen.getByRole('link', { name: 'My-second-doc.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://second-doc-link.com" download="">My-second-doc.xlsx</a>');
 
@@ -379,7 +379,7 @@ describe('Voyage CYA - uploaded files', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     // test for files uploaded block
-    expect(screen.getByText('No passenger details provided')).toBeInTheDocument();
+    expect(screen.getByText('No passenger details including supernumeraries provided')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'MyFirstDocument.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://first-doc-link.com" download="">MyFirstDocument.xlsx</a>');
     expect(screen.getByRole('link', { name: 'My-second-doc.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://second-doc-link.com" download="">My-second-doc.xlsx</a>');
 
@@ -418,7 +418,7 @@ describe('Voyage CYA - uploaded files', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     // test for files uploaded block
-    expect(screen.getByText('No passenger details provided')).toBeInTheDocument();
+    expect(screen.getByText('No passenger details including supernumeraries provided')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'MyFirstDocument.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://first-doc-link.com" download="">MyFirstDocument.xlsx</a>');
     expect(screen.getByRole('link', { name: 'My-second-doc.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://second-doc-link.com" download="">My-second-doc.xlsx</a>');
 
@@ -458,8 +458,8 @@ describe('Voyage CYA - uploaded files', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     // test for files uploaded block
-    expect(screen.getByRole('link', { name: 'Crew details including supernumeraries FAL 5.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal5-report-link.com" download="">Crew details including supernumeraries FAL 5.xlsx</a>');
-    expect(screen.getByText('No passenger details provided')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Crew details FAL 5.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal5-report-link.com" download="">Crew details FAL 5.xlsx</a>');
+    expect(screen.getByText('No passenger details including supernumeraries provided')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'MyFirstDocument.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://first-doc-link.com" download="">MyFirstDocument.xlsx</a>');
     expect(screen.getByRole('link', { name: 'My-second-doc.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://second-doc-link.com" download="">My-second-doc.xlsx</a>');
 
@@ -498,8 +498,8 @@ describe('Voyage CYA - uploaded files', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     // test for files uploaded block
-    expect(screen.getByRole('link', { name: 'Crew details including supernumeraries FAL 5.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal5-report-link.com" download="">Crew details including supernumeraries FAL 5.xlsx</a>');
-    expect(screen.getByText('No passenger details provided')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Crew details FAL 5.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal5-report-link.com" download="">Crew details FAL 5.xlsx</a>');
+    expect(screen.getByText('No passenger details including supernumeraries provided')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'MyFirstDocument.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://first-doc-link.com" download="">MyFirstDocument.xlsx</a>');
     expect(screen.getByRole('link', { name: 'My-second-doc.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://second-doc-link.com" download="">My-second-doc.xlsx</a>');
 
@@ -538,8 +538,8 @@ describe('Voyage CYA - uploaded files', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     // test for files uploaded block
-    expect(screen.getByRole('link', { name: 'Crew details including supernumeraries FAL 5.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal5-report-link.com" download="">Crew details including supernumeraries FAL 5.xlsx</a>');
-    expect(screen.getByText('No passenger details provided')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Crew details FAL 5.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal5-report-link.com" download="">Crew details FAL 5.xlsx</a>');
+    expect(screen.getByText('No passenger details including supernumeraries provided')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'MyFirstDocument.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://first-doc-link.com" download="">MyFirstDocument.xlsx</a>');
     expect(screen.getByRole('link', { name: 'My-second-doc.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://second-doc-link.com" download="">My-second-doc.xlsx</a>');
 
@@ -579,8 +579,8 @@ describe('Voyage CYA - uploaded files', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     // test for files uploaded block
-    expect(screen.getByRole('link', { name: 'Crew details including supernumeraries FAL 5.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal5-report-link.com" download="">Crew details including supernumeraries FAL 5.xlsx</a>');
-    expect(screen.getByText('No passenger details provided')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Crew details FAL 5.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal5-report-link.com" download="">Crew details FAL 5.xlsx</a>');
+    expect(screen.getByText('No passenger details including supernumeraries provided')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'MyFirstDocument.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://first-doc-link.com" download="">MyFirstDocument.xlsx</a>');
     expect(screen.getByRole('link', { name: 'My-second-doc.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://second-doc-link.com" download="">My-second-doc.xlsx</a>');
 
@@ -620,8 +620,8 @@ describe('Voyage CYA - uploaded files', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     // test for files uploaded block
-    expect(screen.getByRole('link', { name: 'Crew details including supernumeraries FAL 5.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal5-report-link.com" download="">Crew details including supernumeraries FAL 5.xlsx</a>');
-    expect(screen.getByRole('link', { name: 'Passenger details FAL 6.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal6-report-link.com" download="">Passenger details FAL 6.xlsx</a>');
+    expect(screen.getByRole('link', { name: 'Crew details FAL 5.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal5-report-link.com" download="">Crew details FAL 5.xlsx</a>');
+    expect(screen.getByRole('link', { name: 'Passenger details including supernumeraries (FAL 6).xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal6-report-link.com" download="">Passenger details including supernumeraries (FAL 6).xlsx</a>');
     expect(screen.getByText('No supporting documents provided')).toBeInTheDocument();
 
     // test for FAL 1 blocks
@@ -660,8 +660,8 @@ describe('Voyage CYA - uploaded files', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     // test for files uploaded block
-    expect(screen.getByRole('link', { name: 'Crew details including supernumeraries FAL 5.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal5-report-link.com" download="">Crew details including supernumeraries FAL 5.xlsx</a>');
-    expect(screen.getByRole('link', { name: 'Passenger details FAL 6.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal6-report-link.com" download="">Passenger details FAL 6.xlsx</a>');
+    expect(screen.getByRole('link', { name: 'Crew details FAL 5.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal5-report-link.com" download="">Crew details FAL 5.xlsx</a>');
+    expect(screen.getByRole('link', { name: 'Passenger details including supernumeraries (FAL 6).xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://fal6-report-link.com" download="">Passenger details including supernumeraries (FAL 6).xlsx</a>');
     expect(screen.getByRole('link', { name: 'MyFirstDocument.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://first-doc-link.com" download="">MyFirstDocument.xlsx</a>');
     expect(screen.getByRole('link', { name: 'My-second-doc.xlsx' }).outerHTML).toEqual('<a class="govuk-link" href="https://second-doc-link.com" download="">My-second-doc.xlsx</a>');
 

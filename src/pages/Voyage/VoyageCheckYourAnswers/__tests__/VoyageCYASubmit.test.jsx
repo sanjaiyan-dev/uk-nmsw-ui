@@ -97,7 +97,7 @@ describe('Voyage CYA - submit', () => {
     await screen.findByRole('heading', { name: 'Check your answers' });
     await user.click(screen.getByRole('button', { name: 'Confirm and send' }));
     expect(screen.getByRole('heading', { name: 'There is a problem' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Passenger details (FAL 6) upload is required for ships carrying passengers' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Passenger details including supernumeraries (FAL 6) upload is required for ships carrying passengers' })).toBeInTheDocument();
   });
 
   it('should scroll to document area if user clicks on a required error', async () => {
@@ -114,8 +114,8 @@ describe('Voyage CYA - submit', () => {
     await user.click(screen.getByRole('button', { name: 'Confirm and send' }));
 
     expect(screen.getByText('There is a problem')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Passenger details (FAL 6) upload is required for ships carrying passengers' })).toBeInTheDocument();
-    await user.click(screen.getByRole('button', { name: 'Passenger details (FAL 6) upload is required for ships carrying passengers' }));
+    expect(screen.getByRole('button', { name: 'Passenger details including supernumeraries (FAL 6) upload is required for ships carrying passengers' })).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Passenger details including supernumeraries (FAL 6) upload is required for ships carrying passengers' }));
     expect(scrollIntoViewMock).toHaveBeenCalled();
   });
 
