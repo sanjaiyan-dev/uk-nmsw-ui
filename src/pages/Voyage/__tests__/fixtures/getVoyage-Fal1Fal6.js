@@ -31,7 +31,7 @@ const Fal1Fal6 = {
   FAL5: [],
   FAL6: [
     {
-      filename: 'Passenger details FAL 6.xlsx',
+      filename: 'Passenger details including supernumeraries (FAL 6).xlsx',
       id: 'FAL6',
       size: '118385',
       url: 'https://fal6-report-link.com',
