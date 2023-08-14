@@ -30,7 +30,7 @@ describe('Voyage passenger page', () => {
 
   it('should render the page with declarationId from params', async () => {
     renderPage();
-    expect(screen.getByRole('heading', { name: 'Upload the Passenger details (FAL 6)' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Upload the Passenger details including supernumeraries (FAL 6)' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Check for errors' }).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button">Check for errors</button>');
   });
 

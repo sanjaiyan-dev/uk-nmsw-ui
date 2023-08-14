@@ -13,7 +13,7 @@ import ErrorMappingFal1 from '../../constants/ErrorMappingFal1';
 import { DownloadFile } from '../../utils/DownloadFile';
 
 const SupportingText = () => (
-  <p className="govuk-body" data-testid="paragraph">You must use the <button className="govuk-button--text" type="button" onClick={() => DownloadFile('/assets/files/General declaration FAL 1.xlsx', 'General declaration FAL 1.xlsx')}>General Declaration (FAL 1) template</button> to submit a report to NMSW.</p>
+  <p className="govuk-body" data-testid="paragraph">You must use the <button className="govuk-button--text" type="button" onClick={() => DownloadFile('/assets/files/General declaration (FAL 1).xlsx', 'General declaration (FAL 1).xlsx')}>General Declaration (FAL 1) template</button> to submit a report to NMSW.</p>
 );
 
 const VoyageUploadGeneralDeclaration = () => {

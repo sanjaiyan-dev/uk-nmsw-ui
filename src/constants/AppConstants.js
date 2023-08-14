@@ -64,11 +64,11 @@ export const PAGINATION_DISPLAYABLE_PAGE_NUMBER_INCREMENTOR = 1;
 
 // Templates
 export const GENERAL_DECLARATION_TEMPLATE_NAME = 'General Declaration (FAL 1)';
-export const CREW_DETAILS_TEMPLATE_NAME = 'Crew details including supernumeraries (FAL 5)';
-export const PASSENGER_DETAILS_TEMPLATE_NAME = 'Passenger details (FAL 6)';
+export const CREW_DETAILS_TEMPLATE_NAME = 'Crew details (FAL 5)';
+export const PASSENGER_DETAILS_TEMPLATE_NAME = 'Passenger details including supernumeraries (FAL 6)';
 export const GENERAL_DECLARATION_LABEL = 'General Declaration (FAL 1)';
-export const CREW_DETAILS_LABEL = 'Crew details including supernumeraries (FAL 5)';
-export const PASSENGER_DETAILS_LABEL = 'Any passenger details (FAL 6)';
+export const CREW_DETAILS_LABEL = 'Crew details (FAL 5)';
+export const PASSENGER_DETAILS_LABEL = 'Any passenger details including supernumeraries (FAL 6)';
 export const SUPPORTING_DOCUMENTS_LABEL = 'Supporting documents';
 export const CHECK_YOUR_ANSWERS_LABEL = 'Check answers and submit';
 

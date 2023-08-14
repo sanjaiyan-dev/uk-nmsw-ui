@@ -91,7 +91,7 @@ const VoyageCheckYourAnswers = () => {
     if (declarationData.declaration.passengers && declarationData?.FAL6.length === 0) {
       sectionErrors.push({
         name: 'passengerDetails',
-        message: 'Passenger details (FAL 6) upload is required for ships carrying passengers',
+        message: 'Passenger details including supernumeraries (FAL 6) upload is required for ships carrying passengers',
       });
     }
     return sectionErrors;
