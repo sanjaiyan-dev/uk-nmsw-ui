@@ -25,11 +25,11 @@ const CYAUploadedDocs = ({
     },
     {
       id: 'passengerDetails',
-      title: 'Passenger details',
+      title: 'Passenger details including supernumeraries',
       value: fal6Details?.filename ? fal6Details?.filename : '',
       fileLink: fal6Details?.url ? fal6Details?.url : '',
       changeLink: `${VOYAGE_PASSENGERS_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`,
-      noFileText: 'No passenger details provided',
+      noFileText: 'No passenger details including supernumeraries provided',
     },
   ];
 
