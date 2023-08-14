@@ -4,7 +4,7 @@ import BasePage from '../../e2e/pages/base.page';
 
 Then('I click template tab on the navigation bar', () => {
   LandingPage.clickTemplateTab();
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
 });
 
 Then('I am taken to templates page, listing templates', () => {

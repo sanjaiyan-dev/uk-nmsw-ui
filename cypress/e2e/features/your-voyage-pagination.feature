@@ -11,7 +11,7 @@ Feature: As a shipping agent I can able to report voyage and easily look through
       | emailAddress                                       | password      |
       | 0e25b97b-35bb-4959-8da9-e0439c9a0df9@mailslurp.com | Test-NMSW-Dev |
 
-  Scenario Outline: I can see a page link for each 50 records for account more than 100 voyages
+  Scenario Outline: I can see a page link for each 50 records for account with more than 50 voyages
     When I have entered a correct '<emailAddress>' and '<password>' and sign in
     Then I am taken to your-voyages page
     Then I am able to see the pagination based on number of reports

@@ -8,7 +8,7 @@ When('I click supporting documents link', () => {
 
 Then('I am taken to upload supporting documents page', () => {
   fileUploadPage.verifySupportingDocumentsPage();
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
 });
 
 When('I am able to choose valid number of documents and upload in Files added section', (table) => {

@@ -68,7 +68,7 @@ class CookieComponent {
 
   open() {
     cy.visitUrl("/");
-    cy.injectAxe();
+    cy.injectAxe({timedOut:1000});
   }
 
 }

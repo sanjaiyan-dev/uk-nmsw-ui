@@ -65,7 +65,7 @@ class CookiePage {
 
   verifyUrl() {
     cy.url().should('include', '/cookies');
-    cy.injectAxe();
+    cy.injectAxe({timedOut:1000});
   }
 
 }

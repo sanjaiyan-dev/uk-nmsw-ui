@@ -11,15 +11,15 @@ Then('I can see the confirmation banner -Voyage details deleted', () => {
 });
 
 Then('I can see the confirmation banner -Voyage details sent', () => {
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
   DeclarationPage.bannerReportSent();
   cy.checkAxe();
 });
 
 Then('I can see the confirmation banner for cancellation', () => {
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
   DeclarationPage.bannerCancelReport();
-  cy.checkAxe();
+  cy.checkAxe({timedOut:1000});
 });
 
 Then('I can see the status of reported voyage as {string}', (status) => {
@@ -29,7 +29,7 @@ Then('I can see the status of reported voyage as {string}', (status) => {
 });
 
 Then('I can review the report with submitted status', () => {
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
   cy.get(':nth-child(1) > :nth-child(2) > dd strong').then(($el) => {
     if ($el.text() === 'Failed') {
       DeclarationPage.checkCyaFailedStatus();
@@ -44,7 +44,7 @@ Then('I can review the report with submitted status', () => {
 });
 
 When('I click cancel, to cancel the submitted voyage report', () => {
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
   cy.wait(5000);
   DeclarationPage.clickCancelButton();
   cy.checkAxe();
@@ -52,7 +52,7 @@ When('I click cancel, to cancel the submitted voyage report', () => {
 });
 
 Then('I am taken to review your report with Cancelled status', () => {
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
   DeclarationPage.checkCyaCancelledStatus();
   DeclarationPage.verifyChangeLinkNotExist();
   DeclarationPage.verifySaveAndSubmitNotExist();
