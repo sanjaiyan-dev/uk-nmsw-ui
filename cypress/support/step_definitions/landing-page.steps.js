@@ -40,6 +40,7 @@ Then('I am taken to your details page', () => {
 
 Then('I am taken to help and support page', () => {
   BasePage.checkH1('Help and support for the National Maritime Single Window');
+  cy.get('.govuk-inset-text > .govuk-link').should('contain.text','nmsw@homeoffice.gov.uk');
   cy.checkAxe();
 });
 
