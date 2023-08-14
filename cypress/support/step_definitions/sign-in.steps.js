@@ -38,6 +38,7 @@ Then('I am taken to your-voyages page', () => {
   cy.injectAxe({timedOut:1000});
   cy.get('h1').should('have.text', 'Your voyages');
   cy.checkAxe();
+  cy.wait(1000);
 });
 
 When('I have entered an email address for an unverified email address', () => {
