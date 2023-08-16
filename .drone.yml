@@ -176,7 +176,7 @@ steps:
   commands:
   - ./helm/decrypt-secrets.sh dev
   - /run-helm.sh list -n nmsw-dev
-  - helm upgrade --install nmsw-ui ./helm -f ./helm/dev.yaml -n nmsw-dev
+  - helm upgrade --install nmsw-ui ./helm -f ./helm/dev.yaml -n nmsw-dev --wait --timeout 6m
   environment:
     KUBE_CERTIFICATE_AUTHORITY_DATA:
       from_secret: DEV_NMSW_KUBE_CA_DATA
@@ -258,7 +258,7 @@ steps:
   commands:
   - ./helm/decrypt-secrets.sh staging
   - /run-helm.sh list -n nmsw-staging
-  - helm upgrade --install nmsw-ui ./helm -f ./helm/staging.yaml -n nmsw-staging --set image.tag="staging-${DRONE_COMMIT_SHA}"
+  - helm upgrade --install nmsw-ui ./helm -f ./helm/staging.yaml -n nmsw-staging --set image.tag="staging-${DRONE_COMMIT_SHA}" --wait --timeout 6m
   environment:
     KUBE_CERTIFICATE_AUTHORITY_DATA:
       from_secret: STAGING_NMSW_KUBE_CA_DATA
@@ -339,7 +339,7 @@ steps:
   commands:
   - ./helm/decrypt-secrets.sh production
   - /run-helm.sh list -n nmsw
-  - helm upgrade --install nmsw-ui ./helm -f ./helm/production.yaml -n nmsw --set image.tag="production-${DRONE_COMMIT_SHA}"
+  - helm upgrade --install nmsw-ui ./helm -f ./helm/production.yaml -n nmsw --set image.tag="production-${DRONE_COMMIT_SHA}" --wait --timeout 6m
   environment:
     KUBE_CERTIFICATE_AUTHORITY_DATA:
       from_secret: PRODUCTION_NMSW_KUBE_CA_DATA
