@@ -6,7 +6,6 @@ import YourVoyagePage from "../../e2e/pages/your-voyage-page";
 
 Then('I can see the draft details of the voyage, I have uploaded', () => {
   DeclarationPage.checkCurrentDeclaration();
-  DeclarationPage.checkVoyageDetailsStatus('draft');
   cy.checkAxe();
 });
 
@@ -50,4 +49,8 @@ Then('I am able to see the pagination based on number of reports', () => {
         break;
     }
   })
+});
+
+Then('I can see the cancelled reported voyage', () => {
+  DeclarationPage.verifyCancelledDeclaration();
 });

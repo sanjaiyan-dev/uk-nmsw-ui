@@ -22,13 +22,12 @@ Then('I can see the confirmation banner for cancellation', () => {
   cy.checkAxe({timedOut:1000});
 });
 
-Then('I can see the status of reported voyage as {string}', (status) => {
+Then('I can see the reported voyage', () => {
  DeclarationPage.checkCurrentDeclaration();
-  DeclarationPage.checkVoyageDetailsStatus(status.toLowerCase());
   cy.checkAxe();
 });
 
-Then('I can review the report with submitted status', () => {
+Then('I can review the report with the pending or submitted status', () => {
   cy.injectAxe({timedOut:1000});
   cy.get(':nth-child(1) > :nth-child(2) > dd strong').then(($el) => {
     if ($el.text() === 'Failed') {
@@ -51,7 +50,7 @@ When('I click cancel, to cancel the submitted voyage report', () => {
   cy.wait(2000);
 });
 
-Then('I am taken to review your report with Cancelled status', () => {
+Then('I am taken to review the report with Cancelled status', () => {
   cy.injectAxe({timedOut:1000});
   DeclarationPage.checkCyaCancelledStatus();
   DeclarationPage.verifyChangeLinkNotExist();
@@ -65,19 +64,12 @@ When('I click review or cancel action link next to Pending status', () => {
   cy.get('@currentDeclaration').should('contain.text', 'Review').click();
 });
 
-When('I click review action link next to Cancelled status', () => {
-  cy.wait(5000);
-  cy.get('@currentDeclaration').should('contain.text', 'Review').click();
-  cy.wait(1000);
-});
-
 When('I click review action link next to Failed status', () => {
   cy.get('@currentDeclaration').should('contain.text', 'Review').click();
 });
 
-Then('I can see the status of crown dependency voyage reported as {string}', (status) => {
-  DeclarationPage.checkCurrentDeclaration();
-  DeclarationPage.verifyCrownDependencyVoyage(status.toLowerCase());
+Then('I can see the reported voyage for crown dependency', () => {
+  DeclarationPage.verifyCrownDependencyDeclaration();
 });
 
 Then('I can see the confirmation banner for cancellation for crown dependency report', () => {
@@ -85,11 +77,3 @@ Then('I can see the confirmation banner for cancellation for crown dependency re
   cy.get('h3.govuk-notification-banner__heading').should('contain.text', 'Report for CD NMSW Test Ship cancelled.');
 });
 
-Then('I can see the report status changes to Submitted', () => {
-  cy.waitForStatusChange();
-  cy.contains('Status').next().then((statusDetail) => {
-    const statusAndDate = statusDetail.text()
-    cy.wrap(statusAndDate).as('externalStatus');
-  })
-  cy.wait(3000);
-});

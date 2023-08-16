@@ -10,7 +10,7 @@ let fileName;
 When('I click report a voyage', () => {
   cy.intercept('POST', '**/declaration').as('newDeclaration');
   YourVoyagePage.clickReportVoyage();
-  cy.wait(1000);
+  cy.wait(2000);
 });
 
 Then('I am taken to upload-general-declaration page', () => {

@@ -76,7 +76,7 @@ Feature: Task details page after file uploads
     Then I am taken to task details page
 
   @deleteDeclaration
-  Scenario: Error messages shown when user uploads Fal5 and 6 with same same document number and country
+  Scenario: Error messages shown when user uploads Fal5 and 6 with same document number and country
     When I have uploaded 'Fal1-Files''General declaration FAL 1-Positive-test.xlsx'
     When I click check for errors
     When there are no errors, I am shown the no errors found page
