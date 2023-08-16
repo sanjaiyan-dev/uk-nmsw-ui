@@ -56,10 +56,10 @@ const errorInvalidCharacters = [
     cellNumber: 'B3',
     error: `Enter the name of ship using only English letters, numbers, or one of \` -()/\`. The following found characters are not allowed: '!'`
   },
-  /*{
+  {
     cellNumber: 'F3',
-    error: `Enter the call sign using only English letters, numbers, or one of \` -()/\`. The following found characters are not allowed: '%','$'`
-  },*/
+    error: `Enter the call sign using only English letters, numbers, or one of \` -()/\`. The following found characters are not allowed: '$','%'`
+  },
   {
     cellNumber: 'B4',
     error: `Enter the signatory using only English letters, numbers, or one of \` -()/\`. The following found characters are not allowed: '$'`
@@ -97,21 +97,13 @@ const errorImoWithHyphen =[
 const errorInvalidArrivalFields = [
   {cellNumber: 'B5', error: 'You selected arrival in the UK. Enter an arrival LOCODE that starts with one of GB,GG,JE,IM'},
   {
-    cellNumber: 'B6',
-    error: 'You selected arrival in the UK. Enter a departure LOCODE for the last port of call and not a GB port'
-  },
-  {
     cellNumber: 'D7',
     error: 'Enter a last port of call that matches the last port of call you gave in cell B6'
   },
-  {
-    cellNumber: 'F7',
-    error: 'Enter a LOCODE that does not start with one of GB,GG,JE for the last port of call'
-  },
-  {
-    cellNumber: '',
-    error: 'You selected arrival in the UK. Enter an arrival date and time that is after the departure from the previous port'
-  },
+  // {
+  //   cellNumber: '',
+  //   error: 'You selected arrival in the UK. Enter an arrival date and time that is after the departure from the previous port'
+  // },
 ]
 
 const errorInvalidDepartureFields = [
@@ -132,7 +124,7 @@ const errorInvalidDepartureFields = [
 const errorDepartureDateInFuture = [
   {
     cellNumber: '',
-    error: 'Enter a departure date from the UK that is not more than 24 hours in the future'
+    error: 'You selected departure from the UK. Enter a departure date and time that is before the arrival at the next port'
   },
 ]
 
@@ -147,6 +139,13 @@ const errBadDateTime = [
     cellNumber: 'F6',
     error: 'departure time must be in the HH:MM:SS or HH:MM:SS am/pm format, for example, 01:00:00 pm or 13:00:00'
   },
+]
+
+const errGBLocodeWithXXX =[
+  {cellNumber: 'B5', error: `'GB XXX' is not an acceptable LOCODE`},
+  {cellNumber: 'B6', error: `'GB XXX' is not an acceptable LOCODE`},
+  {cellNumber: 'D7', error: `'GB XXX' is not an acceptable LOCODE`},
+  {cellNumber: 'F7', error: `'GB XXX' is not an acceptable LOCODE`},
 ]
 
 Then('I am taken to Errors found page for {string}', (fileName) => {
@@ -186,6 +185,9 @@ Then('I am shown error messages to help me fix them for {string}', (errorType) =
       break;
     case 'bad-dateTime':
       errList = errBadDateTime
+      break;
+    case 'unlocode-with-XXX':
+      errList = errGBLocodeWithXXX
       break;
   }
 
