@@ -33,7 +33,7 @@ Feature: Check your answer page
     When I navigate back to check your answers page
     When I click Confirm and send
     Then I am shown form error message
-      | Error | Passenger details (FAL 6) upload is required for ships carrying passengers |
+      | Error | Passenger details including supernumeraries (FAL 6) upload is required for ships carrying passengers |
     When I click on change next to Passenger details
     And I select Yes to uploading passenger details
     Then I am taken to upload-Passenger-details page
