@@ -25,6 +25,7 @@ class TaskPage {
 
   clickSupportingDocsLink() {
     cy.contains('Supporting documents').click();
+    cy.wait(1000);
   }
 
   clickYesDeleteDraft() {

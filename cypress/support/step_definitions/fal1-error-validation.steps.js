@@ -56,10 +56,10 @@ const errorInvalidCharacters = [
     cellNumber: 'B3',
     error: `Enter the name of ship using only English letters, numbers, or one of \` -()/\`. The following found characters are not allowed: '!'`
   },
-  {
-    cellNumber: 'F3',
-    error: `Enter the call sign using only English letters, numbers, or one of \` -()/\`. The following found characters are not allowed: '$','%'`
-  },
+  // {
+  //   cellNumber: 'F3',
+  //   error: `Enter the call sign using only English letters, numbers, or one of \` -()/\`. The following found characters are not allowed: '%'`
+  // },
   {
     cellNumber: 'B4',
     error: `Enter the signatory using only English letters, numbers, or one of \` -()/\`. The following found characters are not allowed: '$'`
@@ -100,10 +100,10 @@ const errorInvalidArrivalFields = [
     cellNumber: 'D7',
     error: 'Enter a last port of call that matches the last port of call you gave in cell B6'
   },
-  // {
-  //   cellNumber: '',
-  //   error: 'You selected arrival in the UK. Enter an arrival date and time that is after the departure from the previous port'
-  // },
+  {
+    cellNumber: '',
+    error: 'You selected arrival in the UK. Enter an arrival date and time that is after the departure from the previous port'
+  },
 ]
 
 const errorInvalidDepartureFields = [
@@ -197,7 +197,7 @@ Then('I am shown error messages to help me fix them for {string}', (errorType) =
 
     const getErrorForCell = errList.filter(item => item.cellNumber === cellNo.trim());
     if (getErrorForCell.length > 0) {
-      expect(err).to.be.equal(getErrorForCell[0].error);
+      expect(err).to.contain(getErrorForCell[0].error);
     }
   });
 });

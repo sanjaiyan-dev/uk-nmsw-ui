@@ -54,7 +54,6 @@ Feature: Task details page after file uploads
     When I click Your voyage tab
     Then I am taken to your-voyages page
     Then I can see the draft details of the voyage, I have uploaded
-    When I click continue under actions
     Then I am taken to task details page
     When I click delete draft
     Then I am taken to confirm delete draft page
@@ -108,7 +107,6 @@ Feature: Task details page after file uploads
     And I click Your voyage tab
     Then I am taken to your-voyages page
     Then I can see the draft details of the voyage, I have uploaded
-    When I click continue under actions
     Then I am taken to task details page
     And I can see the see the status of Fal-6 as required
     When I click Passenger details link

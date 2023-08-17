@@ -67,6 +67,7 @@ Then('I can see Check answers and submit enabled', () => {
 
 When('I click continue under actions', () => {
   cy.get('main#content a').first().contains('Continue').click();
+  cy.wait(1000);
 });
 
 Then('I can see the see the status of Fal-6 as required', () => {
