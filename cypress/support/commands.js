@@ -149,15 +149,3 @@ Cypress.Commands.add('deleteDeclaration', () => {
     })
 })
 
-Cypress.Commands.add('waitForStatusChange', () => {
-  function checkStatus() {
-    cy.get('.govuk-summary-list__value > .govuk-tag').then(($statusElement) => {
-      const currentStatus = $statusElement.text();
-      if (currentStatus !== 'Submitted' || currentStatus !== 'Failed') {
-        cy.reload();
-      }
-    })
-  }
-  checkStatus();
-});
-

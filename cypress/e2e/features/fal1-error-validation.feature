@@ -57,10 +57,16 @@ Feature: Display FAL 1 field level errors
     Then I am taken to Errors found page for 'GDF1-bad-datetime.xlsx'
 
   Scenario: Error messages shown when user uploads file with IMO with hyphen
-    When I have uploaded 'Fal1-Files''GDF1-imo-goodwithIMO-prefix.xlsx'
+    When I have uploaded 'Fal1-Files''GDF1-imo-with-prefix.xlsx'
     When I click check for errors
-    Then I am taken to Errors found page for 'GDF1-imo-goodwithIMO-prefix.xlsx'
+    Then I am taken to Errors found page for 'GDF1-imo-with-prefix.xlsx'
     Then I am shown error messages to help me fix them for 'imo-with-hyphen'
+
+  Scenario: Error messages shown when user uploads file with GB port locodes in XXX format
+    When I have uploaded 'Fal1-Files''GDF1 -unlocode-with-XXX.xlsx'
+    When I click check for errors
+    Then I am taken to Errors found page for 'GDF1 -unlocode-with-XXX.xlsx'
+    Then I am shown error messages to help me fix them for 'unlocode-with-XXX'
 
   Scenario: No error messages should be shown for uploading files with IMO numbers only
     When I have uploaded 'Fal1-Files''GDF1-imo-goodwithIMONumberOnly.xlsx'

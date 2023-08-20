@@ -42,6 +42,7 @@ class FileUploadPage {
 
   clickSaveAndContinue() {
     cy.contains('Save and continue').click();
+    cy.wait(1000);
   }
 
   clickReUploadFile() {
@@ -50,7 +51,7 @@ class FileUploadPage {
 
   verifyUploadCrewDetailsPage() {
     cy.url().should('include', 'upload-crew-details');
-    cy.get('h1').contains('Upload the Crew details including supernumeraries (FAL 5)');
+    cy.get('h1').contains('Upload the Crew details (FAL 5)');
   }
 
   verifySupportingDocumentsPage() {

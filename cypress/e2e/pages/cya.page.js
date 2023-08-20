@@ -25,6 +25,7 @@ class CyaPage {
 
   clickChangeVoyageDetailLink() {
     cy.get('dl:nth-of-type(1) > div:nth-of-type(1) > .govuk-summary-list__actions > a').should('have.text', 'Change change voyage details').click();
+    cy.wait(1000);
   }
 
   verifyChangeLink() {

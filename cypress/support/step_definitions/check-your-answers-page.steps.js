@@ -161,7 +161,7 @@ Then('I can see a link to an uploaded supporting document files {string}{string}
 });
 
 Then('passenger section state No passenger details provided', () => {
-  cy.get('#passengerDetails').next().contains('No passenger details provided');
+  cy.get('#passengerDetails').next().contains('No passenger details including supernumeraries provided');
   cy.get('#supportingDocuments').next().contains('No supporting documents provided');
 });
 

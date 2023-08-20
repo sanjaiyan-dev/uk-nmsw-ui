@@ -17,9 +17,10 @@ When('I click File templates, I can able to download', () => {
   cy.contains('(FAL 5)').click();
   cy.contains('(FAL 6)').click();
   cy.wait(2000);
-  const file1Path = "cypress/downloads/General declaration FAL 1.xlsx";
-  const file2Path = "cypress/downloads/Crew details including supernumeraries FAL 5.xlsx";
-  const file3Path = "cypress/downloads/Passenger details FAL 6.xlsx";
+  const file1Path = "cypress/downloads/General declaration (FAL 1).xlsx";
+  const file2Path = "cypress/downloads/Crew details (FAL 5).xlsx";
+  const file3Path = "cypress/downloads/Passenger details including supernumeraries (FAL 6).xlsx";
+  cy.wait(2000);
   cy.readFile(file1Path).should('exist');
   cy.readFile(file2Path).should('exist');
   cy.readFile(file3Path).should('exist');
