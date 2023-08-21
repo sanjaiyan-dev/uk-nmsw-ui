@@ -7,7 +7,7 @@ import {
   REGISTER_ACCOUNT_ENDPOINT,
   REGISTER_RESEND_VERIFICATION_EMAIL_ENDPOINT,
   USER_ALREADY_REGISTERED,
-  USER_ALREADY_VERIFIED,
+  USER_ALREADY_VERIFIED_LOGIN,
   USER_NOT_REGISTERED,
 } from '../../../constants/AppAPIConstants';
 import {
@@ -44,7 +44,7 @@ describe('Resend registration email verification email', () => {
     render(<MemoryRouter><RegisterEmailResend /></MemoryRouter>);
     expect(screen.getByText('Request a new verification link')).toBeInTheDocument();
     expect(screen.getByText('Emails sometimes take a few minutes to arrive. If you did not receive the link, you can request a new one.')).toBeInTheDocument();
-    expect(screen.getByTestId('details-component').outerHTML).toEqual('<details class="govuk-details" data-module="govuk-details" data-testid="details-component"><summary class="govuk-details__summary"><span class="govuk-details__summary-text">Change the contact email address you want to use</span></summary><div class="govuk-details__text"><label class="govuk-label" for="emailAddress-input">Email address</label><div id="emailAddress-hint" class="govuk-hint"></div><p id="emailAddress-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> </p><input class="govuk-input" id="emailAddress-input" name="emailAddress" type="email" autocomplete="email" value=""></div></details>');
+    expect(screen.getByTestId('details-component').outerHTML).toEqual('<details class="govuk-details" data-module="govuk-details" data-testid="details-component"><summary class="govuk-details__summary"><span class="govuk-details__summary-text">Change the contact email address you want to use</span></summary><div class="govuk-details__text"><label class="govuk-label" for="emailAddress-input">Email address</label><div id="emailAddress-hint" class="govuk-hint"></div><input class="govuk-input" id="emailAddress-input" name="emailAddress" type="email" autocomplete="email" value=""></div></details>');
     expect(screen.getByRole('button', { name: 'Request a new link' })).toBeInTheDocument('');
   });
 
@@ -53,7 +53,7 @@ describe('Resend registration email verification email', () => {
     render(<MemoryRouter><RegisterEmailResend /></MemoryRouter>);
     expect(screen.getByText('Request a new verification link')).toBeInTheDocument();
     expect(screen.getByText('Emails sometimes take a few minutes to arrive. If you did not receive the link, you can request a new one.')).toBeInTheDocument();
-    expect(screen.getByTestId('details-component').outerHTML).toEqual('<details class="govuk-details" data-module="govuk-details" data-testid="details-component"><summary class="govuk-details__summary"><span class="govuk-details__summary-text">Change the contact email address you want to use</span></summary><div class="govuk-details__text"><label class="govuk-label" for="emailAddress-input">Email address</label><div id="emailAddress-hint" class="govuk-hint"></div><p id="emailAddress-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> </p><input class="govuk-input" id="emailAddress-input" name="emailAddress" type="email" autocomplete="email" value="testemail@email.com"></div></details>');
+    expect(screen.getByTestId('details-component').outerHTML).toEqual('<details class="govuk-details" data-module="govuk-details" data-testid="details-component"><summary class="govuk-details__summary"><span class="govuk-details__summary-text">Change the contact email address you want to use</span></summary><div class="govuk-details__text"><label class="govuk-label" for="emailAddress-input">Email address</label><div id="emailAddress-hint" class="govuk-hint"></div><input class="govuk-input" id="emailAddress-input" name="emailAddress" type="email" autocomplete="email" value="testemail@email.com"></div></details>');
     expect(screen.getByRole('button', { name: 'Request a new link' })).toBeInTheDocument('');
   });
 
@@ -138,7 +138,7 @@ describe('Resend registration email verification email', () => {
     mockAxios
       .onPost(REGISTER_RESEND_VERIFICATION_EMAIL_ENDPOINT)
       .reply(409, {
-        message: USER_ALREADY_VERIFIED,
+        message: USER_ALREADY_VERIFIED_LOGIN,
       });
 
     render(<MemoryRouter><RegisterEmailResend /></MemoryRouter>);

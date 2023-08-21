@@ -31,9 +31,9 @@ Feature: Check your answer page
     When I click on change next to Passenger details
     And I select Yes to uploading passenger details
     When I navigate back to check your answers page
-    When I click Save and Submit
+    When I click Confirm and send
     Then I am shown form error message
-      | Error | Passenger details (FAL 6) upload is required for ships carrying passengers |
+      | Error | Passenger details including supernumeraries (FAL 6) upload is required for ships carrying passengers |
     When I click on change next to Passenger details
     And I select Yes to uploading passenger details
     Then I am taken to upload-Passenger-details page
@@ -84,4 +84,4 @@ Feature: Check your answer page
     And I sign-out
     Examples:
       | emailAddress                                       | password      |
-      | abf4b167-04bc-4ff1-b4b0-7f9ceb0b6ffd@mailslurp.com | Test-NMSW-Dev |
+      | a31178b5-1e16-4ac9-8fcd-528ae2758b92@mailslurp.com | Test-NMSW-Dev |

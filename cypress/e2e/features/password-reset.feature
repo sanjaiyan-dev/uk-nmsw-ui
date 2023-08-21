@@ -76,6 +76,8 @@ Feature: User able to reset password
     Then I am taken to forgotten-password page
     Then I enter the email that is registered but not verified
     And I click send the link
-    Then I shown email address has not been verified
-    When I click send verification email
-#    Then I am taken to check your email page
+    Then I am shown email address has not been verified
+    When I click Resend verification email
+    Then I am taken to check your email page
+    And I can see email received to verify the email
+

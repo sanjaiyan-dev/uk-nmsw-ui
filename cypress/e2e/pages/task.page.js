@@ -25,6 +25,7 @@ class TaskPage {
 
   clickSupportingDocsLink() {
     cy.contains('Supporting documents').click();
+    cy.wait(1000);
   }
 
   clickYesDeleteDraft() {
@@ -50,6 +51,11 @@ class TaskPage {
     cy.get('main#content li:nth-child(3) > a > strong').should('have.text','Completed');
     cy.get('main#content div:nth-child(2) > div > p').should('have.text','You have completed 0 of 2 sections.');
   }
+
+  checkFal6StatusBeforeFal6Upload() {
+    cy.get('main#content li:nth-child(3) > a > strong').should('have.text','Required');
+  }
+
 }
 
 export default new TaskPage();

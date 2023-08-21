@@ -1,4 +1,4 @@
-import {Then, When} from "@badeball/cypress-cucumber-preprocessor";
+import { Given, Then, When } from '@badeball/cypress-cucumber-preprocessor';
 import PasswordPage from "../../e2e/pages/registration/password.page";
 import EmailPage from "../../e2e/pages/registration/email.page";
 import BasePage from "../../e2e/pages/base.page";
@@ -10,7 +10,7 @@ When('I click Forgotten your password? link', () => {
 
 Then('I am taken to forgotten-password page', () => {
     PasswordPage.checkForgottenPasswordPage();
-    cy.injectAxe();
+    cy.injectAxe({timedOut:1000});
 });
 
 When('I enter my email to request a forgotten password link', () => {
@@ -39,7 +39,7 @@ When('I click the password reset link received', () => {
 
 Then('I am taken to new password page', () => {
     PasswordPage.checkNewPasswordPage();
-    cy.injectAxe();
+    cy.injectAxe({timedOut:1000});
 });
 
 When('I click Reset password button without providing password details', () => {
@@ -57,7 +57,7 @@ Then('I enter a confirmation password that is different to the new password', ()
 });
 
 When('I enter a new password and confirmation password that matches the new password', () => {
-    cy.injectAxe();
+    cy.injectAxe({timedOut:1000});
     PasswordPage.typePassword('NewPassword');
     PasswordPage.typeRepeatPassword('NewPassword');
     cy.intercept('POST', '/new-password?token=').as('verifyPasswordReset');
@@ -95,7 +95,7 @@ When('I click the same password reset link again', () => {
     cy.get('@token').then((token) => {
         cy.visitUrl(`/new-password?token=${token}`);
     })
-    cy.injectAxe();
+    cy.injectAxe({timedOut:1000});
 });
 
 When('user tries to reset password with invalid token', () => {
@@ -108,7 +108,7 @@ Then('the user is redirected to request-new-password-link', () => {
 
 Then('I click change the email sent link', () => {
     cy.contains('Change where the email was sent').click();
-    cy.injectAxe();
+    cy.injectAxe({timedOut:1000});
 });
 
 Then('I change to different email previously registered', () => {
@@ -123,14 +123,27 @@ When('I enter the email that is registered but not verified', () => {
     EmailPage.enterEmailAddress('e5fc776c-a811-4cc5-9392-019f3872938b@mailslurp.com')
 });
 
-Then('I shown email address has not been verified', () => {
+Then('I am shown email address has not been verified', () => {
     BasePage.checkH1('Email address not verified');
+});
+
+When('I click Resend verification email', () =>{
+    cy.intercept('POST','**/resend-verification-email').as('verifyEmail');
+    cy.contains('Resend verification email').click();
+    cy.wait('@verifyEmail').then(({response}) => {
+        expect(response.statusCode).to.eq(204);
+    });
 });
 
 When('I click send verification email', () => {
     cy.checkAxe();
     BasePage.clickSendConfirmationEmail();
 });
+
+Then('I am taken to request-new-verification-link page', () => {
+    cy.url().should('include', 'request-new-verification-link');
+    BasePage.checkH1('Request a new verification link');
+})
 
 When('I enter an email address that is not registered', () => {
     EmailPage.enterEmailAddress('test@test.com')
@@ -142,4 +155,18 @@ Then('I am shown check your email page but email should not be sent', () => {
     cy.wait('@verifyReg').then(({response}) => {
         expect(response.statusCode).to.be.oneOf([401, 400]);
     });
+});
+
+Given('a user attempts to sign in with email that requires to reset', () => {
+    SignInPage.enterEmailAddress('');
+    SignInPage.enterPassword(this.user.password);
+    SignInPage.clickSignIn();
+});
+
+Then('we redirect the user to a message page for service update', () => {
+    cy.injectAxe({timedOut: 1000});
+    BasePage.checkH1('Service update')
+    cy.get('.govuk-grid-column-two-thirds  p.govuk-body').should('contain.text', `To continue to use the service, please reset your password. Any voyage reports you\'ve saved will not be affected.`);
+    cy.contains('Reset password');
+    cy.checkAxe();
 });

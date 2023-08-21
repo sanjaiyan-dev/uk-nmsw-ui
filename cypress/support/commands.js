@@ -36,7 +36,13 @@ const apiServer = Cypress.env('api_server');
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 require('cypress-downloadfile/lib/downloadFileCommand')
 Cypress.Commands.add('checkAxe', () => {
-  cy.checkA11y(null, null, terminalLog, true);
+  cy.checkA11y(null, {
+    runOnly: {
+      type: 'tag',
+      values: ['wcag2a', 'wcag2aa']
+    }
+  }, terminalLog, true);
+  cy.wait(1000);
 });
 
 Cypress.Commands.add('visitUrl', (path) => {

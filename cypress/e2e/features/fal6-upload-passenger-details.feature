@@ -33,7 +33,7 @@ Feature: Upload Passenger details (FAL6) file
     Then I am taken to task details page
     And I can see status for FAL6 as completed and FAL5 as required
     When I try to access a protected CYA page with declaration Id
-    When I click Save and Submit
+    When I click Confirm and send
     Then I am shown form error message
       | Error | Crew details (FAL 5) upload is required |
 

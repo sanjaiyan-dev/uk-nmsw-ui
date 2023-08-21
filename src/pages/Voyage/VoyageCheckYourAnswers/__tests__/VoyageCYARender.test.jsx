@@ -123,8 +123,8 @@ describe('Voyage CYA - initial render', () => {
     expect(screen.getByRole('heading', { name: 'Check your answers' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Voyage details' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Uploaded documents' })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: 'Now send your application' })).toBeInTheDocument();
-    expect(screen.getByText('By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Send the report' })).toBeInTheDocument();
+    expect(screen.getByText('By sending this voyage report, you are confirming that to the best of your knowledge, the details you are sending are correct.')).toBeInTheDocument();
   });
 
   it('should render the list titles on the page', async () => {
@@ -146,7 +146,7 @@ describe('Voyage CYA - initial render', () => {
     expect(screen.getByText('Next port of call').outerHTML).toEqual('<dt class="govuk-summary-list__key">Next port of call</dt>');
     expect(screen.getByText('Brief description of the cargo').outerHTML).toEqual('<dt class="govuk-summary-list__key">Brief description of the cargo</dt>');
     expect(screen.getByText('Crew details').outerHTML).toEqual('<dt id="crewDetails" class="govuk-summary-list__key">Crew details</dt>');
-    expect(screen.getByText('Passenger details').outerHTML).toEqual('<dt id="passengerDetails" class="govuk-summary-list__key">Passenger details</dt>');
+    expect(screen.getByText('Passenger details including supernumeraries').outerHTML).toEqual('<dt id="passengerDetails" class="govuk-summary-list__key">Passenger details including supernumeraries</dt>');
     expect(screen.getByText('Supporting documents').outerHTML).toEqual('<dt id="supportingDocuments" class="govuk-summary-list__key">Supporting documents</dt>');
   });
 
@@ -158,7 +158,8 @@ describe('Voyage CYA - initial render', () => {
         },
       })
       .reply(200, {
-        FAL1: {
+        declaration: {
+          status: 'Submitted',
           nameOfShip: 'Test ship name',
           imoNumber: '1234567',
           callSign: 'NA',
@@ -178,6 +179,14 @@ describe('Voyage CYA - initial render', () => {
           creationDate: '2023-02-10',
           submissionDate: '2023-02-11',
         },
+        FAL1: [
+          {
+            filename: 'General Declaration (FAL 1)',
+            id: 'FAL1',
+            size: '118385',
+            url: 'https://fal1-report-link.com',
+          },
+        ],
         FAL5: [],
         FAL6: [],
         supporting: [],
@@ -197,6 +206,6 @@ describe('Voyage CYA - initial render', () => {
       .reply(200, Fal1);
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
-    expect(screen.getByRole('button', { name: 'Save and submit' }).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button">Save and submit</button>');
+    expect(screen.getByRole('button', { name: 'Confirm and send' }).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button">Confirm and send</button>');
   });
 });

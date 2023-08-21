@@ -2,10 +2,10 @@ import {Then, When} from "@badeball/cypress-cucumber-preprocessor";
 import DeclarationPage from "../../e2e/pages/declaration.page";
 import fileUploadPage from "../../e2e/pages/file-upload.page";
 import SignInPage from "../../e2e/pages/sign-in.page";
-import YourVoyagePage from "../../e2e/pages/your-voyage.page";
+import YourVoyagePage from "../../e2e/pages/your-voyage-page";
 
 Then('I can see the draft details of the voyage, I have uploaded', () => {
-  DeclarationPage.checkVoyageDetailsStatus('draft');
+  DeclarationPage.checkCurrentDeclaration();
   cy.checkAxe();
 });
 
@@ -49,4 +49,8 @@ Then('I am able to see the pagination based on number of reports', () => {
         break;
     }
   })
+});
+
+Then('I can see the cancelled reported voyage', () => {
+  DeclarationPage.verifyCancelledDeclaration();
 });

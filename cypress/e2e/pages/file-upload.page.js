@@ -5,7 +5,7 @@ class FileUploadPage {
   }
 
   clickCheckForErrors() {
-    cy.contains('Check for errors').click();
+    cy.contains('Check for errors').click({force:true});
   }
 
   chooseFile(folderName, fileName) {
@@ -42,6 +42,7 @@ class FileUploadPage {
 
   clickSaveAndContinue() {
     cy.contains('Save and continue').click();
+    cy.wait(1000);
   }
 
   clickReUploadFile() {
@@ -50,7 +51,7 @@ class FileUploadPage {
 
   verifyUploadCrewDetailsPage() {
     cy.url().should('include', 'upload-crew-details');
-    cy.get('h1').contains('Upload the Crew details including supernumeraries (FAL 5)');
+    cy.get('h1').contains('Upload the Crew details (FAL 5)');
   }
 
   verifySupportingDocumentsPage() {
@@ -116,14 +117,6 @@ class FileUploadPage {
       cy.contains(`${fileNames[index]} The file must be a csv, doc, docm, docx, rtf, txt, xls, xlsm, xlsx, xltm, xltx, xlw or xml`);
     });
   }
-
-  // getDeclarationId() {
-  //   cy.wait('@declaration').then((result) => {
-  //     let url = result.request.url;
-  //     let declarationId = url.split("/")[5];
-  //     cy.wrap(declarationId).as('declarationId');
-  //   });
-  // }
 
   checkErrorForFileMaxSize(table) {
     const files = table.hashes();

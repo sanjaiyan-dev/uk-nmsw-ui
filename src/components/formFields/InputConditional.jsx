@@ -32,9 +32,11 @@ const TextField = ({
       <div id={`${name}-hint`} className="govuk-hint">
         {hint}
       </div>
-      <p id={`${name}-error`} className="govuk-error-message">
-        <span className="govuk-visually-hidden">Error:</span> {errors?.message ? errors.message : null}
-      </p>
+      {errors?.message && (
+        <p id={`${name}-error`} className="govuk-error-message">
+          <span className="govuk-visually-hidden">Error:</span> {errors?.message ? errors.message : null}
+        </p>
+      )}
       <input
         aria-describedby={hint ? `${name}-hint` : null}
         className={errors?.name ? 'govuk-input govuk-!-width-one-third govuk-input--error' : 'govuk-input govuk-!-width-one-third'}
@@ -125,7 +127,7 @@ const InputConditional = ({ errors, fieldDetails, handleChange }) => {
                     handleChange={wrapHandleChange}
                   />
                 )
-              }
+            }
           </Fragment>
         );
       })}

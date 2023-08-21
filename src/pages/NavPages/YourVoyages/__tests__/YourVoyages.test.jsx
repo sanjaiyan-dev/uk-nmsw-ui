@@ -172,7 +172,7 @@ describe('Your voyages page tests', () => {
     render(<MemoryRouter><YourVoyages /></MemoryRouter>);
     expect(await screen.findByText('All report types')).toBeInTheDocument();
     expect(screen.getByText('Ship 3')).toBeInTheDocument();
-    expect(screen.getByText('Submitted').outerHTML).toEqual('<strong class="govuk-tag govuk-tag--green">Submitted</strong>');
+    expect(screen.getByText('Pending').outerHTML).toEqual('<strong class="govuk-tag govuk-tag--yellow">Pending</strong>');
     expect(screen.getByText('Review or cancel').outerHTML).toEqual('<a class="govuk-link small-link-text" href="/report-voyage/check-your-answers?report=3">Review or cancel</a>');
 
     expect(screen.queryByText('Draft')).not.toBeInTheDocument();
@@ -448,7 +448,8 @@ describe('Your voyages page tests', () => {
     expect(screen.getByText('Ship 5')).toBeInTheDocument();
     expect(screen.getAllByText('Draft')).toHaveLength(2);
     expect(screen.getAllByText('Cancelled')).toHaveLength(1);
-    expect(screen.getAllByText('Submitted')).toHaveLength(2);
+    expect(screen.getAllByText('Submitted')).toHaveLength(1);
+    expect(screen.getAllByText('Pending')).toHaveLength(1);
     /* testing the order of declarations being displayed will be done with Cypress */
   });
 

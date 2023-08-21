@@ -54,9 +54,11 @@ const DetailsInput = ({
               <div id={`${fieldName}-hint`} className="govuk-hint">
                 {hint}
               </div>
-              <p id={`${fieldName}-error`} className="govuk-error-message">
-                <span className="govuk-visually-hidden">Error:</span> {error}
-              </p>
+              {error && (
+                <p id={`${fieldName}-error`} className="govuk-error-message">
+                  <span className="govuk-visually-hidden">Error:</span> {error}
+                </p>
+              )}
               {fieldToReturn}
             </div>
           </details>
@@ -89,9 +91,11 @@ const GroupedInputs = ({
           <div id={`${fieldName}-hint`} className="govuk-hint">
             {hint}
           </div>
-          <p id={`${fieldName}-error`} className="govuk-error-message">
-            <span className="govuk-visually-hidden">Error:</span> {error}
-          </p>
+          {error && (
+            <p id={`${fieldName}-error`} className="govuk-error-message">
+              <span className="govuk-visually-hidden">Error:</span> {error}
+            </p>
+          )}
           {fieldToReturn}
         </fieldset>
       </div>
@@ -112,9 +116,11 @@ const SingleInput = ({
         <div id={`${fieldName}-hint`} className="govuk-hint">
           {hint}
         </div>
-        <p id={`${fieldName}-error`} className="govuk-error-message">
-          <span className="govuk-visually-hidden">Error:</span> {error}
-        </p>
+        {error && (
+          <p id={`${fieldName}-error`} className="govuk-error-message">
+            <span className="govuk-visually-hidden">Error:</span> {error}
+          </p>
+        )}
         {fieldToReturn}
       </div>
     </div>

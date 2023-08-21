@@ -3,6 +3,7 @@ import EmailPage from '../../e2e/pages/registration/email.page.js';
 import SignInPage from '../../e2e/pages/sign-in.page.js';
 import LandingPage from '../../e2e/pages/landing.page';
 import BasePage from "../../e2e/pages/base.page";
+import internalUser from "../../fixtures/internalUsers.json";
 
 Before(() => {
   cy.fixture('registration.json').then((user) => {
@@ -18,7 +19,7 @@ Given('I am on the sign-in page', () => {
   cy.visitUrl("/");
   LandingPage.clickStartNow();
   SignInPage.checkSignInPage();
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
 });
 
 When('I click on the create one now link', () => {
@@ -34,9 +35,10 @@ When('I have entered a correct email address and password and sign in', () => {
 });
 
 Then('I am taken to your-voyages page', () => {
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
   cy.get('h1').should('have.text', 'Your voyages');
   cy.checkAxe();
+  cy.wait(1000);
 });
 
 When('I have entered an email address for an unverified email address', () => {
@@ -68,8 +70,18 @@ When('I provide incorrect {string} and {string} and sign-in', (email, password) 
 
 Then('I can able to sign-out', () => {
   SignInPage.clickSignOut();
+  cy.window().then((win) => {
+    cy.wrap(win.sessionStorage).should('be.empty');
+  });
 });
 
 When('I try to access a protected page', () => {
   cy.visitUrl('/your-voyages');
+});
+
+When('I attempt to sign in with internal valid {string} credentials', (user)=> {
+  let email = user ==='admin' ? internalUser.adminSignIn : internalUser.standardSignIn
+  SignInPage.enterEmailAddress(email);
+  SignInPage.enterPassword(internalUser.password);
+  SignInPage.clickSignIn();
 });

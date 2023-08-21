@@ -7,14 +7,15 @@ class CyaPage {
 
   clickCheckAnswersAndSubmit() {
     cy.contains('Check answers and submit').click();
+    cy.wait(3000);
   }
 
-  verifySaveAndSubmitButton() {
-    cy.contains('Save and submit');
+  verifyConfirmAndSendButton() {
+    cy.contains('Confirm and send');
   }
 
-  clickSaveAndSubmitButton() {
-    cy.contains('Save and submit').click();
+  clickConfirmAndSendButton() {
+    cy.contains('Confirm and send').click();
   }
 
   verifyH2Headings() {
@@ -24,6 +25,7 @@ class CyaPage {
 
   clickChangeVoyageDetailLink() {
     cy.get('dl:nth-of-type(1) > div:nth-of-type(1) > .govuk-summary-list__actions > a').should('have.text', 'Change change voyage details').click();
+    cy.wait(1000);
   }
 
   verifyChangeLink() {

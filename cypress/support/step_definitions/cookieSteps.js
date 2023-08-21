@@ -3,6 +3,7 @@ import CookieComp from '../../e2e/components/cookie.comp.js';
 import CookiePage from '../../e2e/pages/cookie.page';
 
 Given('I can see the cookie banner', () => {
+  cy.injectAxe({timedOut:1000});
   CookieComp.open();
   CookieComp.checkBnrCookie();
   cy.checkAxe();

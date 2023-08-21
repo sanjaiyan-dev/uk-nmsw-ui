@@ -15,15 +15,15 @@ describe('Contact us page tests', () => {
 
   it('should render link to service email', async () => {
     render(<Help />);
-    expect(screen.getByRole('link', { name: 'nmswsupport@digital.homeoffice.gov.uk' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'nmswsupport@digital.homeoffice.gov.uk' }).outerHTML).toBe('<a class="govuk-link" href="mailto: nmswsupport@digital.homeoffice.gov.uk">nmswsupport@digital.homeoffice.gov.uk</a>');
+    expect(screen.getByRole('link', { name: 'nmsw@homeoffice.gov.uk' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'nmsw@homeoffice.gov.uk' }).outerHTML).toBe('<a class="govuk-link" href="mailto: nmsw@homeoffice.gov.uk">nmsw@homeoffice.gov.uk</a>');
   });
 
   it('should display the FAL templates', async () => {
     render(<Help />);
     expect(screen.getByText('General Declaration (FAL 1) template (xlsx, 31kb)')).toBeInTheDocument();
-    expect(screen.getByText('Crew details including supernumeraries (FAL 5) template (xlsx, 118kb)')).toBeInTheDocument();
-    expect(screen.getByText('Passenger details (FAL 6) template (xlsx, 90kb)')).toBeInTheDocument();
+    expect(screen.getByText('Crew details (FAL 5) template (xlsx, 118kb)')).toBeInTheDocument();
+    expect(screen.getByText('Passenger details including supernumeraries (FAL 6) template (xlsx, 90kb)')).toBeInTheDocument();
   });
 
   it('should download General declaration (FAL1) on click', async () => {
@@ -32,25 +32,25 @@ describe('Contact us page tests', () => {
 
     await user.click(screen.getByRole('button', { name: 'General Declaration (FAL 1) template (xlsx, 31kb)' }));
     expect(DownloadFile).toHaveBeenCalled();
-    expect(DownloadFile).toHaveBeenCalledWith('assets/files/General declaration FAL 1.xlsx', 'General declaration FAL 1.xlsx');
+    expect(DownloadFile).toHaveBeenCalledWith('assets/files/General declaration (FAL 1).xlsx', 'General declaration (FAL 1).xlsx');
   });
 
   it('should download Crew details (FAL5) on click', async () => {
     const user = userEvent.setup();
     render(<Help />);
 
-    await user.click(screen.getByRole('button', { name: 'Crew details including supernumeraries (FAL 5) template (xlsx, 118kb)' }));
+    await user.click(screen.getByRole('button', { name: 'Crew details (FAL 5) template (xlsx, 118kb)' }));
     expect(DownloadFile).toHaveBeenCalled();
-    expect(DownloadFile).toHaveBeenCalledWith('assets/files/Crew details including supernumeraries FAL 5.xlsx', 'Crew details including supernumeraries FAL 5.xlsx');
+    expect(DownloadFile).toHaveBeenCalledWith('assets/files/Crew details (FAL 5).xlsx', 'Crew details (FAL 5).xlsx');
   });
 
   it('should download Passenger details (FAL 6) on click', async () => {
     const user = userEvent.setup();
     render(<Help />);
 
-    await user.click(screen.getByRole('button', { name: 'Passenger details (FAL 6) template (xlsx, 90kb)' }));
+    await user.click(screen.getByRole('button', { name: 'Passenger details including supernumeraries (FAL 6) template (xlsx, 90kb)' }));
     expect(DownloadFile).toHaveBeenCalled();
-    expect(DownloadFile).toHaveBeenCalledWith('assets/files/Passenger details FAL 6.xlsx', 'Passenger details FAL 6.xlsx');
+    expect(DownloadFile).toHaveBeenCalledWith('assets/files/Passenger details including supernumeraries (FAL 6).xlsx', 'Passenger details including supernumeraries (FAL 6).xlsx');
   });
 
   it('should render link to email for Central region contact', async () => {

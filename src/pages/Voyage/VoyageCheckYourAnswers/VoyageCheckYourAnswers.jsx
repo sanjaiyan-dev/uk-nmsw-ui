@@ -36,7 +36,8 @@ import VoyageCancelConfirmation from './VoyageCancelConfirmation';
 const SubmitConfirmation = () => (
   <>
     <h2 className="govuk-heading-m">What happens next</h2>
-    <p className="govuk-body">We will send you an email that you can show to Border Force officers as proof that you have sent these reports.</p>
+    <p className="govuk-body">We will send you an email to confirm when your voyage report has been received.</p>
+    <p>You&apos;ll be able to show the email to Border Force officers as proof that you have sent us your report.</p>
   </>
 );
 
@@ -70,8 +71,8 @@ const VoyageCheckYourAnswers = () => {
     /* If a user types the url for the CYA page into the address bar with a valid declarationId for their account
      * AND they have not uploaded a FAL1 the page will error as the GET request fails
      * IF they have not uploaded a FAL5 `!declarationData.FAL5.url`
-     * AND/OR they have not answered the 'do you have passengers' question `declarationData.FAL1.passengers === 'null'`
-     * AND/OR they have answered yes to passengers and not uploaded a FAL6 `declarationData.FAL1.passengers && !declarationData.FAL6.url`
+     * AND/OR they have not answered the 'do you have passengers' question `declarationData.declaration.passengers === 'null'`
+     * AND/OR they have answered yes to passengers and not uploaded a FAL6 `declarationData.declaration.passengers && !declarationData.FAL6.url`
      * AND they click submit the submission should fail as it's required
      */
     const sectionErrors = [];
@@ -81,23 +82,23 @@ const VoyageCheckYourAnswers = () => {
         message: 'Crew details (FAL 5) upload is required',
       });
     }
-    if (declarationData.FAL1.passengers === null) {
+    if (declarationData.declaration.passengers === null) {
       sectionErrors.push({
         name: 'passengerDetails',
         message: 'You need to provide passenger details, even if the ship is carrying no passengers',
       });
     }
-    if (declarationData.FAL1.passengers && declarationData?.FAL6.length === 0) {
+    if (declarationData.declaration.passengers && declarationData?.FAL6.length === 0) {
       sectionErrors.push({
         name: 'passengerDetails',
-        message: 'Passenger details (FAL 6) upload is required for ships carrying passengers',
+        message: 'Passenger details including supernumeraries (FAL 6) upload is required for ships carrying passengers',
       });
     }
     return sectionErrors;
   };
 
   const handleSubmit = async () => {
-    if (!declarationData.FAL5[0]?.url || declarationData.FAL1.passengers === null || (declarationData.FAL1.passengers && declarationData?.FAL6.length === 0)) {
+    if (!declarationData.FAL5[0]?.url || declarationData.declaration.passengers === null || (declarationData.declaration.passengers && declarationData?.FAL6.length === 0)) {
       setErrors(checkForErrors);
       scrollToTop();
       errorSummaryRef?.current?.focus();
@@ -135,7 +136,7 @@ const VoyageCheckYourAnswers = () => {
         await axios.patch(`${API_URL}${ENDPOINT_DECLARATION_PATH}/${declarationId}`, { status: DECLARATION_STATUS_PRECANCELLED }, {
           headers: { Authorization: `Bearer ${Auth.retrieveToken()}` },
         });
-        navigate(YOUR_VOYAGES_URL, { state: { confirmationBanner: { message: `Report for ${declarationData.FAL1.nameOfShip} cancelled.` } } });
+        navigate(YOUR_VOYAGES_URL, { state: { confirmationBanner: { message: `Report for ${declarationData.declaration.nameOfShip} cancelled.` } } });
       } catch (err) {
         if (err?.response?.status === 422 || err?.response?.data?.msg === TOKEN_EXPIRED) {
           handleAuthErrors({ error: err, navigate, redirectUrl: `${VOYAGE_CHECK_YOUR_ANSWERS}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}` });
@@ -153,8 +154,8 @@ const VoyageCheckYourAnswers = () => {
     if (apiResponse.apiData) {
       setIsLoading(true);
       setDeclarationData(apiResponse.apiData);
-      setGeneralDeclarationData(apiResponse.apiData.FAL1);
-      setDeclarationStatus(apiResponse.apiData.FAL1);
+      setGeneralDeclarationData(apiResponse.apiData.declaration);
+      setDeclarationStatus(apiResponse.apiData.declaration);
       setFal5Details(apiResponse.apiData.FAL5[0]);
       setFal6Details(apiResponse.apiData.FAL6[0]);
       setSupportingDocs(apiResponse.apiData.supporting);
@@ -191,8 +192,8 @@ const VoyageCheckYourAnswers = () => {
   if (showConfirmation) {
     return (
       <ConfirmationMessage
-        pageTitle="Voyage details submitted"
-        confirmationMessage="Voyage details submitted"
+        pageTitle="Voyage details sent"
+        confirmationMessage="Voyage details sent"
         nextPageLink={YOUR_VOYAGES_URL}
         nextPageLinkText="Return to your voyages"
       >

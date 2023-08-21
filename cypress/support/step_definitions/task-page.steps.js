@@ -3,7 +3,7 @@ import TaskPage from "../../e2e/pages/task.page";
 
 Then('I am taken to task details page', () => {
   TaskPage.checkTaskPage();
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
 });
 
 Then('I can verify voyage details on the task details page', () => {
@@ -18,7 +18,7 @@ When('I click delete draft', () => {
 
 Then('I am taken to confirm delete draft page', () => {
   cy.url().should('include', 'confirm-delete-draft');
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
 });
 
 When('I click No to delete the draft', () => {
@@ -67,4 +67,9 @@ Then('I can see Check answers and submit enabled', () => {
 
 When('I click continue under actions', () => {
   cy.get('main#content a').first().contains('Continue').click();
+  cy.wait(1000);
+});
+
+Then('I can see the see the status of Fal-6 as required', () => {
+TaskPage.checkFal6StatusBeforeFal6Upload();
 });

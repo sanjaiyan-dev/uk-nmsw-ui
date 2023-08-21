@@ -1,5 +1,5 @@
 import { Then, When } from '@badeball/cypress-cucumber-preprocessor';
-import YourVoyagePage from '../../e2e/pages/your-voyage.page';
+import YourVoyagePage from '../../e2e/pages/your-voyage-page';
 import FileUploadPage from '../../e2e/pages/file-upload.page';
 import LandingPage from '../../e2e/pages/landing.page';
 import SignInPage from '../../e2e/pages/sign-in.page';
@@ -10,11 +10,12 @@ let fileName;
 When('I click report a voyage', () => {
   cy.intercept('POST', '**/declaration').as('newDeclaration');
   YourVoyagePage.clickReportVoyage();
+  cy.wait(2000);
 });
 
 Then('I am taken to upload-general-declaration page', () => {
   FileUploadPage.verifyUploadGeneralDecPage();
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
 });
 
 When('auth token is no longer available', () => {
@@ -59,19 +60,19 @@ When('I upload a template file {string} with null values', (fileName) => {
 });
 
 Then('previous the error message should clear', () => {
-  cy.get('#fileUploadInput-error').should('not.be.visible');
+  cy.get('#fileUploadInput-error').should('not.exist');
 });
 
 When('I click check for errors', () => {
   cy.intercept('POST', '**/declaration/**').as('declaration');
   cy.checkAxe();
   FileUploadPage.clickCheckForErrors();
-  cy.wait(2000);
+  cy.wait(4000);
   cy.url().then(url => {
     const declarationId = url.split('=')[1];
     cy.wrap(declarationId).as('declarationId');
-    cy.log(declarationId);
   });
+  cy.wait(1000);
 });
 
 Then('the FE sends a POST to the declarationId endpoint', () => {
@@ -84,6 +85,7 @@ Then('the FE sends a POST to the declarationId endpoint', () => {
 
 When('there are no errors, I am shown the no errors found page', () => {
   cy.intercept('POST', '**/declaration/**').as('declaration');
+  cy.wait(2000);
   FileUploadPage.checkNoErrors();
 });
 

@@ -26,7 +26,7 @@ After({tags: "@registration"}, () => {
 
 Given('I am on NMSW landing page', () => {
   cy.visitUrl('/');
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
   LandingPage.checkHeading();
   cy.checkAxe();
 });
@@ -37,7 +37,7 @@ When('I click create an account on the landing page', () => {
 
 Then('the registration page is displayed', () => {
   EmailPage.verifyEmailPage();
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
 });
 
 When('I provide my email address', () => {
@@ -65,7 +65,7 @@ When('I verify the email address', () => {
 });
 
 Then('the email address verified page is loaded with a continue button', () => {
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
   EmailPage.checkActivateAccountPage();
   cy.checkAxe();
   cy.contains('Continue').click();
@@ -74,7 +74,7 @@ Then('the email address verified page is loaded with a continue button', () => {
 Then('I am redirected to provide my other details', () => {
   cy.wait(1000);
   cy.url().should('include', '/your-details');
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
 });
 
 When('I provide all my details', () => {
@@ -91,7 +91,7 @@ When('I provide all my details', () => {
 });
 
 Then('I am redirected to password page', () => {
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
   cy.url().should('include', 'your-password');
 });
 
@@ -119,7 +119,7 @@ When('I provide my new password', () => {
 });
 
 Then('my account is created and taken to confirmation page', () => {
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
   cy.url().should('include', '/account-created');
   ConfirmationPage.verifyAccountTitle();
   ConfirmationPage.verifyCompanyName(fullName, companyName);
@@ -203,7 +203,7 @@ When('I click sign-in', () => {
 
 Then('I am taken to the sign-in page', () => {
   SignInPage.checkSignInPage();
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
 });
 
 When('I click back navigation button', () => {
@@ -262,14 +262,19 @@ Then('I am shown \'link expired\' and the link to \'request new link\'', () => {
 });
 
 Then('I am taken to check your email page', () => {
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
   EmailPage.verifyCheckYourEmailPage();
   cy.checkAxe();
 });
 
+Then('I can see email received to verify the email', () => {
+  cy.waitForLatestEmail('e5fc776c-a811-4cc5-9392-019f3872938b');
+  cy.wait(1000);
+});
+
 When('I am on request-new-verification-link', () => {
   cy.visitUrl('/create-account/request-new-verification-link');
-  cy.injectAxe();
+  cy.injectAxe({timedOut:1000});
 });
 
 Then('I click `Request New Link` button', () => {

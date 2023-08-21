@@ -97,7 +97,7 @@ env:
     - name: NMSW_MAINTENANCE
       value: "false"
     - name: GOV_NOTIFY_SUPPORT_EMAIL
-      value: "nmswsupport@digital.homeoffice.gov.uk"
+      value: "nmsw@homeoffice.gov.uk"
     - name: GA_TOKEN
       value: "G-YQS1CY3DEC"
   proxy:

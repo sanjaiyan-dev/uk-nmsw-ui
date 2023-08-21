@@ -83,6 +83,7 @@ module.exports = (argv) => {
       new webpack.EnvironmentPlugin([
         'NMSW_DATA_API_BASE_URL',
         'GA_TOKEN',
+        'NMSW_MAINTENANCE',
       ]),
     ].concat(devMode ? [] : [new MiniCssExtractPlugin({
       filename: '[name]-[hash].css',

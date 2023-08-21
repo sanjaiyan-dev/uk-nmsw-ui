@@ -14,7 +14,7 @@ import ErrorMappingFal6 from '../../constants/ErrorMappingFal6';
 const VoyagePassengerUpload = () => {
   const [searchParams] = useSearchParams();
   const declarationId = searchParams.get(URL_DECLARATIONID_IDENTIFIER);
-  document.title = 'Upload the passenger details (FAL 6)';
+  document.title = 'Upload the passenger details including supernumeraries (FAL 6)';
 
   if (!declarationId) {
     return (

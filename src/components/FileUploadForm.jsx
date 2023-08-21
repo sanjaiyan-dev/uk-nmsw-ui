@@ -213,13 +213,16 @@ const FileUploadForm = ({
                 {children}
               </div>
             </div>
-            <div className="govuk-grid-row">
-              <div className="govuk-grid-column-three-quarters">
-                <p id={`${FILE_UPLOAD_ID}-error`} className="govuk-error-message">
-                  <span className="govuk-visually-hidden">Error:</span> {error?.message}
-                </p>
-              </div>
-            </div>
+            {error
+              && (
+                <div className="govuk-grid-row">
+                  <div className="govuk-grid-column-three-quarters">
+                    <p id={`${FILE_UPLOAD_ID}-error`} className="govuk-error-message">
+                      <span className="govuk-visually-hidden">Error:</span> {error?.message}
+                    </p>
+                  </div>
+                </div>
+              )}
             <input
               className="govuk-file-upload"
               data-testid={FILE_UPLOAD_ID}

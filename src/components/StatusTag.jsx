@@ -35,8 +35,8 @@ const StatusTag = ({ status }) => {
       label = 'Cancelled';
       break;
     case DECLARATION_STATUS_PRESUBMITTED:
-      tagClass = 'govuk-tag govuk-tag--green';
-      label = 'Submitted';
+      tagClass = 'govuk-tag govuk-tag--yellow';
+      label = 'Pending';
       break;
     case DECLARATION_STATUS_SUBMITTED:
       tagClass = 'govuk-tag govuk-tag--green';

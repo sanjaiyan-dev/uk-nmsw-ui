@@ -1,7 +1,7 @@
 // Site
 export const SERVICE_NAME = 'National Maritime Single Window';
 export const SERVICE_URL = 'https://nmsw.homeoffice.gov.uk';
-export const SERVICE_CONTACT_EMAIL = 'nmswsupport@digital.homeoffice.gov.uk'; // update on public/index.html as well
+export const SERVICE_CONTACT_EMAIL = 'nmsw@homeoffice.gov.uk'; // update on public/index.html as well
 
 // Declarations
 export const DECLARATION_STATUS_CANCELLED = 'Cancelled';
@@ -64,11 +64,11 @@ export const PAGINATION_DISPLAYABLE_PAGE_NUMBER_INCREMENTOR = 1;
 
 // Templates
 export const GENERAL_DECLARATION_TEMPLATE_NAME = 'General Declaration (FAL 1)';
-export const CREW_DETAILS_TEMPLATE_NAME = 'Crew details including supernumeraries (FAL 5)';
-export const PASSENGER_DETAILS_TEMPLATE_NAME = 'Passenger details (FAL 6)';
+export const CREW_DETAILS_TEMPLATE_NAME = 'Crew details (FAL 5)';
+export const PASSENGER_DETAILS_TEMPLATE_NAME = 'Passenger details including supernumeraries (FAL 6)';
 export const GENERAL_DECLARATION_LABEL = 'General Declaration (FAL 1)';
-export const CREW_DETAILS_LABEL = 'Crew details including supernumeraries (FAL 5)';
-export const PASSENGER_DETAILS_LABEL = 'Any passenger details (FAL 6)';
+export const CREW_DETAILS_LABEL = 'Crew details (FAL 5)';
+export const PASSENGER_DETAILS_LABEL = 'Any passenger details including supernumeraries (FAL 6)';
 export const SUPPORTING_DOCUMENTS_LABEL = 'Supporting documents';
 export const CHECK_YOUR_ANSWERS_LABEL = 'Check answers and submit';
 
@@ -83,6 +83,6 @@ export const USER_TYPE_ADMIN = 'Admin';
 export const USER_TYPE_ADMIN_LABEL = 'Administrator';
 export const USER_TYPE_STANDARD = 'User';
 export const USER_TYPE_STANDARD_LABEL = 'Standard user';
-export const USER_GROUP_INTERNAL_LABEL = 'Internal';
-export const USER_GROUP_EXTERNAL_LABEL = 'External';
+export const USER_GROUP_INTERNAL = 'Internal';
+export const USER_GROUP_EXTERNAL = 'External';
 export const INTERNAL_TEAMS = ['Border Force Team'];

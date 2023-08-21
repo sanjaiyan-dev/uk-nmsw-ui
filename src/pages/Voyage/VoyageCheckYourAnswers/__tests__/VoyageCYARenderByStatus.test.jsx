@@ -51,10 +51,10 @@ describe('Voyage CYA - render by status', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     expect(screen.getByText('Check your answers')).toBeInTheDocument();
-    expect(screen.getByText('Now send your application')).toBeInTheDocument();
-    expect(screen.getByText('By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Save and submit' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Save and submit' }).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button">Save and submit</button>');
+    expect(screen.getByText('Send the report')).toBeInTheDocument();
+    expect(screen.getByText('By sending this voyage report, you are confirming that to the best of your knowledge, the details you are sending are correct.')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Confirm and send' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Confirm and send' }).outerHTML).toEqual('<button type="button" class="govuk-button" data-module="govuk-button">Confirm and send</button>');
     expect(screen.queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument();
     expect(screen.queryByText('Status')).not.toBeInTheDocument();
   });
@@ -75,12 +75,12 @@ describe('Voyage CYA - render by status', () => {
     expect(screen.getByText('10 February 2023')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Cancel' }).outerHTML).toEqual('<button type="button" class="govuk-button govuk-button--warning" data-module="govuk-button">Cancel</button>');
-    expect(screen.queryByRole('button', { name: 'Save and submit' })).not.toBeInTheDocument();
-    expect(screen.queryByText('Now send your application')).not.toBeInTheDocument();
-    expect(screen.queryByText('By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Confirm and send' })).not.toBeInTheDocument();
+    expect(screen.queryByText('Send the report')).not.toBeInTheDocument();
+    expect(screen.queryByText('By sending this voyage report, you are confirming that to the best of your knowledge, the details you are sending are correct.')).not.toBeInTheDocument();
   });
 
-  it('should render the status as submitted, submission date, h1 of review your report, and a cancel CTA if status is presubmitted', async () => {
+  it('should render the status as pending, submission date, h1 of review your report, and a cancel CTA if status is presubmitted', async () => {
     mockAxios
       .onGet(`${API_URL}${ENDPOINT_DECLARATION_PATH}/123${ENDPOINT_DECLARATION_ATTACHMENTS_PATH}`, {
         headers: {
@@ -92,13 +92,13 @@ describe('Voyage CYA - render by status', () => {
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     expect(screen.getByText('Review your report')).toBeInTheDocument();
     expect(screen.getByText('Status')).toBeInTheDocument();
-    expect(screen.getByText('Submitted').outerHTML).toEqual('<strong class="govuk-tag govuk-tag--green">Submitted</strong>');
+    expect(screen.getByText('Pending').outerHTML).toEqual('<strong class="govuk-tag govuk-tag--yellow">Pending</strong>');
     expect(screen.getByText('10 February 2023')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Cancel' }).outerHTML).toEqual('<button type="button" class="govuk-button govuk-button--warning" data-module="govuk-button">Cancel</button>');
-    expect(screen.queryByRole('button', { name: 'Save and submit' })).not.toBeInTheDocument();
-    expect(screen.queryByText('Now send your application')).not.toBeInTheDocument();
-    expect(screen.queryByText('By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Confirm and send' })).not.toBeInTheDocument();
+    expect(screen.queryByText('Send the report')).not.toBeInTheDocument();
+    expect(screen.queryByText('By sending this voyage report, you are confirming that to the best of your knowledge, the details you are sending are correct.')).not.toBeInTheDocument();
   });
 
   it('should render the status as cancelled, submission date, h1 of review your report, and a no CTA if status is canceled', async () => {
@@ -115,10 +115,10 @@ describe('Voyage CYA - render by status', () => {
     expect(screen.getByText('Status')).toBeInTheDocument();
     expect(screen.getByText('Cancelled').outerHTML).toEqual('<strong class="govuk-tag govuk-tag--orange">Cancelled</strong>');
     expect(screen.getByText('10 February 2023')).toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: 'Save and submit' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Confirm and send' })).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument();
-    expect(screen.queryByText('Now send your application')).not.toBeInTheDocument();
-    expect(screen.queryByText('By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.')).not.toBeInTheDocument();
+    expect(screen.queryByText('Send the report')).not.toBeInTheDocument();
+    expect(screen.queryByText('By sending this voyage report, you are confirming that to the best of your knowledge, the details you are sending are correct.')).not.toBeInTheDocument();
   });
 
   it('should render the status as cancelled, submission date, h1 of review your report, and a no CTA if status is precanceled', async () => {
@@ -136,10 +136,10 @@ describe('Voyage CYA - render by status', () => {
     expect(screen.getByText('Status')).toBeInTheDocument();
     expect(screen.getByText('Cancelled').outerHTML).toEqual('<strong class="govuk-tag govuk-tag--orange">Cancelled</strong>');
     expect(screen.getByText('10 February 2023')).toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: 'Save and submit' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Confirm and send' })).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument();
-    expect(screen.queryByText('Now send your application')).not.toBeInTheDocument();
-    expect(screen.queryByText('By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.')).not.toBeInTheDocument();
+    expect(screen.queryByText('Send the report')).not.toBeInTheDocument();
+    expect(screen.queryByText('By sending this voyage report, you are confirming that to the best of your knowledge, the details you are sending are correct.')).not.toBeInTheDocument();
   });
 
   it('should render the status as failed, submission date, h1 of review your report, and a no CTA if status is failed', async () => {
@@ -157,10 +157,10 @@ describe('Voyage CYA - render by status', () => {
     expect(screen.getByText('Status')).toBeInTheDocument();
     expect(screen.getByText('Failed').outerHTML).toEqual('<strong class="govuk-tag govuk-tag--red">Failed</strong>');
     expect(screen.getByText('10 February 2023')).toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: 'Save and submit' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Confirm and send' })).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument();
-    expect(screen.queryByText('Now send your application')).not.toBeInTheDocument();
-    expect(screen.queryByText('By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.')).not.toBeInTheDocument();
+    expect(screen.queryByText('Send the report')).not.toBeInTheDocument();
+    expect(screen.queryByText('By sending this voyage report, you are confirming that to the best of your knowledge, the details you are sending are correct.')).not.toBeInTheDocument();
   });
 
   it('should render the status as null, no submission date, and a no CTA if status is unknown', async () => {
@@ -171,7 +171,7 @@ describe('Voyage CYA - render by status', () => {
         },
       })
       .reply(200, {
-        FAL1: {
+        declaration: {
           nameOfShip: 'Test ship name',
           status: null,
           imoNumber: '1234567',
@@ -192,6 +192,14 @@ describe('Voyage CYA - render by status', () => {
           creationDate: '2023-02-10',
           submissionDate: null,
         },
+        FAL1: [
+          {
+            filename: 'General Declaration (FAL 1)',
+            id: 'FAL1',
+            size: '118385',
+            url: 'https://fal1-report-link.com',
+          },
+        ],
         FAL5: [],
         FAL6: [],
         supporting: [],
@@ -199,9 +207,9 @@ describe('Voyage CYA - render by status', () => {
     renderPage();
     await waitForElementToBeRemoved(() => screen.queryByText('Loading'));
     expect(screen.getByText('Status')).toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: 'Save and submit' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Confirm and send' })).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument();
-    expect(screen.queryByText('Now send your application')).not.toBeInTheDocument();
-    expect(screen.queryByText('By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.')).not.toBeInTheDocument();
+    expect(screen.queryByText('Send the report')).not.toBeInTheDocument();
+    expect(screen.queryByText('By sending this voyage report, you are confirming that to the best of your knowledge, the details you are sending are correct.')).not.toBeInTheDocument();
   });
 });

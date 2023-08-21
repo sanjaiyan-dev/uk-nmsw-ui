@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import AppRouter from './AppRouter';
+import { NO_BACK_LINKS, TOP_LEVEL_PAGES } from './constants/AppUrlConstants';
+import { inSiteMaintenance } from './constants/Config';
 import CookieBanner from './layout/CookieBanner';
+import FeedbackBanner from './layout/FeedbackBanner';
 import Footer from './layout/Footer';
 import Header from './layout/Header';
 import PhaseBanner from './layout/PhaseBanner';
-// utils
+import SiteMaintenance from './pages/Message/SiteMaintenance';
 import cookieToFind from './utils/cookieToFind';
 import setAnalyticCookie from './utils/setAnalyticCookie';
-import { NO_BACK_LINKS, TOP_LEVEL_PAGES } from './constants/AppUrlConstants';
-import FeedbackBanner from './layout/FeedbackBanner';
+import AppRouter from './AppRouter';
 
 const App = () => {
   const cookiePreference = cookieToFind('cookiePreference');
@@ -37,6 +38,20 @@ const App = () => {
   }, [pathname]);
 
   if (isLoading) { return null; }
+
+  if (inSiteMaintenance) {
+    return (
+      <>
+        <Header />
+        <div className="govuk-width-container">
+          <main id="content" tabIndex="-1" className="govuk-main-wrapper govuk-main-wrapper--auto-spacing" role="main" aria-live="polite">
+            <SiteMaintenance />
+          </main>
+        </div>
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>

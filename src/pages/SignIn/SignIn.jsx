@@ -7,6 +7,8 @@ import {
   FIELD_PASSWORD,
   INTERNAL_TEAMS,
   SIGN_IN_FORM,
+  USER_TYPE_ADMIN,
+  USER_TYPE_STANDARD,
   VALIDATE_EMAIL_ADDRESS,
   VALIDATE_REQUIRED,
 } from '../../constants/AppConstants';
@@ -21,14 +23,14 @@ import {
   LOGGED_IN_LANDING,
   MESSAGE_URL,
   // REGISTER_ACCOUNT_URL,
-  REGISTER_EMAIL_RESEND_URL,
   REQUEST_PASSWORD_RESET_URL,
   SIGN_IN_URL,
   HELP_URL,
+  RESEND_EMAIL_USER_NOT_VERIFIED,
 } from '../../constants/AppUrlConstants';
 import Auth from '../../utils/Auth';
+import ParseJwtForUserType from '../../utils/ParseJwtForUserType';
 import { scrollToTop } from '../../utils/ScrollToElement';
-import Message from '../../components/Message';
 
 // const SupportingText = () => (
 //   <div className="govuk-inset-text">
@@ -43,7 +45,6 @@ const SignIn = () => {
   const { state } = useLocation();
   const [errors, setErrors] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  const [isNotActivated, setIsNotActivated] = useState(false);
   document.title = 'Sign in';
 
   // Form fields
@@ -86,7 +87,7 @@ const SignIn = () => {
     setIsLoading(false);
   };
 
-  const getUserData = async (authData) => {
+  const getUserData = async ({ authData, tokenData }) => {
     const controller = new AbortController();
     const { signal } = controller;
 
@@ -95,11 +96,25 @@ const SignIn = () => {
         signal,
         headers: { Authorization: `Bearer ${authData.access_token}` },
       });
-      const data = await response.data;
-      const isInternal = INTERNAL_TEAMS.includes(data.group.groupType.name); // internal users should not be on this app
+      const userData = await response.data;
+      // for added security we check both the team is NOT in the internal user list and the token has an external group
+      const isExternal = !INTERNAL_TEAMS.includes(userData.group.groupType.name) && tokenData.external;
 
-      if (!isInternal) {
-        Auth.storeUserType(data);
+      /**
+       * and that the user has an approved type:
+       * All admins are also users
+       * If there's a conflict between token showing Admin & User
+       * and database showing only User
+       * we default back to User only access as a precaution
+       * HOWEVER: currently all external users are admins, keeping this check here for future use (it mimics what we do on nmsw-internal-ui)
+      */
+      const isUserTypeValid = (
+        (tokenData.admin && userData.userType.name === USER_TYPE_ADMIN)
+        || (tokenData.user && (userData.userType.name === USER_TYPE_ADMIN || userData.userType.name === USER_TYPE_STANDARD))
+      );
+
+      if (isExternal && isUserTypeValid) {
+        Auth.storeUserType({ userData, tokenData });
         Auth.storeToken(authData.access_token);
         Auth.storeRefreshToken(authData.refresh_token);
 
@@ -127,20 +142,20 @@ const SignIn = () => {
     try {
       const response = await axios.post(SIGN_IN_ENDPOINT, formData);
       if (response.data.access_token) {
-        getUserData(response.data);
+        const userRoles = await ParseJwtForUserType(response.data.access_token);
+        getUserData({ authData: response.data, tokenData: userRoles });
       }
-      // if (response.data.token) { Auth.storeToken(response.data.token); }
-      // if (state?.redirectURL) {
-      //   navigate(state.redirectURL, { state });
-      // } else {
-      //   navigate(LOGGED_IN_LANDING);
-      // }
     } catch (err) {
       if (err?.response?.data?.message === USER_SIGN_IN_DETAILS_INVALID) {
         setErrors('Email and password combination is invalid');
         scrollToTop();
       } else if (err?.response?.data?.message === USER_NOT_VERIFIED) {
-        setIsNotActivated(true);
+        navigate(RESEND_EMAIL_USER_NOT_VERIFIED, {
+          state: {
+            emailAddress: formData.email,
+            redirectURL: SIGN_IN_URL,
+          },
+        });
         scrollToTop();
       } else if (err?.response?.data?.message === USER_MUST_UPDATE_PASSWORD) {
         navigate(MESSAGE_URL, {
@@ -160,20 +175,6 @@ const SignIn = () => {
       setIsLoading(false);
     }
   };
-
-  if (isNotActivated) {
-    const buttonProps = {
-      buttonLabel: 'Send confirmation email',
-      buttonNavigateTo: REGISTER_EMAIL_RESEND_URL,
-    };
-    return (
-      <Message
-        button={buttonProps}
-        title="Email address not verified"
-        message="We can send you a verification link so you can continue creating your account."
-      />
-    );
-  }
 
   return (
     <>
