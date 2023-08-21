@@ -123,7 +123,7 @@ const VoyageTaskList = () => {
                     <StatusTag status={crewStatus} />
                   </Link>
                 </li>
-                <li id="fal5" className="app-task-list__item">
+                <li id="fal6" className="app-task-list__item">
                   <Link className="govuk-link" to={`${VOYAGE_PASSENGERS_URL}?${URL_DECLARATIONID_IDENTIFIER}=${declarationId}`}>
                     <span>{PASSENGER_DETAILS_LABEL}</span>
                     <StatusTag status={passengerStatus} />
