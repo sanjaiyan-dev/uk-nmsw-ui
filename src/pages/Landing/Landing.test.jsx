@@ -68,12 +68,11 @@ describe('Landing page tests', () => {
     expect(DownloadFile).toHaveBeenCalledWith('assets/files/Passenger details including supernumeraries (FAL 6).xlsx', 'Passenger details including supernumeraries (FAL 6).xlsx');
   });
 
-  // We will not show the link during closed beta testing
-  // it('should include a link to create an account', async () => {
-  //   render(<MemoryRouter><Landing /></MemoryRouter>);
-  //   // eslint-disable-next-line max-len
-  //   expect(screen.getByTestId('createAccountParagraph').outerHTML).toEqual('<p class="govuk-body" data-testid="createAccountParagraph">You\'ll also need to sign in or <a href="/create-account/email-address">create an account</a> to use this service</p>');
-  // });
+  it('should include a link to create an account', async () => {
+    render(<MemoryRouter><Landing /></MemoryRouter>);
+    // eslint-disable-next-line max-len
+    expect(screen.getByTestId('createAccountParagraph').outerHTML).toEqual('<p class="govuk-body" data-testid="createAccountParagraph">You\'ll also need to sign in or <a href="/create-account/email-address">create an account</a> to use this service</p>');
+  });
 
   it('should should have a start now button that includes the > and links to the sign-in page', async () => {
     render(<MemoryRouter><Landing /></MemoryRouter>);
