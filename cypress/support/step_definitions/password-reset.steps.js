@@ -120,7 +120,7 @@ When('I enter the email in invalid format', () => {
 });
 
 When('I enter the email that is registered but not verified', () => {
-    EmailPage.enterEmailAddress('e5fc776c-a811-4cc5-9392-019f3872938b@mailslurp.com')
+    EmailPage.enterEmailAddress('0d9eb1ca-4cd8-4d7d-9b57-3d82896f198f@mailslurp.com')
 });
 
 Then('I am shown email address has not been verified', () => {
