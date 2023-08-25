@@ -42,7 +42,7 @@ Then('I am taken to your-voyages page', () => {
 });
 
 When('I have entered an email address for an unverified email address', () => {
-  SignInPage.enterEmailAddress('0d9eb1ca-4cd8-4d7d-9b57-3d82896f198f@mailslurp.com');
+  SignInPage.enterEmailAddress('49837b1e-f82d-4f1a-a110-382186aba817@mailslurp.com');
   SignInPage.enterPassword(this.user.password);
   SignInPage.clickSignIn();
 });

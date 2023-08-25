@@ -268,7 +268,7 @@ Then('I am taken to check your email page', () => {
 });
 
 Then('I can see email received to verify the email', () => {
-  cy.waitForLatestEmail('e5fc776c-a811-4cc5-9392-019f3872938b');
+  cy.waitForLatestEmail('49837b1e-f82d-4f1a-a110-382186aba817');
   cy.wait(1000);
 });
 
