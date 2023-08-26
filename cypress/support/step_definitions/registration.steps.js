@@ -8,6 +8,7 @@ import BasePage from '../../e2e/pages/base.page';
 import {faker} from '@faker-js/faker';
 import SignInPage from '../../e2e/pages/sign-in.page.js';
 import yourDetailsPage from "../../e2e/pages/registration/yourDetails.page.js";
+import users from '../../fixtures/registration.json';
 
 let password;
 let companyName;
@@ -243,17 +244,13 @@ When('I verify my email address again', () => {
 });
 
 When('I click the verification link that is expired', () => {
-  cy.waitForLatestEmail('fbeda492-3225-4cf2-84a1-846ad1149c10').then((mail) => {
-    assert.isDefined(mail);
-    const token = /token=([A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*)/.exec(mail.body)[1];
-    const email = /email=([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})/i.exec(mail.body)[1];
-    const activateUrl = `${Cypress.env('baseUrl')}/activate-account?email=${email}&token=${token}`;
+  let activateUrl ="https://nmsw-ui.staging.nmsw.homeoffice.gov.uk/activate-account?email=b6f7c995-d7b0-48e7-a1b6-9264b9598b37@mailslurp.com&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImI2ZjdjOTk1LWQ3YjAtNDhlNy1hMWI2LTkyNjRiOTU5OGIzN0BtYWlsc2x1cnAuY29tIiwiZXhwIjoxNjkyOTgzMjMyLCJqaXQiOiIzZGY1MjNhZC00ZmNkLTRjZDgtOWRhYi02YWQzMTE4MjI1N2EifQ.e2h_BitVMTkEi8JrkwwzYgAlZIJVJkYOcgLBOIDoiTs"
     cy.intercept('POST', '**/v1/check*').as('verifyRegistration');
-    cy.visit(activateUrl);
+  cy.visitUrl(`/${users.expiredLink}`);
     cy.wait('@verifyRegistration').then(({response}) => {
       expect(response.statusCode).to.eq(401);
     });
-  });
+
 });
 
 Then('I am shown \'link expired\' and the link to \'request new link\'', () => {
@@ -301,7 +298,7 @@ When('I click on not received an email', () => {
 });
 
 Then('I provide new email address', () => {
-  let email2 = '117461e3-7e0a-45ec-96f1-3fb2701e9801@mailslurp.com';
+  let email2 = '2142de8f-9295-427b-b3d7-b72234912fe8@mailslurp.com';
   EmailPage.enterEmailAddress(email2).enterConfirmEmailAddress(email2);
   BasePage.clickSendConfirmationEmail();
 });
