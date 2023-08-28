@@ -244,9 +244,8 @@ When('I verify my email address again', () => {
 });
 
 When('I click the verification link that is expired', () => {
-  let activateUrl ="https://nmsw-ui.staging.nmsw.homeoffice.gov.uk/activate-account?email=b6f7c995-d7b0-48e7-a1b6-9264b9598b37@mailslurp.com&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImI2ZjdjOTk1LWQ3YjAtNDhlNy1hMWI2LTkyNjRiOTU5OGIzN0BtYWlsc2x1cnAuY29tIiwiZXhwIjoxNjkyOTgzMjMyLCJqaXQiOiIzZGY1MjNhZC00ZmNkLTRjZDgtOWRhYi02YWQzMTE4MjI1N2EifQ.e2h_BitVMTkEi8JrkwwzYgAlZIJVJkYOcgLBOIDoiTs"
     cy.intercept('POST', '**/v1/check*').as('verifyRegistration');
-  cy.visitUrl(`/${users.expiredLink}`);
+    cy.visitUrl(`/${users.expiredLink}`);
     cy.wait('@verifyRegistration').then(({response}) => {
       expect(response.statusCode).to.eq(401);
     });
