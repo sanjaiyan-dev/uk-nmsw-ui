@@ -8,6 +8,7 @@ import BasePage from '../../e2e/pages/base.page';
 import {faker} from '@faker-js/faker';
 import SignInPage from '../../e2e/pages/sign-in.page.js';
 import yourDetailsPage from "../../e2e/pages/registration/yourDetails.page.js";
+import users from '../../fixtures/registration.json';
 
 let password;
 let companyName;
@@ -243,17 +244,12 @@ When('I verify my email address again', () => {
 });
 
 When('I click the verification link that is expired', () => {
-  cy.waitForLatestEmail('fbeda492-3225-4cf2-84a1-846ad1149c10').then((mail) => {
-    assert.isDefined(mail);
-    const token = /token=([A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*)/.exec(mail.body)[1];
-    const email = /email=([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})/i.exec(mail.body)[1];
-    const activateUrl = `${Cypress.env('baseUrl')}/activate-account?email=${email}&token=${token}`;
     cy.intercept('POST', '**/v1/check*').as('verifyRegistration');
-    cy.visit(activateUrl);
+    cy.visitUrl(`/${users.expiredLink}`);
     cy.wait('@verifyRegistration').then(({response}) => {
       expect(response.statusCode).to.eq(401);
     });
-  });
+
 });
 
 Then('I am shown \'link expired\' and the link to \'request new link\'', () => {
@@ -268,7 +264,7 @@ Then('I am taken to check your email page', () => {
 });
 
 Then('I can see email received to verify the email', () => {
-  cy.waitForLatestEmail('e5fc776c-a811-4cc5-9392-019f3872938b');
+  cy.waitForLatestEmail('49837b1e-f82d-4f1a-a110-382186aba817');
   cy.wait(1000);
 });
 
@@ -301,7 +297,7 @@ When('I click on not received an email', () => {
 });
 
 Then('I provide new email address', () => {
-  let email2 = '117461e3-7e0a-45ec-96f1-3fb2701e9801@mailslurp.com';
+  let email2 = '2142de8f-9295-427b-b3d7-b72234912fe8@mailslurp.com';
   EmailPage.enterEmailAddress(email2).enterConfirmEmailAddress(email2);
   BasePage.clickSendConfirmationEmail();
 });

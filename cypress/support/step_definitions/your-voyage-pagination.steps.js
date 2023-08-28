@@ -12,6 +12,7 @@ Then('I can see the draft details of the voyage, I have uploaded', () => {
 Then('I click Yes to confirm the voyage report cancel', () => {
   cy.intercept('PATCH', '**/declaration/*').as('cancelPatch')
   DeclarationPage.confirmCancel();
+  cy.wait(1000);
   cy.wait('@cancelPatch').then(({response}) => {
     expect(response.body.status).to.equal('PreCancelled')
     expect(response.statusCode).to.equal(202);
