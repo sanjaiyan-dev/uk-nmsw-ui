@@ -19,6 +19,7 @@ class SignInPage {
 //sign-in for sign-in page
   clickSignIn() {
     cy.get('[data-testid="submit-button"]').click();
+    cy.wait(1000);
   }
 
   checkSignInPage() {
