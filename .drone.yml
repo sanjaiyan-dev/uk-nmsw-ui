@@ -407,7 +407,7 @@ steps:
   image: cypress/included:latest
   environment:
     CYPRESS_MAIL_API_KEY:
-      from_secret: DEV_NMSW_MAILSLURP_API_KEY
+      from_secret: CYPRESS_MAIL_API_KEY
   commands:
   - ./extract-env-vars.sh ./helm/dev.yaml cypress-env.sh
   - cat ./cypress-env.sh
