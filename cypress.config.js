@@ -40,7 +40,7 @@ async function setupNodeEvents(on, config) {
   downloadFile
       }
   );
-  config.env.MAIL_API_KEY = process.env.DEV_NMSW_MAILSLURP_API_KEY;
+  config.env.MAIL_API_KEY = process.env.CYPRESS_MAIL_API_KEY;
   // Make sure to return the config object as it might have been modified by the plugin.
   return config;
 }
