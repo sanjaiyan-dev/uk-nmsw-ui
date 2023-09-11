@@ -6,6 +6,7 @@ This is the front end, and connects to the data-api
 ## Requirements
 
 * node v18
+* [see packages list here](https://github.com/UKHomeOffice/nmsw-ui/blob/main/docs/packages.md)
 
 ## Index
 * [Getting started](#getting-started)
