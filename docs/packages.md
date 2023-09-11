@@ -27,7 +27,6 @@ The list of current packages used with links to their EULA's.
 | Name | Site | EULA |
 | ---- | ---- | ---- |
 | **Babel** including: babel-loader, @babel/core @babel/preset-env @babel/preset-react | https://babel.dev/ | https://github.com/babel/babel/blob/main/LICENSE |
-| @testing-library/jest-dom | https://testing-library.com/ | https://github.com/testing-library/jest-dom/blob/main/LICENSE |
 | copy-webpack-plugin | https://github.com/webpack-contrib | https://github.com/webpack-contrib/copy-webpack-plugin/blob/master/LICENSE |
 | css-loader | https://github.com/webpack-contrib | https://github.com/webpack-contrib/css-loader/blob/master/LICENSE |
 | dotenv-webpack | https://github.com/mrsteele/dotenv-webpack | https://github.com/mrsteele/dotenv-webpack/blob/master/LICENSE |
@@ -42,11 +41,6 @@ The list of current packages used with links to their EULA's.
 | webpack-cli | https://webpack.js.org/| https://github.com/webpack/webpack-cli/blob/master/LICENSE|
 | webpack-dev-server | https://webpack.js.org/| https://github.com/webpack/webpack-dev-server/blob/master/LICENSE|
 
-### Other FrontEnd
-
-| Name | Site | EULA |
-| ---- | ---- | ---- |
-| axios-mock-adapter | https://github.com/ctimmerm/axios-mock-adapter | https://github.com/ctimmerm/axios-mock-adapter/blob/master/LICENSE |
 
 ### Linting
 | Name | Site | EULA |
@@ -66,8 +60,10 @@ The list of current packages used with links to their EULA's.
 
 | Name | Site | EULA |
 | ---- | ---- | ---- |
+| @testing-library/jest-dom | https://testing-library.com/ | https://github.com/testing-library/jest-dom/blob/main/LICENSE |
 | @testing-library/react | https://testing-library.com/ | https://github.com/testing-library/react-testing-library/blob/main/LICENSE |
 | @testing-library/user-event | https://testing-library.com/ | https://github.com/testing-library/user-event/blob/main/LICENSE |
+| axios-mock-adapter | https://github.com/ctimmerm/axios-mock-adapter | https://github.com/ctimmerm/axios-mock-adapter/blob/master/LICENSE |
 | jest & jest-environment-jsdom  | https://jestjs.io/ |https://github.com/jestjs/jest/blob/main/LICENSE |
 
 
