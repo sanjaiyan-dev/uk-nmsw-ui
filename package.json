@@ -52,7 +52,7 @@
     "cypress-axe": "^1.0.0",
     "cypress-downloadfile": "^1.2.3",
     "dotenv-webpack": "^8.0.1",
-    "esbuild": "^0.15.11",
+    "esbuild": "^0.19.3",
     "eslint": "^8.31.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-formatter-table": "^7.32.1",
