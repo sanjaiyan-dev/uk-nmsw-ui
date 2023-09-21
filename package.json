@@ -4,9 +4,9 @@
   "description": "National Maritime Single Window",
   "main": "index.js",
   "scripts": {
-    "build": "export $(xargs < ./.env) && webpack --mode production",
-    "start": "export $(xargs < ./.env) && webpack serve --mode development",
-    "start:prod": "export $(xargs < ./.env) && webpack serve --mode production",
+    "build": "webpack --mode production",
+    "start": "webpack serve --mode development",
+    "start:prod": "webpack serve --mode production",
     "lint": "eslint \"**/*.{js,jsx}\" -f table",
     "lint:fix": "eslint \"./src/**/*.{js,jsx}\" --fix",
     "test": "jest",

@@ -5,7 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 const webpack = require('webpack');
 
-module.exports = (argv) => {
+module.exports = (env, argv) => {
   const devMode = argv.mode !== 'production';
 
   return {
@@ -81,6 +81,7 @@ module.exports = (argv) => {
       new webpack.EnvironmentPlugin({
         NMSW_DATA_API_BASE_URL: 'http://localhost:5000',
         NMSW_MAINTENANCE: 'false',
+        GA_TOKEN: 'G-YQS1CY3DEC',
       }),
     ].concat(devMode ? [] : [new MiniCssExtractPlugin({
       filename: '[name]-[hash].css',
