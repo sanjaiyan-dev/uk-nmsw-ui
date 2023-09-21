@@ -11,7 +11,7 @@ Before(() => {
   });
 });
 
-After(() => {
+After({tags: "@clearSessionStorage"}, () => {
   cy.clearAllSessionStorage()
 });
 
