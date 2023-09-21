@@ -34,7 +34,7 @@
   },
   "homepage": "https://github.com/UKHomeOffice/nmsw-ui#readme",
   "devDependencies": {
-    "@babel/core": "^7.19.1",
+    "@babel/core": "^7.22.20",
     "@babel/preset-env": "^7.22.20",
     "@babel/preset-react": "^7.22.15",
     "@badeball/cypress-cucumber-preprocessor": "^18.0.6",
