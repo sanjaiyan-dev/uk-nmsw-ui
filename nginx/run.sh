@@ -11,6 +11,7 @@ do
   echo "== ENV sub for $file =="
   sed -i 's,REPLACE_NMSW_DATA_API_BASE_URL,'${NMSW_DATA_API_BASE_URL}',g' $file
   sed -i 's,REPLACE_NMSW_MAINTENANCE,'${NMSW_MAINTENANCE}',g' $file
+  echo "Replacing REPLACE_NMSW_MAINTENANCE variable with \"${NMSW_MAINTENANCE}\" in \"${file}\"."
   sed -i 's,REPLACE_GOV_NOTIFY_SUPPORT_EMAIL,'${GOV_NOTIFY_SUPPORT_EMAIL}',g' $file
   sed -i 's,REPLACE_GA_TOKEN,'${GA_TOKEN}',g' $file
 done
