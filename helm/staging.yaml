@@ -96,10 +96,6 @@ env:
       value: "https://nmsw-api.staging.nmsw.homeoffice.gov.uk"
     - name: NMSW_MAINTENANCE
       value: "false"
-    - name: GOV_NOTIFY_SUPPORT_EMAIL
-      value: "nmswsupportdev@digital.homeoffice.gov.uk"
-    - name: GA_TOKEN
-      value: "G-Q7BFYJZZBG"
   proxy:
     - name: PROXY_SERVICE_HOST
       value: 'http://127.0.0.1'
