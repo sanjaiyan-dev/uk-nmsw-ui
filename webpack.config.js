@@ -4,7 +4,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 const webpack = require('webpack');
-const env = require('./exportProcessEnv');
 
 module.exports = (argv) => {
   const devMode = argv.mode !== 'production';
@@ -66,7 +65,6 @@ module.exports = (argv) => {
       new HtmlWebpackPlugin({
         template: path.join(__dirname, 'public', 'index.html'),
         favicon: './src/assets/images/favicon.ico',
-        gaTokenValue: env.GA_TOKEN,
       }),
       new CopyPlugin(
         {
@@ -80,11 +78,10 @@ module.exports = (argv) => {
         },
       ),
       // This allows to pass env vars on runtime, see /nginx/run.sh and Dockerfile
-      new webpack.EnvironmentPlugin([
-        'NMSW_DATA_API_BASE_URL',
-        'GA_TOKEN',
-        'NMSW_MAINTENANCE',
-      ]),
+      new webpack.EnvironmentPlugin({
+        NMSW_DATA_API_BASE_URL: 'http://localhost:5000',
+        NMSW_MAINTENANCE: 'false',
+      }),
     ].concat(devMode ? [] : [new MiniCssExtractPlugin({
       filename: '[name]-[hash].css',
       chunkFilename: '[id]-[hash].css',
