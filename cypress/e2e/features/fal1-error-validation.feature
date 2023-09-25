@@ -68,6 +68,12 @@ Feature: Display FAL 1 field level errors
     Then I am taken to Errors found page for 'GDF1 -unlocode-with-XXX.xlsx'
     Then I am shown error messages to help me fix them for 'unlocode-with-XXX'
 
+  Scenario: Error messages shown when user uploads file with same arrival and departure ports
+    When I have uploaded 'Fal1-Files''FAL1-same-arrival-departure-port.xlsx'
+    When I click check for errors
+    Then I am taken to Errors found page for 'FAL1-same-arrival-departure-port.xlsx'
+    Then I am shown error messages to help me fix them for 'same-port-error'
+
   Scenario: No error messages should be shown for uploading files with IMO numbers only
     When I have uploaded 'Fal1-Files''GDF1-imo-goodwithIMONumberOnly.xlsx'
     When I click check for errors

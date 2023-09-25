@@ -70,6 +70,13 @@ const errorInvalidCharacters = [
   },
 ]
 
+const errSamePort = [
+  {
+    cellNumber: '',
+    error: `Arrival port and departure port cannot be the same LOCODE. You must report each leg of the voyage separately.`
+  },
+]
+
 const errorBadImoLocode = [
   {cellNumber: 'D3', error: 'Imo number must be 15 characters or less'},
   {
@@ -189,6 +196,8 @@ Then('I am shown error messages to help me fix them for {string}', (errorType) =
     case 'unlocode-with-XXX':
       errList = errGBLocodeWithXXX
       break;
+    case 'same-port-error':
+      errList = errSamePort;
   }
 
   cy.get('tbody > tr').each(($row) => {
