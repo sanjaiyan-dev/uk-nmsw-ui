@@ -97,6 +97,11 @@ Feature: Display FAL 1 field level errors
     When I click check for errors
     When there are no errors, I am shown the no errors found for 'GDF1-LOCODE-GoodWithSpaces.xlsx'
 
+  Scenario: No error messages should be shown for uploading values with whitespaces
+    When I have uploaded 'Fal1-Files''FAL 1-with-whitespace.xlsx'
+    When I click check for errors
+    When there are no errors, I am shown the no errors found for 'FAL 1-with-whitespace.xlsx'
+
   @deleteDeclaration
   Scenario: No error messages should be shown for uploading files with LOCODE without spaces
     When I have uploaded 'Fal1-Files''GDF1-LOCODE-GoodWithoutSpaces.xlsx'
