@@ -55,6 +55,7 @@ Feature: Display FAL 1 field level errors
     When I have uploaded 'Fal1-Files''GDF1-bad-datetime.xlsx'
     When I click check for errors
     Then I am taken to Errors found page for 'GDF1-bad-datetime.xlsx'
+    Then I am shown error messages to help me fix them for 'bad-dateTime'
 
   Scenario: Error messages shown when user uploads file with IMO with hyphen
     When I have uploaded 'Fal1-Files''GDF1-imo-with-prefix.xlsx'
@@ -73,6 +74,18 @@ Feature: Display FAL 1 field level errors
     When I click check for errors
     Then I am taken to Errors found page for 'FAL1-same-arrival-departure-port.xlsx'
     Then I am shown error messages to help me fix them for 'same-port-error'
+
+  Scenario: Error messages shown when user uploads file with special characters that are not accepted and not deleted at the back end
+    When I have uploaded 'Fal1-Files''FAL1-with-spl-characters-not-allowed-not-deleted.xlsx'
+    When I click check for errors
+    Then I am taken to Errors found page for 'FAL1-with-spl-characters-not-allowed-not-deleted.xlsx'
+    Then I am shown error messages to help me fix them for 'spl-characters-not-allowed-not-deleted'
+
+  Scenario: Error messages shown when user uploads file with special characters that are not accepted and deleted at the back end
+    When I have uploaded 'Fal1-Files''FAL1-with-spl-characters-deleted-in-BE.xlsx'
+    When I click check for errors
+    Then I am taken to Errors found page for 'FAL1-with-spl-characters-deleted-in-BE.xlsx'
+    Then I am shown error messages to help me fix them for 'BE-deleted-spl-characters-and-require-mandatory-values'
 
   Scenario: No error messages should be shown for uploading files with IMO numbers only
     When I have uploaded 'Fal1-Files''GDF1-imo-goodwithIMONumberOnly.xlsx'

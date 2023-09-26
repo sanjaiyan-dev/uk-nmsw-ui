@@ -155,6 +155,26 @@ const errGBLocodeWithXXX =[
   {cellNumber: 'F7', error: `'GB XXX' is not an acceptable LOCODE`},
 ]
 
+const  errSplCharactersNotAllowedNotDeleted = [
+  // {cellNumber: 'B3', error: `Enter the name of ship using only English letters, numbers, or one of \` -()/\`. The following found characters are not allowed: '"','%','=','[','*','_',']','!','&','{','£','+','}','?'`},
+  // {cellNumber: 'D3', error: `Enter the imo number using only English letters, numbers or spaces. The following found characters are not allowed: '.','}',':','[',']',')','?','\\',';','{',',','/','(','-'`},
+  // {cellNumber: 'F3', error: `Enter the call sign using only English letters, numbers, or one of \` -()/\`. The following found characters are not allowed: '[',']','{','}','?'`},
+  // {cellNumber: 'B4', error: `Enter the signatory using only English letters, numbers, or one of \` -()/\`. The following found characters are not allowed: '[',']','{','}','?'`},
+  {cellNumber: 'D4', error: `Flag state should indicate a country using 3 letters as given in the ISO list of 3166-1 alpha 3 codes`},
+  // {cellNumber: 'B13', error: `Enter the cargo using only English letters, numbers, or one of \` -()/\`. The following found characters are not allowed: '[',']','{','}','?'`},
+
+]
+
+const errBEDeletedSplCharactersAndRequireMandatoryValues = [
+  {cellNumber: 'B3', error: `name_of_ship must contain at least one English letter or number`},
+  // {cellNumber: 'D3', error: `Enter the imo number using only English letters, numbers or spaces. The following found characters are not allowed: ':','.',';',','`},
+  {cellNumber: 'F3', error: `call_sign must contain at least one English letter or number`},
+  {cellNumber: 'B4', error: `signatory must contain at least one English letter or number`},
+  {cellNumber: 'D4', error: `Flag state should indicate a country using 3 letters as given in the ISO list of 3166-1 alpha 3 codes`},
+  {cellNumber: 'B13', error: `cargo must contain at least one English letter or number`},
+
+]
+
 Then('I am taken to Errors found page for {string}', (fileName) => {
   cy.wait(1000);
   cy.url().should('include', 'field-errors');
@@ -198,6 +218,13 @@ Then('I am shown error messages to help me fix them for {string}', (errorType) =
       break;
     case 'same-port-error':
       errList = errSamePort;
+      break;
+    case 'spl-characters-not-allowed-not-deleted':
+      errList = errSplCharactersNotAllowedNotDeleted
+      break;
+    case 'BE-deleted-spl-characters-and-require-mandatory-values':
+      errList = errBEDeletedSplCharactersAndRequireMandatoryValues;
+      break;
   }
 
   cy.get('tbody > tr').each(($row) => {
