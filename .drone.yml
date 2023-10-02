@@ -426,6 +426,7 @@ steps:
     branch:
     - version-*
     - cypress-drone
+    - v-1.0.5.a
     event:
     - push
   failure: ignore
