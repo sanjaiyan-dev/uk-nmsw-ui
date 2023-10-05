@@ -191,6 +191,13 @@ const genderError = [
   },
 ]
 
+const fileMismatchError =[
+  {
+    cellNumber: 'message',
+    error: `This file does not contain a worksheet tab named \'FAL 5\'. Please check you are using the latest version of the FAL 5 template.`
+  }
+]
+
 Then('I am shown error messages for {string}', (errorType) => {
   let errList = []
   switch (errorType) {
@@ -212,7 +219,9 @@ Then('I am shown error messages for {string}', (errorType) => {
     case 'invalid gender value':
       errList = genderError
       break;
-
+    case 'fileNotMatched':
+      errList = fileMismatchError
+      break;
   }
   cy.get('tbody > tr').each(($row) => {
     const cellNo = $row.find('td').eq(0).text().replace('Cell number', '');

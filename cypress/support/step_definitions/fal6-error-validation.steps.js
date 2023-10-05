@@ -75,6 +75,13 @@ const missingValues = [
   {cellNumber: 'A7',error: 'Travel document type: field required'},
 ]
 
+const fileMismatchError =[
+  {
+    cellNumber: 'message',
+    error: `This file does not contain a worksheet tab named 'FAL 6'. Please check you are using the latest version of the FAL 6 template.`
+  }
+]
+
 Then('I am shown error messages to fix for {string}', (errorType) => {
   let errList = [];
   switch (errorType) {
@@ -90,9 +97,12 @@ Then('I am shown error messages to fix for {string}', (errorType) => {
   case 'missing Other Document':
     errList = missingOtherDocument;
     break;
-    case 'missing values':
+  case 'missing values':
       errList = missingValues;
-      break;
+    break;
+  case 'fileNotMatched':
+      errList = fileMismatchError
+    break;
   }
   cy.get('tbody > tr')
     .each(($row) => {

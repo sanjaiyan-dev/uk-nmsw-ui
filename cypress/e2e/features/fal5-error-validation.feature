@@ -53,3 +53,9 @@ Feature: Display FAL 5 field level errors
     When I click check for errors
     Then I am taken to Errors found page for 'FAL5-invalidGender.xlsx'
     Then I am shown error messages for 'invalid gender value'
+
+    Scenario: Error message shown when user uploads other FAL forms instead of FAL5 form
+      When I have uploaded 'Fal6-Files''Passenger details FAL 6-PositiveData.xlsx'
+      When I click check for errors
+      Then I am taken to Errors found page for 'Passenger details FAL 6-PositiveData.xlsx'
+      Then I am shown error messages for 'fileNotMatched'

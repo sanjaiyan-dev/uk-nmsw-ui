@@ -47,3 +47,9 @@ Feature: Display FAL 6 field level errors
     When I click check for errors
     Then I am taken to Errors found page for 'FAL6-mandatory-fields-missing.xlsx'
     Then I am shown error messages to fix for 'missing values'
+
+  Scenario: Error message shown when user uploads other FAL forms instead of FAL6 form
+    When I have uploaded 'Fal5-Files''Crew details including supernumeraries FAL 5-Positive-Test.xlsx'
+    When I click check for errors
+    Then I am taken to Errors found page for 'Crew details including supernumeraries FAL 5-Positive-Test.xlsx'
+    Then I am shown error messages to fix for 'fileNotMatched'
