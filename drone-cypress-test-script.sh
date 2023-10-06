@@ -15,7 +15,7 @@ npm start >/dev/null 2>&1 &
 
 echo "Waiting 15s before starting Cypress tests"
 sleep 15
-npm run cypress:run:$ENV
+npm run cypress:run:drone-$ENV
 RC=$?
 
 echo "Stopping webserver"
