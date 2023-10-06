@@ -20,6 +20,10 @@ const invalidCharacters = [
     error: `Surname: Enter the surname using only English letters, numbers or spaces. The following found characters are not allowed:  ''','('`
   },*/
   {
+    cellNumber: 'F6',
+    error: `Surname: value must contain at least one English letter or number`
+  },
+  {
     cellNumber: 'G5',
     error: `Forenames: Enter the forenames using only English letters, numbers or spaces. The following found characters are not allowed: '?'`
   },
@@ -40,6 +44,12 @@ const invalidCharacters = [
     cellNumber: 'L5',
     error: 'Travel document expiry date: travel document expiry date must be in the dd/mm/yyyy format, for example, 22/02/2002'
   },
+  {
+    cellNumber: 'E6',
+    error: 'Rank or rating: value must contain at least one English letter or number'
+  },
+  {cellNumber: 'G6', error: 'Forenames: value must contain at least one English letter or number'},
+
 ]
 
 const missingValues = [
@@ -191,6 +201,13 @@ const genderError = [
   },
 ]
 
+const fileMismatchError =[
+  {
+    cellNumber: 'message',
+    error: `This file does not contain a worksheet tab named \'FAL 5\'. Please check you are using the latest version of the FAL 5 template.`
+  }
+]
+
 Then('I am shown error messages for {string}', (errorType) => {
   let errList = []
   switch (errorType) {
@@ -212,7 +229,9 @@ Then('I am shown error messages for {string}', (errorType) => {
     case 'invalid gender value':
       errList = genderError
       break;
-
+    case 'fileNotMatched':
+      errList = fileMismatchError
+      break;
   }
   cy.get('tbody > tr').each(($row) => {
     const cellNo = $row.find('td').eq(0).text().replace('Cell number', '');

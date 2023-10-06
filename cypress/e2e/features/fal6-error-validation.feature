@@ -22,23 +22,34 @@ Feature: Display FAL 6 field level errors
     When I have uploaded 'Fal6-Files''Passenger details FAL 6 - invalidCharacters.xlsx'
     When I click check for errors
     Then I am taken to Errors found page for 'Passenger details FAL 6 - invalidCharacters.xlsx'
-    Then I am shown error messages for 'invalid Characters'
+    Then I am shown error messages to fix for 'invalid Characters'
 
   Scenario: Error messages shown when user uploads file with invalid dates
     When I have uploaded 'Fal6-Files''Passenger details FAL 6 - invalidDates.xlsx'
     When I click check for errors
     Then I am taken to Errors found page for 'Passenger details FAL 6 - invalidDates.xlsx'
-    Then I am shown error messages for 'invalid Dates'
+    Then I am shown error messages to fix for 'invalid Dates'
 
   Scenario: Error messages shown when user uploads file with more than allowed characters
     When I have uploaded 'Fal6-Files''Passenger details FAL 6 - maxCharacters.xlsx'
     When I click check for errors
     Then I am taken to Errors found page for 'Passenger details FAL 6 - maxCharacters.xlsx'
-    Then I am shown error messages for 'max Characters'
+    Then I am shown error messages to fix for 'max Characters'
 
   Scenario: Error messages shown when user uploads file with mandatory missing values'
     When I have uploaded 'Fal6-Files''Passenger details FAL 6 - missingOtherTD.xlsx'
     When I click check for errors
     Then I am taken to Errors found page for 'Passenger details FAL 6 - missingOtherTD.xlsx'
-    Then I am shown error messages for 'missing Other Document'
-    
+    Then I am shown error messages to fix for 'missing Other Document'
+
+  Scenario: Error messages shown when user uploads file with mandatory missing values
+    When I have uploaded 'Fal6-Files''FAL6-mandatory-fields-missing.xlsx'
+    When I click check for errors
+    Then I am taken to Errors found page for 'FAL6-mandatory-fields-missing.xlsx'
+    Then I am shown error messages to fix for 'missing values'
+
+  Scenario: Error message shown when user uploads other FAL forms instead of FAL6 form
+    When I have uploaded 'Fal5-Files''Crew details including supernumeraries FAL 5-Positive-Test.xlsx'
+    When I click check for errors
+    Then I am taken to Errors found page for 'Crew details including supernumeraries FAL 5-Positive-Test.xlsx'
+    Then I am shown error messages to fix for 'fileNotMatched'
