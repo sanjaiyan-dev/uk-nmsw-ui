@@ -20,7 +20,9 @@
     "cypress:open:staging": "cypress open --config-file cypress/config/staging.config.js",
     "cypress:report": "node cucumber-html-report.js",
     "cypress:dev:regression": "cypress run --config-file cypress/config/dev.config.js --env TAGS=@regression",
-    "cypress:staging:regression": "cypress run --config-file cypress/config/staging.config.js --env TAGS=@regression"
+    "cypress:staging:regression": "cypress run --config-file cypress/config/staging.config.js --env TAGS=@regression",
+    "cypress:run:drone-dev": "cypress run --config-file cypress/config/drone-dev.config.js",
+    "cypress:run:drone-staging": "cypress run --config-file cypress/config/drone-staging.config.js"
   },
   "repository": {
     "type": "git",
