@@ -24,6 +24,7 @@ steps:
   when:
     branch:
     - version-*
+    - v-1.0.5.a
     event:
     - push
 
@@ -406,8 +407,8 @@ steps:
   pull: if-not-exists
   image: cypress/included:latest
   environment:
-    CYPRESS_MAIL_API_KEY:
-      from_secret: CYPRESS_MAIL_API_KEY
+    CYPRESS_MAILSLURP_API_KEY:
+      from_secret: DEV_NMSW_MAILSLURP_API_KEY
   commands:
   - ./extract-env-vars.sh ./helm/dev.yaml cypress-env.sh
   - cat ./cypress-env.sh
@@ -426,6 +427,7 @@ steps:
     branch:
     - version-*
     - cypress-drone
+    - v-1.0.5.a
     event:
     - push
   failure: ignore
@@ -434,7 +436,7 @@ steps:
   pull: if-not-exists
   image: quay.io/ukhomeofficedigital/cop-cypress:12.2.0-node18
   environment:
-    CYPRESS_MAIL_API_KEY:
+    CYPRESS_MAILSLURP_API_KEY:
       from_secret: STAGING_NMSW_MAILSLURP_API_KEY
   commands:
   - ./extract-env-vars.sh ./helm/staging.yaml cypress-env.sh
@@ -453,26 +455,4 @@ steps:
     - staging
   failure: ignore
 
-- name: production_cypress_test
-  pull: if-not-exists
-  image: quay.io/ukhomeofficedigital/cop-cypress:12.2.0-node18
-  environment:
-    CYPRESS_MAIL_API_KEY:
-      from_secret: PRODUCTION_NMSW_MAILSLURP_API_KEY
-  commands:
-  - ./extract-env-vars.sh ./helm/production.yaml cypress-env.sh
-  - cat ./cypress-env.sh
-  - export $(cat ./cypress-env.sh | xargs)
-  - >-
-    apt-get update && apt-get install -y procps curl;
-    curl -O https://github.com/cucumber/json-formatter/releases/download/v19.0.0/cucumber-json-formatter-linux-amd64;
-    mv ./cucumber-json-formatter-linux-amd64 /usr/local/bin/cucumber-json-formatter;
-    chmod +x /usr/local/bin/cucumber-json-formatter
-  - ./drone-cypress-test-script.sh production
-  when:
-    event:
-    - promote
-    target:
-    - production
-  failure: ignore
 ...
