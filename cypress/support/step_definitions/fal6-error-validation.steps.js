@@ -9,7 +9,12 @@ const invalidCharacters = [{
   cellNumber: 'D5', error: `Travel document number: Enter the travel document number using only English letters, numbers or spaces. The following found characters are not allowed: '!'`
 }, {
   cellNumber: 'E5', error: `Surname: Enter the surname using only English letters, numbers or spaces. The following found characters are not allowed: '*'`
-}, {
+},{
+  cellNumber: 'E6', error: `Surname: value must contain at least one English letter or number`
+},{
+  cellNumber: 'F6', error: `Forenames: value must contain at least one English letter or number`
+},
+  {
   cellNumber: 'G5', error: `Gender: Enter M for male, F for female, or X for gender neutral if this is in the Travel Document`
 }, {
   cellNumber: 'I5', error: `Place of birth: Enter the place of birth using only English letters, numbers or spaces. The following found characters are not allowed: '~'`

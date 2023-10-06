@@ -20,6 +20,10 @@ const invalidCharacters = [
     error: `Surname: Enter the surname using only English letters, numbers or spaces. The following found characters are not allowed:  ''','('`
   },*/
   {
+    cellNumber: 'F6',
+    error: `Surname: value must contain at least one English letter or number`
+  },
+  {
     cellNumber: 'G5',
     error: `Forenames: Enter the forenames using only English letters, numbers or spaces. The following found characters are not allowed: '?'`
   },
@@ -40,6 +44,12 @@ const invalidCharacters = [
     cellNumber: 'L5',
     error: 'Travel document expiry date: travel document expiry date must be in the dd/mm/yyyy format, for example, 22/02/2002'
   },
+  {
+    cellNumber: 'E6',
+    error: 'Rank or rating: value must contain at least one English letter or number'
+  },
+  {cellNumber: 'G6', error: 'Forenames: value must contain at least one English letter or number'},
+
 ]
 
 const missingValues = [
