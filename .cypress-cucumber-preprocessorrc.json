@@ -1,9 +1,4 @@
 {
-  "json": {
-    "enabled": true,
-    "output": "reports/cucumber-report.json",
-    "omitFiltered": true
-  },
   "html": {
     "enabled": true,
     "output": "reports/cucumber-report.html"
