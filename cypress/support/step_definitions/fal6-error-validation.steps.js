@@ -90,7 +90,7 @@ const fileMismatchError =[
 const duplicationError =[
   {
     cellNumber: 'duplication',
-    error: `Duplicated travel document information found in the following rows: 7, 8`
+    error: `Duplicated travel document information found in the following rows: 10, 11`
   }
 ]
 
