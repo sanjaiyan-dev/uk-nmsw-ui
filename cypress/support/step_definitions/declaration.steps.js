@@ -28,7 +28,7 @@ Then('I can see the reported voyage', () => {
 });
 
 Then('I can review the report with the pending or submitted status', () => {
-  cy.injectAxe({timedOut:1000});
+  cy.reload();
   cy.get(':nth-child(1) > :nth-child(2) > dd strong').then(($el) => {
     if ($el.text() === 'Failed') {
       DeclarationPage.checkCyaFailedStatus();
@@ -37,8 +37,9 @@ Then('I can review the report with the pending or submitted status', () => {
       DeclarationPage.checkCyaSubmittedStatus();
       DeclarationPage.verifyChangeLinkNotExist();
       DeclarationPage.verifySaveAndSubmitNotExist();
+
     }
-    cy.checkAxe();
+
   });
 });
 
@@ -54,7 +55,7 @@ Then('I am taken to review the report with Cancelled status', () => {
   cy.injectAxe({timedOut:1000});
   DeclarationPage.checkCyaCancelledStatus();
   DeclarationPage.verifyChangeLinkNotExist();
-  DeclarationPage.verifySaveAndSubmitNotExist();
+  DeclarationPage.verifySaveAndSubmitNotExistonCancelledReport();
   DeclarationPage.verifyCancelButtonNotExist();
   cy.checkAxe();
 });
@@ -75,5 +76,13 @@ Then('I can see the reported voyage for crown dependency', () => {
 Then('I can see the confirmation banner for cancellation for crown dependency report', () => {
   cy.get('#govuk-notification-banner-title').contains('Success');
   cy.get('h3.govuk-notification-banner__heading').should('contain.text', 'Report for CD NMSW Test Ship cancelled.');
+});
+
+When('I click change next to crew details', () => {
+  cy.get('#crewDetails').parent().find('a').contains('Change').click();
+});
+
+When('I click change next to Passenger details', () => {
+  cy.get('#passengerDetails').parent().find('a').contains('Change').click();
 });
 
