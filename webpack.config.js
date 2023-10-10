@@ -79,7 +79,7 @@ module.exports = (env, argv) => {
       ),
       // This allows to pass env vars on runtime, see /nginx/run.sh and Dockerfile
       new webpack.EnvironmentPlugin({
-        NMSW_DATA_API_BASE_URL: 'https://nmsw-api.staging.nmsw.homeoffice.gov.uk',
+        NMSW_DATA_API_BASE_URL: 'http://localhost:5000',
         NMSW_MAINTENANCE: 'false',
         GA_TOKEN: 'G-YQS1CY3DEC',
       }),
