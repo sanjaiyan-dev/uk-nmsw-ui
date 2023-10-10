@@ -24,7 +24,7 @@ const FileUploadFieldErrors = () => {
             </thead>
             <tbody className="govuk-table__body">
               {state?.errorList?.map((error) => (
-                <tr key={error.cell} className="govuk-table__row" role="row">
+                <tr key={`${error.cell}${error.message}`} className="govuk-table__row" role="row">
                   <td className="govuk-table__cell govuk-table__cell--bold">
                     <span className="responsive-table__heading" aria-hidden="true">
                       Cell number
