@@ -59,3 +59,10 @@ Feature: Display FAL 5 field level errors
       When I click check for errors
       Then I am taken to Errors found page for 'Passenger details FAL 6-PositiveData.xlsx'
       Then I am shown error messages for 'fileNotMatched'
+
+    Scenario: Error message shown when user uploads file with duplicated travel documents(Country/Number)
+      When I have uploaded 'Fal5-Files''FAL 5-With-2same-NumberAndCountry.xlsx'
+      When I click check for errors
+      Then I am taken to Errors found page for 'FAL 5-With-2same-NumberAndCountry.xlsx'
+      Then I am shown error messages for 'duplication'
+
