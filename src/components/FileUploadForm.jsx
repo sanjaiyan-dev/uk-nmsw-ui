@@ -57,7 +57,7 @@ const FileUploadForm = ({
       const previousFile = errorData.previously_in === 'FAL5' ? 'Crew' : 'Passenger';
       const errorList = errorData.duplicates.map((record) => ({
         cell: 'Not applicable',
-        message: `Duplicated travel document information found for travel document number ${record.travelDocumentNumber}, ${record.travelDocumentCountry} in ${previousFile} details`,
+        message: `Duplication: travel document number ${record.travelDocumentNumber} found in ${previousFile} details file.`,
       }));
       navigate(FILE_UPLOAD_FIELD_ERRORS_URL, {
         state: {
