@@ -214,6 +214,13 @@ const duplicationError =[
   }
 ]
 
+const duplicationAcrossFilesError =[
+  {
+    cellNumber: 'duplication',
+    error: `Duplication: travel document number 123456789 found in Passenger details file.`
+  }
+]
+
 Then('I am shown error messages for {string}', (errorType) => {
   let errList = []
   switch (errorType) {
@@ -241,6 +248,10 @@ Then('I am shown error messages for {string}', (errorType) => {
     case 'duplication':
       errList = duplicationError
       break;
+    case 'duplicationAcrossFiles':
+      errList = duplicationAcrossFilesError
+      break;
+
   }
   cy.get('tbody > tr').each(($row) => {
     const cellNo = $row.find('td').eq(0).text().replace('Cell number', '');
