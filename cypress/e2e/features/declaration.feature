@@ -95,3 +95,30 @@ Feature: Submit or cancel the declaration request
     And I can see the confirmation banner for cancellation for crown dependency report
     Then I can see the cancelled reported voyage
     Then I am taken to review the report with Cancelled status
+
+  Scenario: User can able to submit the declaration with allowed spl characters
+    When I click change next to crew details
+    Then I am taken to upload-crew-details page
+    When I have uploaded 'Fal5-Files''FAL5-with-spl-characters.xlsx'
+    When I click check for errors
+    When there are no errors, I am shown the no errors found page
+    When I click save and continue
+    Then I am taken to task details page
+    When I click Check answers and submit
+    Then I am taken to Check Your Answers page
+    When I click change next to Passenger details
+    Then I am taken to Passenger-details page
+    When I select Yes to uploading passenger details
+    Then I am taken to upload-Passenger-details page
+    When I have uploaded 'Fal6-Files''FAL6-With-Spl-characters.xlsx'
+    When I click check for errors
+    When there are no errors, I am shown the no errors found page
+    When I click save and continue
+    Then I am taken to task details page
+    When I click Check answers and submit
+    Then I am taken to Check Your Answers page
+    When I confirm submission
+    Then I can see the confirmation banner -Voyage details sent
+    When I click return to your voyages link
+    Then I can see the reported voyage
+    And I can review the report with the pending or submitted status

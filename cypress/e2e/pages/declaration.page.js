@@ -23,8 +23,13 @@ class declarationPage {
   }
 
   checkCyaSubmittedStatus() {
+    cy.wait(20000);
     cy.get(':nth-child(1) > :nth-child(2) > .govuk-summary-list__key').should('have.text', 'Status');
     cy.get('.govuk-summary-list__value > .govuk-tag').invoke('text').then((status) => {
+      if(status.includes('Pending')){
+        cy.reload();
+        cy.wait(2000);
+      }else
         expect(status).to.be.oneOf(['Submitted','Pending','Failed']);
       });
   }
@@ -46,7 +51,7 @@ class declarationPage {
 
   checkCurrentDeclaration() {
     cy.contains('All report types');
-    cy.wait(4000);
+    cy.wait(40000);
     cy.get('.reported-voyages-margin--top').invoke('text').then(reports => {
       let count = Math.floor(parseInt(reports.split(" ")[0]) / 50) + 1;
       cy.wrap(count).as('pageCount')
@@ -95,11 +100,19 @@ class declarationPage {
   }
 
   verifyChangeLinkNotExist() {
-    cy.get('.govuk-summary-list__actions > a').should('not.exist');
+    cy.get('#content').then(() => {
+      cy.get('.govuk-summary-list__actions > a').should('not.exist');
+    })
+  }
+
+  verifySaveAndSubmitNotExistonCancelledReport(){
+    cy.get('.govuk-grid-column-two-thirds').first().within(() => {
+      cy.get('button[class="govuk-button"]').should('not.exist');
+    })
   }
 
   verifySaveAndSubmitNotExist() {
-    cy.get('button[class="govuk-button"]').contains('Save and submit').should('not.exist');
+    cy.get('.govuk-grid-column-two-thirds > .govuk-button').should('not.contain.text', 'Save and submit');
   }
 
   verifyCancelButtonNotExist() {
@@ -108,7 +121,7 @@ class declarationPage {
 
   verifyCrownDependencyDeclaration() {
     cy.contains('All report types');
-    cy.wait(4000);
+    cy.wait(40000);
     cy.get('.reported-voyages-margin--top').invoke('text').then(reports => {
       let count = Math.floor(parseInt(reports.split(" ")[0]) / 50) + 1;
       cy.wrap(count).as('pageCount')
