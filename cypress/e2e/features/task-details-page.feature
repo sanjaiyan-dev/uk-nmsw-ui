@@ -25,7 +25,7 @@ Feature: Task details page after file uploads
     And I can see Check answers and submit not enabled
     When I click crew details link
     Then I am taken to upload-crew-details page
-    When I have uploaded 'Fal5-Files''FAL5-with-spl-characters.xlsx'
+    When I have uploaded 'Fal5-Files''Crew details including supernumeraries FAL 5-Positive-Test.xlsx'
     When I click check for errors
     When there are no errors, I am shown the no errors found page
     When I click save and continue
@@ -37,7 +37,7 @@ Feature: Task details page after file uploads
     Then I am taken to Passenger-details page
     When I select Yes to uploading passenger details
     Then I am taken to upload-Passenger-details page
-    When I have uploaded 'Fal6-Files''FAL6-With-Spl-characters.xlsx'
+    When I have uploaded 'Fal6-Files''Passenger details FAL 6-PositiveData.xlsx'
     When I click check for errors
     Then the FE sends a POST to the declarationId endpoint
     When there are no errors, I am shown the no errors found page
@@ -74,7 +74,7 @@ Feature: Task details page after file uploads
     When I have entered a correct email address and password and sign in
     Then I am taken to task details page
 
-  @deleteDeclaration
+  @deleteDeclaration  @regression
   Scenario: Error messages shown when user uploads Fal5 and 6 with same document number and country
     When I have uploaded 'Fal1-Files''General declaration FAL 1-Positive-test.xlsx'
     When I click check for errors
@@ -82,39 +82,42 @@ Feature: Task details page after file uploads
     When I click save and continue
     Then I am taken to task details page
     When I click crew details link
-    When I have uploaded 'Fal5-Files''FAL 5-With-2same-NumberAndCountry.xlsx'
-    When I click check for errors
-    Then I am shown corresponding error message
-      | Field | fileUploadInput-error                                                                                                                                                    |
-      | Error | Error: Details listed on this file are not allowed, because they're the same as details you've already uploaded. Check the details in your file and try uploading again. |
+    Then I am taken to upload-crew-details page
     When I have uploaded 'Fal5-Files''Crew details including supernumeraries FAL 5-Positive-Test.xlsx'
     When I click check for errors
     When there are no errors, I am shown the no errors found page
     When I click save and continue
     Then I am taken to task details page
-    When I click Passenger details link
-    When I select Yes to uploading passenger details
-    When I have uploaded 'Fal6-Files''FAL 6-With-2same-NumberAndCountry.xlsx'
-    When I click check for errors
-    Then I am shown corresponding error message
-      | Field | fileUploadInput-error                                                                                                                                                    |
-      | Error | Error: Details listed on this file are not allowed, because they're the same as details you've already uploaded. Check the details in your file and try uploading again. |
-    When I have uploaded 'Fal6-Files''FAL 6-With-same-TD-NumberAndCountry-asFAL5.xlsx'
-    When I click check for errors
-    Then I am shown corresponding error message
-      | Field | fileUploadInput-error                                                                                                                                                    |
-      | Error | Error: Details listed on this file are not allowed, because they're the same as details you've already uploaded. Check the details in your file and try uploading again. |
-    And I click Your voyage tab
-    Then I am taken to your-voyages page
-    Then I can see the draft details of the voyage, I have uploaded
-    Then I am taken to task details page
-    And I can see the see the status of Fal-6 as required
+    And I can see status for FAL5 as completed
+    And I can see Check answers and submit not enabled
+    And I can see status for FAL6 as required
     When I click Passenger details link
     Then I am taken to Passenger-details page
     When I select Yes to uploading passenger details
     Then I am taken to upload-Passenger-details page
+    When I have uploaded 'Fal6-Files''FAL 6-With-same-TD-NumberAndCountry-asFAL5.xlsx'
+    When I click check for errors
+    Then I am taken to Errors found page for 'FAL 6-With-same-TD-NumberAndCountry-asFAL5.xlsx'
+    Then I am shown error messages to fix for 'duplicationAcrossFiles'
+    When I can click re-upload file to upload the valid file
+    Then I am taken to upload-Passenger-details page
     When I have uploaded 'Fal6-Files''FAL 6-CorrectedWith-same-TD-NumberAndCountry-asFAL5.xlsx'
     When I click check for errors
+    When there are no errors, I am shown the no errors found page
     When I click save and continue
     Then I am taken to task details page
-    And I can see status for FAL6 as completed
+    When I click Check answers and submit
+    Then I am taken to Check Your Answers page
+    When I click change next to crew details
+    Then I am taken to upload-crew-details page
+    When I have uploaded 'Fal5-Files''FAL 5-With-same-TD-NumberAndCountry-asFAL6.xlsx'
+    When I click check for errors
+    Then I am taken to Errors found page for 'FAL 5-With-same-TD-NumberAndCountry-asFAL6.xlsx'
+    Then I am shown error messages for 'duplicationAcrossFiles'
+    Then I can click re-upload file to upload the valid file
+    And I have uploaded 'Fal5-Files''Crew details including supernumeraries FAL 5-Positive-Test.xlsx'
+    When I click check for errors
+    When there are no errors, I am shown the no errors found page
+    When I click save and continue
+    Then I am taken to task details page
+

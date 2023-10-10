@@ -94,6 +94,13 @@ const duplicationError =[
   }
 ]
 
+const duplicationAcrossFilesError =[
+  {
+    cellNumber: 'Not applicable',
+    error: `Duplication: travel document number 123456789 found in Crew details file.`
+  }
+]
+
 Then('I am shown error messages to fix for {string}', (errorType) => {
   let errList = [];
   switch (errorType) {
@@ -119,6 +126,10 @@ Then('I am shown error messages to fix for {string}', (errorType) => {
   case 'duplication':
     errList = duplicationError
     break;
+    case 'duplicationAcrossFiles':
+      errList = duplicationAcrossFilesError
+      break;
+
   }
 
   cy.get('tbody > tr')
