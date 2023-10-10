@@ -24,7 +24,7 @@ steps:
   when:
     branch:
     - version-*
-    - v-1.0.5.a
+    - v-1.0.6
     event:
     - push
 
@@ -427,7 +427,7 @@ steps:
     branch:
     - version-*
     - cypress-drone
-    - v-1.0.5.a
+    - v-1.0.6
     event:
     - push
   failure: ignore
