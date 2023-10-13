@@ -86,3 +86,8 @@ export const USER_TYPE_STANDARD_LABEL = 'Standard user';
 export const USER_GROUP_INTERNAL = 'Internal';
 export const USER_GROUP_EXTERNAL = 'External';
 export const INTERNAL_TEAMS = ['Border Force Team'];
+
+export const RESTRICTED_EMAIL_PATTERNS = [
+  'gov.uk',
+  'police.uk',
+];
