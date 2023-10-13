@@ -82,7 +82,7 @@ const SignIn = () => {
     },
   ];
 
-  const removeApiErrors = () => {
+  const removePageErrors = () => {
     if (errors) setErrors();
     setIsLoading(false);
   };
@@ -208,7 +208,7 @@ const SignIn = () => {
         isLoading={isLoading}
         keepSessionOnSubmit={state?.redirectURL}
         handleSubmit={handleSubmit}
-        removeApiErrors={removeApiErrors}
+        removePageErrors={removePageErrors}
       >
         <SupportingText />
       </DisplayForm>

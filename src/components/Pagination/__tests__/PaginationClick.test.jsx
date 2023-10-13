@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import userEvent from '@testing-library/user-event';
+// import userEvent from '@testing-library/user-event';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { ELLIPSIS, PAGINATION_NEXT_LABEL, PAGINATION_PREVIOUS_LABEL } from '../../../constants/AppConstants';
+// import { ELLIPSIS, PAGINATION_NEXT_LABEL, PAGINATION_PREVIOUS_LABEL } from '../../../constants/AppConstants';
 import { CREATE_VOYAGE_ENDPOINT } from '../../../constants/AppAPIConstants';
 import { YOUR_VOYAGES_PAGE_NAME } from '../../../constants/AppUrlConstants';
 import YourVoyages from '../../../pages/NavPages/YourVoyages/YourVoyages';

@@ -1,5 +1,9 @@
 import { render, screen } from '@testing-library/react';
-import { ELLIPSIS, PAGINATION_NEXT_LABEL, PAGINATION_PREVIOUS_LABEL } from '../../../constants/AppConstants';
+import {
+  // ELLIPSIS,
+  PAGINATION_NEXT_LABEL,
+  PAGINATION_PREVIOUS_LABEL,
+} from '../../../constants/AppConstants';
 import Pagination from '../Pagination';
 
 describe('Pagination setup', () => {
