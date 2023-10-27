@@ -243,7 +243,7 @@ Then('I am shown error messages to  fix them for \'invalid-date-time format\'', 
   cy.get('#content .govuk-body').should('have.text', 'There are formatting errors in the excel file that we cannot identify. These errors may be incorrect date or time formats: you need to use dd/mm/yyyy and HH:MM. You can re-upload the file when you have fixed these errors.');
 });
 
-Then('I can see re-upload file to upload the valid file', () => {
+Then('I can click re-upload file to upload the valid file', () => {
   FileUploadPage.clickReUploadFile();
 });
 

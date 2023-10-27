@@ -87,6 +87,20 @@ const fileMismatchError =[
   }
 ]
 
+const duplicationError =[
+  {
+    cellNumber: 'duplication',
+    error: `Duplicated travel document information found in the following rows: 10, 11`
+  }
+]
+
+const duplicationAcrossFilesError =[
+  {
+    cellNumber: 'Not applicable',
+    error: `Duplication: travel document number 123456789 found in Crew details file.`
+  }
+]
+
 Then('I am shown error messages to fix for {string}', (errorType) => {
   let errList = [];
   switch (errorType) {
@@ -108,7 +122,16 @@ Then('I am shown error messages to fix for {string}', (errorType) => {
   case 'fileNotMatched':
       errList = fileMismatchError
     break;
+
+  case 'duplication':
+    errList = duplicationError
+    break;
+    case 'duplicationAcrossFiles':
+      errList = duplicationAcrossFilesError
+      break;
+
   }
+
   cy.get('tbody > tr')
     .each(($row) => {
       const cellNo = $row.find('td')

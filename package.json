@@ -1,6 +1,6 @@
 {
   "name": "nmsw-ui",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "National Maritime Single Window",
   "main": "index.js",
   "scripts": {
@@ -37,12 +37,12 @@
   "homepage": "https://github.com/UKHomeOffice/nmsw-ui#readme",
   "devDependencies": {
     "@babel/core": "^7.22.20",
-    "@babel/preset-env": "^7.22.20",
+    "@babel/preset-env": "^7.23.2",
     "@babel/preset-react": "^7.22.15",
     "@badeball/cypress-cucumber-preprocessor": "^18.0.6",
     "@bahmutov/cypress-esbuild-preprocessor": "^2.1.5",
-    "@faker-js/faker": "^7.6.0",
-    "@testing-library/jest-dom": "^5.16.5",
+    "@faker-js/faker": "^8.2.0",
+    "@testing-library/jest-dom": "^6.1.4",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.5.1",
     "axe-core": "^4.5.1",
@@ -54,7 +54,7 @@
     "cypress-axe": "^1.5.0",
     "cypress-downloadfile": "^1.2.3",
     "dotenv-webpack": "^8.0.1",
-    "esbuild": "^0.19.3",
+    "esbuild": "^0.19.5",
     "eslint": "^8.31.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-formatter-table": "^7.32.1",
@@ -74,7 +74,7 @@
     "sass-loader": "^13.0.2",
     "style-loader": "^3.3.1",
     "url-loader": "^4.1.1",
-    "webpack": "^5.74.0",
+    "webpack": "^5.89.0",
     "webpack-bundle-analyzer": "^4.7.0",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.11.0"

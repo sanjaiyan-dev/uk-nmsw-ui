@@ -39,7 +39,7 @@ jest.mock('react-router-dom', () => ({
 
 describe('Display Form default values and session data', () => {
   const handleSubmit = jest.fn();
-  const removeApiErrors = jest.fn();
+  const removePageErrors = jest.fn();
   const scrollIntoViewMock = jest.fn();
   window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
   const formActions = {
@@ -496,7 +496,7 @@ describe('Display Form default values and session data', () => {
           formActions={formActionsSubmitOnly}
           formType={SIGN_IN_FORM}
           handleSubmit={handleSubmit}
-          removeApiErrors={removeApiErrors}
+          removePageErrors={removePageErrors}
 
         />
       </MemoryRouter>,

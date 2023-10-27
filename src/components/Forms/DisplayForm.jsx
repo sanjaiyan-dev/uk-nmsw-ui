@@ -18,7 +18,7 @@ import FormActions from './FormActions';
 import FormFields from './FormFields';
 
 const DisplayForm = ({
-  fields, formId, formActions, formType, isLoading, pageHeading, handleSubmit, children, removeApiErrors,
+  fields, formId, formActions, formType, hasPageLevelErrors, isLoading, pageHeading, handleSubmit, children, removePageErrors,
 }) => {
   const fieldsRef = useRef(null);
   const errorSummaryRef = useRef(null);
@@ -41,8 +41,13 @@ const DisplayForm = ({
       setErrors(filteredErrors);
     }
 
-    if (formType === SIGN_IN_FORM) {
-      removeApiErrors();
+    /**
+     * When forms have special error summary boxes (currently sign-in and register, with restricted email)
+     * we code the box on their page
+     * and then use the removePageErrors to clear the field when user types
+     */
+    if (formType === SIGN_IN_FORM || hasPageLevelErrors) {
+      removePageErrors();
     }
 
     // create the dataset to store, accounting for objects coming from autocomplete
@@ -219,8 +224,9 @@ DisplayForm.propTypes = {
     }),
   }),
   formType: PropTypes.string.isRequired,
+  hasPageLevelErrors: PropTypes.bool,
   isLoading: PropTypes.bool,
   pageHeading: PropTypes.string,
   handleSubmit: PropTypes.func.isRequired,
-  removeApiErrors: PropTypes.func,
+  removePageErrors: PropTypes.func,
 };

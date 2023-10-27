@@ -18,6 +18,7 @@ Every input can be displayed as a single field, set of grouped fields, or contai
 - [Autocomplete](#autocomplete)
 - [Radio buttons](#radio-buttons)
 - [Radio buttons with conditional text field(s)](#conditionals)
+- [Checkboxes](#checkbox)
 - [Text input](#text-input)
 
 [Specific inputs](#specific-inputs)
@@ -41,6 +42,9 @@ Every input can be displayed as a single field, set of grouped fields, or contai
 ## MultiPage Forms
 - [Multi Page Form](#multi-page-forms)
 
+## Special error types
+- [Special Page Level Errors](#special-page-level-errors)
+
 
 ## Other guides
 - <a href="https://github.com/UKHomeOffice/nmsw-ui/blob/main/docs/form_creator_example.md">Create a new form - step by step example</a>
@@ -60,7 +64,8 @@ Structure:
   isLoading=<optional boolean>
   keepSessionOnSubmit={state?.redirectURL ? true : false}
   pageHeading=<required>
-  removeApiErrors=<optional>
+  hasPageLevelErrors<optional boolean>
+  removePageErrors=<optional>
   handleSubmit={handleSubmit}
 />
 ```
@@ -75,7 +80,8 @@ e.g. if you have a SupportingText component you would pass as follows:
   formType=<required>
   isLoading=<optional boolean>
   pageHeading=<required>
-  removeApiErrors=<optional>
+  hasPageLevelErrors<optional boolean>
+  removePageErrors=<optional>
   handleSubmit={handleSubmit}
 >
   <SupportingText />
@@ -556,6 +562,60 @@ A string that will be shown as the question/label text for the field
 
 ----
 
+## Checkbox
+
+Requiements
+
+n/a
+
+Object structure
+
+```javascript
+const formFields = [
+    {
+      type: FIELD_CHECKBOX,
+      displayType: DISPLAY_GROUPED,
+      fieldName: <required>,
+      label: <required>,
+      labelAsH1: <optional: true / false>,
+      labelAsH2: <optional: true / false>,
+      options: [
+        {
+        value: <required>,
+        name: <required>,
+        },
+      ],
+    },
+  ];
+```
+
+Parameters
+
+### type
+Import and use `FIELD_CHECKBOX` from `src/constants/AppConstants`
+
+### fieldName
+A string that will be used for `name` and to create `id` and other field references.
+
+### grouped
+Always specify this as `true` as checkboxes buttons are grouped inputs and use a different fieldset/label html structure.
+This is defined within `src/components/formFields/DetermineFieldType` and at some point we will refactor this so that `displayType: DISPLAY_GROUPED,` does not need to be specified within the field object
+
+### label
+A string that will be shown as the question/label text for the field
+
+### labelAsH1
+When the label is also the h1, set this to true. This ensure the h1 tag and styling is applied
+
+### labelAsH2
+When the label is also the h2, set this to true. This ensure the h2 tag and styling is applied
+
+### options
+- name: The name that will appear next to each of the checkbox options
+- value: The value that will be stored and used if a checkbox is selected
+
+----
+
 ## Text Input
 
 Requirements
@@ -958,6 +1018,7 @@ e.g.
 
 ## Multi Page Forms
 If you are creating a multipage form your `handleSubmit` function must include the following:
+NMSW-INT uses this pattern - see intiving team member flow
 
 ### First Page
 Create a `dataToSubmit` variable and populate it with this page's formData
@@ -979,6 +1040,27 @@ Create a `dataToSubmit` variable and populate it with the formData from state an
 
 After submit remove all formData from sessionStorage
 `sessionStorage.removeItem('formData');`
+
+----
+
+## Special Page Level Errors
+
+The Sign In form and the Registration form both have special error scenarios where they can't follow the standard erroring.
+
+Sign In has a generic API response
+
+Registration form does a check for email domain strings, and if it matches our 'restricted list' (see App Constants)
+then we reject the form and show a special error summary with further instructions.
+
+The error code is placed within the page component (seeRegisterEmailAddress file)
+And we pass to DisplayForm two params
+- `hasPageLevelErrors`
+- `removePageErrors={removePageErrors}`
+
+The error panel is turned on via a local function when the error conditions are met.
+
+We also create a `removePageErrors` function within the page that will set the local variable to `false` when triggered 
+through the DisplayForm component - this triggers the function which turns off the error panel.
 
 ----
 ## Structure Diagram

@@ -207,6 +207,19 @@ const fileMismatchError =[
     error: `This file does not contain a worksheet tab named \'FAL 5\'. Please check you are using the latest version of the FAL 5 template.`
   }
 ]
+const duplicationError =[
+  {
+    cellNumber: 'duplication',
+    error: `Duplicated travel document information found in the following rows: 7, 8`
+  }
+]
+
+const duplicationAcrossFilesError =[
+  {
+    cellNumber: 'duplication',
+    error: `Duplication: travel document number 123456789 found in Passenger details file.`
+  }
+]
 
 Then('I am shown error messages for {string}', (errorType) => {
   let errList = []
@@ -232,6 +245,13 @@ Then('I am shown error messages for {string}', (errorType) => {
     case 'fileNotMatched':
       errList = fileMismatchError
       break;
+    case 'duplication':
+      errList = duplicationError
+      break;
+    case 'duplicationAcrossFiles':
+      errList = duplicationAcrossFilesError
+      break;
+
   }
   cy.get('tbody > tr').each(($row) => {
     const cellNo = $row.find('td').eq(0).text().replace('Cell number', '');
