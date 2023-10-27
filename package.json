@@ -41,7 +41,7 @@
     "@babel/preset-react": "^7.22.15",
     "@badeball/cypress-cucumber-preprocessor": "^18.0.6",
     "@bahmutov/cypress-esbuild-preprocessor": "^2.1.5",
-    "@faker-js/faker": "^7.6.0",
+    "@faker-js/faker": "^8.2.0",
     "@testing-library/jest-dom": "^6.1.4",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.5.1",
