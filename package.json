@@ -70,6 +70,7 @@
     "mailslurp-client": "^15.17.2",
     "mini-css-extract-plugin": "^2.7.6",
     "multiple-cucumber-html-reporter": "^3.1.0",
+    "node-xlsx": "^0.23.0",
     "sass": "^1.69.5",
     "sass-loader": "^13.0.2",
     "style-loader": "^3.3.1",
