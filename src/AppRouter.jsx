@@ -11,11 +11,15 @@ import {
   ACCESSIBILITY_URL,
   CHANGE_YOUR_DETAILS_PAGE_URL,
   CHANGE_YOUR_PASSWORD_PAGE_URL,
+  CONTACT_US_URL,
   COOKIE_URL,
   ERROR_ACCOUNT_ALREADY_ACTIVE_URL,
+  ETA_URL,
   FILE_UPLOAD_FIELD_ERRORS_URL,
   GENERIC_CONFIRMATION_URL,
+  HELP_URL,
   LANDING_URL,
+  LOGGED_IN_HELP,
   MESSAGE_URL,
   PRIVACY_URL,
   REGISTER_ACCOUNT_URL,
@@ -46,9 +50,6 @@ import {
   VOYAGE_TASK_LIST_URL,
   YOUR_VOYAGES_URL,
   YOUR_DETAILS_PAGE_URL,
-  HELP_URL,
-  LOGGED_IN_HELP,
-  CONTACT_US_URL,
 } from './constants/AppUrlConstants';
 
 import LoadingSpinner from './components/LoadingSpinner';
@@ -76,6 +77,7 @@ const SignIn = lazy(() => import('./pages/SignIn/SignIn'));
 // Regulatory pages
 const AccessibilityStatement = lazy(() => import('./pages/Regulatory/AccessibilityStatement'));
 const CookiePolicy = lazy(() => import('./pages/Regulatory/CookiePolicy'));
+const EtaRequirements = lazy(() => import('./pages/Regulatory/ETA/EtaRequirements'));
 const Landing = lazy(() => import('./pages/Landing/Landing'));
 const PrivacyNotice = lazy(() => import('./pages/Regulatory/PrivacyNotice'));
 const Help = lazy(() => import('./pages/Regulatory/Help'));
@@ -127,6 +129,7 @@ const AppRouter = ({ setIsCookieBannerShown }) => {
 
           <Route path={ACCESSIBILITY_URL} element={<AccessibilityStatement />} />
           <Route path={COOKIE_URL} element={<CookiePolicy setIsCookieBannerShown={setIsCookieBannerShown} />} />
+          <Route path={ETA_URL} element={<EtaRequirements />} />
           <Route path={LANDING_URL} element={<Landing />} />
           <Route path={PRIVACY_URL} element={<PrivacyNotice />} />
           <Route path={HELP_URL} element={<Help />} />

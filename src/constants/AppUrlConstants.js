@@ -29,6 +29,7 @@ export const LOGGED_IN_LANDING = '/your-voyages';
 // Regulatory pages
 export const ACCESSIBILITY_URL = '/accessibility-statement';
 export const COOKIE_URL = '/cookies';
+export const ETA_URL = '/electronic-travel-authorisation';
 export const LANDING_URL = '/';
 export const PRIVACY_URL = '/privacy-notice';
 export const CONTACT_US_URL = '/contact-us';

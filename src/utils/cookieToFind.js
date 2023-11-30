@@ -1,4 +1,4 @@
-const findCookiePreference = (cookieName) => {
+const cookieToFind = (cookieName) => {
   const cookieArray = document.cookie.split(';');
 
   for (let i = 0; i < cookieArray.length; i++) {
@@ -13,4 +13,4 @@ const findCookiePreference = (cookieName) => {
   return null;
 };
 
-export default findCookiePreference;
+export default cookieToFind;
