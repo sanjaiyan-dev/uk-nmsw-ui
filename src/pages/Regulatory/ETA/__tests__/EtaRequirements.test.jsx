@@ -2,7 +2,13 @@ import { MemoryRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
 import EtaRequirements from '../EtaRequirements';
-import { ETA_GUIDANCE_ON_GOVUK_URL, EXAMINING_IDENTITY_DOCS_URL, NATIONALITIES_REQ_CLEARANCE_URL, VISAS_AND_IMMIGRATION_URL, YOUR_VOYAGES_URL } from '../../../../constants/AppUrlConstants';
+import {
+  ETA_GUIDANCE_ON_GOVUK_URL,
+  EXAMINING_IDENTITY_DOCS_URL,
+  NATIONALITIES_REQ_CLEARANCE_URL,
+  VISAS_AND_IMMIGRATION_URL,
+  YOUR_VOYAGES_URL,
+} from '../../../../constants/AppUrlConstants';
 import { UPT_CONTACT_EMAIL } from '../../../../constants/AppConstants';
 
 const findCookie = (cookieName) => {

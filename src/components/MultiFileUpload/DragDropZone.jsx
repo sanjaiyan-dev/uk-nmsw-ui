@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
