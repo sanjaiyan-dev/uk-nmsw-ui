@@ -1,8 +1,12 @@
 // External links
 export const CROWN_COPYRIGHT_URL = 'https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/';
+export const ETA_GUIDANCE_ON_GOVUK_URL = 'https://www.gov.uk/guidance/apply-for-an-electronic-travel-authorisation-eta';
+export const EXAMINING_IDENTITY_DOCS_URL = 'https://www.gov.uk/guidance/apply-for-an-electronic-travel-authorisation-eta';
 export const FEEDBACK_URL = 'https://www.homeofficesurveys.homeoffice.gov.uk/s/6MBWPJ/';
-export const PASSWORD_GUIDENCE_URL = 'https://www.ncsc.gov.uk/collection/top-tips-for-staying-secure-online/three-random-words#:~:text=Why%20does%20the%20NCSC%20recommend,enough%20for%20you%20to%20remember';
 export const GOV_URL = 'https://www.gov.uk/';
+export const NATIONALITIES_REQ_CLEARANCE_URL = 'https://www.gov.uk/guidance/immigration-rules/immigration-rules-appendix-visitor-visa-national-list';
+export const PASSWORD_GUIDENCE_URL = 'https://www.ncsc.gov.uk/collection/top-tips-for-staying-secure-online/three-random-words#:~:text=Why%20does%20the%20NCSC%20recommend,enough%20for%20you%20to%20remember';
+export const VISAS_AND_IMMIGRATION_URL = 'https://www.gov.uk/browse/visas-immigration';
 
 // Register/Sign in pages
 export const REGISTER_ACCOUNT_URL = '/create-account/email-address';

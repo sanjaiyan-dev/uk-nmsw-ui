@@ -17,6 +17,11 @@ export const DECLARATION_STEP_STATUS_NOT_STARTED = 'notStarted';
 export const DECLARATION_STEP_STATUS_OPTIONAL = 'optional';
 export const DECLARATION_STEP_STATUS_REQUIRED = 'required';
 
+// UPT
+export const DECLARATION_UPT_STATUS_NO_BOARD = 'No Board';
+export const DECLARATION_UPT_STATUS_BOARD = 'Board';
+export const DECLARATION_UPT_STATUS_CHECK = 'Check';
+
 // Forms: display types
 export const DISPLAY_DETAILS = 'details';
 export const DISPLAY_GROUPED = 'grouped';
