@@ -19,6 +19,12 @@ describe('Contact us page tests', () => {
     expect(screen.getByRole('link', { name: 'nmsw@homeoffice.gov.uk' }).outerHTML).toBe('<a class="govuk-link" href="mailto: nmsw@homeoffice.gov.uk">nmsw@homeoffice.gov.uk</a>');
   });
 
+  it('should render link to upt email', async () => {
+    render(<Help />);
+    expect(screen.getByRole('link', { name: 'UPTqueries@homeoffice.gov.uk' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'UPTqueries@homeoffice.gov.uk' }).outerHTML).toBe('<a class="govuk-link" href="mailto: UPTqueries@homeoffice.gov.uk">UPTqueries@homeoffice.gov.uk</a>');
+  });
+
   it('should display the FAL templates', async () => {
     render(<Help />);
     expect(screen.getByText('General Declaration (FAL 1) template (xlsx, 31kb)')).toBeInTheDocument();

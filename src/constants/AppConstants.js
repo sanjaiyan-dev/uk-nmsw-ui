@@ -2,6 +2,7 @@
 export const SERVICE_NAME = 'National Maritime Single Window';
 export const SERVICE_URL = 'https://nmsw.homeoffice.gov.uk';
 export const SERVICE_CONTACT_EMAIL = 'nmsw@homeoffice.gov.uk'; // update on public/index.html as well
+export const UPT_CONTACT_EMAIL = 'UPTqueries@homeoffice.gov.uk';
 
 // Declarations
 export const DECLARATION_STATUS_CANCELLED = 'Cancelled';
