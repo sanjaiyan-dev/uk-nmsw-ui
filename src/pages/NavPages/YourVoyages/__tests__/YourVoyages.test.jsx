@@ -54,6 +54,18 @@ describe('Your voyages page tests', () => {
     expect(await screen.findByRole('button', { name: 'Report a voyage' })).toBeInTheDocument();
   });
 
+  it('should display a "More information" section with relevant link', async () => {
+    mockAxios
+      .onGet(`${CREATE_VOYAGE_ENDPOINT}?page_start=0`)
+      .reply(200, {
+        results: [],
+      });
+    render(<MemoryRouter><YourVoyages /></MemoryRouter>);
+    expect(await screen.findByRole('heading', { name: 'More information' })).toBeInTheDocument();
+    expect(await screen.findByRole('link', { name: 'New: Permission to travel status' })).toBeInTheDocument();
+    expect((await screen.findByRole('link', { name: 'New: Permission to travel status' })).outerHTML).toEqual('<a class="govuk-link govuk-body-m " href="/electronic-travel-authorisation">New: Permission to travel status</a>');
+  });
+
   it('should show a no voyages message if no voyages', async () => {
     mockAxios
       .onGet(`${CREATE_VOYAGE_ENDPOINT}?page_start=0`)

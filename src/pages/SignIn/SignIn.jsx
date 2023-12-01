@@ -27,8 +27,10 @@ import {
   SIGN_IN_URL,
   HELP_URL,
   RESEND_EMAIL_USER_NOT_VERIFIED,
+  ETA_URL,
 } from '../../constants/AppUrlConstants';
 import Auth from '../../utils/Auth';
+import cookieToFind from '../../utils/cookieToFind';
 import ParseJwtForUserType from '../../utils/ParseJwtForUserType';
 import { scrollToTop } from '../../utils/ScrollToElement';
 
@@ -45,6 +47,7 @@ const SignIn = () => {
   const { state } = useLocation();
   const [errors, setErrors] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const etaCookie = cookieToFind('etaCookie');
   document.title = 'Sign in';
 
   // Form fields
@@ -118,7 +121,9 @@ const SignIn = () => {
         Auth.storeToken(authData.access_token);
         Auth.storeRefreshToken(authData.refresh_token);
 
-        if (state?.redirectURL) {
+        if (!etaCookie) {
+          navigate(ETA_URL, { state });
+        } else if (state?.redirectURL) {
           navigate(state.redirectURL, { state });
         } else {
           navigate(LOGGED_IN_LANDING);

@@ -2,6 +2,7 @@
 export const SERVICE_NAME = 'National Maritime Single Window';
 export const SERVICE_URL = 'https://nmsw.homeoffice.gov.uk';
 export const SERVICE_CONTACT_EMAIL = 'nmsw@homeoffice.gov.uk'; // update on public/index.html as well
+export const UPT_CONTACT_EMAIL = 'UPTqueries@homeoffice.gov.uk';
 
 // Declarations
 export const DECLARATION_STATUS_CANCELLED = 'Cancelled';
@@ -15,6 +16,11 @@ export const DECLARATION_STEP_STATUS_CANNOT_START = 'cannotStartYet';
 export const DECLARATION_STEP_STATUS_NOT_STARTED = 'notStarted';
 export const DECLARATION_STEP_STATUS_OPTIONAL = 'optional';
 export const DECLARATION_STEP_STATUS_REQUIRED = 'required';
+
+// UPT
+export const DECLARATION_UPT_STATUS_NO_BOARD = 'No Board';
+export const DECLARATION_UPT_STATUS_BOARD = 'Board';
+export const DECLARATION_UPT_STATUS_CHECK = 'Check';
 
 // Forms: display types
 export const DISPLAY_DETAILS = 'details';

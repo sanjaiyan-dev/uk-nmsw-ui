@@ -11,6 +11,9 @@ import {
   DECLARATION_STEP_STATUS_NOT_STARTED,
   DECLARATION_STEP_STATUS_OPTIONAL,
   DECLARATION_STEP_STATUS_REQUIRED,
+  DECLARATION_UPT_STATUS_BOARD,
+  DECLARATION_UPT_STATUS_CHECK,
+  DECLARATION_UPT_STATUS_NO_BOARD,
 } from '../constants/AppConstants';
 
 const StatusTag = ({ status }) => {
@@ -63,6 +66,21 @@ const StatusTag = ({ status }) => {
       tagClass = 'govuk-tag govuk-tag--pink app-task-list__tag';
       label = 'Required';
       break;
+
+    // UPT result statuses
+    case DECLARATION_UPT_STATUS_BOARD:
+      tagClass = 'govuk-tag govuk-tag--green';
+      label = 'Valid permission to travel';
+      break;
+    case DECLARATION_UPT_STATUS_CHECK:
+      tagClass = 'govuk-tag govuk-tag--blue';
+      label = 'Authority to carry granted';
+      break;
+    case DECLARATION_UPT_STATUS_NO_BOARD:
+      tagClass = 'govuk-tag govuk-tag--red';
+      label = 'Do not board';
+      break;
+
     default: {
       tagClass = '';
       label = '';
