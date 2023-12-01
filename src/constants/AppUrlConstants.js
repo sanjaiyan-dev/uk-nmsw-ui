@@ -1,7 +1,7 @@
 // External links
 export const CROWN_COPYRIGHT_URL = 'https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/';
 export const ETA_GUIDANCE_ON_GOVUK_URL = 'https://www.gov.uk/guidance/apply-for-an-electronic-travel-authorisation-eta';
-export const EXAMINING_IDENTITY_DOCS_URL = 'https://www.gov.uk/guidance/apply-for-an-electronic-travel-authorisation-eta';
+export const EXAMINING_IDENTITY_DOCS_URL = 'https://www.gov.uk/government/publications/recognising-fraudulent-identity-documents/guidance-on-examining-identity-documents-accessible';
 export const FEEDBACK_URL = 'https://www.homeofficesurveys.homeoffice.gov.uk/s/6MBWPJ/';
 export const GOV_URL = 'https://www.gov.uk/';
 export const NATIONALITIES_REQ_CLEARANCE_URL = 'https://www.gov.uk/guidance/immigration-rules/immigration-rules-appendix-visitor-visa-national-list';
