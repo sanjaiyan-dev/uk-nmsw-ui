@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { PAGINATION_DEFAULT_PAGE_START_NUMBER, SERVICE_NAME } from '../../../constants/AppConstants';
 import { CREATE_VOYAGE_ENDPOINT, TOKEN_EXPIRED } from '../../../constants/AppAPIConstants';
-import { VOYAGE_GENERAL_DECLARATION_UPLOAD_URL, YOUR_VOYAGES_URL } from '../../../constants/AppUrlConstants';
+import { ETA_URL, VOYAGE_GENERAL_DECLARATION_UPLOAD_URL, YOUR_VOYAGES_URL } from '../../../constants/AppUrlConstants';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import Message from '../../../components/Message';
 import Auth from '../../../utils/Auth';
@@ -109,6 +109,11 @@ const YourVoyages = () => {
               </div>
             </div>
           )}
+        </div>
+      </div>
+
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-two-thirds">
           <h1 className="govuk-heading-xl govuk-!-margin-bottom-4">Your voyages</h1>
           {!totalNumberVoyages && (
             <div className="govuk-inset-text">
@@ -125,6 +130,14 @@ const YourVoyages = () => {
             Report a voyage
           </button>
         </div>
+        <div className="govuk-grid-column-one-third">
+          <div className="blue__border">
+            <h2 className="govuk-heading-s govuk-!-margin-bottom-0 govuk-!-margin-top-2">More information</h2>
+            <div className="more-info-link__wrapper">
+              <Link to={ETA_URL} className="govuk-link govuk-body-m ">New: Permission to travel status</Link>
+            </div>
+          </div>
+        </div>
       </div>
 
       {voyageData?.length > 0 && (
@@ -133,6 +146,7 @@ const YourVoyages = () => {
             voyageData={voyageData}
             totalVoyages={totalNumberVoyages}
           />
+          <hr className="govuk-section-break govuk-section-break--m" />
           <Pagination
             updatePaginationPageNumber={pageStartNumber || PAGINATION_DEFAULT_PAGE_START_NUMBER}
             setPageStartNumber={setPageStartNumber}
