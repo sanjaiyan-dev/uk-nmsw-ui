@@ -41,7 +41,7 @@ const EtaRequirements = ({ condensedInfo }) => {
   return (
     <>
       <div className="govuk-grid-row">
-        <div className={!condensedInfo ? 'govuk-grid-column-three-quarters' : 'govuk-grid-column-full'}>
+        <div className="govuk-grid-column-full">
           {!condensedInfo && <h1 className="govuk-heading-l">New: Permission to travel status</h1>}
           <p className="govuk-body">
             We are introducing permission to travel status to the National Maritime Single Window service.

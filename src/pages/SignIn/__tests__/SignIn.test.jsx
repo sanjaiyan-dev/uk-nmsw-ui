@@ -16,6 +16,7 @@ import {
   LOGGED_IN_LANDING,
   REQUEST_PASSWORD_RESET_URL,
   RESEND_EMAIL_USER_NOT_VERIFIED,
+  ETA_URL,
 } from '../../../constants/AppUrlConstants';
 import mockExternalUser from './__fixtures__/ExternalUser.fixture copy';
 import mockInternalAdminUser from './__fixtures__/InternalAdminUser.fixture';
@@ -27,7 +28,7 @@ import mockSignInInvalidUserTypeResponse from './__fixtures__/SignInInvalidUserT
 import mockSignInInvalidGroupTypeResponse from './__fixtures__/SignInInvalidGroup.fixture';
 import SignIn from '../SignIn';
 
-const mockUseLocationState = { state: {} };
+let mockUseLocationState = { state: {} };
 const mockedUseNavigate = jest.fn();
 
 jest.mock('react-router', () => ({
@@ -45,14 +46,20 @@ describe('Sign in tests', () => {
   beforeEach(() => {
     mockAxios.reset();
     window.sessionStorage.clear();
+    mockUseLocationState = {};
+    document.cookie = 'etaCookie=; Max-Age=0;';
   });
   afterEach(() => {
     mockAxios.reset();
     window.sessionStorage.clear();
+    mockUseLocationState = {};
+    document.cookie = 'etaCookie=; Max-Age=0;';
   });
   afterAll(() => {
     mockAxios.reset();
     window.sessionStorage.clear();
+    mockUseLocationState = {};
+    document.cookie = 'etaCookie=; Max-Age=0;';
   });
 
   // =============
@@ -230,8 +237,45 @@ describe('Sign in tests', () => {
   // SUCCESS
   // =============
 
-  it('should call the login function on sign in button click if there are no errors', async () => {
+  it('should redirect to ETA page on sign in if there is no etaCookie', async () => {
     const user = userEvent.setup();
+    mockAxios
+      .onPost(SIGN_IN_ENDPOINT)
+      .reply(200, mockSignInExternalUserResponse)
+      .onGet(USER_ENDPOINT)
+      .reply(200, mockExternalUser);
+
+    render(<MemoryRouter><SignIn /></MemoryRouter>);
+
+    await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
+    await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(mockedUseNavigate).toHaveBeenCalledWith(ETA_URL, { state: undefined });
+  });
+
+  it('should redirect to ETA page on sign in, with redirectUrl and state if it exists, if there is no etaCookie', async () => {
+    const user = userEvent.setup();
+    mockUseLocationState.state = {
+      redirectURL: '/thisurl',
+      otherState: 'another piece of state',
+    };
+    mockAxios
+      .onPost(SIGN_IN_ENDPOINT)
+      .reply(200, mockSignInExternalUserResponse)
+      .onGet(USER_ENDPOINT)
+      .reply(200, mockExternalUser);
+
+    render(<MemoryRouter><SignIn /></MemoryRouter>);
+
+    await user.type(screen.getByRole('textbox', { name: /email/i }), 'testemail@email.com');
+    await user.type(screen.getByTestId('password-passwordField'), 'testpassword');
+    await user.click(screen.getByTestId('submit-button'));
+    expect(mockedUseNavigate).toHaveBeenCalledWith(ETA_URL, { state: { redirectURL: '/thisurl', otherState: 'another piece of state' } });
+  });
+
+  it('should redirect to dashboard on sign in if etaCookie exists', async () => {
+    const user = userEvent.setup();
+    document.cookie = 'etaCookie=true';
     mockAxios
       .onPost(SIGN_IN_ENDPOINT)
       .reply(200, mockSignInExternalUserResponse)
@@ -288,6 +332,7 @@ describe('Sign in tests', () => {
 
   it('should redirect to redirectURL on successful sign in if one in state, and pass the state through', async () => {
     const user = userEvent.setup();
+    document.cookie = 'etaCookie=true';
     mockUseLocationState.state = {
       redirectURL: '/thisurl',
       otherState: 'another piece of state',
