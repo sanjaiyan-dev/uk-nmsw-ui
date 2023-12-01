@@ -82,6 +82,7 @@ const EtaRequirements = ({ condensedInfo }) => {
                       <p className="govuk-body">Passengers with this result can board.</p>
                       <p className="govuk-body">You must still check if these passengers have a valid passport or travel document that is acceptable in the UK.</p>
                       <p className="govuk-body">For passengers from countries who need a visa to enter the UK, you must check their visa or exemption documents.</p>
+                      <p className="govuk-body">Check the list of <a href={NATIONALITIES_REQ_CLEARANCE_URL} target="_blank" rel="noreferrer">nationalities requiring entry clearance on GOV.UK (opens in new tab)</a></p>
                     </td>
                   </tr>
                   <tr className="govuk-table__row">

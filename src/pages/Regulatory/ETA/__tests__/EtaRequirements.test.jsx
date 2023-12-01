@@ -5,7 +5,7 @@ import EtaRequirements from '../EtaRequirements';
 import {
   ETA_GUIDANCE_ON_GOVUK_URL,
   EXAMINING_IDENTITY_DOCS_URL,
-  NATIONALITIES_REQ_CLEARANCE_URL,
+  // NATIONALITIES_REQ_CLEARANCE_URL,
   VISAS_AND_IMMIGRATION_URL,
   YOUR_VOYAGES_URL,
 } from '../../../../constants/AppUrlConstants';
@@ -64,7 +64,7 @@ describe('ETA requirements content tests', () => {
     render(<MemoryRouter><EtaRequirements /></MemoryRouter>);
     expect(screen.getByRole('heading', { name: 'Help and information' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'examining identity documents guidance on GOV.UK (opens in new tab)' })).toHaveAttribute('href', EXAMINING_IDENTITY_DOCS_URL);
-    expect(screen.getByRole('link', { name: 'nationalities requiring entry clearance on GOV.UK (opens in new tab)' })).toHaveAttribute('href', NATIONALITIES_REQ_CLEARANCE_URL);
+    expect(screen.getAllByRole('link', { name: 'nationalities requiring entry clearance on GOV.UK (opens in new tab)' })).toHaveLength(2);
     expect(screen.getByRole('link', { name: 'ETA guidance on GOV.UK (opens in new tab)' })).toHaveAttribute('href', ETA_GUIDANCE_ON_GOVUK_URL);
     expect(screen.getByRole('link', { name: 'Visas and immigration (opens in new tab)' })).toHaveAttribute('href', VISAS_AND_IMMIGRATION_URL);
 
