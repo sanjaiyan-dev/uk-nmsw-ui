@@ -56,49 +56,49 @@ import LoadingSpinner from './components/LoadingSpinner';
 
 // Lazy loaded routes (js loads on demand)
 // Error/Message pages
-const FileUploadConfirmation = lazy(() => import('./pages/Voyage/FileUploadConfirmation'));
-const GenericConfirmationPage = lazy(() => import('./pages/Message/GenericConfirmation'));
-const GenericMessage = lazy(() => import('./pages/Message/GenericMessage'));
+const FileUploadConfirmation = lazy(() => import(/* webpackPrefetch: true */ './pages/Voyage/FileUploadConfirmation'));
+const GenericConfirmationPage = lazy(() => import(/* webpackPrefetch: true */ './pages/Message/GenericConfirmation'));
+const GenericMessage = lazy(() => import(/* webpackPrefetch: true */ './pages/Message/GenericMessage'));
 // Register/Sign in pages
-const AccountAlreadyActive = lazy(() => import('./pages/Message/AccountAlreadyActive'));
-const RegisterConfirmation = lazy(() => import('./pages/Register/RegisterConfirmation'));
-const RegisterEmailAddress = lazy(() => import('./pages/Register/RegisterEmailAddress'));
-const RegisterEmailCheck = lazy(() => import('./pages/Register/RegisterEmailCheck'));
-const RegisterEmailResend = lazy(() => import('./pages/Register/RegisterEmailResend'));
-const RegisterEmailVerified = lazy(() => import('./pages/Register/RegisterEmailVerified'));
-const RegisterYourDetails = lazy(() => import('./pages/Register/RegisterYourDetails'));
-const RegisterYourPassword = lazy(() => import('./pages/Register/RegisterYourPassword'));
-const ResendEmailUserNotVerified = lazy(() => import('./pages/Register/ResendEmailUserNotVerified'));
-const RequestPasswordReset = lazy(() => import('./pages/SignIn/RequestPasswordReset'));
-const RequestPasswordResetConfirmation = lazy(() => import('./pages/SignIn/RequestPasswordResetConfirmation'));
-const ResendRequestPasswordReset = lazy(() => import('./pages/SignIn/ResendRequestPasswordReset'));
-const ResetPassword = lazy(() => import('./pages/SignIn/ResetPassword'));
-const SignIn = lazy(() => import('./pages/SignIn/SignIn'));
+const AccountAlreadyActive = lazy(() => import(/* webpackPrefetch: true */ './pages/Message/AccountAlreadyActive'));
+const RegisterConfirmation = lazy(() => import(/* webpackPrefetch: true */ './pages/Register/RegisterConfirmation'));
+const RegisterEmailAddress = lazy(() => import(/* webpackPrefetch: true */ './pages/Register/RegisterEmailAddress'));
+const RegisterEmailCheck = lazy(() => import(/* webpackPrefetch: true */ './pages/Register/RegisterEmailCheck'));
+const RegisterEmailResend = lazy(() => import(/* webpackPrefetch: true */ './pages/Register/RegisterEmailResend'));
+const RegisterEmailVerified = lazy(() => import(/* webpackPrefetch: true */ './pages/Register/RegisterEmailVerified'));
+const RegisterYourDetails = lazy(() => import(/* webpackPrefetch: true */ './pages/Register/RegisterYourDetails'));
+const RegisterYourPassword = lazy(() => import(/* webpackPrefetch: true */ './pages/Register/RegisterYourPassword'));
+const ResendEmailUserNotVerified = lazy(() => import(/* webpackPrefetch: true */ './pages/Register/ResendEmailUserNotVerified'));
+const RequestPasswordReset = lazy(() => import(/* webpackPrefetch: true */ './pages/SignIn/RequestPasswordReset'));
+const RequestPasswordResetConfirmation = lazy(() => import(/* webpackPrefetch: true */ './pages/SignIn/RequestPasswordResetConfirmation'));
+const ResendRequestPasswordReset = lazy(() => import(/* webpackPrefetch: true */ './pages/SignIn/ResendRequestPasswordReset'));
+const ResetPassword = lazy(() => import(/* webpackPrefetch: true */ './pages/SignIn/ResetPassword'));
+const SignIn = lazy(() => import(/* webpackPrefetch: true */ './pages/SignIn/SignIn'));
 // Regulatory pages
-const AccessibilityStatement = lazy(() => import('./pages/Regulatory/AccessibilityStatement'));
-const CookiePolicy = lazy(() => import('./pages/Regulatory/CookiePolicy'));
-const EtaRequirements = lazy(() => import('./pages/Regulatory/ETA/EtaRequirements'));
-const Landing = lazy(() => import('./pages/Landing/Landing'));
-const PrivacyNotice = lazy(() => import('./pages/Regulatory/PrivacyNotice'));
-const Help = lazy(() => import('./pages/Regulatory/Help'));
-const ContactUs = lazy(() => import('./pages/Regulatory/ContactUs'));
+const AccessibilityStatement = lazy(() => import(/* webpackPrefetch: true */ './pages/Regulatory/AccessibilityStatement'));
+const CookiePolicy = lazy(() => import(/* webpackPrefetch: true */ './pages/Regulatory/CookiePolicy'));
+const EtaRequirements = lazy(() => import(/* webpackPrefetch: true */ './pages/Regulatory/ETA/EtaRequirements'));
+const Landing = lazy(() => import(/* webpackPrefetch: true */ './pages/Landing/Landing'));
+const PrivacyNotice = lazy(() => import(/* webpackPrefetch: true */ './pages/Regulatory/PrivacyNotice'));
+const Help = lazy(() => import(/* webpackPrefetch: true */ './pages/Regulatory/Help'));
+const ContactUs = lazy(() => import(/* webpackPrefetch: true */ './pages/Regulatory/ContactUs'));
 // Downloadable templates pages
-const Templates = lazy(() => import('./pages/NavPages/Templates'));
+const Templates = lazy(() => import(/* webpackPrefetch: true */ './pages/NavPages/Templates'));
 // Voyage pages
-const VoyageCheckYourAnswers = lazy(() => import('./pages/Voyage/VoyageCheckYourAnswers/VoyageCheckYourAnswers'));
-const VoyageCrew = lazy(() => import('./pages/Voyage/VoyageCrew'));
-const VoyageDeleteDraftCheck = lazy(() => import('./pages/Voyage/VoyageDeleteDraftCheck'));
-const VoyageGeneralDeclaration = lazy(() => import('./pages/Voyage/VoyageGeneralDeclaration'));
-const VoyagePassengers = lazy(() => import('./pages/Voyage/VoyagePassengers'));
-const VoyagePassengerUpload = lazy(() => import('./pages/Voyage/VoyagePassengerUpload'));
-const VoyageSupportingDocsUpload = lazy(() => import('./pages/Voyage/VoyageSupportingDocsUpload'));
-const VoyageTaskList = lazy(() => import('./pages/Voyage/VoyageTaskList'));
-const YourVoyages = lazy(() => import('./pages/NavPages/YourVoyages/YourVoyages'));
-const FileUploadFieldErrors = lazy(() => import('./pages/Message/FileUploadFieldErrors'));
+const VoyageCheckYourAnswers = lazy(() => import(/* webpackPrefetch: true */ './pages/Voyage/VoyageCheckYourAnswers/VoyageCheckYourAnswers'));
+const VoyageCrew = lazy(() => import(/* webpackPrefetch: true */ './pages/Voyage/VoyageCrew'));
+const VoyageDeleteDraftCheck = lazy(() => import(/* webpackPrefetch: true */ './pages/Voyage/VoyageDeleteDraftCheck'));
+const VoyageGeneralDeclaration = lazy(() => import(/* webpackPrefetch: true */ './pages/Voyage/VoyageGeneralDeclaration'));
+const VoyagePassengers = lazy(() => import(/* webpackPrefetch: true */ './pages/Voyage/VoyagePassengers'));
+const VoyagePassengerUpload = lazy(() => import(/* webpackPrefetch: true */ './pages/Voyage/VoyagePassengerUpload'));
+const VoyageSupportingDocsUpload = lazy(() => import(/* webpackPrefetch: true */ './pages/Voyage/VoyageSupportingDocsUpload'));
+const VoyageTaskList = lazy(() => import(/* webpackPrefetch: true */ './pages/Voyage/VoyageTaskList'));
+const YourVoyages = lazy(() => import(/* webpackPrefetch: true */ './pages/NavPages/YourVoyages/YourVoyages'));
+const FileUploadFieldErrors = lazy(() => import(/* webpackPrefetch: true */ './pages/Message/FileUploadFieldErrors'));
 // Your details pages
-const YourDetails = lazy(() => import('./pages/NavPages/YourDetails/YourDetails'));
-const ChangeYourDetails = lazy(() => import('./pages/NavPages/YourDetails/ChangeYourDetails'));
-const ChangeYourPassword = lazy(() => import('./pages/NavPages/YourDetails/ChangeYourPassword'));
+const YourDetails = lazy(() => import(/* webpackPrefetch: true */ './pages/NavPages/YourDetails/YourDetails'));
+const ChangeYourDetails = lazy(() => import(/* webpackPrefetch: true */ './pages/NavPages/YourDetails/ChangeYourDetails'));
+const ChangeYourPassword = lazy(() => import(/* webpackPrefetch: true */ './pages/NavPages/YourDetails/ChangeYourPassword'));
 
 const AppRouter = ({ setIsCookieBannerShown }) => {
   document.title = SERVICE_NAME;
